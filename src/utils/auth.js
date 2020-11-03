@@ -6,7 +6,7 @@ export const loginWithGoogle = () => {
   auth()
     .setPersistence(
       process.env.NODE_ENV === ENV.DEV
-        ? auth.Auth.Persistence.LOCAL
+        ? auth.Auth.Persistence.SESSION
         : auth.Auth.Persistence.NONE
     )
     .then(() => {

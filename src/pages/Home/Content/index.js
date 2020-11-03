@@ -1,11 +1,11 @@
 import { NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box } from "components/Box";
-import { useReadData } from "hooks/useReadData";
+import { useListenData } from "hooks/useListenData";
 import { sortBy } from "lodash/fp";
 import User from "pages/Home/Content/User";
 
 function Home() {
-  const [users = [], loading] = useReadData({
+  const [users = [], loading] = useListenData({
     collection: "users",
   });
 

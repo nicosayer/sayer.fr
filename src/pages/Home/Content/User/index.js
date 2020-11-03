@@ -1,16 +1,17 @@
-import { Button, Card, Collapse, Intent } from "@blueprintjs/core";
+import { Button, Card, H4, Intent, Tooltip } from "@blueprintjs/core";
 import { Box } from "components/Box";
-import { useReadData } from "hooks/useReadData";
+import { useListenData } from "hooks/useListenData";
 import { useEffect, useMemo, useState } from "react";
 import { sortBy } from "lodash/fp";
 import Credential from "pages/Home/Content/User/Credential";
 import { sanitize } from "utils";
+import NewCredential from "pages/Home/Content/User/NewCredential";
 
 function User({ user }) {
-  const [open, setOpen] = useState(true);
+  const [isNewCredentialOpen, setIsNewCredentialOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const [credentials = []] = useReadData({
+  const [credentials = []] = useListenData({
     src: user.ref,
     collection: "credentials",
   });
@@ -51,36 +52,41 @@ function User({ user }) {
 
   return (
     <Box key={user.name} style={{ marginBottom: "40px" }}>
-      <Button
-        intent={Intent.PRIMARY}
-        large
-        rightIcon={open ? "chevron-down" : "chevron-right"}
-        onClick={() => {
-          setOpen(!open);
-        }}
-      >
+      <H4>
         {user.name}
-      </Button>
-      <Box as="span" style={{ marginLeft: "10px" }}>
-        <Button intent={Intent.PRIMARY} large icon="plus" />
-      </Box>
-
-      <Collapse isOpen={open} keepChildrenMounted>
-        <Box style={{ marginTop: "10px" }}>
-          <Card>
-            <Box>
-              {sortBy("label", filteredCredentials).map((credential, index) => (
-                <Box
-                  key={credential.label}
-                  style={{ marginTop: index > 0 ? "20px" : undefined }}
-                >
-                  <Credential credential={credential} />
-                </Box>
-              ))}
-            </Box>
-          </Card>
+        <Box as="span" style={{ marginLeft: "10px" }}>
+          <Tooltip intent={Intent.PRIMARY} content="Add new item">
+            <Button
+              intent={Intent.PRIMARY}
+              large
+              icon="plus"
+              onClick={() => setIsNewCredentialOpen(true)}
+            />
+          </Tooltip>
         </Box>
-      </Collapse>
+      </H4>
+
+      <Box style={{ marginTop: "10px" }}>
+        <Card>
+          <Box>
+            {sortBy("label", filteredCredentials).map((credential, index) => (
+              <Box
+                key={
+                  credential.label + credential.username + credential.password
+                }
+                style={{ marginTop: index > 0 ? "20px" : undefined }}
+              >
+                <Credential credential={credential} />
+              </Box>
+            ))}
+          </Box>
+        </Card>
+      </Box>
+      <NewCredential
+        isOpen={isNewCredentialOpen}
+        onClose={() => setIsNewCredentialOpen(false)}
+        user={user}
+      />
     </Box>
   );
 }

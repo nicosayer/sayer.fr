@@ -15,3 +15,7 @@ export const logError = (error) => {
 export const sanitize = (string) => {
   return flow(deburr, toLower)(string.replace(/[^a-zA-Z0-9]/g, ""));
 };
+
+export const uniqueId = () => {
+  return Math.random().toString(36).substring(2);
+};
