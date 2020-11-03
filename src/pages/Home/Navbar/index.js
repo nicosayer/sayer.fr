@@ -15,17 +15,27 @@ function Navbar() {
         padding: "10px",
       }}
     >
-      <InputGroup
-        autoFocus
-        id="search-input"
-        placeholder="Search"
-        leftIcon="search"
-        type="search"
-        large
-        fill
-      />
-      <Box style={{ marginLeft: "10px" }}>
-        <LogoutButton />
+      <Box
+        style={{
+          margin: "auto",
+          width: "100%",
+          maxWidth: "max",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <InputGroup
+          autoFocus
+          id="search-input"
+          placeholder="Search"
+          leftIcon="search"
+          type="search"
+          large
+          fill
+        />
+        <Box style={{ marginLeft: "10px" }}>
+          <LogoutButton />
+        </Box>
       </Box>
     </Box>
   );

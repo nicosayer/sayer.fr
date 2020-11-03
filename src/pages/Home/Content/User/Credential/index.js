@@ -100,7 +100,10 @@ function Credential({ credential }) {
             justifyContent: "space-between",
           }}
         >
-          <Tooltip content="Copy username to clipboard">
+          <Tooltip
+            content="Copy username to clipboard"
+            targetClassName={isMobile && "full-width"}
+          >
             <Button
               style={{ wordBreak: "break-word" }}
               fill={isMobile}
@@ -122,7 +125,11 @@ function Credential({ credential }) {
               justifyContent: "flex-end",
             }}
           >
-            <Tooltip content="Copy password to clipboard">
+            <Tooltip
+              content="Copy password to clipboard"
+              className={isMobile && "full-width"}
+              targetClassName={isMobile && "full-width"}
+            >
               <Button
                 fill={isMobile}
                 style={{ wordBreak: "break-word" }}
@@ -137,7 +144,7 @@ function Credential({ credential }) {
                 </Box>
               </Button>
             </Tooltip>
-            <Box as="span" style={{ marginLeft: "10px" }}>
+            <Box style={{ marginLeft: "10px" }}>
               <Tooltip
                 content={showPassword ? "Hide password" : "Show password"}
               >

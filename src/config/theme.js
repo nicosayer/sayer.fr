@@ -9,6 +9,12 @@ export const cssKeyToThemeKey = {
   boxShadow: "boxShadow",
   color: "color",
   backgroundColor: "color",
+  width: "size",
+  minWidth: "size",
+  maxWidth: "size",
+  height: "size",
+  minHeight: "size",
+  maxHeight: "size",
   top: "size",
   bottom: "size",
   left: "size",
@@ -33,7 +39,9 @@ export const cssKeyToThemeKey = {
 export const theme = {
   radius: { classic: "4px" },
   boxShadow: { classic: "0 0 10px #00000080" },
-  size: {},
+  size: {
+    max: "700px",
+  },
   color: {},
   fontSize: {
     title: "18px",

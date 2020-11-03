@@ -26,7 +26,7 @@ function Home() {
   }
 
   return (
-    <Box style={{ padding: "10px" }}>
+    <Box style={{ padding: "10px", maxWidth: "max", margin: "auto" }}>
       {sortBy("name", users).map((user) => (
         <User key={user.name} user={user} />
       ))}
