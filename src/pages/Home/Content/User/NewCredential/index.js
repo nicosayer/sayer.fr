@@ -115,6 +115,7 @@ function NewCredential({ isOpen, onClose, user }) {
               callback: () => {
                 onClose();
                 setData(EMPTY_DATA);
+                setShowPassword(false);
               },
             });
           }}
