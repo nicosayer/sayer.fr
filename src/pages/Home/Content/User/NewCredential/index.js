@@ -10,6 +10,7 @@ import {
 import { useCallback, useState } from "react";
 
 import { useWriteData } from "hooks/useWriteData";
+import { uniqueId } from "utils";
 
 const EMPTY_DATA = {
   label: "",
@@ -30,10 +31,16 @@ function NewCredential({ isOpen, onClose, user }) {
     [data]
   );
 
+  const handleClose = () => {
+    onClose();
+    setData(EMPTY_DATA);
+    setShowPassword(false);
+  };
+
   return (
     <Dialog
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={`New credential • ${user.name}`}
     >
       <div className={Classes.DIALOG_BODY}>
@@ -73,7 +80,7 @@ function NewCredential({ isOpen, onClose, user }) {
             onChange={handleChange("username")}
             large
             id="username-input"
-            placeholder="zuck@gmail.com"
+            placeholder="mark@gmail.com"
           />
         </FormGroup>
         <FormGroup
@@ -87,7 +94,7 @@ function NewCredential({ isOpen, onClose, user }) {
             onChange={handleChange("password")}
             large
             id="password-input"
-            placeholder={showPassword ? "••••••••••" : "Gm0M7o3t8x"}
+            placeholder={showPassword ? uniqueId() : "••••••••••"}
             type={showPassword ? "text" : "password"}
             rightElement={
               <Tooltip
@@ -112,11 +119,7 @@ function NewCredential({ isOpen, onClose, user }) {
               collection: "credentials",
               src: user.ref,
               data,
-              callback: () => {
-                onClose();
-                setData(EMPTY_DATA);
-                setShowPassword(false);
-              },
+              callback: handleClose,
             });
           }}
         >
