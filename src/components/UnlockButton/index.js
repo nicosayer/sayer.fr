@@ -8,11 +8,28 @@ import {
 } from "@blueprintjs/core";
 import { Tooltip } from "components/Tooltip";
 import { useEncryption } from "hooks/useEncryption";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const UnlockButton = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const { key, setKey, locked } = useEncryption();
+  const [inputRef, setInputRef] = useState();
+
+  useEffect(() => {
+    const handleKeyDown = ({ key }) => {
+      if (key === "Enter") {
+        setIsPopoverOpen(false);
+      }
+    };
+
+    inputRef?.select()
+
+    inputRef?.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      inputRef?.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [inputRef]);
 
   return (
     <Popover
@@ -25,6 +42,7 @@ export const UnlockButton = () => {
           labelFor="encryption-key-input"
         >
           <InputGroup
+            inputRef={setInputRef}
             id="encryption-key-input"
             type="text"
             value={key}

@@ -21,10 +21,10 @@ function Credential({ credential }) {
   const isMobile = useIsMobile();
   const [deleteData, loading] = useDeleteData();
   const { decrypt, test } = useEncryption();
-  const toaster = useRef();
+  const toasterRef = useRef();
 
   const copiedToClipboardToast = () => {
-    toaster.current?.show({
+    toasterRef.current?.show({
       icon: "tick",
       intent: Intent.SUCCESS,
       message: "Copied to clipboard",
@@ -194,7 +194,7 @@ function Credential({ credential }) {
           </Box>
         </Box>
       </Callout>
-      <Toaster ref={toaster} maxToasts={1} />
+      <Toaster ref={toasterRef} maxToasts={1} />
     </>
   );
 }

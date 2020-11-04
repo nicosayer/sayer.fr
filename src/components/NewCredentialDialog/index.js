@@ -21,10 +21,14 @@ const EMPTY_DATA = {
   password: "",
 };
 
+const passwordUniqueId = uniqueId();
+const encryptionKeyUniqueId = uniqueId();
+
 export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [lockEncryptionKey, setLockEncryptionKey] = useState(true);
   const [writeData, loading] = useWriteData();
-  const { encrypt, key } = useEncryption();
+  const { encrypt, key, setKey } = useEncryption();
   const [data, setData] = useState(EMPTY_DATA);
 
   const handleChange = useCallback(
@@ -38,6 +42,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
     onClose();
     setData(EMPTY_DATA);
     setShowPassword(false);
+    setLockEncryptionKey(true);
   };
 
   const missingDatas = useMemo(
@@ -96,7 +101,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
             onChange={handleChange("password")}
             large
             id="password-input"
-            placeholder={showPassword ? uniqueId() : "••••••••••"}
+            placeholder={showPassword ? passwordUniqueId : "••••••••••"}
             type={showPassword ? "text" : "password"}
             rightElement={
               <Tooltip
@@ -111,8 +116,30 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
             }
           />
         </FormGroup>
-        <FormGroup label="Encryption key" labelFor="encryption-key-input">
-          <InputGroup id="encryption-key-input" disabled value={key} large />
+        <FormGroup
+          label="Encryption key"
+          labelFor="encryption-key-input"
+          labelInfo="*"
+        >
+          <InputGroup
+            disabled={loading || lockEncryptionKey}
+            value={key}
+            onChange={(event) => setKey(event?.target?.value)}
+            large
+            id="ecnryption-key-input"
+            placeholder={encryptionKeyUniqueId}
+            rightElement={
+              lockEncryptionKey && (
+                <Tooltip content="Unlock">
+                  <Button
+                    icon="lock"
+                    minimal
+                    onClick={() => setLockEncryptionKey(false)}
+                  />
+                </Tooltip>
+              )
+            }
+          />
         </FormGroup>
         <Tooltip
           disabled={!missingDatas.length}
