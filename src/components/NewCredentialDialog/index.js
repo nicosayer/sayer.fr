@@ -1,17 +1,18 @@
 import {
+  AnchorButton,
   Button,
   Classes,
   Dialog,
   FormGroup,
   InputGroup,
   Intent,
-  Tooltip,
 } from "@blueprintjs/core";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { useWriteData } from "hooks/useWriteData";
 import { uniqueId } from "utils";
 import { useEncryption } from "hooks/useEncryption";
+import { Tooltip } from "components/Tooltip";
 
 const EMPTY_DATA = {
   label: "",
@@ -20,10 +21,10 @@ const EMPTY_DATA = {
   password: "",
 };
 
-function NewCredential({ isOpen, onClose, user }) {
+export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [writeData, loading] = useWriteData();
-  const { encrypt } = useEncryption();
+  const { encrypt, key } = useEncryption();
   const [data, setData] = useState(EMPTY_DATA);
 
   const handleChange = useCallback(
@@ -39,6 +40,17 @@ function NewCredential({ isOpen, onClose, user }) {
     setShowPassword(false);
   };
 
+  const missingDatas = useMemo(
+    () =>
+      [
+        { data: key, name: "Encryption key" },
+        { data: data.label, name: "Label" },
+        { data: data.username, name: "Username" },
+        { data: data.password, name: "Password" },
+      ].filter(({ data }) => !data),
+    [key, data.label, data.username, data.password]
+  );
+
   return (
     <Dialog
       isOpen={isOpen}
@@ -46,14 +58,9 @@ function NewCredential({ isOpen, onClose, user }) {
       title={`New credential • ${user.name}`}
     >
       <div className={Classes.DIALOG_BODY}>
-        <FormGroup
-          disabled={loading}
-          large
-          label="Label"
-          labelFor="label-input"
-          labelInfo="*"
-        >
+        <FormGroup large label="Label" labelFor="label-input" labelInfo="*">
           <InputGroup
+            disabled={loading}
             value={data.label}
             onChange={handleChange("label")}
             autoFocus
@@ -62,8 +69,9 @@ function NewCredential({ isOpen, onClose, user }) {
             placeholder="Facebook"
           />
         </FormGroup>
-        <FormGroup disabled={loading} label="URL" labelFor="url-input">
+        <FormGroup label="URL" labelFor="url-input">
           <InputGroup
+            disabled={loading}
             value={data.url}
             onChange={handleChange("url")}
             large
@@ -71,13 +79,9 @@ function NewCredential({ isOpen, onClose, user }) {
             placeholder="https://facebook.fr"
           />
         </FormGroup>
-        <FormGroup
-          disabled={loading}
-          label="Username"
-          labelFor="username-input"
-          labelInfo="*"
-        >
+        <FormGroup label="Username" labelFor="username-input" labelInfo="*">
           <InputGroup
+            disabled={loading}
             value={data.username}
             onChange={handleChange("username")}
             large
@@ -85,13 +89,9 @@ function NewCredential({ isOpen, onClose, user }) {
             placeholder="mark@gmail.com"
           />
         </FormGroup>
-        <FormGroup
-          disabled={loading}
-          label="Password"
-          labelFor="password-input"
-          labelInfo="*"
-        >
+        <FormGroup label="Password" labelFor="password-input" labelInfo="*">
           <InputGroup
+            disabled={loading}
             value={data.password}
             onChange={handleChange("password")}
             large
@@ -111,25 +111,35 @@ function NewCredential({ isOpen, onClose, user }) {
             }
           />
         </FormGroup>
-        <Button
-          loading={loading}
-          large
-          intent={Intent.PRIMARY}
-          fill
-          onClick={() => {
-            writeData({
-              collection: "credentials",
-              src: user.ref,
-              data: { ...data, password: encrypt(data.password) },
-              callback: handleClose,
-            });
-          }}
+        <FormGroup label="Encryption key" labelFor="encryption-key-input">
+          <InputGroup id="encryption-key-input" disabled value={key} large />
+        </FormGroup>
+        <Tooltip
+          disabled={!missingDatas.length}
+          content={`Missing ${missingDatas.map(({ name }) => name).join(", ")}`}
+          targetClassName="full-width"
         >
-          Submit
-        </Button>
+          <div>
+            <AnchorButton
+              disabled={missingDatas.length}
+              loading={loading}
+              large
+              intent={Intent.PRIMARY}
+              fill
+              onClick={() => {
+                writeData({
+                  collection: "credentials",
+                  src: user.ref,
+                  data: { ...data, password: encrypt(data.password) },
+                  callback: handleClose,
+                });
+              }}
+            >
+              Submit
+            </AnchorButton>
+          </div>
+        </Tooltip>
       </div>
     </Dialog>
   );
-}
-
-export default NewCredential;
+};

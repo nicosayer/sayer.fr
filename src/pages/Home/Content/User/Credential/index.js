@@ -7,9 +7,9 @@ import {
   Intent,
   Popover,
   Toaster,
-  Tooltip,
 } from "@blueprintjs/core";
 import { Box } from "components/Box";
+import { Tooltip } from "components/Tooltip";
 import { useDeleteData } from "hooks/useDeleteData";
 import { useEncryption } from "hooks/useEncryption";
 import { useIsMobile } from "hooks/useIsMobile";
@@ -43,31 +43,37 @@ function Credential({ credential }) {
     }
   }, [passwordIsCrypted]);
 
-  const getViewPasswordTooltipContent = useMemo(() => {
-    if (passwordIsCrypted) {
-      return "Incorrect encryption key";
-    }
-    if (showPassword) {
-      return "Hide password";
-    }
-    return "Show password";
-  }, [passwordIsCrypted, showPassword]);
-
   return (
     <>
-      <Box style={{ textAlign: "center" }}>
-        <H4>
+      <H4>
+        <Box
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: passwordIsCrypted ? "lightgrey" : "black",
+          }}
+        >
           {credential.label}
           {credential.url.startsWith("http") && (
-            <Box as="span" style={{ marginLeft: "10px" }}>
-              <a target="_blank" rel="noreferrer" href={credential.url}>
+            <Box style={{ marginLeft: "10px" }}>
+              <Box
+                as={passwordIsCrypted ? undefined : "a"}
+                target="_blank"
+                rel="noreferrer"
+                href={credential.url}
+              >
                 <Tooltip content={credential.url} href={credential.url}>
-                  <AnchorButton minimal icon="share" />
+                  <AnchorButton
+                    disabled={passwordIsCrypted}
+                    minimal
+                    icon="share"
+                  />
                 </Tooltip>
-              </a>
+              </Box>
             </Box>
           )}
-          <Box as="span" style={{ marginLeft: "10px" }}>
+          <Box style={{ marginLeft: "10px" }}>
             <Popover
               disabled={passwordIsCrypted}
               isOpen={isDeletePopoverOpen}
@@ -106,12 +112,7 @@ function Credential({ credential }) {
               }
               popoverClassName={Classes.POPOVER_CONTENT_SIZING}
             >
-              <Tooltip
-                intent={Intent.DANGER}
-                content={
-                  passwordIsCrypted ? "Incorrect encryption key" : "Remove item"
-                }
-              >
+              <Tooltip intent={Intent.DANGER} content="Remove item">
                 <AnchorButton
                   disabled={passwordIsCrypted}
                   intent={Intent.DANGER}
@@ -121,9 +122,12 @@ function Credential({ credential }) {
               </Tooltip>
             </Popover>
           </Box>
-        </H4>
-      </Box>
-      <Callout>
+        </Box>
+      </H4>
+      <Callout
+        intent={passwordIsCrypted ? undefined : Intent.PRIMARY}
+        icon={null}
+      >
         <Box
           style={{
             display: "grid",
@@ -133,24 +137,24 @@ function Credential({ credential }) {
             justifyContent: "space-between",
           }}
         >
-          <Tooltip
-            content="Copy username to clipboard"
-            targetClassName={isMobile && "full-width"}
-          >
-            <Button
-              style={{ wordBreak: "break-word" }}
-              fill={isMobile}
-              rightIcon="duplicate"
-              onClick={() => {
-                navigator.clipboard.writeText(credential.username);
-                copiedToClipboardToast();
-              }}
-            >
-              <Box style={{ fontFamily: "monospace" }}>
-                {credential.username}
-              </Box>
-            </Button>
-          </Tooltip>
+          <Box style={{ display: "flex", justifyContent: "flex-start" }}>
+            <Tooltip content="Copy username to clipboard">
+              <AnchorButton
+                disabled={passwordIsCrypted}
+                style={{ wordBreak: "break-word" }}
+                fill={isMobile}
+                rightIcon="duplicate"
+                onClick={() => {
+                  navigator.clipboard.writeText(credential.username);
+                  copiedToClipboardToast();
+                }}
+              >
+                <Box style={{ fontFamily: "monospace" }}>
+                  {credential.username}
+                </Box>
+              </AnchorButton>
+            </Tooltip>
+          </Box>
           <Box
             style={{
               display: "flex",
@@ -158,15 +162,7 @@ function Credential({ credential }) {
               justifyContent: "flex-end",
             }}
           >
-            <Tooltip
-              content={
-                passwordIsCrypted
-                  ? "Incorrect encryption key"
-                  : "Copy password to clipboard"
-              }
-              className={isMobile && "full-width"}
-              targetClassName={isMobile && "full-width"}
-            >
+            <Tooltip content="Copy password to clipboard">
               <AnchorButton
                 fill={isMobile}
                 style={{ wordBreak: "break-word" }}
@@ -183,7 +179,9 @@ function Credential({ credential }) {
               </AnchorButton>
             </Tooltip>
             <Box style={{ marginLeft: "10px" }}>
-              <Tooltip content={getViewPasswordTooltipContent}>
+              <Tooltip
+                content={showPassword ? "Hide password" : "Show password"}
+              >
                 <AnchorButton
                   icon={showPassword ? "eye-off" : "eye-open"}
                   onClick={() => {

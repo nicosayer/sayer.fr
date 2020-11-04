@@ -1,17 +1,14 @@
-import { AnchorButton, Card, H4, Intent, Tooltip } from "@blueprintjs/core";
+import { Card, H4, NonIdealState } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { useListenData } from "hooks/useListenData";
 import { useEffect, useMemo, useState } from "react";
 import { sortBy } from "lodash/fp";
 import Credential from "pages/Home/Content/User/Credential";
 import { sanitize } from "utils";
-import NewCredential from "pages/Home/Content/User/NewCredential";
-import { useEncryption } from "hooks/useEncryption";
+import { NewCredentialButton } from "components/NewCredentialButton";
 
 function User({ user }) {
-  const [isNewCredentialOpen, setIsNewCredentialOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const { locked } = useEncryption();
 
   const [credentials = []] = useListenData({
     src: user.ref,
@@ -45,7 +42,7 @@ function User({ user }) {
     });
   }, [credentials, search]);
 
-  if (!filteredCredentials.length) {
+  if (search && !filteredCredentials.length) {
     return null;
   }
 
@@ -54,39 +51,30 @@ function User({ user }) {
       <H4>
         {user.name}
         <Box as="span" style={{ marginLeft: "10px" }}>
-          <Tooltip intent={Intent.PRIMARY} content="Add new item">
-            <AnchorButton
-              intent={Intent.PRIMARY}
-              large
-              icon="plus"
-              onClick={() => setIsNewCredentialOpen(true)}
-              disabled={locked}
-            />
-          </Tooltip>
+          <NewCredentialButton user={user} />
         </Box>
       </H4>
 
       <Box style={{ marginTop: "10px" }}>
         <Card>
           <Box>
-            {sortBy("label", filteredCredentials).map((credential, index) => (
-              <Box
-                key={
-                  credential.label + credential.username + credential.password
-                }
-                style={{ marginTop: index > 0 ? "20px" : undefined }}
-              >
-                <Credential credential={credential} />
-              </Box>
-            ))}
+            {filteredCredentials.length ? (
+              sortBy("label", filteredCredentials).map((credential, index) => (
+                <Box
+                  key={
+                    credential.label + credential.username + credential.password
+                  }
+                  style={{ marginTop: index > 0 ? "20px" : undefined }}
+                >
+                  <Credential credential={credential} />
+                </Box>
+              ))
+            ) : (
+              <NonIdealState icon="path-search" title="No items" />
+            )}
           </Box>
         </Card>
       </Box>
-      <NewCredential
-        isOpen={isNewCredentialOpen}
-        onClose={() => setIsNewCredentialOpen(false)}
-        user={user}
-      />
     </Box>
   );
 }

@@ -1,19 +1,9 @@
-import {
-  Button,
-  Classes,
-  FormGroup,
-  InputGroup,
-  Intent,
-  Popover,
-  Tooltip,
-} from "@blueprintjs/core";
+import { InputGroup } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { LogoutButton } from "components/LogoutButton";
-import { useEncryption } from "hooks/useEncryption";
+import { UnlockButton } from "components/UnlockButton";
 
 function Navbar() {
-  const { key, setKey, locked } = useEncryption();
-
   return (
     <Box
       style={{
@@ -45,41 +35,11 @@ function Navbar() {
           fill
         />
         <Box style={{ marginRight: "10px", marginLeft: "10px" }}>
-          <Popover
-            popoverClassName={Classes.POPOVER_CONTENT_SIZING}
-            content={
-              <FormGroup
-                label="Enter the encryption key"
-                labelFor="encryption-key-input"
-              >
-                <InputGroup
-                  id="encryption-key-input"
-                  type="text"
-                  value={key}
-                  onChange={(event) => setKey(event?.target?.value)}
-                  autoFocus={true}
-                  rightElement={
-                    <Tooltip content="Clear">
-                      <Button icon="cross" minimal onClick={() => setKey("")} />
-                    </Tooltip>
-                  }
-                />
-              </FormGroup>
-            }
-          >
-            <Tooltip
-              intent={locked ? Intent.DANGER : Intent.SUCCESS}
-              content={locked ? "Unlock items" : "Change the encryption key"}
-            >
-              <Button
-                intent={locked ? Intent.DANGER : Intent.SUCCESS}
-                large
-                icon={locked ? "lock" : "unlock"}
-              />
-            </Tooltip>
-          </Popover>
+          <UnlockButton />
         </Box>
-        <LogoutButton />
+        <Box>
+          <LogoutButton />
+        </Box>
       </Box>
     </Box>
   );

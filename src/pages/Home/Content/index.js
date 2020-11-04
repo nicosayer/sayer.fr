@@ -20,7 +20,7 @@ function Home() {
   if (!users.length) {
     return (
       <Box style={{ marginTop: "40px" }}>
-        <NonIdealState icon="lock" title="No access" />;
+        <NonIdealState icon="lock" title="No access" />
       </Box>
     );
   }

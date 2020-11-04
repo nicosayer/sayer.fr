@@ -42,7 +42,10 @@ export const theme = {
   size: {
     max: "700px",
   },
-  color: {},
+  color: {
+    black: "#182026",
+    lightgrey: "lightgrey",
+  },
   fontSize: {
     title: "18px",
   },
