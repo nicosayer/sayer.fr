@@ -11,6 +11,7 @@ function Login({ loading }) {
         rightIcon="arrow-right"
         intent={Intent.SUCCESS}
         loading={loading}
+        style={{ whiteSpace: "nowrap" }}
       >
         Login with Google
       </Button>
