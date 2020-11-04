@@ -1,6 +1,7 @@
 import {
   Button,
   Classes,
+  ControlGroup,
   FormGroup,
   InputGroup,
   Intent,
@@ -22,7 +23,7 @@ export const UnlockButton = () => {
       }
     };
 
-    inputRef?.select()
+    inputRef?.select();
 
     inputRef?.addEventListener("keydown", handleKeyDown);
 
@@ -41,24 +42,27 @@ export const UnlockButton = () => {
           label="Enter the encryption key"
           labelFor="encryption-key-input"
         >
-          <InputGroup
-            inputRef={setInputRef}
-            id="encryption-key-input"
-            type="text"
-            value={key}
-            onChange={(event) => setKey(event?.target?.value)}
-            autoFocus={true}
-            rightElement={
-              <Button
-                icon="cross"
-                minimal
-                onClick={() => {
-                  setIsPopoverOpen(false);
-                  setKey("");
-                }}
-              />
-            }
-          />
+          <ControlGroup autoCapitalize="none">
+            <InputGroup
+              leftIcon="key"
+              inputRef={setInputRef}
+              id="encryption-key-input"
+              type="text"
+              value={key}
+              onChange={(event) => setKey(event?.target?.value)}
+              autoFocus={true}
+              rightElement={
+                <Button
+                  icon="cross"
+                  minimal
+                  onClick={() => {
+                    setIsPopoverOpen(false);
+                    setKey("");
+                  }}
+                />
+              }
+            />
+          </ControlGroup>
         </FormGroup>
       }
     >

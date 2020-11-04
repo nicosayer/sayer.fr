@@ -1,9 +1,12 @@
-import { InputGroup } from "@blueprintjs/core";
+import { Button, InputGroup } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { LogoutButton } from "components/LogoutButton";
 import { UnlockButton } from "components/UnlockButton";
+import { useState } from "react";
 
 function Navbar() {
+  const [search, setSearch] = useState("");
+
   return (
     <Box
       style={{
@@ -30,7 +33,14 @@ function Navbar() {
           id="search-input"
           placeholder="Search"
           leftIcon="search"
-          type="search"
+          rightElement={
+            search && (
+              <Button minimal icon="cross" onClick={() => setSearch("")} />
+            )
+          }
+          value={search}
+          onChange={(event) => setSearch(event?.target?.value)}
+          type="text"
           large
           fill
         />
