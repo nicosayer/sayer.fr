@@ -1,9 +1,9 @@
 import {
+  AnchorButton,
   Button,
   Callout,
   Classes,
   H4,
-  H5,
   Intent,
   Popover,
   Toaster,
@@ -11,14 +11,16 @@ import {
 } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { useDeleteData } from "hooks/useDeleteData";
+import { useEncryption } from "hooks/useEncryption";
 import { useIsMobile } from "hooks/useIsMobile";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function Credential({ credential }) {
   const [isDeletePopoverOpen, setIsDeletePopoverOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const isMobile = useIsMobile();
   const [deleteData, loading] = useDeleteData();
+  const { decrypt, test } = useEncryption();
   const toaster = useRef();
 
   const copiedToClipboardToast = () => {
@@ -30,28 +32,49 @@ function Credential({ credential }) {
     });
   };
 
+  const passwordIsCrypted = useMemo(() => {
+    return !test(credential.password);
+  }, [test, credential.password]);
+
+  useEffect(() => {
+    if (passwordIsCrypted) {
+      setShowPassword(false);
+      setIsDeletePopoverOpen(false);
+    }
+  }, [passwordIsCrypted]);
+
+  const getViewPasswordTooltipContent = useMemo(() => {
+    if (passwordIsCrypted) {
+      return "Incorrect encryption key";
+    }
+    if (showPassword) {
+      return "Hide password";
+    }
+    return "Show password";
+  }, [passwordIsCrypted, showPassword]);
+
   return (
     <>
       <Box style={{ textAlign: "center" }}>
         <H4>
           {credential.label}
-          {credential.url && (
+          {credential.url.startsWith("http") && (
             <Box as="span" style={{ marginLeft: "10px" }}>
               <a target="_blank" rel="noreferrer" href={credential.url}>
-                <Tooltip content={credential.url}>
-                  <Button minimal icon="share" />
+                <Tooltip content={credential.url} href={credential.url}>
+                  <AnchorButton minimal icon="share" />
                 </Tooltip>
               </a>
             </Box>
           )}
           <Box as="span" style={{ marginLeft: "10px" }}>
             <Popover
+              disabled={passwordIsCrypted}
               isOpen={isDeletePopoverOpen}
               onInteraction={setIsDeletePopoverOpen}
               content={
-                <div key="text">
-                  <H5>Confirm</H5>
-                  <p>Are you sure you want to remove this item?</p>
+                <>
+                  <p>Are you sure you want to delete this item?</p>
                   <div
                     style={{
                       display: "flex",
@@ -79,12 +102,22 @@ function Credential({ credential }) {
                       Delete
                     </Button>
                   </div>
-                </div>
+                </>
               }
               popoverClassName={Classes.POPOVER_CONTENT_SIZING}
             >
-              <Tooltip intent={Intent.DANGER} content="Remove item">
-                <Button intent={Intent.DANGER} minimal icon="trash" />
+              <Tooltip
+                intent={Intent.DANGER}
+                content={
+                  passwordIsCrypted ? "Incorrect encryption key" : "Remove item"
+                }
+              >
+                <AnchorButton
+                  disabled={passwordIsCrypted}
+                  intent={Intent.DANGER}
+                  minimal
+                  icon="trash"
+                />
               </Tooltip>
             </Popover>
           </Box>
@@ -126,33 +159,37 @@ function Credential({ credential }) {
             }}
           >
             <Tooltip
-              content="Copy password to clipboard"
+              content={
+                passwordIsCrypted
+                  ? "Incorrect encryption key"
+                  : "Copy password to clipboard"
+              }
               className={isMobile && "full-width"}
               targetClassName={isMobile && "full-width"}
             >
-              <Button
+              <AnchorButton
                 fill={isMobile}
                 style={{ wordBreak: "break-word" }}
                 rightIcon="duplicate"
                 onClick={() => {
-                  navigator.clipboard.writeText(credential.password);
+                  navigator.clipboard.writeText(decrypt(credential.password));
                   copiedToClipboardToast();
                 }}
+                disabled={passwordIsCrypted}
               >
                 <Box style={{ fontFamily: "monospace" }}>
-                  {showPassword ? credential.password : "••••••••••"}
+                  {showPassword ? decrypt(credential.password) : "••••••••••"}
                 </Box>
-              </Button>
+              </AnchorButton>
             </Tooltip>
             <Box style={{ marginLeft: "10px" }}>
-              <Tooltip
-                content={showPassword ? "Hide password" : "Show password"}
-              >
-                <Button
+              <Tooltip content={getViewPasswordTooltipContent}>
+                <AnchorButton
                   icon={showPassword ? "eye-off" : "eye-open"}
                   onClick={() => {
                     setShowPassword(!showPassword);
                   }}
+                  disabled={passwordIsCrypted}
                 />
               </Tooltip>
             </Box>

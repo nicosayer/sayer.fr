@@ -1,4 +1,4 @@
-import { Button, Card, H4, Intent, Tooltip } from "@blueprintjs/core";
+import { AnchorButton, Card, H4, Intent, Tooltip } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { useListenData } from "hooks/useListenData";
 import { useEffect, useMemo, useState } from "react";
@@ -6,10 +6,12 @@ import { sortBy } from "lodash/fp";
 import Credential from "pages/Home/Content/User/Credential";
 import { sanitize } from "utils";
 import NewCredential from "pages/Home/Content/User/NewCredential";
+import { useEncryption } from "hooks/useEncryption";
 
 function User({ user }) {
   const [isNewCredentialOpen, setIsNewCredentialOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const { locked } = useEncryption();
 
   const [credentials = []] = useListenData({
     src: user.ref,
@@ -38,13 +40,10 @@ function User({ user }) {
         credential.label &&
         credential.username &&
         credential.password &&
-        (!search ||
-          sanitize(credential.label).search(sanitize(search)) > -1 ||
-          sanitize(credential.username).search(sanitize(search)) > -1 ||
-          sanitize(user.name).search(sanitize(search)) > -1)
+        (!search || sanitize(credential.label).search(sanitize(search)) > -1)
       );
     });
-  }, [credentials, search, user.name]);
+  }, [credentials, search]);
 
   if (!filteredCredentials.length) {
     return null;
@@ -56,11 +55,12 @@ function User({ user }) {
         {user.name}
         <Box as="span" style={{ marginLeft: "10px" }}>
           <Tooltip intent={Intent.PRIMARY} content="Add new item">
-            <Button
+            <AnchorButton
               intent={Intent.PRIMARY}
               large
               icon="plus"
               onClick={() => setIsNewCredentialOpen(true)}
+              disabled={locked}
             />
           </Tooltip>
         </Box>

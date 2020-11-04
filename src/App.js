@@ -3,11 +3,14 @@ import "styles/global.css";
 
 import { CurrentUserProvider } from "providers/CurrentUserProvider";
 import Root from "pages";
+import { EncryptionProvider } from "providers/EncryptionProvider";
 
 function App() {
   return (
     <CurrentUserProvider>
-      <Root />
+      <EncryptionProvider>
+        <Root />
+      </EncryptionProvider>
     </CurrentUserProvider>
   );
 }

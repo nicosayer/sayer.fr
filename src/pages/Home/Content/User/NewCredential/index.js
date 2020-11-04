@@ -11,6 +11,7 @@ import { useCallback, useState } from "react";
 
 import { useWriteData } from "hooks/useWriteData";
 import { uniqueId } from "utils";
+import { useEncryption } from "hooks/useEncryption";
 
 const EMPTY_DATA = {
   label: "",
@@ -22,6 +23,7 @@ const EMPTY_DATA = {
 function NewCredential({ isOpen, onClose, user }) {
   const [showPassword, setShowPassword] = useState(false);
   const [writeData, loading] = useWriteData();
+  const { encrypt } = useEncryption();
   const [data, setData] = useState(EMPTY_DATA);
 
   const handleChange = useCallback(
@@ -102,7 +104,7 @@ function NewCredential({ isOpen, onClose, user }) {
               >
                 <Button
                   icon={showPassword ? "eye-off" : "eye-open"}
-                  minimal={true}
+                  minimal
                   onClick={() => setShowPassword(!showPassword)}
                 />
               </Tooltip>
@@ -118,7 +120,7 @@ function NewCredential({ isOpen, onClose, user }) {
             writeData({
               collection: "credentials",
               src: user.ref,
-              data,
+              data: { ...data, password: encrypt(data.password) },
               callback: handleClose,
             });
           }}
