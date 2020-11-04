@@ -4,17 +4,21 @@ import { useListenData } from "hooks/useListenData";
 import { useEffect, useMemo, useState } from "react";
 import { sortBy } from "lodash/fp";
 import Credential from "pages/Home/Content/User/Credential";
-import { sanitize } from "utils";
-import { NewCredentialButton } from "components/NewCredentialButton";
+import { searchInString } from "utils";
+import { NewItemButton } from "components/NewItemButton";
 import { useEncryption } from "hooks/useEncryption";
+import Document from "pages/Home/Content/User/Document";
 
 function User({ user }) {
   const [search, setSearch] = useState("");
   const { test } = useEncryption();
-
   const [credentials = []] = useListenData({
     src: user.ref,
     collection: "credentials",
+  });
+  const [documents = []] = useListenData({
+    src: user.ref,
+    collection: "documents",
   });
 
   useEffect(() => {
@@ -40,12 +44,28 @@ function User({ user }) {
         credential.username &&
         credential.password &&
         test(credential.password) &&
-        (!search || sanitize(credential.label).search(sanitize(search)) > -1)
+        (!search || searchInString(credential.label, search))
       );
     });
   }, [credentials, search, test]);
 
-  if (search && !filteredCredentials.length) {
+  const filteredDocuments = useMemo(() => {
+    return documents.filter((document) => {
+      return (
+        document.label &&
+        document.name &&
+        document.path &&
+        test(document.path) &&
+        (!search || searchInString(document.label, search))
+      );
+    });
+  }, [documents, search, test]);
+
+  const resultsCount = useMemo(() => {
+    return filteredCredentials.length + filteredDocuments.length;
+  }, [filteredCredentials.length, filteredDocuments.length]);
+
+  if (search && !resultsCount) {
     return null;
   }
 
@@ -54,27 +74,36 @@ function User({ user }) {
       <H4>
         {user.name}
         <Box as="span" style={{ marginLeft: "10px" }}>
-          <NewCredentialButton user={user} />
+          <NewItemButton user={user} />
         </Box>
       </H4>
 
       <Box style={{ marginTop: "10px" }}>
         <Card>
           <Box>
-            {filteredCredentials.length ? (
-              sortBy("label", filteredCredentials).map((credential, index) => (
+            {!resultsCount && (
+              <NonIdealState icon="path-search" title="No items" />
+            )}
+            {Boolean(filteredCredentials.length) &&
+              sortBy("label", filteredCredentials).map((credential) => (
                 <Box
                   key={
                     credential.label + credential.username + credential.password
                   }
-                  style={{ marginTop: index > 0 ? "20px" : undefined }}
+                  style={{ marginBottom: "20px" }}
                 >
                   <Credential credential={credential} />
                 </Box>
-              ))
-            ) : (
-              <NonIdealState icon="path-search" title="No items" />
-            )}
+              ))}
+            {Boolean(filteredDocuments.length) &&
+              sortBy("label", filteredDocuments).map((document) => (
+                <Box
+                  key={document.label + document.path}
+                  style={{ marginBottom: "20px" }}
+                >
+                  <Document document={document} />
+                </Box>
+              ))}
           </Box>
         </Card>
       </Box>

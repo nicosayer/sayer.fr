@@ -2,6 +2,7 @@ import { db } from "config/firebase";
 import { useEffect } from "react";
 import { useMemo } from "react";
 import { useState } from "react";
+import { logError } from "utils";
 
 const cleanDoc = (doc) => {
   if (doc.exists) {
@@ -26,7 +27,6 @@ const cleanSnapshot = (snapshot) => {
 export const useListenData = ({ collection, id, src } = {}) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
 
   useEffect(() => {
     let query = src || db;
@@ -40,15 +40,14 @@ export const useListenData = ({ collection, id, src } = {}) => {
       (snapshot) => {
         setData(cleanSnapshot(snapshot));
         setLoading(false);
-        setError();
       },
       (error) => {
         setData();
         setLoading(false);
-        setError(error);
+        logError(error);
       }
     );
   }, [collection, id, src]);
 
-  return useMemo(() => [data, loading, error], [data, loading, error]);
+  return useMemo(() => [data, loading], [data, loading]);
 };

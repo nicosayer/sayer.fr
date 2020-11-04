@@ -4,12 +4,15 @@ import "styles/global.css";
 import { CurrentUserProvider } from "providers/CurrentUserProvider";
 import Root from "pages";
 import { EncryptionProvider } from "providers/EncryptionProvider";
+import { ToasterProvider } from "providers/ToasterProvider";
 
 function App() {
   return (
     <CurrentUserProvider>
       <EncryptionProvider>
-        <Root />
+        <ToasterProvider>
+          <Root />
+        </ToasterProvider>
       </EncryptionProvider>
     </CurrentUserProvider>
   );

@@ -2,39 +2,40 @@ import {
   Button,
   Classes,
   Dialog,
+  FileInput,
   FormGroup,
   InputGroup,
   Intent,
 } from "@blueprintjs/core";
-import { useCallback, useEffect, useState } from "react";
-
-import { useWriteData } from "hooks/useWriteData";
-import { uniqueId } from "utils";
-import { useEncryption } from "hooks/useEncryption";
 import { Tooltip } from "components/Tooltip";
+import { useEncryption } from "hooks/useEncryption";
 import { useToaster } from "hooks/useToaster";
+import { useUploadFile } from "hooks/useUploadFile";
+import { useWriteData } from "hooks/useWriteData";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { uniqueId } from "utils";
 
 const EMPTY_DATA = {
   label: "",
-  url: "",
-  username: "",
-  password: "",
+  document: {},
 };
-
-const passwordUniqueId = uniqueId();
 const encryptionKeyUniqueId = uniqueId();
 
-export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
-  const { encrypt, key, setKey } = useEncryption();
-  const [showPassword, setShowPassword] = useState(false);
+export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
+  const { key, setKey, encrypt } = useEncryption();
   const [lockEncryptionKey, setLockEncryptionKey] = useState(true);
-  const [writeData, loading] = useWriteData();
   const [data, setData] = useState(EMPTY_DATA);
+  const [uploadFile, loadingUploadFile] = useUploadFile();
+  const [writeData, loadingWriteData] = useWriteData();
   const { primary } = useToaster();
+
+  const loading = useMemo(() => loadingUploadFile || loadingWriteData, [
+    loadingUploadFile,
+    loadingWriteData,
+  ]);
 
   useEffect(() => {
     setData(EMPTY_DATA);
-    setShowPassword(false);
     setLockEncryptionKey(Boolean(key));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
@@ -50,65 +51,39 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
     <Dialog
       isOpen={isOpen}
       onClose={onClose}
-      title={`New credential • ${user.name}`}
+      title={`New document • ${user.name}`}
     >
       <form>
         <div className={Classes.DIALOG_BODY}>
           <FormGroup large label="Label" labelFor="label-input" labelInfo="*">
             <InputGroup
-              leftIcon="office"
               disabled={loading}
+              leftIcon="label"
               value={data.label}
               onChange={handleChange("label")}
               autoFocus
               large
               id="label-input"
-              placeholder="Facebook"
+              placeholder="Passport"
             />
           </FormGroup>
-          <FormGroup label="URL" labelFor="url-input">
-            <InputGroup
-              leftIcon="globe-network"
+          <FormGroup
+            large
+            label="Document"
+            labelFor="document-input"
+            labelInfo="*"
+          >
+            <FileInput
               disabled={loading}
-              value={data.url}
-              onChange={handleChange("url")}
+              fill
+              onInputChange={(event) => {
+                setData({ ...data, document: event?.target?.files?.[0] });
+              }}
+              text={data?.document?.name}
+              hasSelection={data?.document?.name}
+              autoFocus
               large
-              id="url-input"
-              placeholder="https://facebook.fr"
-            />
-          </FormGroup>
-          <FormGroup label="Username" labelFor="username-input" labelInfo="*">
-            <InputGroup
-              leftIcon="user"
-              disabled={loading}
-              value={data.username}
-              onChange={handleChange("username")}
-              large
-              id="username-input"
-              placeholder="mark@gmail.com"
-            />
-          </FormGroup>
-          <FormGroup label="Password" labelFor="password-input" labelInfo="*">
-            <InputGroup
-              leftIcon="lock"
-              disabled={loading}
-              value={data.password}
-              onChange={handleChange("password")}
-              large
-              id="password-input"
-              placeholder={showPassword ? passwordUniqueId : "••••••••••"}
-              type={showPassword ? "text" : "password"}
-              rightElement={
-                <Tooltip
-                  content={showPassword ? "Hide password" : "Show password"}
-                >
-                  <Button
-                    icon={showPassword ? "eye-off" : "eye-open"}
-                    minimal
-                    onClick={() => setShowPassword(!showPassword)}
-                  />
-                </Tooltip>
-              }
+              id="document-input"
             />
           </FormGroup>
           <FormGroup
@@ -122,7 +97,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
               value={key}
               onChange={(event) => setKey(event?.target?.value)}
               large
-              id="ecnryption-key-input"
+              id="encryption-key-input"
               placeholder={encryptionKeyUniqueId}
               rightElement={
                 lockEncryptionKey && (
@@ -145,20 +120,31 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
             </Button>
             <Button
               type="submit"
-              disabled={!key || !data.label || !data.username || !data.password}
-              loading={loading}
               large
               intent={Intent.PRIMARY}
+              loading={loading}
+              disabled={!key || !data.label || !data?.document?.name}
               onClick={() => {
-                writeData({
-                  collection: "credentials",
-                  src: user.ref,
-                  data: { ...data, password: encrypt(data.password) },
+                const path = `documents/${uniqueId()}/${data.document.name}`;
+                uploadFile({
+                  ref: path,
+                  file: data.document,
                   callback: () => {
-                    onClose();
-                    primary({
-                      icon: "plus",
-                      message: "Credentials added with success",
+                    writeData({
+                      collection: "documents",
+                      src: user.ref,
+                      data: {
+                        label: data.label,
+                        name: data.document.name,
+                        path: encrypt(path),
+                      },
+                      callback: () => {
+                        onClose();
+                        primary({
+                          icon: "plus",
+                          message: "Document added with success",
+                        });
+                      },
                     });
                   },
                 });

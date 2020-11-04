@@ -19,3 +19,7 @@ export const sanitize = (string) => {
 export const uniqueId = () => {
   return Math.random().toString(36).substring(2);
 };
+
+export const searchInString = (string, search) => {
+  return sanitize(string).search(sanitize(search)) > -1;
+};

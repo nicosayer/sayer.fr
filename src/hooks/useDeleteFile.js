@@ -1,21 +1,15 @@
-import { db } from "config/firebase";
+import { storage } from "config/firebase";
 import { useState } from "react";
 import { logError } from "utils";
 
-export const useDeleteData = () => {
+export const useDeleteFile = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ collection, id, src, callback = () => {} }) => {
+    ({ ref, callback = () => {} }) => {
       setLoading(true);
-      let mutation = src || db;
-      if (collection) {
-        mutation = mutation.collection(collection);
-      }
-      if (id) {
-        mutation = mutation.doc(id);
-      }
-      return mutation
+      return storage
+        .ref(ref)
         .delete()
         .then(() => {
           setLoading(false);
