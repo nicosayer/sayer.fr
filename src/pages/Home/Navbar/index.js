@@ -2,10 +2,10 @@ import { Button, InputGroup } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { LogoutButton } from "components/LogoutButton";
 import { UnlockButton } from "components/UnlockButton";
-import { useState } from "react";
+import { useSearch } from "providers/SearchProvider";
 
 function Navbar() {
-  const [search, setSearch] = useState("");
+  const { search,setSearch } = useSearch(useSearch);
 
   return (
     <Box

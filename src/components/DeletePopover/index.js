@@ -8,7 +8,7 @@ import {
 import { Box } from "components/Box";
 import { Tooltip } from "components/Tooltip";
 import { useDeleteData } from "hooks/useDeleteData";
-import { useToaster } from "hooks/useToaster";
+import { useToaster } from "providers/ToasterProvider";
 import { useState } from "react";
 
 export const DeletePopover = ({ src, callback = () => {} }) => {

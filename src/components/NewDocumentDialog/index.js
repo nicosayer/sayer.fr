@@ -8,8 +8,8 @@ import {
   Intent,
 } from "@blueprintjs/core";
 import { Tooltip } from "components/Tooltip";
-import { useEncryption } from "hooks/useEncryption";
-import { useToaster } from "hooks/useToaster";
+import { useEncryption } from "providers/EncryptionProvider";
+import { useToaster } from "providers/ToasterProvider";
 import { useUploadFile } from "hooks/useUploadFile";
 import { useWriteData } from "hooks/useWriteData";
 import { useCallback, useEffect, useMemo, useState } from "react";

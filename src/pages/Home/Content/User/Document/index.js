@@ -11,9 +11,9 @@ import { DeletePopover } from "components/DeletePopover";
 import { Tooltip } from "components/Tooltip";
 import { useDeleteFile } from "hooks/useDeleteFile";
 import { useDownloadFile } from "hooks/useDownloadFile";
-import { useEncryption } from "hooks/useEncryption";
+import { useEncryption } from "providers/EncryptionProvider";
 import { useIsMobile } from "hooks/useIsMobile";
-import { useToaster } from "hooks/useToaster";
+import { useToaster } from "providers/ToasterProvider";
 import { useMemo, useRef } from "react";
 
 function Document({ document }) {

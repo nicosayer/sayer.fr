@@ -10,9 +10,9 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useWriteData } from "hooks/useWriteData";
 import { uniqueId } from "utils";
-import { useEncryption } from "hooks/useEncryption";
+import { useEncryption } from "providers/EncryptionProvider";
 import { Tooltip } from "components/Tooltip";
-import { useToaster } from "hooks/useToaster";
+import { useToaster } from "providers/ToasterProvider";
 
 const EMPTY_DATA = {
   label: "",

@@ -5,13 +5,16 @@ import { CurrentUserProvider } from "providers/CurrentUserProvider";
 import Root from "pages";
 import { EncryptionProvider } from "providers/EncryptionProvider";
 import { ToasterProvider } from "providers/ToasterProvider";
+import { SearchProvider } from "providers/SearchProvider";
 
 function App() {
   return (
     <CurrentUserProvider>
       <EncryptionProvider>
         <ToasterProvider>
-          <Root />
+          <SearchProvider>
+            <Root />
+          </SearchProvider>
         </ToasterProvider>
       </EncryptionProvider>
     </CurrentUserProvider>

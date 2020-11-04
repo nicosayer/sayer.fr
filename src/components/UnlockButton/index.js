@@ -7,7 +7,7 @@ import {
   Popover,
 } from "@blueprintjs/core";
 import { Tooltip } from "components/Tooltip";
-import { useEncryption } from "hooks/useEncryption";
+import { useEncryption } from "providers/EncryptionProvider";
 import React, { useEffect, useState } from "react";
 
 export const UnlockButton = () => {

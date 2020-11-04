@@ -1,6 +1,6 @@
-import { useCurrentUser } from "hooks/useCurrentUser";
 import Home from "pages/Home";
 import Login from "pages/Login";
+import { useCurrentUser } from "providers/CurrentUserProvider";
 
 function Root() {
   const { isAuth, loading } = useCurrentUser();

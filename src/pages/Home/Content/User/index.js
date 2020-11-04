@@ -1,16 +1,17 @@
 import { Card, H4, NonIdealState } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { useListenData } from "hooks/useListenData";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { sortBy } from "lodash/fp";
 import Credential from "pages/Home/Content/User/Credential";
 import { searchInString } from "utils";
 import { NewItemButton } from "components/NewItemButton";
-import { useEncryption } from "hooks/useEncryption";
+import { useEncryption } from "providers/EncryptionProvider";
 import Document from "pages/Home/Content/User/Document";
+import { useSearch } from "providers/SearchProvider";
 
 function User({ user }) {
-  const [search, setSearch] = useState("");
+  const { search } = useSearch();
   const { test } = useEncryption();
   const [credentials = []] = useListenData({
     src: user.ref,
@@ -20,22 +21,6 @@ function User({ user }) {
     src: user.ref,
     collection: "documents",
   });
-
-  useEffect(() => {
-    const handleSearch = (event) => {
-      setSearch(event?.target?.value);
-    };
-
-    document
-      .getElementById("search-input")
-      ?.addEventListener("input", handleSearch);
-
-    return () => {
-      document
-        .getElementById("search-input")
-        ?.removeEventListener("input", handleSearch);
-    };
-  }, []);
 
   const filteredCredentials = useMemo(() => {
     return credentials.filter((credential) => {

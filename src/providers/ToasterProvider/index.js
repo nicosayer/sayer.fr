@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 
 import { Intent, Position, Toaster } from "@blueprintjs/core";
 
-export const ToasterContext = React.createContext();
+const ToasterContext = React.createContext();
+
+export const useToaster = () => useContext(ToasterContext);
 
 export const ToasterProvider = ({ children }) => {
   const toasterRef = useRef();

@@ -1,6 +1,6 @@
 import { Button, Intent } from "@blueprintjs/core";
-import { useEncryption } from "hooks/useEncryption";
 import { useIsMobile } from "hooks/useIsMobile";
+import { useEncryption } from "providers/EncryptionProvider";
 import React from "react";
 import { logout } from "utils/auth";
 

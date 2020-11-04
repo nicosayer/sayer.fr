@@ -2,9 +2,9 @@ import { Button, Callout, H4, Icon, Intent } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { DeletePopover } from "components/DeletePopover";
 import { Tooltip } from "components/Tooltip";
-import { useEncryption } from "hooks/useEncryption";
+import { useEncryption } from "providers/EncryptionProvider";
 import { useIsMobile } from "hooks/useIsMobile";
-import { useToaster } from "hooks/useToaster";
+import { useToaster } from "providers/ToasterProvider";
 import { useMemo, useState } from "react";
 
 function Credential({ credential }) {
