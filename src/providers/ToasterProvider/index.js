@@ -16,21 +16,18 @@ export const ToasterProvider = ({ children }) => {
         success: (options = {}) => {
           toasterRef.current?.show({
             intent: Intent.SUCCESS,
-            timeout: 2000,
             ...options,
           });
         },
         danger: (options = {}) => {
           toasterRef.current?.show({
             intent: Intent.DANGER,
-            timeout: 2000,
             ...options,
           });
         },
         primary: (options = {}) => {
           toasterRef.current?.show({
             intent: Intent.PRIMARY,
-            timeout: 2000,
             ...options,
           });
         },

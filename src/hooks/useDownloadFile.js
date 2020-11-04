@@ -7,7 +7,7 @@ export const useDownloadFile = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ ref, name = uniqueId, callback = () => {} }) => {
+    ({ ref, name = uniqueId, onSuccess = () => {}, onError = () => {} }) => {
       setLoading(true);
       return storage
         .ref(ref)
@@ -18,7 +18,7 @@ export const useDownloadFile = () => {
           xhr.onload = () => {
             setLoading(false);
             FileSaver.saveAs(xhr.response, name);
-            callback();
+            onSuccess();
           };
           xhr.open("GET", url);
           xhr.send();
@@ -26,6 +26,7 @@ export const useDownloadFile = () => {
         .catch((error) => {
           setLoading(false);
           logError(error);
+          onError()
         });
     },
     loading,

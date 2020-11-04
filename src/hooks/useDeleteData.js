@@ -6,7 +6,7 @@ export const useDeleteData = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ collection, id, src, callback = () => {} }) => {
+    ({ collection, id, src, onSuccess = () => {} }) => {
       setLoading(true);
       let mutation = src || db;
       if (collection) {
@@ -19,7 +19,7 @@ export const useDeleteData = () => {
         .delete()
         .then(() => {
           setLoading(false);
-          callback();
+          onSuccess();
         })
         .catch((error) => {
           setLoading(false);

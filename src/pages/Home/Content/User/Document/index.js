@@ -14,7 +14,7 @@ import { useDownloadFile } from "hooks/useDownloadFile";
 import { useEncryption } from "providers/EncryptionProvider";
 import { useIsMobile } from "hooks/useIsMobile";
 import { useToaster } from "providers/ToasterProvider";
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 
 function Document({ document }) {
   const { test, decrypt } = useEncryption();
@@ -22,13 +22,9 @@ function Document({ document }) {
   const isMobile = useIsMobile();
   const [downloadFile, loadingDowloadFile] = useDownloadFile();
   const [deleteFile] = useDeleteFile();
-  const { success } = useToaster();
+  const { success,danger } = useToaster();
 
-  const pathIsCrypted = useMemo(() => {
-    return !test(document.path);
-  }, [test, document.path]);
-
-  if (pathIsCrypted) {
+  if (!test(document.path)) {
     return null;
   }
 
@@ -49,7 +45,7 @@ function Document({ document }) {
           </Box>
           <DeletePopover
             src={document.ref}
-            callback={() => {
+            onSuccess={() => {
               deleteFile({
                 ref: decrypt(document.path),
               });
@@ -69,10 +65,16 @@ function Document({ document }) {
                 downloadFile({
                   ref: decrypt(document.path),
                   name: document.name,
-                  callback: () => {
+                  onSuccess: () => {
                     success({
                       icon: "tick",
                       message: "Document downloaded",
+                    });
+                  },
+                  onError: () => {
+                    danger({
+                      icon: "warning-sign",
+                      message: "Error: The encryption key is incorrect",
                     });
                   },
                 });

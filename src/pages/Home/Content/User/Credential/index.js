@@ -5,7 +5,7 @@ import { Tooltip } from "components/Tooltip";
 import { useEncryption } from "providers/EncryptionProvider";
 import { useIsMobile } from "hooks/useIsMobile";
 import { useToaster } from "providers/ToasterProvider";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 function Credential({ credential }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,11 +13,7 @@ function Credential({ credential }) {
   const { decrypt, test } = useEncryption();
   const { success } = useToaster();
 
-  const passwordIsCrypted = useMemo(() => {
-    return !test(credential.password);
-  }, [test, credential.password]);
-
-  if (passwordIsCrypted) {
+  if (!test(credential.password)) {
     return null;
   }
 

@@ -154,7 +154,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
                   collection: "credentials",
                   src: user.ref,
                   data: { ...data, password: encrypt(data.password) },
-                  callback: () => {
+                  onSuccess: () => {
                     onClose();
                     primary({
                       icon: "plus",

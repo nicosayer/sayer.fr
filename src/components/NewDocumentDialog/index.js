@@ -129,7 +129,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
                 uploadFile({
                   ref: path,
                   file: data.document,
-                  callback: () => {
+                  onSuccess: () => {
                     writeData({
                       collection: "documents",
                       src: user.ref,
@@ -138,7 +138,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
                         name: data.document.name,
                         path: encrypt(path),
                       },
-                      callback: () => {
+                      onSuccess: () => {
                         onClose();
                         primary({
                           icon: "plus",

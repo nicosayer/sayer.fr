@@ -6,14 +6,14 @@ export const useUploadFile = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ ref = uniqueId(), file, callback = () => {} }) => {
+    ({ ref = uniqueId(), file, onSuccess = () => {} }) => {
       setLoading(true);
       return storage
         .ref(ref)
         .put(file)
         .then((snapshot) => {
           setLoading(false);
-          callback(snapshot);
+          onSuccess(snapshot);
         })
         .catch((error) => {
           setLoading(false);

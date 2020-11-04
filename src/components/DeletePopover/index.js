@@ -11,7 +11,7 @@ import { useDeleteData } from "hooks/useDeleteData";
 import { useToaster } from "providers/ToasterProvider";
 import { useState } from "react";
 
-export const DeletePopover = ({ src, callback = () => {} }) => {
+export const DeletePopover = ({ src, onSuccess = () => {} }) => {
   const [isDeletePopoverOpen, setIsDeletePopoverOpen] = useState(false);
   const [deleteData, loading] = useDeleteData();
   const { danger } = useToaster();
@@ -40,13 +40,13 @@ export const DeletePopover = ({ src, callback = () => {} }) => {
               onClick={() => {
                 deleteData({
                   src,
-                  callback: () => {
+                  onSuccess: () => {
                     setIsDeletePopoverOpen(false);
                     danger({
                       icon: "trash",
                       message: "Item deleted with success",
                     });
-                    callback();
+                    onSuccess();
                   },
                 });
               }}

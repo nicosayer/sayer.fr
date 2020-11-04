@@ -6,7 +6,7 @@ export const useWriteData = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ collection, id = uniqueId(), data, src, callback = () => {} }) => {
+    ({ collection, id = uniqueId(), data, src, onSuccess = () => {} }) => {
       setLoading(true);
       let mutation = src || db;
       if (collection) {
@@ -17,7 +17,7 @@ export const useWriteData = () => {
         .set(data)
         .then(() => {
           setLoading(false);
-          callback();
+          onSuccess();
         })
         .catch((error) => {
           setLoading(false);
