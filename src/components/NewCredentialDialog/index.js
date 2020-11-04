@@ -2,7 +2,6 @@ import {
   AnchorButton,
   Button,
   Classes,
-  ControlGroup,
   Dialog,
   FormGroup,
   InputGroup,
@@ -77,30 +76,26 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
           />
         </FormGroup>
         <FormGroup label="URL" labelFor="url-input">
-          <ControlGroup autoCapitalize="none" fill>
-            <InputGroup
-              leftIcon="globe-network"
-              disabled={loading}
-              value={data.url}
-              onChange={handleChange("url")}
-              large
-              id="url-input"
-              placeholder="https://facebook.fr"
-            />
-          </ControlGroup>
+          <InputGroup
+            leftIcon="globe-network"
+            disabled={loading}
+            value={data.url}
+            onChange={handleChange("url")}
+            large
+            id="url-input"
+            placeholder="https://facebook.fr"
+          />
         </FormGroup>
         <FormGroup label="Username" labelFor="username-input" labelInfo="*">
-          <ControlGroup autoCapitalize="none" fill>
-            <InputGroup
-              leftIcon="user"
-              disabled={loading}
-              value={data.username}
-              onChange={handleChange("username")}
-              large
-              id="username-input"
-              placeholder="mark@gmail.com"
-            />
-          </ControlGroup>
+          <InputGroup
+            leftIcon="user"
+            disabled={loading}
+            value={data.username}
+            onChange={handleChange("username")}
+            large
+            id="username-input"
+            placeholder="mark@gmail.com"
+          />
         </FormGroup>
         <FormGroup label="Password" labelFor="password-input" labelInfo="*">
           <InputGroup
@@ -130,28 +125,26 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
           labelFor="encryption-key-input"
           labelInfo="*"
         >
-          <ControlGroup autoCapitalize="none" fill>
-            <InputGroup
-              leftIcon="key"
-              disabled={loading || lockEncryptionKey}
-              value={key}
-              onChange={(event) => setKey(event?.target?.value)}
-              large
-              id="ecnryption-key-input"
-              placeholder={encryptionKeyUniqueId}
-              rightElement={
-                lockEncryptionKey && (
-                  <Tooltip content="Unlock">
-                    <Button
-                      icon="unlock"
-                      minimal
-                      onClick={() => setLockEncryptionKey(false)}
-                    />
-                  </Tooltip>
-                )
-              }
-            />
-          </ControlGroup>
+          <InputGroup
+            leftIcon="key"
+            disabled={loading || lockEncryptionKey}
+            value={key}
+            onChange={(event) => setKey(event?.target?.value)}
+            large
+            id="ecnryption-key-input"
+            placeholder={encryptionKeyUniqueId}
+            rightElement={
+              lockEncryptionKey && (
+                <Tooltip content="Unlock">
+                  <Button
+                    icon="unlock"
+                    minimal
+                    onClick={() => setLockEncryptionKey(false)}
+                  />
+                </Tooltip>
+              )
+            }
+          />
         </FormGroup>
       </div>
       <div className={Classes.DIALOG_FOOTER}>

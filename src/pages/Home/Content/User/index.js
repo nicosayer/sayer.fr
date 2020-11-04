@@ -6,9 +6,11 @@ import { sortBy } from "lodash/fp";
 import Credential from "pages/Home/Content/User/Credential";
 import { sanitize } from "utils";
 import { NewCredentialButton } from "components/NewCredentialButton";
+import { useEncryption } from "hooks/useEncryption";
 
 function User({ user }) {
   const [search, setSearch] = useState("");
+  const { test } = useEncryption();
 
   const [credentials = []] = useListenData({
     src: user.ref,
@@ -37,10 +39,11 @@ function User({ user }) {
         credential.label &&
         credential.username &&
         credential.password &&
+        test(credential.password) &&
         (!search || sanitize(credential.label).search(sanitize(search)) > -1)
       );
     });
-  }, [credentials, search]);
+  }, [credentials, search, test]);
 
   if (search && !filteredCredentials.length) {
     return null;
