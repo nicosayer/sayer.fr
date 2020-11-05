@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import CryptoJS from "crypto-js";
 
 const EncryptionContext = React.createContext();
@@ -6,11 +6,7 @@ const EncryptionContext = React.createContext();
 export const useEncryption = () => useContext(EncryptionContext);
 
 export const EncryptionProvider = ({ children }) => {
-  const [key, setKey] = useState(localStorage.getItem("encryption-key") || "");
-
-  useEffect(() => {
-    localStorage.setItem("encryption-key", key);
-  }, [key]);
+  const [key, setKey] = useState("");
 
   const encrypt = useCallback(
     (string) => {

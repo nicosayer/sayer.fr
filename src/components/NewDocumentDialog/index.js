@@ -92,6 +92,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
             labelInfo="*"
           >
             <InputGroup
+              autoCapitalize="none"
               leftIcon="key"
               disabled={loading || lockEncryptionKey}
               value={key}

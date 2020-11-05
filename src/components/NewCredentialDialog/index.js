@@ -68,6 +68,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
           </FormGroup>
           <FormGroup label="URL" labelFor="url-input">
             <InputGroup
+              autoCapitalize="none"
               leftIcon="globe-network"
               disabled={loading}
               value={data.url}
@@ -79,6 +80,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
           </FormGroup>
           <FormGroup label="Username" labelFor="username-input" labelInfo="*">
             <InputGroup
+              autoCapitalize="none"
               leftIcon="user"
               disabled={loading}
               value={data.username}
@@ -117,6 +119,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
             labelInfo="*"
           >
             <InputGroup
+              autoCapitalize="none"
               leftIcon="key"
               disabled={loading || lockEncryptionKey}
               value={key}

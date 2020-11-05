@@ -42,6 +42,7 @@ export const UnlockButton = () => {
           labelFor="encryption-key-input"
         >
           <InputGroup
+            autoCapitalize="none"
             large
             leftIcon="key"
             inputRef={setInputRef}

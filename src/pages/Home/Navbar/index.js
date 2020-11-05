@@ -5,7 +5,7 @@ import { UnlockButton } from "components/UnlockButton";
 import { useSearch } from "providers/SearchProvider";
 
 function Navbar() {
-  const { search,setSearch } = useSearch(useSearch);
+  const { search, setSearch } = useSearch(useSearch);
 
   return (
     <Box
@@ -29,6 +29,7 @@ function Navbar() {
         }}
       >
         <InputGroup
+          autoCapitalize="none"
           autoFocus
           id="search-input"
           placeholder="Search"
