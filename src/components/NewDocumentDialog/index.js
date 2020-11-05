@@ -89,7 +89,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
           </FormGroup>
           <FormGroup
             label="Encryption key"
-            labelFor="encryption-key-input"
+            labelFor="document-encryption-key-input"
             labelInfo="*"
           >
             <InputGroup
@@ -99,14 +99,13 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
               value={key}
               onChange={(event) => setKey(event?.target?.value)}
               large
-              id="encryption-key-input"
+              id="document-encryption-key-input"
               placeholder={encryptionKeyUniqueId}
               rightElement={
                 lockEncryptionKey && (
                   <Tooltip content="Unlock">
                     <Button
                       icon="unlock"
-                      minimal
                       onClick={() => setLockEncryptionKey(false)}
                     />
                   </Tooltip>
@@ -127,7 +126,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
               loading={loading}
               disabled={!key || !data.label || !data?.document?.name}
               onClick={(event) => {
-                event.preventDefault()
+                event.preventDefault();
                 if (data.document.size > 10 * 1024 * 1024) {
                   danger({
                     icon: "warning-sign",

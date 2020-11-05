@@ -106,7 +106,6 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
                 >
                   <Button
                     icon={showPassword ? "eye-off" : "eye-open"}
-                    minimal
                     onClick={() => setShowPassword(!showPassword)}
                   />
                 </Tooltip>
@@ -115,7 +114,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
           </FormGroup>
           <FormGroup
             label="Encryption key"
-            labelFor="encryption-key-input"
+            labelFor="credential-encryption-key-input"
             labelInfo="*"
           >
             <InputGroup
@@ -125,14 +124,13 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
               value={key}
               onChange={(event) => setKey(event?.target?.value)}
               large
-              id="ecnryption-key-input"
+              id="credential-encryption-key-input"
               placeholder={encryptionKeyUniqueId}
               rightElement={
                 lockEncryptionKey && (
                   <Tooltip content="Unlock">
                     <Button
                       icon="unlock"
-                      minimal
                       onClick={() => setLockEncryptionKey(false)}
                     />
                   </Tooltip>

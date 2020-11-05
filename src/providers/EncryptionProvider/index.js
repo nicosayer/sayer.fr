@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
-import { useDebounce } from "hooks/useDebounce";
 import { ENV } from "config/enums";
 
 const EncryptionContext = React.createContext();
@@ -13,7 +12,6 @@ export const EncryptionProvider = ({ children }) => {
       localStorage.getItem("encryption-key")) ||
       ""
   );
-  const debouncedKey = useDebounce(key, key ? 1000 : 0);
 
   useEffect(() => {
     if (process.env.NODE_ENV === ENV.DEV) {
@@ -50,7 +48,6 @@ export const EncryptionProvider = ({ children }) => {
     <EncryptionContext.Provider
       value={{
         key,
-        debouncedKey,
         setKey,
         encrypt,
         decrypt,

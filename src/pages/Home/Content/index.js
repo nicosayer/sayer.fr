@@ -8,16 +8,28 @@ import {
 import { Box } from "components/Box";
 import { useListenData } from "hooks/useListenData";
 import { sortBy } from "lodash/fp";
-import User from "pages/Home/Content/User";
+import Board from "pages/Home/Content/Board";
 import { useEncryption } from "providers/EncryptionProvider";
 import { useUser } from "providers/UserProvider";
+import { useCallback, useEffect, useState } from "react";
 
 function Home() {
-  const { key, setKey, debouncedKey } = useEncryption();
+  const [tempKey, setTempKey] = useState("");
+  const { key, setKey } = useEncryption();
   const { user } = useUser();
 
-  const [users = [], loading] = useListenData({
-    collection: "users",
+  useEffect(() => {
+    if (key) {
+      setTempKey("");
+    }
+  }, [key]);
+
+  const handleSubmit = useCallback(() => {
+    setKey(tempKey);
+  }, [tempKey, setKey]);
+
+  const [boards = [], loading] = useListenData({
+    collection: "boards",
     where: [["access", "array-contains", user.email]],
   });
 
@@ -29,7 +41,7 @@ function Home() {
     );
   }
 
-  if (!users.length) {
+  if (!boards.length) {
     return (
       <Box style={{ marginTop: "40px" }}>
         <NonIdealState icon="lock" title="No access" />
@@ -45,7 +57,7 @@ function Home() {
         margin: "auto",
       }}
     >
-      {!debouncedKey && (
+      {!key && (
         <Box style={{ marginTop: "40px" }}>
           <NonIdealState
             icon="lock"
@@ -53,21 +65,29 @@ function Home() {
             description={
               <FormGroup
                 label="Enter the encryption key"
-                labelFor="encryption-key-input"
+                labelFor="temp-encryption-key-input"
               >
                 <InputGroup
                   autoCapitalize="none"
+                  onKeyDown={({ key }) => {
+                    if (key === "Enter") {
+                      handleSubmit();
+                    }
+                  }}
                   large
                   leftIcon="key"
-                  id="encryption-key-input"
+                  id="temp-encryption-key-input"
                   type="text"
-                  value={key}
-                  onChange={(event) => setKey(event?.target?.value)}
+                  value={tempKey}
+                  onChange={(event) => setTempKey(event?.target?.value)}
                   autoFocus
                   rightElement={
-                    <Button disabled minimal>
-                      {key && <Spinner size={17} />}
-                    </Button>
+                    <Button
+                      icon="arrow-right"
+                      onClick={() => {
+                        handleSubmit();
+                      }}
+                    />
                   }
                 />
               </FormGroup>
@@ -75,8 +95,8 @@ function Home() {
           />
         </Box>
       )}
-      {sortBy("name", users).map((user) => (
-        <User key={user.name} user={user} />
+      {sortBy("name", boards).map((user) => (
+        <Board key={user.name} user={user} />
       ))}
     </Box>
   );

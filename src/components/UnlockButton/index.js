@@ -16,20 +16,16 @@ export const UnlockButton = () => {
   const [inputRef, setInputRef] = useState();
 
   useEffect(() => {
-    const handleKeyDown = ({ key }) => {
-      if (key === "Enter") {
-        setIsPopoverOpen(false);
-      }
-    };
-
-    inputRef?.select();
-
-    inputRef?.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      inputRef?.removeEventListener("keydown", handleKeyDown);
-    };
+    if (inputRef) {
+      inputRef.select();
+    }
   }, [inputRef]);
+
+  useEffect(() => {
+    if (!key) {
+      setIsPopoverOpen(false);
+    }
+  }, [key]);
 
   return (
     <Popover
@@ -37,12 +33,14 @@ export const UnlockButton = () => {
       onInteraction={setIsPopoverOpen}
       popoverClassName={Classes.POPOVER_CONTENT_SIZING}
       content={
-        <FormGroup
-          label="Encryption key"
-          labelFor="encryption-key-input"
-        >
+        <FormGroup label="Encryption key" labelFor="encryption-key-input">
           <InputGroup
             autoCapitalize="none"
+            onKeyDown={({ key }) => {
+              if (key === "Enter") {
+                setIsPopoverOpen(false);
+              }
+            }}
             large
             leftIcon="key"
             inputRef={setInputRef}

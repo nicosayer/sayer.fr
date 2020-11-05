@@ -1,28 +1,32 @@
-import { Card, H4, NonIdealState } from "@blueprintjs/core";
+import { Card, Classes, H4, NonIdealState } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { useListenData } from "hooks/useListenData";
 import { useCallback, useMemo } from "react";
 import { sortBy } from "lodash/fp";
-import Credential from "pages/Home/Content/User/Credential";
+import Credential from "pages/Home/Content/Board/Credential";
 import { searchInString } from "utils";
 import { NewItemButton } from "components/NewItemButton";
 import { useEncryption } from "providers/EncryptionProvider";
-import Document from "pages/Home/Content/User/Document";
+import Document from "pages/Home/Content/Board/Document";
 import { useSearch } from "providers/SearchProvider";
 
-function User({ user }) {
+function Board({ user }) {
   const { search } = useSearch();
-  const { test, debouncedKey } = useEncryption();
-  const [credentials = []] = useListenData({
+  const { test, key } = useEncryption();
+  const [credentials = [], loadingCredentials] = useListenData({
     src: user.ref,
     collection: "credentials",
     where: [["password", "!=", false]],
   });
-  const [documents = []] = useListenData({
+  const [documents = [], loadingDocuments] = useListenData({
     src: user.ref,
     collection: "documents",
     where: [["path", "!=", false]],
   });
+
+  const loading = useMemo(() => {
+    return loadingCredentials || loadingDocuments;
+  }, [loadingCredentials, loadingDocuments]);
 
   const filterItems = useCallback(
     (items, { searchable, encrypted }) => {
@@ -54,7 +58,7 @@ function User({ user }) {
     return filteredCredentials.length + filteredDocuments.length;
   }, [filteredCredentials.length, filteredDocuments.length]);
 
-  if (!debouncedKey || (search && !resultsCount)) {
+  if (!key || (search && !resultsCount)) {
     return null;
   }
 
@@ -71,7 +75,11 @@ function User({ user }) {
         <Card>
           <Box>
             {!resultsCount && (
-              <NonIdealState icon="path-search" title="No items" />
+              <NonIdealState
+                className={loading && Classes.SKELETON}
+                icon="path-search"
+                title="No items"
+              />
             )}
             {Boolean(filteredCredentials.length) &&
               sortBy("label", filteredCredentials).map((credential) => (
@@ -100,4 +108,4 @@ function User({ user }) {
   );
 }
 
-export default User;
+export default Board;

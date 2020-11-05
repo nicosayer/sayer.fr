@@ -74,7 +74,7 @@ function Document({ document }) {
                   onError: () => {
                     danger({
                       icon: "warning-sign",
-                      message: "Error: The encryption key is incorrect",
+                      message: "The encryption key is incorrect",
                     });
                   },
                 });
