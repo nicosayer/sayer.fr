@@ -1,9 +1,9 @@
 import Home from "pages/Home";
 import Login from "pages/Login";
-import { useCurrentUser } from "providers/CurrentUserProvider";
+import { useUser } from "providers/UserProvider";
 
 function Root() {
-  const { isAuth, loading } = useCurrentUser();
+  const { isAuth, loading } = useUser();
 
   if (isAuth) {
     return <Home />;

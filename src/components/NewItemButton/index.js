@@ -14,11 +14,11 @@ export const NewItemButton = ({ user }) => {
           <Menu large>
             <MenuItem
               icon="lock"
-              text="New credentials"
+              text="New credential"
               onClick={() => setIsNewCredentialOpen(true)}
             />
             <MenuItem
-              icon="document-open"
+              icon="id-number"
               text="New document"
               onClick={() => setIsNewDocumentOpen(true)}
             />

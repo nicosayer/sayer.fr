@@ -62,7 +62,7 @@ export const DeletePopover = ({ src, onSuccess = () => {} }) => {
       <Tooltip
         intent={Intent.DANGER}
         content="Remove item"
-        diabled={isDeletePopoverOpen}
+        disabled={isDeletePopoverOpen}
       >
         <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
       </Tooltip>

@@ -30,7 +30,7 @@ function Credential({ credential }) {
         >
           <Icon icon="lock" color="lightgrey" />
           <Box style={{ marginLeft: "10px" }}>{credential.label}</Box>
-          {credential.url.startsWith("http") && (
+          {credential.url?.startsWith("http") && (
             <Box style={{ marginLeft: "10px" }}>
               <Box
                 as="a"

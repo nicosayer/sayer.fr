@@ -1,7 +1,7 @@
 import { Card, H4, NonIdealState } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { useListenData } from "hooks/useListenData";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { sortBy } from "lodash/fp";
 import Credential from "pages/Home/Content/User/Credential";
 import { searchInString } from "utils";
@@ -12,45 +12,49 @@ import { useSearch } from "providers/SearchProvider";
 
 function User({ user }) {
   const { search } = useSearch();
-  const { test } = useEncryption();
+  const { test, debouncedKey } = useEncryption();
   const [credentials = []] = useListenData({
     src: user.ref,
     collection: "credentials",
+    where: [["password", "!=", false]],
   });
   const [documents = []] = useListenData({
     src: user.ref,
     collection: "documents",
+    where: [["path", "!=", false]],
   });
 
+  const filterItems = useCallback(
+    (items, { searchable, encrypted }) => {
+      return items.filter((item) => {
+        return (
+          test(item[encrypted]) &&
+          (!search || searchInString(item[searchable], search))
+        );
+      });
+    },
+    [search, test]
+  );
+
   const filteredCredentials = useMemo(() => {
-    return credentials.filter((credential) => {
-      return (
-        credential.label &&
-        credential.username &&
-        credential.password &&
-        test(credential.password) &&
-        (!search || searchInString(credential.label, search))
-      );
+    return filterItems(credentials, {
+      searchable: "label",
+      encrypted: "password",
     });
-  }, [credentials, search, test]);
+  }, [credentials, filterItems]);
 
   const filteredDocuments = useMemo(() => {
-    return documents.filter((document) => {
-      return (
-        document.label &&
-        document.name &&
-        document.path &&
-        test(document.path) &&
-        (!search || searchInString(document.label, search))
-      );
+    return filterItems(documents, {
+      searchable: "label",
+      encrypted: "path",
     });
-  }, [documents, search, test]);
+  }, [documents, filterItems]);
 
   const resultsCount = useMemo(() => {
     return filteredCredentials.length + filteredDocuments.length;
   }, [filteredCredentials.length, filteredDocuments.length]);
 
-  if (search && !resultsCount) {
+  if (!debouncedKey || (search && !resultsCount)) {
     return null;
   }
 

@@ -24,7 +24,7 @@ const cleanSnapshot = (snapshot) => {
   return cleanDoc(snapshot);
 };
 
-export const useListenData = ({ collection, id, src } = {}) => {
+export const useListenData = ({ collection, id, src, where } = {}) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -35,6 +35,11 @@ export const useListenData = ({ collection, id, src } = {}) => {
     }
     if (id) {
       query = query.doc(id);
+    }
+    if (where) {
+      where.forEach((w) => {
+        query = query.where(...w);
+      });
     }
     query.onSnapshot(
       (snapshot) => {
@@ -47,7 +52,11 @@ export const useListenData = ({ collection, id, src } = {}) => {
         logError(error);
       }
     );
-  }, [collection, id, src]);
+
+    // Unsubcribe
+    return query;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collection, id, src, JSON.stringify(where)]);
 
   return useMemo(() => [data, loading], [data, loading]);
 };

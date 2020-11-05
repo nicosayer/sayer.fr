@@ -39,7 +39,7 @@ function Document({ document }) {
             color: "black",
           }}
         >
-          <Icon icon="document-open" color="lightgrey" />
+          <Icon icon="id-number" color="lightgrey" />
           <Box style={{ marginLeft: "10px", marginRight: "10px" }}>
             {document.label}
           </Box>

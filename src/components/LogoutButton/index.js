@@ -1,23 +1,14 @@
 import { Button, Intent } from "@blueprintjs/core";
 import { useIsMobile } from "hooks/useIsMobile";
-import { useEncryption } from "providers/EncryptionProvider";
+import { useUser } from "providers/UserProvider";
 import React from "react";
-import { logout } from "utils/auth";
 
 export const LogoutButton = () => {
   const isMobile = useIsMobile();
-  const { setKey } = useEncryption();
+  const { logout } = useUser();
 
   return (
-    <Button
-      onClick={() => {
-        logout();
-        setKey("");
-      }}
-      intent={Intent.DANGER}
-      rightIcon="power"
-      large
-    >
+    <Button onClick={logout} intent={Intent.DANGER} rightIcon="power" large>
       {!isMobile && "Logout"}
     </Button>
   );

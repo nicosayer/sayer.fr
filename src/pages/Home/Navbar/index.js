@@ -30,7 +30,6 @@ function Navbar() {
       >
         <InputGroup
           autoCapitalize="none"
-          autoFocus
           id="search-input"
           placeholder="Search"
           leftIcon="search"

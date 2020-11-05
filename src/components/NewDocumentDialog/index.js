@@ -12,7 +12,7 @@ import { useEncryption } from "providers/EncryptionProvider";
 import { useToaster } from "providers/ToasterProvider";
 import { useUploadFile } from "hooks/useUploadFile";
 import { useWriteData } from "hooks/useWriteData";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { uniqueId } from "utils";
 
 const EMPTY_DATA = {
@@ -27,18 +27,18 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
   const [data, setData] = useState(EMPTY_DATA);
   const [uploadFile, loadingUploadFile] = useUploadFile();
   const [writeData, loadingWriteData] = useWriteData();
-  const { primary } = useToaster();
+  const { primary, danger } = useToaster();
 
   const loading = useMemo(() => loadingUploadFile || loadingWriteData, [
     loadingUploadFile,
     loadingWriteData,
   ]);
 
-  useEffect(() => {
+  const handleClose = () => {
+    onClose();
     setData(EMPTY_DATA);
     setLockEncryptionKey(Boolean(key));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  };
 
   const handleChange = useCallback(
     (key) => (event) => {
@@ -50,7 +50,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
   return (
     <Dialog
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={`New document • ${user.name}`}
     >
       <form>
@@ -72,6 +72,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
             label="Document"
             labelFor="document-input"
             labelInfo="*"
+            helperText="Maximum file size 10 Mb"
           >
             <FileInput
               disabled={loading}
@@ -116,7 +117,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            <Button large onClick={onClose} disabled={loading}>
+            <Button large onClick={handleClose} disabled={loading}>
               Cancel
             </Button>
             <Button
@@ -125,30 +126,38 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
               intent={Intent.PRIMARY}
               loading={loading}
               disabled={!key || !data.label || !data?.document?.name}
-              onClick={() => {
-                const path = `documents/${uniqueId()}/${data.document.name}`;
-                uploadFile({
-                  ref: path,
-                  file: data.document,
-                  onSuccess: () => {
-                    writeData({
-                      collection: "documents",
-                      src: user.ref,
-                      data: {
-                        label: data.label,
-                        name: data.document.name,
-                        path: encrypt(path),
-                      },
-                      onSuccess: () => {
-                        onClose();
-                        primary({
-                          icon: "plus",
-                          message: "Document added with success",
-                        });
-                      },
-                    });
-                  },
-                });
+              onClick={(event) => {
+                event.preventDefault()
+                if (data.document.size > 10 * 1024 * 1024) {
+                  danger({
+                    icon: "warning-sign",
+                    message: "Maximum file size is 10 Mb",
+                  });
+                } else {
+                  const path = `documents/${uniqueId()}/${data.document.name}`;
+                  uploadFile({
+                    ref: path,
+                    file: data.document,
+                    onSuccess: () => {
+                      writeData({
+                        collection: "documents",
+                        src: user.ref,
+                        data: {
+                          label: data.label,
+                          name: data.document.name,
+                          path: encrypt(path),
+                        },
+                        onSuccess: () => {
+                          handleClose();
+                          primary({
+                            icon: "plus",
+                            message: "Document added with success",
+                          });
+                        },
+                      });
+                    },
+                  });
+                }
               }}
             >
               Submit

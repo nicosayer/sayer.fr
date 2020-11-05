@@ -17,5 +17,10 @@ export const loginWithGoogle = () => {
 };
 
 export const logout = () => {
-  auth().signOut().catch(logError);
+  auth()
+    .signOut()
+    .then(() => {
+      window.location.reload();
+    })
+    .catch(logError);
 };

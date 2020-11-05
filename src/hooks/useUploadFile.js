@@ -6,7 +6,7 @@ export const useUploadFile = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ ref = uniqueId(), file, onSuccess = () => {} }) => {
+    ({ ref = uniqueId(), file, onSuccess = () => {}, onError = () => {} }) => {
       setLoading(true);
       return storage
         .ref(ref)
@@ -18,6 +18,7 @@ export const useUploadFile = () => {
         .catch((error) => {
           setLoading(false);
           logError(error);
+          onError(error);
         });
     },
     loading,

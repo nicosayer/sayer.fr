@@ -38,7 +38,7 @@ export const UnlockButton = () => {
       popoverClassName={Classes.POPOVER_CONTENT_SIZING}
       content={
         <FormGroup
-          label="Enter the encryption key"
+          label="Encryption key"
           labelFor="encryption-key-input"
         >
           <InputGroup
@@ -50,7 +50,7 @@ export const UnlockButton = () => {
             type="text"
             value={key}
             onChange={(event) => setKey(event?.target?.value)}
-            autoFocus={true}
+            autoFocus
             rightElement={
               <Button
                 icon="cross"

@@ -6,7 +6,7 @@ import {
   InputGroup,
   Intent,
 } from "@blueprintjs/core";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useWriteData } from "hooks/useWriteData";
 import { uniqueId } from "utils";
@@ -32,12 +32,12 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
   const [data, setData] = useState(EMPTY_DATA);
   const { primary } = useToaster();
 
-  useEffect(() => {
+  const handleClose = () => {
+    onClose();
     setData(EMPTY_DATA);
     setShowPassword(false);
     setLockEncryptionKey(Boolean(key));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  };
 
   const handleChange = useCallback(
     (key) => (event) => {
@@ -49,7 +49,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
   return (
     <Dialog
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={`New credential • ${user.name}`}
     >
       <form>
@@ -143,7 +143,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            <Button large onClick={onClose} disabled={loading}>
+            <Button large onClick={handleClose} disabled={loading}>
               Cancel
             </Button>
             <Button
@@ -152,13 +152,14 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
               loading={loading}
               large
               intent={Intent.PRIMARY}
-              onClick={() => {
+              onClick={(event) => {
+                event.preventDefault();
                 writeData({
                   collection: "credentials",
                   src: user.ref,
                   data: { ...data, password: encrypt(data.password) },
                   onSuccess: () => {
-                    onClose();
+                    handleClose();
                     primary({
                       icon: "plus",
                       message: "Credentials added with success",
