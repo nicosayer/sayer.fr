@@ -1,4 +1,4 @@
-import { flow, deburr, toLower } from "lodash/fp";
+import { flow, deburr, toLower, sortBy } from "lodash/fp";
 
 export const isUnset = (value) => {
   return [null, undefined].includes(value);
@@ -22,4 +22,12 @@ export const uniqueId = () => {
 
 export const searchInString = (string, search) => {
   return sanitize(string).search(sanitize(search)) > -1;
+};
+
+export const isEmail = (string) => {
+  return string.match(/^.+@.+\..+$/);
+};
+
+export const caseInsensitiveSortBy = (array, string) => {
+  return sortBy((element) => element[string]?.toLowerCase(), array);
 };

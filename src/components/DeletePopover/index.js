@@ -1,17 +1,16 @@
-import {
-  AnchorButton,
-  Button,
-  Classes,
-  Intent,
-  Popover,
-} from "@blueprintjs/core";
+import { Button, Classes, Intent, Popover } from "@blueprintjs/core";
 import { Box } from "components/Box";
-import { Tooltip } from "components/Tooltip";
 import { useDeleteData } from "hooks/useDeleteData";
 import { useToaster } from "providers/ToasterProvider";
 import { useState } from "react";
+import { capitalize } from "lodash/fp";
 
-export const DeletePopover = ({ src, onSuccess = () => {} }) => {
+export const DeletePopover = ({
+  src,
+  onSuccess = () => {},
+  children,
+  name = "item",
+}) => {
   const [isDeletePopoverOpen, setIsDeletePopoverOpen] = useState(false);
   const [deleteData, loading] = useDeleteData();
   const { danger } = useToaster();
@@ -22,7 +21,7 @@ export const DeletePopover = ({ src, onSuccess = () => {} }) => {
       onInteraction={setIsDeletePopoverOpen}
       content={
         <>
-          <p>Are you sure you want to delete this item?</p>
+          <p>Are you sure you want to delete this {name}?</p>
           <div
             style={{
               display: "flex",
@@ -44,7 +43,7 @@ export const DeletePopover = ({ src, onSuccess = () => {} }) => {
                     setIsDeletePopoverOpen(false);
                     danger({
                       icon: "trash",
-                      message: "Item deleted with success",
+                      message: `${capitalize(name)} deleted with success`,
                     });
                     onSuccess();
                   },
@@ -59,13 +58,7 @@ export const DeletePopover = ({ src, onSuccess = () => {} }) => {
       }
       popoverClassName={Classes.POPOVER_CONTENT_SIZING}
     >
-      <Tooltip
-        intent={Intent.DANGER}
-        content="Remove item"
-        disabled={isDeletePopoverOpen}
-      >
-        <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
-      </Tooltip>
+      {children}
     </Popover>
   );
 };

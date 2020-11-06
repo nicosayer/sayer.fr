@@ -1,20 +1,22 @@
 import { db } from "config/firebase";
 import { useState } from "react";
-import { logError, uniqueId } from "utils";
+import { logError } from "utils";
 
 export const useWriteData = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ collection, id = uniqueId(), data, src, onSuccess = () => {} }) => {
+    ({ collection, id, data, src, onSuccess = () => {},options }) => {
       setLoading(true);
       let mutation = src || db;
       if (collection) {
         mutation = mutation.collection(collection);
       }
+      if (id) {
+        mutation = mutation.doc(id);
+      }
       return mutation
-        .doc(id)
-        .set(data)
+        .set(data, options)
         .then(() => {
           setLoading(false);
           onSuccess();

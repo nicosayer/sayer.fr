@@ -12,7 +12,7 @@ import { useEncryption } from "providers/EncryptionProvider";
 import { useToaster } from "providers/ToasterProvider";
 import { useUploadFile } from "hooks/useUploadFile";
 import { useWriteData } from "hooks/useWriteData";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { uniqueId } from "utils";
 
 const EMPTY_DATA = {
@@ -21,8 +21,9 @@ const EMPTY_DATA = {
 };
 const encryptionKeyUniqueId = uniqueId();
 
-export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
+export const NewDocumentDialog = ({ isOpen, onClose, board }) => {
   const { key, setKey, encrypt } = useEncryption();
+  const [tempKey, setTempKey] = useState(key);
   const [lockEncryptionKey, setLockEncryptionKey] = useState(true);
   const [data, setData] = useState(EMPTY_DATA);
   const [uploadFile, loadingUploadFile] = useUploadFile();
@@ -34,11 +35,12 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
     loadingWriteData,
   ]);
 
-  const handleClose = () => {
-    onClose();
+  useEffect(() => {
     setData(EMPTY_DATA);
     setLockEncryptionKey(Boolean(key));
-  };
+    setTempKey(key);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   const handleChange = useCallback(
     (key) => (event) => {
@@ -50,8 +52,8 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
   return (
     <Dialog
       isOpen={isOpen}
-      onClose={handleClose}
-      title={`New document • ${user.name}`}
+      onClose={onClose}
+      title={`New document • ${board.name}`}
     >
       <form>
         <div className={Classes.DIALOG_BODY}>
@@ -82,7 +84,6 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
               }}
               text={data?.document?.name}
               hasSelection={data?.document?.name}
-              autoFocus
               large
               id="document-input"
             />
@@ -96,8 +97,8 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
               autoCapitalize="none"
               leftIcon="key"
               disabled={loading || lockEncryptionKey}
-              value={key}
-              onChange={(event) => setKey(event?.target?.value)}
+              value={tempKey}
+              onChange={(event) => setTempKey(event?.target?.value)}
               large
               id="document-encryption-key-input"
               placeholder={encryptionKeyUniqueId}
@@ -116,7 +117,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            <Button large onClick={handleClose} disabled={loading}>
+            <Button large onClick={onClose} disabled={loading}>
               Cancel
             </Button>
             <Button
@@ -133,6 +134,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
                     message: "Maximum file size is 10 Mb",
                   });
                 } else {
+                  setKey(tempKey);
                   const path = `documents/${uniqueId()}/${data.document.name}`;
                   uploadFile({
                     ref: path,
@@ -140,14 +142,15 @@ export const NewDocumentDialog = ({ isOpen, onClose, user }) => {
                     onSuccess: () => {
                       writeData({
                         collection: "documents",
-                        src: user.ref,
+                        src: board.ref,
+                        id: uniqueId(),
                         data: {
                           label: data.label,
                           name: data.document.name,
-                          path: encrypt(path),
+                          path: encrypt(path, tempKey),
                         },
                         onSuccess: () => {
-                          handleClose();
+                          onClose();
                           primary({
                             icon: "plus",
                             message: "Document added with success",

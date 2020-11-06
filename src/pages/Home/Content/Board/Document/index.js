@@ -1,11 +1,4 @@
-import {
-  AnchorButton,
-  Callout,
-  H4,
-  Icon,
-  Intent,
-  Toaster,
-} from "@blueprintjs/core";
+import { AnchorButton, Callout, H4, Icon, Intent } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { DeletePopover } from "components/DeletePopover";
 import { Tooltip } from "components/Tooltip";
@@ -14,15 +7,13 @@ import { useDownloadFile } from "hooks/useDownloadFile";
 import { useEncryption } from "providers/EncryptionProvider";
 import { useIsMobile } from "hooks/useIsMobile";
 import { useToaster } from "providers/ToasterProvider";
-import { useRef } from "react";
 
 function Document({ document }) {
   const { test, decrypt } = useEncryption();
-  const toasterRef = useRef();
   const isMobile = useIsMobile();
   const [downloadFile, loadingDowloadFile] = useDownloadFile();
   const [deleteFile] = useDeleteFile();
-  const { success,danger } = useToaster();
+  const { success, danger } = useToaster();
 
   if (!test(document.path)) {
     return null;
@@ -39,7 +30,7 @@ function Document({ document }) {
             color: "black",
           }}
         >
-          <Icon icon="id-number" color="lightgrey" />
+          <Icon icon="id-number" color="lightgray" />
           <Box style={{ marginLeft: "10px", marginRight: "10px" }}>
             {document.label}
           </Box>
@@ -50,7 +41,11 @@ function Document({ document }) {
                 ref: decrypt(document.path),
               });
             }}
-          />
+          >
+            <Tooltip intent={Intent.DANGER} content="Remove item">
+              <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
+            </Tooltip>
+          </DeletePopover>
         </Box>
       </H4>
       <Callout intent={Intent.PRIMARY} icon={null}>
@@ -85,7 +80,6 @@ function Document({ document }) {
           </Tooltip>
         </Box>
       </Callout>
-      <Toaster ref={toasterRef} maxToasts={1} />
     </>
   );
 }

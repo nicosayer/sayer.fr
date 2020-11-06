@@ -3,7 +3,7 @@ import { NewCredentialDialog } from "components/NewCredentialDialog";
 import { NewDocumentDialog } from "components/NewDocumentDialog";
 import React, { useState } from "react";
 
-export const NewItemButton = ({ user }) => {
+export const NewItemButton = ({ board }) => {
   const [isNewDocumentOpen, setIsNewDocumentOpen] = useState(false);
   const [isNewCredentialOpen, setIsNewCredentialOpen] = useState(false);
 
@@ -30,12 +30,12 @@ export const NewItemButton = ({ user }) => {
       <NewDocumentDialog
         isOpen={isNewDocumentOpen}
         onClose={() => setIsNewDocumentOpen(false)}
-        user={user}
+        board={board}
       />
       <NewCredentialDialog
         isOpen={isNewCredentialOpen}
         onClose={() => setIsNewCredentialOpen(false)}
-        user={user}
+        board={board}
       />
     </>
   );

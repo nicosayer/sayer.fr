@@ -12,7 +12,6 @@ export const ToasterProvider = ({ children }) => {
   return (
     <ToasterContext.Provider
       value={{
-        toaster: toasterRef,
         success: (options = {}) => {
           toasterRef.current?.show({
             intent: Intent.SUCCESS,
@@ -22,6 +21,12 @@ export const ToasterProvider = ({ children }) => {
         danger: (options = {}) => {
           toasterRef.current?.show({
             intent: Intent.DANGER,
+            ...options,
+          });
+        },
+        warning: (options = {}) => {
+          toasterRef.current?.show({
+            intent: Intent.WARNING,
             ...options,
           });
         },

@@ -6,7 +6,7 @@ import {
   InputGroup,
   Intent,
 } from "@blueprintjs/core";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useWriteData } from "hooks/useWriteData";
 import { uniqueId } from "utils";
@@ -24,20 +24,21 @@ const EMPTY_DATA = {
 const passwordUniqueId = uniqueId();
 const encryptionKeyUniqueId = uniqueId();
 
-export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
+export const NewCredentialDialog = ({ isOpen, onClose, board }) => {
   const { encrypt, key, setKey } = useEncryption();
+  const [tempKey, setTempKey] = useState(key);
   const [showPassword, setShowPassword] = useState(false);
   const [lockEncryptionKey, setLockEncryptionKey] = useState(true);
   const [writeData, loading] = useWriteData();
   const [data, setData] = useState(EMPTY_DATA);
   const { primary } = useToaster();
 
-  const handleClose = () => {
-    onClose();
+  useEffect(() => {
     setData(EMPTY_DATA);
-    setShowPassword(false);
     setLockEncryptionKey(Boolean(key));
-  };
+    setTempKey(key);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   const handleChange = useCallback(
     (key) => (event) => {
@@ -49,8 +50,8 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
   return (
     <Dialog
       isOpen={isOpen}
-      onClose={handleClose}
-      title={`New credential • ${user.name}`}
+      onClose={onClose}
+      title={`New credential • ${board.name}`}
     >
       <form>
         <div className={Classes.DIALOG_BODY}>
@@ -121,8 +122,8 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
               autoCapitalize="none"
               leftIcon="key"
               disabled={loading || lockEncryptionKey}
-              value={key}
-              onChange={(event) => setKey(event?.target?.value)}
+              value={tempKey}
+              onChange={(event) => setTempKey(event?.target?.value)}
               large
               id="credential-encryption-key-input"
               placeholder={encryptionKeyUniqueId}
@@ -141,7 +142,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            <Button large onClick={handleClose} disabled={loading}>
+            <Button large onClick={onClose} disabled={loading}>
               Cancel
             </Button>
             <Button
@@ -152,12 +153,14 @@ export const NewCredentialDialog = ({ isOpen, onClose, user }) => {
               intent={Intent.PRIMARY}
               onClick={(event) => {
                 event.preventDefault();
+                setKey(tempKey);
                 writeData({
                   collection: "credentials",
-                  src: user.ref,
-                  data: { ...data, password: encrypt(data.password) },
+                  src: board.ref,
+                  id: uniqueId(),
+                  data: { ...data, password: encrypt(data.password, tempKey) },
                   onSuccess: () => {
-                    handleClose();
+                    onClose();
                     primary({
                       icon: "plus",
                       message: "Credentials added with success",

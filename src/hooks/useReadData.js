@@ -24,7 +24,7 @@ const cleanSnapshot = (snapshot) => {
   return cleanDoc(snapshot);
 };
 
-export const useReadData = ({ collection, id, src } = {}) => {
+export const useReadData = ({ collection, id, src, where } = {}) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -35,6 +35,11 @@ export const useReadData = ({ collection, id, src } = {}) => {
     }
     if (id) {
       query = query.doc(id);
+    }
+    if (where) {
+      where.forEach((w) => {
+        query = query.where(...w);
+      });
     }
     query
       .get()
@@ -47,7 +52,8 @@ export const useReadData = ({ collection, id, src } = {}) => {
         setLoading(false);
         logError(error);
       });
-  }, [collection, id, src]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collection, id, src, JSON.stringify(where)]);
 
   return useMemo(() => [data, loading], [data, loading]);
 };

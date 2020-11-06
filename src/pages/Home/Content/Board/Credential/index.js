@@ -1,4 +1,4 @@
-import { Button, Callout, H4, Icon, Intent } from "@blueprintjs/core";
+import { AnchorButton, Button, Callout, H4, Icon, Intent } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { DeletePopover } from "components/DeletePopover";
 import { Tooltip } from "components/Tooltip";
@@ -28,7 +28,7 @@ function Credential({ credential }) {
             color: "black",
           }}
         >
-          <Icon icon="lock" color="lightgrey" />
+          <Icon icon="lock" color="lightgray" />
           <Box style={{ marginLeft: "10px" }}>{credential.label}</Box>
           {credential.url?.startsWith("http") && (
             <Box style={{ marginLeft: "10px" }}>
@@ -45,7 +45,14 @@ function Credential({ credential }) {
             </Box>
           )}
           <Box style={{ marginLeft: "10px" }}>
-            <DeletePopover src={credential.ref} />
+            <DeletePopover src={credential.ref}>
+              <Tooltip
+                intent={Intent.DANGER}
+                content="Remove item"
+              >
+                <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
+              </Tooltip>
+            </DeletePopover>
           </Box>
         </Box>
       </H4>

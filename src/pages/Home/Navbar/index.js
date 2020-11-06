@@ -13,7 +13,7 @@ function Navbar() {
         width: "100%",
         backgroundColor: "white",
         borderBottom: "classic",
-        borderColor: "lightgrey",
+        borderColor: "lightgray",
         display: "flex",
         alignItems: "center",
         padding: "10px",

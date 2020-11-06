@@ -1,3 +1,5 @@
+import { Colors } from "@blueprintjs/core";
+
 export const cssKeyToThemeKey = {
   fontSize: "fontSize",
   lineHeight: "fontSize",
@@ -43,8 +45,9 @@ export const theme = {
     max: "700px",
   },
   color: {
-    black: "#182026",
-    lightgrey: "lightgrey",
+    black: Colors.DARK_GRAY5,
+    lightgray: Colors.LIGHT_GRAY3,
+    gray: Colors.GRAY1,
   },
   fontSize: {
     title: "18px",

@@ -2,17 +2,17 @@ import {
   Button,
   Classes,
   FormGroup,
-  InputGroup,
   Intent,
   Popover,
 } from "@blueprintjs/core";
+import { EncryptionKeyInput } from "components/EncryptionKeyInput";
 import { Tooltip } from "components/Tooltip";
 import { useEncryption } from "providers/EncryptionProvider";
 import React, { useEffect, useState } from "react";
 
 export const UnlockButton = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const { key, setKey, locked } = useEncryption();
+  const { locked } = useEncryption();
   const [inputRef, setInputRef] = useState();
 
   useEffect(() => {
@@ -21,44 +21,19 @@ export const UnlockButton = () => {
     }
   }, [inputRef]);
 
-  useEffect(() => {
-    if (!key) {
-      setIsPopoverOpen(false);
-    }
-  }, [key]);
-
   return (
     <Popover
       isOpen={isPopoverOpen}
       onInteraction={setIsPopoverOpen}
       popoverClassName={Classes.POPOVER_CONTENT_SIZING}
       content={
-        <FormGroup label="Encryption key" labelFor="encryption-key-input">
-          <InputGroup
-            autoCapitalize="none"
-            onKeyDown={({ key }) => {
-              if (key === "Enter") {
-                setIsPopoverOpen(false);
-              }
+        <FormGroup label="Encryption key" labelFor="povover-encryption-key-input">
+          <EncryptionKeyInput
+            id="povover-encryption-key-input"
+            onSubmit={() => {
+              setIsPopoverOpen(false);
             }}
-            large
-            leftIcon="key"
             inputRef={setInputRef}
-            id="encryption-key-input"
-            type="text"
-            value={key}
-            onChange={(event) => setKey(event?.target?.value)}
-            autoFocus
-            rightElement={
-              <Button
-                icon="cross"
-                minimal
-                onClick={() => {
-                  setIsPopoverOpen(false);
-                  setKey("");
-                }}
-              />
-            }
           />
         </FormGroup>
       }

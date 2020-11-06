@@ -2,24 +2,24 @@ import { Card, Classes, H4, NonIdealState } from "@blueprintjs/core";
 import { Box } from "components/Box";
 import { useListenData } from "hooks/useListenData";
 import { useCallback, useMemo } from "react";
-import { sortBy } from "lodash/fp";
 import Credential from "pages/Home/Content/Board/Credential";
-import { searchInString } from "utils";
+import { caseInsensitiveSortBy, searchInString } from "utils";
 import { NewItemButton } from "components/NewItemButton";
 import { useEncryption } from "providers/EncryptionProvider";
 import Document from "pages/Home/Content/Board/Document";
 import { useSearch } from "providers/SearchProvider";
+import { EditBoardButton } from "components/EditBoardButton";
 
-function Board({ user }) {
+function Board({ board }) {
   const { search } = useSearch();
   const { test, key } = useEncryption();
   const [credentials = [], loadingCredentials] = useListenData({
-    src: user.ref,
+    src: board.ref,
     collection: "credentials",
     where: [["password", "!=", false]],
   });
   const [documents = [], loadingDocuments] = useListenData({
-    src: user.ref,
+    src: board.ref,
     collection: "documents",
     where: [["path", "!=", false]],
   });
@@ -63,11 +63,14 @@ function Board({ user }) {
   }
 
   return (
-    <Box key={user.name} style={{ marginBottom: "40px" }}>
+    <Box key={board.name} style={{ marginBottom: "40px" }}>
       <H4>
-        {user.name}
-        <Box as="span" style={{ marginLeft: "10px" }}>
-          <NewItemButton user={user} />
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          {board.name}
+          <Box style={{ marginLeft: "10px", marginRight: "10px" }}>
+            <EditBoardButton board={board} />
+          </Box>
+          <NewItemButton board={board} />
         </Box>
       </H4>
 
@@ -82,7 +85,7 @@ function Board({ user }) {
               />
             )}
             {Boolean(filteredCredentials.length) &&
-              sortBy("label", filteredCredentials).map((credential) => (
+              caseInsensitiveSortBy(filteredCredentials, "label").map((credential) => (
                 <Box
                   key={
                     credential.label + credential.username + credential.password
@@ -93,14 +96,16 @@ function Board({ user }) {
                 </Box>
               ))}
             {Boolean(filteredDocuments.length) &&
-              sortBy("label", filteredDocuments).map((document) => (
-                <Box
-                  key={document.label + document.path}
-                  style={{ marginBottom: "20px" }}
-                >
-                  <Document document={document} />
-                </Box>
-              ))}
+              caseInsensitiveSortBy(filteredDocuments, "label").map(
+                (document) => (
+                  <Box
+                    key={document.label + document.path}
+                    style={{ marginBottom: "20px" }}
+                  >
+                    <Document document={document} />
+                  </Box>
+                )
+              )}
           </Box>
         </Card>
       </Box>

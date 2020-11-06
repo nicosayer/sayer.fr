@@ -20,8 +20,8 @@ export const EncryptionProvider = ({ children }) => {
   }, [key]);
 
   const encrypt = useCallback(
-    (string) => {
-      return CryptoJS.AES.encrypt(string, key)?.toString();
+    (string, tempKey = key) => {
+      return CryptoJS.AES.encrypt(string, tempKey)?.toString();
     },
     [key]
   );
