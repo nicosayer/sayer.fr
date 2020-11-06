@@ -61,7 +61,7 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
             label="Access"
             labelFor="access-input"
             labelInfo="*"
-            helperText="Users with access will be able to read, edit and delete."
+            helperText="Users with access will be able to read, create, edit and delete."
           >
             <TagInput
               fill

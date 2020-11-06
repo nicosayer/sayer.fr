@@ -28,7 +28,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, board }) => {
   const [data, setData] = useState(EMPTY_DATA);
   const [uploadFile, loadingUploadFile] = useUploadFile();
   const [writeData, loadingWriteData] = useWriteData();
-  const { primary, danger } = useToaster();
+  const { primary, warning } = useToaster();
 
   const loading = useMemo(() => loadingUploadFile || loadingWriteData, [
     loadingUploadFile,
@@ -129,7 +129,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, board }) => {
               onClick={(event) => {
                 event.preventDefault();
                 if (data.document.size > 10 * 1024 * 1024) {
-                  danger({
+                  warning({
                     icon: "warning-sign",
                     message: "Maximum file size is 10 Mb",
                   });

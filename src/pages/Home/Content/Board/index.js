@@ -54,11 +54,15 @@ function Board({ board }) {
     });
   }, [documents, filterItems]);
 
-  const resultsCount = useMemo(() => {
+  const itemsCount = useMemo(() => {
+    return credentials.length + documents.length;
+  }, [credentials.length, documents.length]);
+
+  const filteredItemsCount = useMemo(() => {
     return filteredCredentials.length + filteredDocuments.length;
   }, [filteredCredentials.length, filteredDocuments.length]);
 
-  if (!key || (search && !resultsCount)) {
+  if (!key || (search && !filteredItemsCount)) {
     return null;
   }
 
@@ -77,24 +81,28 @@ function Board({ board }) {
       <Box style={{ marginTop: "10px" }}>
         <Card>
           <Box>
-            {!resultsCount && (
+            {!filteredItemsCount && (
               <NonIdealState
                 className={loading && Classes.SKELETON}
                 icon="path-search"
-                title="No items"
+                title={itemsCount ? "No results" : "No items"}
               />
             )}
             {Boolean(filteredCredentials.length) &&
-              caseInsensitiveSortBy(filteredCredentials, "label").map((credential) => (
-                <Box
-                  key={
-                    credential.label + credential.username + credential.password
-                  }
-                  style={{ marginBottom: "20px" }}
-                >
-                  <Credential credential={credential} />
-                </Box>
-              ))}
+              caseInsensitiveSortBy(filteredCredentials, "label").map(
+                (credential) => (
+                  <Box
+                    key={
+                      credential.label +
+                      credential.username +
+                      credential.password
+                    }
+                    style={{ marginBottom: "20px" }}
+                  >
+                    <Credential credential={credential} />
+                  </Box>
+                )
+              )}
             {Boolean(filteredDocuments.length) &&
               caseInsensitiveSortBy(filteredDocuments, "label").map(
                 (document) => (

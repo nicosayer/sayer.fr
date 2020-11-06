@@ -30,7 +30,10 @@ export const DeletePopover = ({
             }}
           >
             <Box style={{ marginRight: "10px" }}>
-              <Button onClick={() => setIsDeletePopoverOpen(false)}>
+              <Button
+                disabled={loading}
+                onClick={() => setIsDeletePopoverOpen(false)}
+              >
                 Cancel
               </Button>
             </Box>
@@ -40,7 +43,6 @@ export const DeletePopover = ({
                 deleteData({
                   src,
                   onSuccess: () => {
-                    setIsDeletePopoverOpen(false);
                     danger({
                       icon: "trash",
                       message: `${capitalize(name)} deleted with success`,

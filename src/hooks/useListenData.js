@@ -29,19 +29,19 @@ export const useListenData = ({ collection, id, src, where } = {}) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let query = src || db;
+    let unsubscribe = src || db;
     if (collection) {
-      query = query.collection(collection);
+      unsubscribe = unsubscribe.collection(collection);
     }
     if (id) {
-      query = query.doc(id);
+      unsubscribe = unsubscribe.doc(id);
     }
     if (where) {
       where.forEach((w) => {
-        query = query.where(...w);
+        unsubscribe = unsubscribe.where(...w);
       });
     }
-    query.onSnapshot(
+    unsubscribe.onSnapshot(
       (snapshot) => {
         setData(cleanSnapshot(snapshot));
         setLoading(false);
@@ -54,7 +54,7 @@ export const useListenData = ({ collection, id, src, where } = {}) => {
     );
 
     // Unsubcribe
-    return query;
+    return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collection, id, src, JSON.stringify(where)]);
 
