@@ -6,7 +6,7 @@ export const useWriteData = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ collection, id, data, src, onSuccess = () => {},options }) => {
+    ({ collection, id, data, src, onSuccess = () => {}, options }) => {
       setLoading(true);
       let mutation = src || db;
       if (collection) {

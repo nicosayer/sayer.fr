@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-export const useIsMobile = () => {
+export const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState();
 
   useEffect(() => {
@@ -17,9 +17,11 @@ export const useIsMobile = () => {
     }
   }, []);
 
+  const isOnComputer = useMemo(() => windowSize > 768, [windowSize]);
+
   if (!windowSize) {
-    return undefined;
+    return { loading: true };
   }
 
-  return windowSize < 769;
+  return { isOnMobile: !isOnComputer, isOnComputer, loading: false };
 };

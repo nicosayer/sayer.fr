@@ -1,4 +1,3 @@
-
 import {
   Button,
   Classes,
@@ -7,7 +6,7 @@ import {
   InputGroup,
   Intent,
 } from "@blueprintjs/core";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useWriteData } from "hooks/useWriteData";
 import { uniqueId } from "utils";
@@ -15,29 +14,40 @@ import { useEncryption } from "providers/EncryptionProvider";
 import { Tooltip } from "components/Tooltip";
 import { useToaster } from "providers/ToasterProvider";
 import { useWindowSize } from "hooks/useWindowSize";
-
-const EMPTY_DATA = {
-  label: "",
-  url: "",
-  username: "",
-  password: "",
-};
+import { Box } from "components/Box";
+import { DeletePopover } from "components/DeletePopover";
 
 const passwordUniqueId = uniqueId();
 const encryptionKeyUniqueId = uniqueId();
 
-export const NewCredentialDialog = ({ isOpen, onClose, board }) => {
-  const { encrypt, key, setKey } = useEncryption();
+export const EditCredentialDialog = ({ isOpen, onClose, credential }) => {
+  const { encrypt, key, setKey, decrypt } = useEncryption();
+
+  const emptyData = useMemo(
+    () => ({
+      label: credential.label,
+      url: credential.url,
+      username: credential.username,
+      password: decrypt(credential.password),
+    }),
+    [
+      credential.label,
+      credential.url,
+      credential.username,
+      credential.password,
+      decrypt,
+    ]
+  );
   const [tempKey, setTempKey] = useState(key);
   const [showPassword, setShowPassword] = useState(false);
   const [lockEncryptionKey, setLockEncryptionKey] = useState(true);
   const [writeData, loading] = useWriteData();
-  const [data, setData] = useState(EMPTY_DATA);
+  const [data, setData] = useState(emptyData);
   const { primaryToast } = useToaster();
   const { isOnComputer } = useWindowSize();
 
   useEffect(() => {
-    setData(EMPTY_DATA);
+    setData(emptyData);
     setLockEncryptionKey(Boolean(key));
     setTempKey(key);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,7 +64,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, board }) => {
     <Dialog
       isOpen={isOpen}
       onClose={onClose}
-      title={`New credential • ${board.name}`}
+      title={`Edit credential • ${credential.label}`}
     >
       <form>
         <div className={Classes.DIALOG_BODY}>
@@ -145,6 +155,17 @@ export const NewCredentialDialog = ({ isOpen, onClose, board }) => {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Box style={{ marginLeft: "-10px", marginRight: "auto" }}>
+              <DeletePopover
+                src={document.ref}
+                onSuccess={onClose}
+                name="credential"
+              >
+                <Button intent={Intent.DANGER} large>
+                  Delete
+                </Button>
+              </DeletePopover>
+            </Box>
             <Button large onClick={onClose} disabled={loading}>
               Cancel
             </Button>
@@ -158,15 +179,13 @@ export const NewCredentialDialog = ({ isOpen, onClose, board }) => {
                 event.preventDefault();
                 setKey(tempKey);
                 writeData({
-                  collection: "credentials",
-                  src: board.ref,
-                  id: uniqueId(),
+                  src: credential.ref,
                   data: { ...data, password: encrypt(data.password, tempKey) },
                   onSuccess: () => {
                     onClose();
                     primaryToast({
-                      icon: "plus",
-                      message: "Credentials added with success",
+                      icon: "edit",
+                      message: "Credentials edited with success",
                     });
                   },
                 });

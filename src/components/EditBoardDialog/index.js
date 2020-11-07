@@ -15,6 +15,7 @@ import { isEmail } from "utils";
 import { Tooltip } from "components/Tooltip";
 import { uniq } from "lodash/fp";
 import { Box } from "components/Box";
+import { useWindowSize } from "hooks/useWindowSize";
 
 export const EditBoardDialog = ({ isOpen, onClose, board }) => {
   const defaultData = useMemo(
@@ -26,7 +27,8 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
   );
   const [data, setData] = useState(defaultData);
   const [writeData, loading] = useWriteData();
-  const { primary, warning } = useToaster();
+  const { primaryToast, warningToast } = useToaster();
+  const { isOnComputer } = useWindowSize();
 
   useEffect(() => {
     setData(defaultData);
@@ -54,7 +56,7 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
               leftIcon="label"
               value={data.name}
               onChange={handleChange("name")}
-              autoFocus
+              autoFocus={isOnComputer}
               large
               id="name-input"
               placeholder="Family"
@@ -86,6 +88,9 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
                 minimal: true,
                 fill: true,
               }}
+              inputProps={{
+                autoCapitalize: "none",
+              }}
               rightElement={
                 <Tooltip content="Reset">
                   <Button
@@ -104,7 +109,7 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            <Box style={{ marginRight: "auto" }}>
+            <Box style={{ marginLeft: "-10px", marginRight: "auto" }}>
               <DeletePopover src={board.ref} onSuccess={onClose} name="board">
                 <Button intent={Intent.DANGER} large>
                   Delete
@@ -122,7 +127,7 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
               onClick={(event) => {
                 event.preventDefault();
                 if (!data.access.length) {
-                  warning({
+                  warningToast({
                     icon: "warning-sign",
                     message: "You must enter at least one email",
                   });
@@ -135,7 +140,7 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
                     },
                     onSuccess: () => {
                       onClose();
-                      primary({
+                      primaryToast({
                         icon: "edit",
                         message: "Board edited with success",
                       });

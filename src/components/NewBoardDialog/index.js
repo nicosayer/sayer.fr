@@ -14,6 +14,7 @@ import { isEmail, uniqueId } from "utils";
 import { Tooltip } from "components/Tooltip";
 import { uniq } from "lodash/fp";
 import { useUser } from "providers/UserProvider";
+import { useWindowSize } from "hooks/useWindowSize";
 
 export const NewBoardDialog = ({ isOpen, onClose }) => {
   const { user } = useUser();
@@ -26,7 +27,8 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
   );
   const [data, setData] = useState(defaultData);
   const [writeData, loading] = useWriteData();
-  const { primary, warning } = useToaster();
+  const { primaryToast, warningToast } = useToaster();
+  const { isOnComputer } = useWindowSize();
 
   useEffect(() => {
     setData(defaultData);
@@ -50,7 +52,7 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
               leftIcon="label"
               value={data.name}
               onChange={handleChange("name")}
-              autoFocus
+              autoFocus={isOnComputer}
               large
               id="name-input"
               placeholder="Family"
@@ -82,6 +84,9 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
                 minimal: true,
                 fill: true,
               }}
+              inputProps={{
+                autoCapitalize: "none",
+              }}
               rightElement={
                 <Tooltip content="Reset">
                   <Button
@@ -111,7 +116,7 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
               onClick={(event) => {
                 event.preventDefault();
                 if (!data.access.length) {
-                  warning({
+                  warningToast({
                     icon: "warning-sign",
                     message: "You must enter at least one email",
                   });
@@ -125,8 +130,8 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
                     },
                     onSuccess: () => {
                       onClose();
-                      primary({
-                        icon: "check",
+                      primaryToast({
+                        icon: "plus",
                         message: "Board created with success",
                       });
                     },

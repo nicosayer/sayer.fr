@@ -10,15 +10,16 @@ import { Box } from "components/Box";
 import { DeletePopover } from "components/DeletePopover";
 import { Tooltip } from "components/Tooltip";
 import { useEncryption } from "providers/EncryptionProvider";
-import { useIsMobile } from "hooks/useIsMobile";
+import { useWindowSize } from "hooks/useWindowSize";
 import { useToaster } from "providers/ToasterProvider";
 import { useState } from "react";
+import { EditCredentialButton } from "components/EditCredentialButton";
 
 function Credential({ credential }) {
   const [showPassword, setShowPassword] = useState(false);
-  const isMobile = useIsMobile();
+  const { isOnMobile } = useWindowSize();
   const { decrypt, test } = useEncryption();
-  const { success } = useToaster();
+  const { successToast } = useToaster();
 
   if (!test(credential.password)) {
     return null;
@@ -52,8 +53,11 @@ function Credential({ credential }) {
             </Box>
           )}
           <Box style={{ marginLeft: "10px" }}>
-            <DeletePopover src={credential.ref}>
-              <Tooltip intent={Intent.DANGER} content="Remove item">
+            <EditCredentialButton credential={credential} />
+          </Box>
+          <Box style={{ marginLeft: "10px" }}>
+            <DeletePopover src={credential.ref} name="credential">
+              <Tooltip intent={Intent.DANGER} content="Remove credential">
                 <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
               </Tooltip>
             </DeletePopover>
@@ -64,7 +68,7 @@ function Credential({ credential }) {
         <Box
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+            gridTemplateColumns: isOnMobile ? "1fr" : "1fr 1fr",
             gridGap: "10px",
             alignItems: "center",
           }}
@@ -73,11 +77,11 @@ function Credential({ credential }) {
             <Tooltip content="Copy username to clipboard">
               <Button
                 style={{ wordBreak: "break-word" }}
-                fill={isMobile}
+                fill={isOnMobile}
                 rightIcon="duplicate"
                 onClick={() => {
                   navigator.clipboard.writeText(credential.username);
-                  success({
+                  successToast({
                     icon: "tick",
                     message: "Username copied to clipboard",
                   });
@@ -98,12 +102,12 @@ function Credential({ credential }) {
           >
             <Tooltip content="Copy password to clipboard">
               <Button
-                fill={isMobile}
+                fill={isOnMobile}
                 style={{ wordBreak: "break-word" }}
                 rightIcon="duplicate"
                 onClick={() => {
                   navigator.clipboard.writeText(decrypt(credential.password));
-                  success({
+                  successToast({
                     icon: "tick",
                     message: "Password copied to clipboard",
                   });

@@ -1,10 +1,12 @@
 import { Button, InputGroup } from "@blueprintjs/core";
+import { useWindowSize } from "hooks/useWindowSize";
 import { useEncryption } from "providers/EncryptionProvider";
 import { useCallback, useState } from "react";
 
 export const EncryptionKeyInput = ({ onSubmit = () => {}, id, inputRef }) => {
   const { key, setKey } = useEncryption();
   const [tempKey, setTempKey] = useState(key);
+  const { isOnComputer } = useWindowSize();
 
   const handleSubmit = useCallback(
     (value = tempKey) => {
@@ -29,7 +31,7 @@ export const EncryptionKeyInput = ({ onSubmit = () => {}, id, inputRef }) => {
       type="text"
       value={tempKey}
       onChange={(event) => setTempKey(event?.target?.value)}
-      autoFocus
+      autoFocus={isOnComputer}
       rightElement={
         key && tempKey === key ? (
           <Button

@@ -12,25 +12,25 @@ export const ToasterProvider = ({ children }) => {
   return (
     <ToasterContext.Provider
       value={{
-        success: (options = {}) => {
+        successToast: (options = {}) => {
           toasterRef.current?.show({
             intent: Intent.SUCCESS,
             ...options,
           });
         },
-        danger: (options = {}) => {
+        dangerToast: (options = {}) => {
           toasterRef.current?.show({
             intent: Intent.DANGER,
             ...options,
           });
         },
-        warning: (options = {}) => {
+        warningToast: (options = {}) => {
           toasterRef.current?.show({
             intent: Intent.WARNING,
             ...options,
           });
         },
-        primary: (options = {}) => {
+        primaryToast: (options = {}) => {
           toasterRef.current?.show({
             intent: Intent.PRIMARY,
             ...options,

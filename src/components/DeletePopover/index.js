@@ -13,7 +13,7 @@ export const DeletePopover = ({
 }) => {
   const [isDeletePopoverOpen, setIsDeletePopoverOpen] = useState(false);
   const [deleteData, loading] = useDeleteData();
-  const { danger } = useToaster();
+  const { dangerToast } = useToaster();
 
   return (
     <Popover
@@ -43,7 +43,7 @@ export const DeletePopover = ({
                 deleteData({
                   src,
                   onSuccess: () => {
-                    danger({
+                    dangerToast({
                       icon: "trash",
                       message: `${capitalize(name)} deleted with success`,
                     });

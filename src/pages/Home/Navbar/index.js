@@ -16,7 +16,6 @@ function Navbar() {
         borderColor: "lightgray",
         display: "flex",
         alignItems: "center",
-        padding: "10px",
       }}
     >
       <Box
@@ -26,6 +25,7 @@ function Navbar() {
           maxWidth: "max",
           display: "flex",
           alignItems: "center",
+          padding: "10px",
         }}
       >
         <InputGroup

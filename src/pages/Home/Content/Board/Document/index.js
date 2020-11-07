@@ -5,15 +5,16 @@ import { Tooltip } from "components/Tooltip";
 import { useDeleteFile } from "hooks/useDeleteFile";
 import { useDownloadFile } from "hooks/useDownloadFile";
 import { useEncryption } from "providers/EncryptionProvider";
-import { useIsMobile } from "hooks/useIsMobile";
+import { useWindowSize } from "hooks/useWindowSize";
 import { useToaster } from "providers/ToasterProvider";
+import { EditDocumentButton } from "components/EditDocumentButton";
 
 function Document({ document }) {
   const { test, decrypt } = useEncryption();
-  const isMobile = useIsMobile();
+  const { isOnMobile } = useWindowSize();
   const [downloadFile, loadingDowloadFile] = useDownloadFile();
   const [deleteFile] = useDeleteFile();
-  const { success, danger } = useToaster();
+  const { successToast, dangerToast } = useToaster();
 
   if (!test(document.path)) {
     return null;
@@ -31,21 +32,25 @@ function Document({ document }) {
           }}
         >
           <Icon icon="id-number" color="lightgray" />
-          <Box style={{ marginLeft: "10px", marginRight: "10px" }}>
-            {document.label}
+          <Box style={{ marginLeft: "10px" }}>{document.label}</Box>
+          <Box style={{ marginLeft: "10px" }}>
+            <EditDocumentButton document={document} />
           </Box>
-          <DeletePopover
-            src={document.ref}
-            onSuccess={() => {
-              deleteFile({
-                ref: decrypt(document.path),
-              });
-            }}
-          >
-            <Tooltip intent={Intent.DANGER} content="Remove item">
-              <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
-            </Tooltip>
-          </DeletePopover>
+          <Box style={{ marginLeft: "10px" }}>
+            <DeletePopover
+              src={document.ref}
+              name="document"
+              onSuccess={() => {
+                deleteFile({
+                  ref: decrypt(document.path),
+                });
+              }}
+            >
+              <Tooltip intent={Intent.DANGER} content="Remove document">
+                <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
+              </Tooltip>
+            </DeletePopover>
+          </Box>
         </Box>
       </H4>
       <Callout intent={Intent.PRIMARY} icon={null}>
@@ -54,20 +59,20 @@ function Document({ document }) {
             <AnchorButton
               loading={loadingDowloadFile}
               style={{ wordBreak: "break-word" }}
-              fill={isMobile}
+              fill={isOnMobile}
               rightIcon="import"
               onClick={() => {
                 downloadFile({
                   ref: decrypt(document.path),
                   name: document.name,
                   onSuccess: () => {
-                    success({
+                    successToast({
                       icon: "tick",
                       message: "Document downloaded",
                     });
                   },
                   onError: () => {
-                    danger({
+                    dangerToast({
                       icon: "warning-sign",
                       message: "The encryption key is incorrect",
                     });

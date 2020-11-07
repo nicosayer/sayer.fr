@@ -2,7 +2,6 @@ import {
   Button,
   Classes,
   Dialog,
-  FileInput,
   FormGroup,
   InputGroup,
   Intent,
@@ -10,35 +9,33 @@ import {
 import { Tooltip } from "components/Tooltip";
 import { useEncryption } from "providers/EncryptionProvider";
 import { useToaster } from "providers/ToasterProvider";
-import { useUploadFile } from "hooks/useUploadFile";
 import { useWriteData } from "hooks/useWriteData";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { uniqueId } from "utils";
 import { useWindowSize } from "hooks/useWindowSize";
+import { Box } from "components/Box";
+import { DeletePopover } from "components/DeletePopover";
 
-const EMPTY_DATA = {
-  label: "",
-  document: {},
-};
 const encryptionKeyUniqueId = uniqueId();
 
-export const NewDocumentDialog = ({ isOpen, onClose, board }) => {
-  const { key, setKey, encrypt } = useEncryption();
+export const EditDocumentDialog = ({ isOpen, onClose, document }) => {
+  const emptyData = useMemo(
+    () => ({
+      label: document.label,
+    }),
+    [document.label]
+  );
+  const { key, setKey, encrypt, decrypt } = useEncryption();
+  const path = useMemo(() => decrypt(document.path), [document.path, decrypt]);
   const [tempKey, setTempKey] = useState(key);
   const [lockEncryptionKey, setLockEncryptionKey] = useState(true);
-  const [data, setData] = useState(EMPTY_DATA);
-  const [uploadFile, loadingUploadFile] = useUploadFile();
-  const [writeData, loadingWriteData] = useWriteData();
-  const { primaryToast, warningToast } = useToaster();
+  const [data, setData] = useState(emptyData);
+  const [writeData, loading] = useWriteData();
+  const { primaryToast } = useToaster();
   const { isOnComputer } = useWindowSize();
 
-  const loading = useMemo(() => loadingUploadFile || loadingWriteData, [
-    loadingUploadFile,
-    loadingWriteData,
-  ]);
-
   useEffect(() => {
-    setData(EMPTY_DATA);
+    setData(emptyData);
     setLockEncryptionKey(Boolean(key));
     setTempKey(key);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,7 +52,7 @@ export const NewDocumentDialog = ({ isOpen, onClose, board }) => {
     <Dialog
       isOpen={isOpen}
       onClose={onClose}
-      title={`New document • ${board.name}`}
+      title={`Edit document • ${document.label}`}
     >
       <form>
         <div className={Classes.DIALOG_BODY}>
@@ -78,14 +75,10 @@ export const NewDocumentDialog = ({ isOpen, onClose, board }) => {
             labelInfo="*"
             helperText="Maximum file size 10 Mb"
           >
-            <FileInput
-              disabled={loading}
-              fill
-              onInputChange={(event) => {
-                setData({ ...data, document: event?.target?.files?.[0] });
-              }}
-              text={data?.document?.name}
-              hasSelection={data?.document?.name}
+            <InputGroup
+              disabled
+              leftIcon="label"
+              value={document.name}
               large
               id="document-input"
             />
@@ -119,6 +112,17 @@ export const NewDocumentDialog = ({ isOpen, onClose, board }) => {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Box style={{ marginLeft: "-10px", marginRight: "auto" }}>
+              <DeletePopover
+                src={document.ref}
+                onSuccess={onClose}
+                name="document"
+              >
+                <Button intent={Intent.DANGER} large>
+                  Delete
+                </Button>
+              </DeletePopover>
+            </Box>
             <Button large onClick={onClose} disabled={loading}>
               Cancel
             </Button>
@@ -127,41 +131,25 @@ export const NewDocumentDialog = ({ isOpen, onClose, board }) => {
               large
               intent={Intent.PRIMARY}
               loading={loading}
-              disabled={!key || !data.label || !data?.document?.name}
+              disabled={!key || !data.label}
               onClick={(event) => {
                 event.preventDefault();
-                if (data.document.size > 10 * 1024 * 1024) {
-                  warningToast({
-                    icon: "warning-sign",
-                    message: "Maximum file size is 10 Mb",
-                  });
-                } else {
-                  setKey(tempKey);
-                  const path = `documents/${uniqueId()}/${data.document.name}`;
-                  uploadFile({
-                    ref: path,
-                    file: data.document,
-                    onSuccess: () => {
-                      writeData({
-                        collection: "documents",
-                        src: board.ref,
-                        id: uniqueId(),
-                        data: {
-                          label: data.label,
-                          name: data.document.name,
-                          path: encrypt(path, tempKey),
-                        },
-                        onSuccess: () => {
-                          onClose();
-                          primaryToast({
-                            icon: "plus",
-                            message: "Document added with success",
-                          });
-                        },
-                      });
-                    },
-                  });
-                }
+                setKey(tempKey);
+                writeData({
+                  src: document.ref,
+                  data: {
+                    label: data.label,
+                    path: encrypt(path, tempKey),
+                  },
+                  options: { merge: true },
+                  onSuccess: () => {
+                    onClose();
+                    primaryToast({
+                      icon: "edit",
+                      message: "Document edited with success",
+                    });
+                  },
+                });
               }}
             >
               Submit
