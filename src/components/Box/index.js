@@ -23,6 +23,7 @@ const jsToCss = (style = {}) => {
     if (isUnset(value)) {
       return acc;
     }
+    
     return `
     ${acc}
     ${kebabCase(key)}:${getValueFromTheme(key, value)};
