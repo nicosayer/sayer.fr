@@ -17,7 +17,7 @@ function Root() {
           setTimeout(() => {
             setLoading(false);
             toast({
-              icon: "hand",
+              icon: "heart",
               message: "What did you expect?",
               intent: Intent.PRIMARY,
             });
