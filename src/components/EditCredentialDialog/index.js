@@ -101,7 +101,7 @@ export const EditCredentialDialog = ({ isOpen, onClose, credential }) => {
               onChange={handleChange("username")}
               large
               id="username-input"
-              placeholder="mark@gmail.com"
+              placeholder="john@doe.com"
             />
           </FormGroup>
           <FormGroup label="Password" labelFor="password-input" labelInfo="*">
@@ -157,7 +157,7 @@ export const EditCredentialDialog = ({ isOpen, onClose, credential }) => {
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
             <Box style={{ marginLeft: "-10px", marginRight: "auto" }}>
               <DeletePopover
-                src={document.ref}
+                src={credential.ref}
                 onSuccess={onClose}
                 name="credential"
               >

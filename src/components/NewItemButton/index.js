@@ -1,11 +1,17 @@
 import { Button, Intent, Menu, MenuItem, Popover } from "@blueprintjs/core";
 import { NewCredentialDialog } from "components/NewCredentialDialog";
 import { NewDocumentDialog } from "components/NewDocumentDialog";
+import { useRoles } from "hooks/useRoles";
 import React, { useState } from "react";
 
 export const NewItemButton = ({ board }) => {
   const [isNewDocumentOpen, setIsNewDocumentOpen] = useState(false);
   const [isNewCredentialOpen, setIsNewCredentialOpen] = useState(false);
+  const { isEditorOf } = useRoles();
+
+  if (!isEditorOf(board)) {
+    return null;
+  }
 
   return (
     <>

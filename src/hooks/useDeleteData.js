@@ -23,7 +23,11 @@ export const useDeleteData = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
+          logError(error, {
+            type: "useDeleteData",
+            collection,
+            id,
+          });
         });
     },
     loading,

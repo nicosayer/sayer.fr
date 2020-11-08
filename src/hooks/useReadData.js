@@ -50,7 +50,7 @@ export const useReadData = ({ collection, id, src, where } = {}) => {
       .catch((error) => {
         setData();
         setLoading(false);
-        logError(error);
+        logError(error, { type: "useReadData", collection, id, where });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collection, id, src, JSON.stringify(where)]);

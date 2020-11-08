@@ -21,9 +21,10 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
   const defaultData = useMemo(
     () => ({
       name: board.name,
-      access: board.access,
+      editors: board.editors,
+      viewers: board.viewers,
     }),
-    [board.name, board.access]
+    [board.name, board.editors, board.viewers]
   );
   const [data, setData] = useState(defaultData);
   const [writeData, loading] = useWriteData();
@@ -64,25 +65,25 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
           </FormGroup>
           <FormGroup
             large
-            label="Access"
-            labelFor="access-input"
+            label="Administrators"
+            labelFor="editors-input"
             labelInfo="*"
-            helperText="Users with access will be able to read, create, edit and delete."
+            helperText="Administrators will be able to read, create, edit and delete."
           >
             <TagInput
               fill
               large
               disabled={loading}
               leftIcon="envelope"
-              values={data.access}
-              placeholder="Enter emails"
+              values={data.editors}
+              placeholder="john@doe.com"
               onChange={(values) => {
                 setData({
                   ...data,
-                  access: uniq(values.filter(isEmail)),
+                  editors: uniq(values.filter(isEmail)),
                 });
               }}
-              id="access-input"
+              id="editors-input"
               addOnBlur
               tagProps={{
                 minimal: true,
@@ -98,7 +99,55 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
                     onClick={() => {
                       setData({
                         ...data,
-                        access: board.access,
+                        editors: board.editors,
+                      });
+                    }}
+                  />
+                </Tooltip>
+              }
+            />
+          </FormGroup>
+          <FormGroup
+            large
+            label="Viewers only"
+            labelFor="viewers-input"
+            labelInfo="*"
+            helperText="Viewers will only be able to read."
+          >
+            <TagInput
+              fill
+              large
+              disabled={loading}
+              leftIcon="envelope"
+              values={data.viewers}
+              placeholder="john@doe.com"
+              onChange={(values) => {
+                setData({
+                  ...data,
+                  viewers: uniq(
+                    values
+                      .filter(isEmail)
+                      .filter((value) => !data.editors.includes(value))
+                  ),
+                });
+              }}
+              id="viewers-input"
+              addOnBlur
+              tagProps={{
+                minimal: true,
+                fill: true,
+              }}
+              inputProps={{
+                autoCapitalize: "none",
+              }}
+              rightElement={
+                <Tooltip content="Reset">
+                  <Button
+                    icon="reset"
+                    onClick={() => {
+                      setData({
+                        ...data,
+                        viewers: board.viewers,
                       });
                     }}
                   />
@@ -126,17 +175,18 @@ export const EditBoardDialog = ({ isOpen, onClose, board }) => {
               disabled={!data.name}
               onClick={(event) => {
                 event.preventDefault();
-                if (!data.access.length) {
+                if (!data.editors.length) {
                   warningToast({
                     icon: "warning-sign",
-                    message: "You must enter at least one email",
+                    message: "You must enter at least one administrator",
                   });
                 } else {
                   writeData({
                     src: board.ref,
                     data: {
                       name: data.name,
-                      access: data.access,
+                      editors: data.editors,
+                      viewers: data.viewers,
                     },
                     onSuccess: () => {
                       onClose();

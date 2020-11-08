@@ -25,8 +25,12 @@ export const useDownloadFile = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
-          onError()
+          logError(error, {
+            type: "useDownloadFile",
+            ref,
+            name,
+          });
+          onError();
         });
     },
     loading,

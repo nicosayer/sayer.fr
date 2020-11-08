@@ -21,7 +21,8 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
   const defaultData = useMemo(
     () => ({
       name: "",
-      access: [user.email],
+      editors: [user.email],
+      viewers: [],
     }),
     [user.email]
   );
@@ -60,25 +61,25 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
           </FormGroup>
           <FormGroup
             large
-            label="Access"
-            labelFor="access-input"
+            label="Administrators"
+            labelFor="editors-input"
             labelInfo="*"
-            helperText="Users with access will be able to read, create, edit and delete."
+            helperText="Administrators will be able to read, create, edit and delete."
           >
             <TagInput
               fill
               large
               disabled={loading}
               leftIcon="envelope"
-              values={data.access}
-              placeholder="Enter emails"
+              values={data.editors}
+              placeholder="john@doe.com"
               onChange={(values) => {
                 setData({
                   ...data,
-                  access: uniq(values.filter(isEmail)),
+                  editors: uniq(values.filter(isEmail)),
                 });
               }}
-              id="access-input"
+              id="editors-input"
               addOnBlur
               tagProps={{
                 minimal: true,
@@ -94,12 +95,47 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
                     onClick={() => {
                       setData({
                         ...data,
-                        access: [user.email],
+                        editors: [user.email],
                       });
                     }}
                   />
                 </Tooltip>
               }
+            />
+          </FormGroup>
+          <FormGroup
+            large
+            label="Viewers only"
+            labelFor="viewers-input"
+            labelInfo="*"
+            helperText="Viewers will only be able to read."
+          >
+            <TagInput
+              fill
+              large
+              disabled={loading}
+              leftIcon="envelope"
+              values={data.viewers}
+              placeholder="john@doe.com"
+              onChange={(values) => {
+                setData({
+                  ...data,
+                  viewers: uniq(
+                    values
+                      .filter(isEmail)
+                      .filter((value) => !data.editors.includes(value))
+                  ),
+                });
+              }}
+              id="viewers-input"
+              addOnBlur
+              tagProps={{
+                minimal: true,
+                fill: true,
+              }}
+              inputProps={{
+                autoCapitalize: "none",
+              }}
             />
           </FormGroup>
         </div>
@@ -115,10 +151,10 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
               disabled={!data.name}
               onClick={(event) => {
                 event.preventDefault();
-                if (!data.access.length) {
+                if (!data.editors.length) {
                   warningToast({
                     icon: "warning-sign",
-                    message: "You must enter at least one email",
+                    message: "You must enter at least one administrator",
                   });
                 } else {
                   writeData({
@@ -126,7 +162,8 @@ export const NewBoardDialog = ({ isOpen, onClose }) => {
                     id: uniqueId(),
                     data: {
                       name: data.name,
-                      access: data.access,
+                      editors: data.editors,
+                      viewers: data.viewers,
                     },
                     onSuccess: () => {
                       onClose();

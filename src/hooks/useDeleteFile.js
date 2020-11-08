@@ -17,7 +17,10 @@ export const useDeleteFile = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
+          logError(useDeleteFile, {
+            type: "useDeleteData",
+            ref,
+          });
         });
     },
     loading,

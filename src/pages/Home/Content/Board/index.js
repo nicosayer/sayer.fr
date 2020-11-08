@@ -9,10 +9,14 @@ import { useEncryption } from "providers/EncryptionProvider";
 import Document from "pages/Home/Content/Board/Document";
 import { useSearch } from "providers/SearchProvider";
 import { EditBoardButton } from "components/EditBoardButton";
+import { useRoles } from "hooks/useRoles";
+import { RemoveFromViewersButton } from "components/RemoveFromViewersButton";
 
 function Board({ board }) {
   const { search } = useSearch();
   const { test, key } = useEncryption();
+  const { isEditorOf, isViewerOf } = useRoles();
+  const isEditor = useMemo(() => isEditorOf(board), [isEditorOf, board]);
   const [credentials = [], loadingCredentials] = useListenData({
     src: board.ref,
     collection: "credentials",
@@ -67,14 +71,25 @@ function Board({ board }) {
   }
 
   return (
-    <Box key={board.name} style={{ marginBottom: "40px" }}>
+    <Box style={{ marginBottom: "40px" }}>
       <H4>
         <Box style={{ display: "flex", alignItems: "center" }}>
           {board.name}
-          <Box style={{ marginLeft: "10px", marginRight: "10px" }}>
-            <EditBoardButton board={board} />
-          </Box>
-          <NewItemButton board={board} />
+          {isEditor && (
+            <Box style={{ marginLeft: "10px" }}>
+              <EditBoardButton board={board} />
+            </Box>
+          )}
+          {isEditor && (
+            <Box style={{ marginLeft: "10px" }}>
+              <NewItemButton board={board} />
+            </Box>
+          )}
+          {isViewerOf(board) && (
+            <Box style={{ marginLeft: "10px" }}>
+              <RemoveFromViewersButton board={board} />
+            </Box>
+          )}
         </Box>
       </H4>
 
@@ -91,15 +106,8 @@ function Board({ board }) {
             {Boolean(filteredCredentials.length) &&
               caseInsensitiveSortBy(filteredCredentials, "label").map(
                 (credential) => (
-                  <Box
-                    key={
-                      credential.label +
-                      credential.username +
-                      credential.password
-                    }
-                    style={{ marginBottom: "20px" }}
-                  >
-                    <Credential credential={credential} />
+                  <Box key={credential.uid} style={{ marginBottom: "20px" }}>
+                    <Credential credential={credential} isEditor={isEditor} />
                   </Box>
                 )
               )}
@@ -107,10 +115,10 @@ function Board({ board }) {
               caseInsensitiveSortBy(filteredDocuments, "label").map(
                 (document) => (
                   <Box
-                    key={document.label + document.path}
+                    key={document.uid}
                     style={{ marginBottom: "20px" }}
                   >
-                    <Document document={document} />
+                    <Document document={document} isEditor={isEditor} />
                   </Box>
                 )
               )}

@@ -49,7 +49,7 @@ export const useListenData = ({ collection, id, src, where } = {}) => {
       (error) => {
         setData();
         setLoading(false);
-        logError(error);
+        logError(error, { type: "useListenData", collection, id, where });
       }
     );
 

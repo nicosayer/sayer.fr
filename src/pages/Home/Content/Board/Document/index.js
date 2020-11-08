@@ -9,7 +9,7 @@ import { useWindowSize } from "hooks/useWindowSize";
 import { useToaster } from "providers/ToasterProvider";
 import { EditDocumentButton } from "components/EditDocumentButton";
 
-function Document({ document }) {
+function Document({ document, isEditor }) {
   const { test, decrypt } = useEncryption();
   const { isOnMobile } = useWindowSize();
   const [downloadFile, loadingDowloadFile] = useDownloadFile();
@@ -33,24 +33,28 @@ function Document({ document }) {
         >
           <Icon icon="id-number" color="lightgray" />
           <Box style={{ marginLeft: "10px" }}>{document.label}</Box>
-          <Box style={{ marginLeft: "10px" }}>
-            <EditDocumentButton document={document} />
-          </Box>
-          <Box style={{ marginLeft: "10px" }}>
-            <DeletePopover
-              src={document.ref}
-              name="document"
-              onSuccess={() => {
-                deleteFile({
-                  ref: decrypt(document.path),
-                });
-              }}
-            >
-              <Tooltip intent={Intent.DANGER} content="Remove document">
-                <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
-              </Tooltip>
-            </DeletePopover>
-          </Box>
+          {isEditor && (
+            <Box style={{ marginLeft: "10px" }}>
+              <EditDocumentButton document={document} />
+            </Box>
+          )}
+          {isEditor && (
+            <Box style={{ marginLeft: "10px" }}>
+              <DeletePopover
+                src={document.ref}
+                name="document"
+                onSuccess={() => {
+                  deleteFile({
+                    ref: decrypt(document.path),
+                  });
+                }}
+              >
+                <Tooltip intent={Intent.DANGER} content="Remove document">
+                  <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
+                </Tooltip>
+              </DeletePopover>
+            </Box>
+          )}
         </Box>
       </H4>
       <Callout intent={Intent.PRIMARY} icon={null}>

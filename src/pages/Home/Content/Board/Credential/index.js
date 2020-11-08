@@ -15,7 +15,7 @@ import { useToaster } from "providers/ToasterProvider";
 import { useState } from "react";
 import { EditCredentialButton } from "components/EditCredentialButton";
 
-function Credential({ credential }) {
+function Credential({ credential, isEditor }) {
   const [showPassword, setShowPassword] = useState(false);
   const { isOnMobile } = useWindowSize();
   const { decrypt, test } = useEncryption();
@@ -52,16 +52,20 @@ function Credential({ credential }) {
               </Box>
             </Box>
           )}
-          <Box style={{ marginLeft: "10px" }}>
-            <EditCredentialButton credential={credential} />
-          </Box>
-          <Box style={{ marginLeft: "10px" }}>
-            <DeletePopover src={credential.ref} name="credential">
-              <Tooltip intent={Intent.DANGER} content="Remove credential">
-                <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
-              </Tooltip>
-            </DeletePopover>
-          </Box>
+          {isEditor && (
+            <Box style={{ marginLeft: "10px" }}>
+              <EditCredentialButton credential={credential} />
+            </Box>
+          )}
+          {isEditor && (
+            <Box style={{ marginLeft: "10px" }}>
+              <DeletePopover src={credential.ref} name="credential">
+                <Tooltip intent={Intent.DANGER} content="Remove credential">
+                  <AnchorButton intent={Intent.DANGER} minimal icon="trash" />
+                </Tooltip>
+              </DeletePopover>
+            </Box>
+          )}
         </Box>
       </H4>
       <Callout intent={Intent.PRIMARY} icon={null}>

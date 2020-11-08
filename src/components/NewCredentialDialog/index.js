@@ -91,7 +91,7 @@ export const NewCredentialDialog = ({ isOpen, onClose, board }) => {
               onChange={handleChange("username")}
               large
               id="username-input"
-              placeholder="mark@gmail.com"
+              placeholder="john@doe.com"
             />
           </FormGroup>
           <FormGroup label="Password" labelFor="password-input" labelInfo="*">

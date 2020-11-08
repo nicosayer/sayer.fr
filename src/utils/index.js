@@ -8,8 +8,8 @@ export const isSet = (value) => {
   return !isUnset(value);
 };
 
-export const logError = (error) => {
-  console.log(`Error: ${error}`);
+export const logError = (error, info = {}) => {
+  console.log(`Error: ${error}\nInfo: ${JSON.stringify(info)}`);
 };
 
 export const sanitize = (string) => {

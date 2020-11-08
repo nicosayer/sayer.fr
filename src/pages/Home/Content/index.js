@@ -10,18 +10,24 @@ import { useEncryption } from "providers/EncryptionProvider";
 import { useSearch } from "providers/SearchProvider";
 import { useUser } from "providers/UserProvider";
 import { caseInsensitiveSortBy } from "utils";
+import { uniqBy } from "lodash/fp";
 
 function Home() {
   const { key } = useEncryption();
   const { user } = useUser();
   const { search } = useSearch();
 
-  const [boards = [], loading] = useListenData({
+  const [viewerBoards = [], loadingViewerBoards] = useListenData({
     collection: "boards",
-    where: [["access", "array-contains", user.email]],
+    where: [["viewers", "array-contains", user.email]],
   });
 
-  if (loading) {
+  const [editorsBoards = [], loadingEditorsBoards] = useListenData({
+    collection: "boards",
+    where: [["editors", "array-contains", user.email]],
+  });
+
+  if (loadingViewerBoards || loadingEditorsBoards) {
     return (
       <Box style={{ marginTop: "40px" }}>
         <Spinner />
@@ -53,8 +59,11 @@ function Home() {
           />
         </Box>
       )}
-      {caseInsensitiveSortBy(boards, "name").map((board) => (
-        <Board key={board.name} board={board} />
+      {caseInsensitiveSortBy(
+        uniqBy("uid", [...viewerBoards, ...editorsBoards]),
+        "name"
+      ).map((board) => (
+        <Board key={board.uid} board={board} />
       ))}
       {!search && key && (
         <Box style={{ marginBottom: "40px" }}>

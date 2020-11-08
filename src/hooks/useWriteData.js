@@ -1,12 +1,24 @@
 import { db } from "config/firebase";
+import { useToaster } from "providers/ToasterProvider";
 import { useState } from "react";
 import { logError } from "utils";
 
 export const useWriteData = () => {
   const [loading, setLoading] = useState(false);
+  const { dangerToast } = useToaster();
 
   return [
-    ({ collection, id, data, src, onSuccess = () => {}, options }) => {
+    ({
+      collection,
+      id,
+      data,
+      src,
+      onSuccess = () => {},
+      options,
+      onError = () => {
+        dangerToast({ icon: "warning-sign", message: "An unexpected error occured" });
+      },
+    }) => {
       setLoading(true);
       let mutation = src || db;
       if (collection) {
@@ -23,7 +35,8 @@ export const useWriteData = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
+          logError(error, { type: "useWriteData", collection, id, data });
+          onError();
         });
     },
     loading,

@@ -23,7 +23,7 @@ export const UserProvider = ({ children }) => {
       (error) => {
         setUser();
         setLoading(false);
-        logError(error);
+        logError(error, { type: "UserProvider" });
       }
     );
 

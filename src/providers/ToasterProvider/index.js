@@ -36,6 +36,9 @@ export const ToasterProvider = ({ children }) => {
             ...options,
           });
         },
+        toast: (options = {}) => {
+          toasterRef.current?.show(options);
+        },
       }}
     >
       <Toaster position={Position.BOTTOM} ref={toasterRef} maxToasts={3} />

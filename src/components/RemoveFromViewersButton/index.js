@@ -1,19 +1,21 @@
 import { Button, Classes, Intent, Popover } from "@blueprintjs/core";
 import { Box } from "components/Box";
-import { useDeleteData } from "hooks/useDeleteData";
+import { useRoles } from "hooks/useRoles";
+import { useWriteData } from "hooks/useWriteData";
 import { useToaster } from "providers/ToasterProvider";
-import { useState } from "react";
-import { capitalize } from "lodash/fp";
+import { useUser } from "providers/UserProvider";
+import React, { useState } from "react";
 
-export const DeletePopover = ({
-  src,
-  onSuccess = () => {},
-  children,
-  name = "item",
-}) => {
-  const [isDeletePopoverOpen, setIsDeletePopoverOpen] = useState(false);
-  const [deleteData, loading] = useDeleteData();
+export const RemoveFromViewersButton = ({ board }) => {
+  const { isViewerOf } = useRoles();
+  const [writeData, loading] = useWriteData();
+  const { user } = useUser();
   const { toast } = useToaster();
+  const [isDeletePopoverOpen, setIsDeletePopoverOpen] = useState(false);
+
+  if (!isViewerOf(board)) {
+    return null;
+  }
 
   return (
     <Popover
@@ -21,7 +23,7 @@ export const DeletePopover = ({
       onInteraction={setIsDeletePopoverOpen}
       content={
         <>
-          <p>Are you sure you want to delete this {name}?</p>
+          <p>Are you sure you want to remove this board?</p>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
             <Box style={{ marginRight: "10px" }}>
               <Button
@@ -34,27 +36,33 @@ export const DeletePopover = ({
             <Button
               intent={Intent.DANGER}
               onClick={() => {
-                deleteData({
-                  src,
+                writeData({
+                  src: board.ref,
+                  data: {
+                    name: board.name,
+                    editors: board.editors,
+                    viewers: board.viewers.filter(
+                      (viewer) => viewer !== user.email
+                    ),
+                  },
                   onSuccess: () => {
                     toast({
                       icon: "trash",
-                      message: `${capitalize(name)} deleted with success`,
+                      message: "Board removed with success",
                     });
-                    onSuccess();
                   },
                 });
               }}
               loading={loading}
             >
-              Delete
+              Remove
             </Button>
           </div>
         </>
       }
       popoverClassName={Classes.POPOVER_CONTENT_SIZING}
     >
-      {children}
+      <Button loading={loading} icon="trash" large minimal />
     </Popover>
   );
 };

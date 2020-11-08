@@ -17,8 +17,8 @@ export const useUploadFile = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
           onError(error);
+          logError(error, { type: "useUploadFile", ref, file });
         });
     },
     loading,
