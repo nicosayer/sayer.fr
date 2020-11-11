@@ -5,11 +5,7 @@ import { useState } from "react";
 import { logError } from "utils";
 
 const cleanDoc = (doc) => {
-  if (doc.exists) {
-    return { uid: doc.id, ref: doc.ref, ...doc.data() };
-  }
-
-  return undefined;
+  return { uid: doc.id, ref: doc.ref, ...doc.data() };
 };
 
 const cleanSnapshot = (snapshot) => {

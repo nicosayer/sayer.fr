@@ -13,7 +13,7 @@ export const useWriteData = () => {
       id,
       data,
       src,
-      onSuccess = () => {},
+      onSuccess = () => null,
       options,
       onError = () => {
         dangerToast({ icon: "warning-sign", message: "An unexpected error occured" });

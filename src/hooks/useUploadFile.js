@@ -6,7 +6,7 @@ export const useUploadFile = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ ref = uniqueId(), file, onSuccess = () => {}, onError = () => {} }) => {
+    ({ ref = uniqueId(), file, onSuccess = () => null, onError = () => null }) => {
       setLoading(true);
       return storage
         .ref(ref)

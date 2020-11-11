@@ -6,7 +6,7 @@ export const useDeleteFile = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ ref, onSuccess = () => {} }) => {
+    ({ ref, onSuccess = () => null }) => {
       setLoading(true);
       return storage
         .ref(ref)

@@ -1,23 +1,24 @@
 import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "styles/global.css";
 
 import { UserProvider } from "providers/UserProvider";
 import Root from "pages";
-import { EncryptionProvider } from "providers/EncryptionProvider";
 import { ToasterProvider } from "providers/ToasterProvider";
-import { SearchProvider } from "providers/SearchProvider";
+import { WindowSizeProvider } from "providers/WindowSizeProvider";
+import { DataProvider } from "providers/useData";
 
 function App() {
   return (
-    <EncryptionProvider>
-      <UserProvider>
-        <ToasterProvider>
-          <SearchProvider>
+    <UserProvider>
+      <ToasterProvider>
+        <WindowSizeProvider>
+          <DataProvider>
             <Root />
-          </SearchProvider>
-        </ToasterProvider>
-      </UserProvider>
-    </EncryptionProvider>
+          </DataProvider>
+        </WindowSizeProvider>
+      </ToasterProvider>
+    </UserProvider>
   );
 }
 

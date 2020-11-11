@@ -1,6 +1,5 @@
-import { css, cx } from "emotion";
+import { css as emotionCSS, cx } from "emotion";
 import theme, { cssKeyToThemeKey } from "config/theme";
-
 import { kebabCase } from "lodash/fp";
 import { isUnset } from "utils";
 
@@ -23,7 +22,7 @@ const jsToCss = (style = {}) => {
     if (isUnset(value)) {
       return acc;
     }
-    
+
     return `
     ${acc}
     ${kebabCase(key)}:${getValueFromTheme(key, value)};
@@ -33,10 +32,10 @@ const jsToCss = (style = {}) => {
 
 export const Box = ({
   as = "div",
-  style,
-  hover,
-  focus,
   className,
+  style,
+  classes = {},
+  css = "",
   ...rest
 }) => {
   const Element = as;
@@ -45,10 +44,12 @@ export const Box = ({
     <Element
       className={cx(
         className,
-        css`
+        emotionCSS`
           ${withTheme(style)}
-          ${hover ? `&:hover{${jsToCss(hover)}}` : ""}
-          ${focus ? `&:focus{${jsToCss(focus)}}` : ""}
+          ${Object.entries(classes).map(
+            ([key, value]) => `&:${key}{${jsToCss(value)}}`
+          )}
+          ${css}
         `
       )}
       {...rest}

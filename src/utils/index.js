@@ -16,8 +16,15 @@ export const sanitize = (string) => {
   return flow(deburr, toLower)(string.replace(/[^a-zA-Z0-9]/g, ""));
 };
 
-export const uniqueId = () => {
+export const randomId = () => {
   return Math.random().toString(36).substring(2);
+};
+
+export const uniqueId = (prefix = "") => {
+  if (prefix) {
+    return `${prefix}-${randomId()}${randomId()}`;
+  }
+  return `${randomId()}${randomId()}`;
 };
 
 export const searchInString = (string, search) => {
@@ -28,6 +35,13 @@ export const isEmail = (string) => {
   return string.match(/^.+@.+\..+$/);
 };
 
-export const caseInsensitiveSortBy = (array, string) => {
-  return sortBy((element) => element[string]?.toLowerCase(), array);
+export const caseInsensitiveSortBy = (array, strings) => {
+  return sortBy(
+    strings.map((string) => (element) => element[string]?.toLowerCase()),
+    array
+  );
+};
+
+export const formatFirestoreDate = (date) => {
+  return new Date(date.seconds * 1000);
 };

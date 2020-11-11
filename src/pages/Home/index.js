@@ -1,11 +1,11 @@
-import Content from "pages/Home/Content";
-import Navbar from "pages/Home/Navbar";
+import Body from "pages/Home/Body";
+import Header from "pages/Home/Header";
 
 function Home() {
   return (
     <>
-      <Navbar />
-      <Content />
+      <Header />
+      <Body />
     </>
   );
 }

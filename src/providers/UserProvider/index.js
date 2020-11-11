@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { auth } from "config/firebase";
 import { logError } from "utils";
 import { logout } from "utils/auth";
-import { useEncryption } from "providers/EncryptionProvider";
 
 const UserContext = React.createContext();
 
@@ -12,7 +11,6 @@ export const useUser = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
-  const { setKey } = useEncryption();
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(
@@ -38,7 +36,6 @@ export const UserProvider = ({ children }) => {
         isAuth: Boolean(user),
         logout: () => {
           logout();
-          setKey("");
         },
       }}
     >

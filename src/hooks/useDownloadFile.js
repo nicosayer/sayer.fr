@@ -7,7 +7,7 @@ export const useDownloadFile = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ ref, name = uniqueId, onSuccess = () => {}, onError = () => {} }) => {
+    ({ ref, name = uniqueId(), onSuccess = () => null, onError = () => null }) => {
       setLoading(true);
       return storage
         .ref(ref)

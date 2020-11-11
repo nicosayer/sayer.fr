@@ -5,11 +5,7 @@ import { useState } from "react";
 import { logError } from "utils";
 
 const cleanDoc = (doc) => {
-  if (doc.exists) {
-    return { uid: doc.id, ref: doc.ref, ...doc.data() };
-  }
-
-  return undefined;
+  return { uid: doc.id, ref: doc.ref, ...doc.data() };
 };
 
 const cleanSnapshot = (snapshot) => {
@@ -24,11 +20,15 @@ const cleanSnapshot = (snapshot) => {
   return cleanDoc(snapshot);
 };
 
-export const useListenData = ({ collection, id, src, where } = {}) => {
+export const useListenData = ({ collection, id, src, where, skip } = {}) => {
   const [data, setData] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!skip);
 
   useEffect(() => {
+    if (skip) {
+      return;
+    }
+
     let unsubscribe = src || db;
     if (collection) {
       unsubscribe = unsubscribe.collection(collection);
@@ -56,7 +56,7 @@ export const useListenData = ({ collection, id, src, where } = {}) => {
     // Unsubcribe
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [collection, id, src, JSON.stringify(where)]);
+  }, [collection, id, src, JSON.stringify(where), skip]);
 
   return useMemo(() => [data, loading], [data, loading]);
 };
