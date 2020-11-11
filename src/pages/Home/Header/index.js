@@ -65,7 +65,7 @@ function Header() {
                 setLoading(false);
                 successToast({
                   icon: "tick",
-                  message: "Les attestations ont été envoyées",
+                  message: "Les attestations ont été envoyées sur votre email",
                 });
               })
               .catch(function (error) {

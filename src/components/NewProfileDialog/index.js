@@ -10,6 +10,7 @@ import { useToaster } from "providers/ToasterProvider";
 import { useUser } from "providers/UserProvider";
 import { uniqueId } from "utils";
 import { formatDate, parseDate } from "utils/date";
+import { useData } from "providers/useData";
 
 const DEFAULT_DATA = {
   firstName: "",
@@ -22,6 +23,7 @@ const DEFAULT_DATA = {
 };
 
 export const NewProfileDialog = ({ isOpen, onClose }) => {
+  const { selectedProfiles, setSelectedProfiles } = useData();
   const [data, setData] = useState(DEFAULT_DATA);
   const [writeData, loading] = useWriteData();
   const { primaryToast } = useToaster();
@@ -64,11 +66,13 @@ export const NewProfileDialog = ({ isOpen, onClose }) => {
             intent={Intent.PRIMARY}
             onClick={(event) => {
               event.preventDefault();
+              const id = uniqueId();
               writeData({
                 collection: `users/${user.email}/profiles`,
-                id: uniqueId(),
+                id,
                 data: data,
                 onSuccess: () => {
+                  setSelectedProfiles([...selectedProfiles, id]);
                   onClose();
                   primaryToast({
                     icon: "edit",

@@ -10,8 +10,11 @@ import { useToaster } from "providers/ToasterProvider";
 import { useUser } from "providers/UserProvider";
 import { formatDate, formatFirestoreDate, parseDate } from "utils/date";
 import { ConfirmDeleteButton } from "components/ConfirmDeleteButton";
+import { useData } from "providers/useData";
+import { uniq } from "lodash/fp";
 
 export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
+  const { selectedProfiles, setSelectedProfiles } = useData();
   const defaultData = useMemo(
     () => ({
       firstName: profile.firstName,
@@ -79,6 +82,7 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
                 id: profile.uid,
                 data: data,
                 onSuccess: () => {
+                  setSelectedProfiles(uniq([...selectedProfiles, profile.uid]));
                   onClose();
                   primaryToast({
                     icon: "edit",
@@ -100,6 +104,9 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
           large
           onSuccess={() => {
             toast({ icon: "trash", message: "Profil supprimé avec succès" });
+            setSelectedProfiles(
+              selectedProfiles.filter((profile) => profile !== profile.uid)
+            );
           }}
         >
           Delete

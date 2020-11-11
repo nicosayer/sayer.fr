@@ -61,6 +61,7 @@ exports.sendCertificates = functions.https.onCall(async (data, context) => {
           throw new Error("Profile is corrupted");
         }
         return {
+          uid: profile.uid,
           firstName: profile.firstName,
           lastName: profile.lastName,
           birthday: new Date(profile.birthDate.seconds * 1000),
@@ -72,17 +73,19 @@ exports.sendCertificates = functions.https.onCall(async (data, context) => {
       })
     );
 
-  await db.collection("users").doc(email).set({
-    reasons: data.reasons,
-    profiles: data.profiles,
-  });
+  await db
+    .collection("users")
+    .doc(email)
+    .set({
+      reasons: data.reasons,
+      profiles: profiles.map((profile) => profile.uid),
+    });
 
   const validReasons = REASONS.filter((reason) =>
     data.reasons.includes(reason.slug)
   );
 
   if (
-    data.profiles.length !== profiles.length ||
     new Date(data.date) === "Invalid Date" ||
     !profiles.length ||
     !validReasons.length
@@ -93,12 +96,6 @@ exports.sendCertificates = functions.https.onCall(async (data, context) => {
   const attachments = await Promise.all(
     validReasons.flatMap((reason, reasonIndex) =>
       profiles.map((profile, userIndex) => {
-        console.log(
-          `Building certificate #${reasonIndex * profiles.length + userIndex} ${
-            reason.name
-          } for ${profile.firstName[0]}. ${profile.lastName}...`
-        );
-
         return attestFrCovid.default(profile, new Date(data.date), [
           reason.slug,
         ]);
@@ -112,10 +109,6 @@ exports.sendCertificates = functions.https.onCall(async (data, context) => {
       }))
     )
   );
-
-  console.log(`Finished building ${attachments.length} certificate(s) !`);
-
-  console.log("Starting email server...");
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -139,8 +132,6 @@ exports.sendCertificates = functions.https.onCall(async (data, context) => {
     html: "<b>Generated with covid.sayer.fr</b>",
     attachments,
   });
-
-  console.log(`Email sent with ${attachments.length} attachment(s) !`);
 
   return { success: true };
 });
