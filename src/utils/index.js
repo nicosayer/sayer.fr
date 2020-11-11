@@ -41,7 +41,3 @@ export const caseInsensitiveSortBy = (array, strings) => {
     array
   );
 };
-
-export const formatFirestoreDate = (date) => {
-  return new Date(date.seconds * 1000);
-};

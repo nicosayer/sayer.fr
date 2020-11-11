@@ -8,7 +8,7 @@ import { useWriteData } from "hooks/useWriteData";
 import { Intent } from "@blueprintjs/core";
 import { useToaster } from "providers/ToasterProvider";
 import { useUser } from "providers/UserProvider";
-import { formatFirestoreDate } from "utils";
+import { formatDate, formatFirestoreDate, parseDate } from "utils/date";
 import { ConfirmDeleteButton } from "components/ConfirmDeleteButton";
 
 export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
@@ -36,7 +36,7 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
   const [writeData, loading] = useWriteData();
   const { primaryToast, toast } = useToaster();
   const { user } = useUser();
-  console.log(data);
+
   useEffect(() => {
     setData(defaultData);
   }, [isOpen, defaultData]);
@@ -136,14 +136,10 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
               inputProps: { large: true },
               value: data.birthDate,
               onChange: handleChange("birthDate"),
-              formatDate: (date) => {
-                return date.toLocaleDateString("fr", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                });
-              },
-              parseDate: (string) => new Date(string),
+              formatDate: formatDate,
+              parseDate: parseDate,
+              minDate: new Date("1900-01-01"),
+              maxDate: new Date("2100-12-31"),
             }}
           />
           <Label

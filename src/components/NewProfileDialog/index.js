@@ -9,6 +9,7 @@ import { Intent } from "@blueprintjs/core";
 import { useToaster } from "providers/ToasterProvider";
 import { useUser } from "providers/UserProvider";
 import { uniqueId } from "utils";
+import { formatDate, parseDate } from "utils/date";
 
 const DEFAULT_DATA = {
   firstName: "",
@@ -112,14 +113,10 @@ export const NewProfileDialog = ({ isOpen, onClose }) => {
               inputProps: { large: true },
               value: data.birthDate,
               onChange: handleChange("birthDate"),
-              formatDate: (date) => {
-                return date.toLocaleDateString("fr", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                });
-              },
-              parseDate: (string) => new Date(string),
+              formatDate: formatDate,
+              parseDate: parseDate,
+              minDate: new Date("1900-01-01"),
+              maxDate: new Date("2100-12-31"),
             }}
           />
           <Label

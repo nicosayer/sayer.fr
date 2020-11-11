@@ -8,10 +8,11 @@ import { REASONS } from "config/enums";
 import { NewProfileDialog } from "components/NewProfileDialog";
 import { useListenData } from "hooks/useListenData";
 import { useData } from "providers/useData";
-import { EmailsInput } from "components/EmailsInput";
 import { useReadData } from "hooks/useReadData";
 import { caseInsensitiveSortBy } from "utils";
+import { formatDateTime, parseDateTime } from "utils/date";
 import { EditProfileDialog } from "components/EditProfileDialog";
+import { css } from "emotion";
 
 const Title = ({ title, description }) => {
   return (
@@ -65,7 +66,15 @@ const Grid = ({
 
 const Item = ({ checked, setChecked, children, title, item }) => {
   return (
-    <Box style={{ cursor: "pointer" }}>
+    <Box
+      style={{ cursor: "pointer" }}
+      css={css`
+        .bp3-callout,
+        .bp3-heading {
+          color: ${checked ? undefined : "grey"};
+        }
+      `}
+    >
       <Callout
         title={
           <Box style={{ display: "flex", alignItens: "center" }}>
@@ -102,8 +111,6 @@ function Body() {
     setSelectedProfiles,
     selectedReasons,
     setSelectedReasons,
-    emails,
-    setEmails,
     date,
     setData,
   } = useData();
@@ -118,12 +125,6 @@ function Body() {
     src: data.ref,
     skip: !data.ref,
   });
-
-  useEffect(() => {
-    if (data.emails) {
-      setEmails(data.emails);
-    }
-  }, [data.emails, setEmails]);
 
   useEffect(() => {
     if (data.reasons) {
@@ -162,39 +163,18 @@ function Body() {
         margin: "auto",
       }}
     >
-      <Title title="Date" description="Date et heure de la sortie" />
+      <Title title="Date et heure" />
       <Box style={{ marginBottom: "40px" }}>
         <DateInput
+          minDate={new Date("1900-01-01")}
+          maxDate={new Date("2100-12-31")}
           fill
           value={date}
           onChange={setData}
-          formatDate={(date) =>
-            date.toLocaleDateString("fr", {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })
-          }
-          parseDate={(str) => new Date(str)}
           inputProps={{ large: true, leftIcon: "calendar" }}
           timePrecision={TimePrecision.MINUTE}
-        />
-      </Box>
-      <Title
-        title="Emails"
-        description="Les attestations serons envoyés à ces emails."
-      />
-      <Box style={{ marginBottom: "40px" }}>
-        <EmailsInput
-          values={emails}
-          fill
-          large
-          onReset={() => {
-            setEmails([user.email]);
-          }}
-          onChange={setEmails}
+          formatDate={formatDateTime}
+          parseDate={parseDateTime}
         />
       </Box>
       <Title
@@ -211,7 +191,6 @@ function Body() {
             </Box>
           </>
         }
-        description="Les personnes concernées par la sortie."
       />
       <Box style={{ marginBottom: "40px" }}>
         <Grid
@@ -244,10 +223,7 @@ function Body() {
           )}
         />
       </Box>
-      <Title
-        title="Motifs"
-        description="Le motif de la sotie. Vous pouvez en sélectionner plusieurs."
-      />
+      <Title title="Motifs" />
       <Box style={{ marginBottom: "40px" }}>
         <Grid
           items={REASONS}
