@@ -70,6 +70,7 @@ const Item = ({ checked, setChecked, children, title, item }) => {
         .bp3-callout,
         .bp3-heading {
           color: ${checked ? undefined : "grey"};
+          transition: all 0.2s;
         }
       `}
     >
@@ -233,6 +234,11 @@ function Body() {
           items={REASONS}
           selectedItems={selectedReasons}
           setSelectedItems={setSelectedReasons}
+          renderTitle={(item) => (
+            <Box style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+              {item.label}
+            </Box>
+          )}
         />
       </Box>
     </Box>
