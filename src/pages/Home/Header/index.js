@@ -1,4 +1,5 @@
 import { Button, Intent } from "@blueprintjs/core";
+import { certificateGenerator } from "certificateGenerator";
 import { Box } from "components/Box";
 import { LogoutButton } from "components/LogoutButton";
 import { REASONS } from "config/enums";
@@ -9,7 +10,6 @@ import { useUser } from "providers/UserProvider";
 import { useWindowSize } from "providers/WindowSizeProvider";
 import { useMemo, useState } from "react";
 import { formatDate, formatTime } from "utils/date";
-import { generatePDF } from "utils/generatePDF";
 
 const blobToBase64 = (blob) => {
   const reader = new FileReader();
@@ -77,8 +77,8 @@ function Header() {
             const files = await Promise.all(
               validReasons.flatMap((reason) =>
                 validProfiles.map((profile) =>
-                  generatePDF({
-                    inputs: {
+                  certificateGenerator({
+                    profiles: {
                       ...profile,
                       datesortie: formatDate(date),
                       heuresortie: formatTime(date),
