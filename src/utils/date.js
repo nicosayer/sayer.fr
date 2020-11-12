@@ -62,6 +62,22 @@ export const parseDate = (string) => {
   return date;
 };
 
+export const parseTime = (string) => {
+  if (isDate(string)) {
+    return string;
+  }
+
+  const [hours, minutes] = string.split(":");
+
+  const date = new Date(0, 0, 0, hours, minutes);
+
+  if (!isDate(date)) {
+    return null;
+  }
+
+  return date;
+};
+
 export const parseDateTime = (string) => {
   if (isDate(string)) {
     return string;

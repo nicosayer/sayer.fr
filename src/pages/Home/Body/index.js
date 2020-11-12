@@ -1,14 +1,17 @@
 import { Box } from "components/Box";
-import { DateInput, TimePrecision } from "@blueprintjs/datetime";
+import { DateInput } from "@blueprintjs/datetime";
 import { Callout, Intent, Spinner } from "@blueprintjs/core";
 import { DialogButton } from "components/DialogButton";
 import { REASONS } from "config/enums";
 import { NewProfileDialog } from "components/NewProfileDialog";
 import { useData } from "providers/useData";
 import { caseInsensitiveSortBy } from "utils";
-import { formatDateTime, parseDateTime } from "utils/date";
+import { formatDate, formatTime, parseDate, parseTime } from "utils/date";
 import { EditProfileDialog } from "components/EditProfileDialog";
 import { css } from "emotion";
+import { Button } from "components/Button";
+import { Input } from "components/Input";
+import { useWindowSize } from "providers/WindowSizeProvider";
 
 const Title = ({ title, description }) => {
   return (
@@ -111,7 +114,10 @@ function Body() {
     setData,
     loading,
     profiles,
+    time,
+    setTime,
   } = useData();
+  const { isOnComputer } = useWindowSize();
 
   if (loading) {
     return (
@@ -134,17 +140,47 @@ function Body() {
       }}
     >
       <Title title="Date et heure" />
-      <Box style={{ marginBottom: "40px" }}>
+      <Box
+        style={{
+          display: "grid",
+          gridGap: "10px",
+          gridTemplateColumns: "3fr 2fr 1fr",
+          marginBottom: "40px",
+        }}
+      >
         <DateInput
           minDate={new Date("1900-01-01")}
           maxDate={new Date("2100-12-31")}
           fill
-          value={date}
-          onChange={setData}
-          inputProps={{ large: true, leftIcon: "calendar" }}
-          timePrecision={TimePrecision.MINUTE}
-          formatDate={formatDateTime}
-          parseDate={parseDateTime}
+          value={parseDate(date)}
+          onChange={(value) => setData(formatDate(value))}
+          inputProps={{
+            large: true,
+            leftIcon: "calendar",
+          }}
+          formatDate={formatDate}
+          parseDate={parseDate}
+        />
+        <Input
+          leftIcon="time"
+          fill
+          large
+          value={time}
+          onChange={setTime}
+          onBlur={(value) => {
+            if (!parseTime(value)) {
+              setTime(formatTime(new Date()));
+            } else {
+              setTime(formatTime(parseTime(value)));
+            }
+          }}
+        />
+        <Button
+          icon="updated"
+          onClick={() => {
+            setData(formatDate(new Date()));
+            setTime(formatTime(new Date()));
+          }}
         />
       </Box>
       <Title
