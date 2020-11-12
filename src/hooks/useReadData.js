@@ -1,55 +1,46 @@
 import { db } from "config/firebase";
-import { useEffect } from "react";
-import { useMemo } from "react";
 import { useState } from "react";
 import { logError } from "utils";
+import { cleanSnapshot } from "utils/firebase";
 
-const cleanDoc = (doc) => {
-  return { uid: doc.id, ref: doc.ref, ...doc.data() };
-};
+export const useReadData = () => {
+  const [loading, setLoading] = useState(false);
 
-const cleanSnapshot = (snapshot) => {
-  if (Array.isArray(snapshot.docs)) {
-    return snapshot.docs
-      .map((doc) => {
-        return cleanDoc(doc);
-      })
-      .filter(Boolean);
-  }
-
-  return cleanDoc(snapshot);
-};
-
-export const useReadData = ({ collection, id, src, where } = {}) => {
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let query = src || db;
-    if (collection) {
-      query = query.collection(collection);
-    }
-    if (id) {
-      query = query.doc(id);
-    }
-    if (where) {
-      where.forEach((w) => {
-        query = query.where(...w);
-      });
-    }
-    query
-      .get()
-      .then((snapshot) => {
-        setData(cleanSnapshot(snapshot));
-        setLoading(false);
-      })
-      .catch((error) => {
-        setData();
-        setLoading(false);
-        logError(error, { type: "useReadData", collection, id, where });
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [collection, id, src, JSON.stringify(where)]);
-
-  return useMemo(() => [data, loading], [data, loading]);
+  return [
+    ({
+      collection,
+      id,
+      src,
+      onSuccess = () => null,
+      onError = () => null,
+      where,
+    }) => {
+      setLoading(true);
+      let query = src || db;
+      if (collection) {
+        query = query.collection(collection);
+      }
+      if (id) {
+        query = query.doc(id);
+      }
+      if (where) {
+        where.forEach((w) => {
+          query = query.where(...w);
+        });
+      }
+      return query
+        .get()
+        .then((snapshot) => {
+          setLoading(false);
+          onSuccess();
+          return cleanSnapshot(snapshot);
+        })
+        .catch((error) => {
+          setLoading(false);
+          logError(error);
+          onError();
+        });
+    },
+    loading,
+  ];
 };

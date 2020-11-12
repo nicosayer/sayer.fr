@@ -7,7 +7,12 @@ export const useDownloadFile = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ ref, name = uniqueId(), onSuccess = () => null, onError = () => null }) => {
+    ({
+      ref,
+      name = uniqueId(),
+      onSuccess = () => null,
+      onError = () => null,
+    }) => {
       setLoading(true);
       return storage
         .ref(ref)
@@ -25,11 +30,7 @@ export const useDownloadFile = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error, {
-            type: "useDownloadFile",
-            ref,
-            name,
-          });
+          logError(error);
           onError();
         });
     },

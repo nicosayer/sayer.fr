@@ -3,22 +3,7 @@ import { useEffect } from "react";
 import { useMemo } from "react";
 import { useState } from "react";
 import { logError } from "utils";
-
-const cleanDoc = (doc) => {
-  return { uid: doc.id, ref: doc.ref, ...doc.data() };
-};
-
-const cleanSnapshot = (snapshot) => {
-  if (Array.isArray(snapshot.docs)) {
-    return snapshot.docs
-      .map((doc) => {
-        return cleanDoc(doc);
-      })
-      .filter(Boolean);
-  }
-
-  return cleanDoc(snapshot);
-};
+import { cleanSnapshot } from "utils/firebase";
 
 export const useListenData = ({ collection, id, src, where, skip } = {}) => {
   const [data, setData] = useState();
@@ -49,7 +34,7 @@ export const useListenData = ({ collection, id, src, where, skip } = {}) => {
       (error) => {
         setData();
         setLoading(false);
-        logError(error, { type: "useListenData", collection, id, where });
+        logError(error);
       }
     );
 

@@ -8,8 +8,10 @@ export const isSet = (value) => {
   return !isUnset(value);
 };
 
-export const logError = (error, info = {}) => {
-  console.log(`Error: ${error}\nInfo: ${JSON.stringify(info)}`);
+export const logError = (error, info) => {
+  console.log(
+    `Error: ${error}${info ? `\nInfo: ${JSON.stringify(info)}` : ""}`
+  );
 };
 
 export const sanitize = (string) => {
@@ -40,4 +42,8 @@ export const caseInsensitiveSortBy = (array, strings) => {
     strings.map((string) => (element) => element[string]?.toLowerCase()),
     array
   );
+};
+
+export const testEnv = (envVar) => {
+  return envVar !== 0 && envVar !== "0";
 };

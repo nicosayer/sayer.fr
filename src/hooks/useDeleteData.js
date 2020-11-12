@@ -6,7 +6,7 @@ export const useDeleteData = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ collection, id, src, onSuccess = () => null }) => {
+    ({ collection, id, src, onSuccess = () => null, onError = () => null }) => {
       setLoading(true);
       let mutation = src || db;
       if (collection) {
@@ -23,11 +23,8 @@ export const useDeleteData = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error, {
-            type: "useDeleteData",
-            collection,
-            id,
-          });
+          logError(error);
+          onError();
         });
     },
     loading,

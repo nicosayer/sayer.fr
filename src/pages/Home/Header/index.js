@@ -3,13 +3,12 @@ import { certificateGenerator } from "certificateGenerator";
 import { Box } from "components/Box";
 import { LogoutButton } from "components/LogoutButton";
 import { REASONS } from "config/enums";
-import { functions } from "config/firebase";
+import { useCallCloudFunction } from "hooks/useCallCloudFunction";
 import { useToaster } from "providers/ToasterProvider";
 import { useData } from "providers/useData";
 import { useUser } from "providers/UserProvider";
 import { useWindowSize } from "providers/WindowSizeProvider";
 import { useMemo, useState } from "react";
-import { formatDate, formatTime } from "utils/date";
 
 const blobToBase64 = (blob) => {
   const reader = new FileReader();
@@ -23,8 +22,9 @@ const blobToBase64 = (blob) => {
 
 function Header() {
   const { isOnComputer } = useWindowSize();
-  const { selectedProfiles, selectedReason, date, profiles } = useData();
+  const { selectedProfiles, selectedReason, date, profiles, time } = useData();
   const { user } = useUser();
+  const [callCloudFunction] = useCallCloudFunction();
   const [loading, setLoading] = useState(false);
   const { successToast, dangerToast } = useToaster();
 
@@ -80,8 +80,8 @@ function Header() {
                 certificateGenerator({
                   profiles: {
                     ...profile,
-                    datesortie: formatDate(date),
-                    heuresortie: formatTime(date),
+                    datesortie: date,
+                    heuresortie: time,
                   },
                   reasons: validReason.slug,
                 }).then(blobToBase64)
@@ -93,25 +93,27 @@ function Header() {
               }))
             );
 
-            const sendEmail = functions().httpsCallable("sendEmail");
-            sendEmail({
-              files: JSON.stringify(files),
-              date: "12/11/2020 12:14",
-            })
-              .then(() => {
+            callCloudFunction({
+              name: "sendEmail",
+              data: {
+                files: JSON.stringify(files),
+                date: `${date} ${time}`,
+              },
+              onSuccess: () => {
                 setLoading(false);
                 successToast({
                   icon: "tick",
                   message: "Les attestations ont été envoyées",
                 });
-              })
-              .catch(() => {
+              },
+              onError: () => {
                 setLoading(false);
                 dangerToast({
                   icon: "warning-sign",
                   message: "Une erreur est survenue",
                 });
-              });
+              },
+            });
           }}
         >
           Envoyer sur mon email

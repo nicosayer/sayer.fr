@@ -1,23 +1,22 @@
-import { storage } from "config/firebase";
+import { functions } from "config/firebase";
 import { useState } from "react";
 import { logError } from "utils";
 
-export const useDeleteFile = () => {
+export const useCallCloudFunction = () => {
   const [loading, setLoading] = useState(false);
 
   return [
-    ({ ref, onSuccess = () => null, onError = () => null }) => {
+    ({ name, data, onSuccess = () => null, onError = () => null }) => {
       setLoading(true);
-      return storage
-        .ref(ref)
-        .delete()
+      const cloudFunction = functions().httpsCallable(name);
+      return cloudFunction(data)
         .then(() => {
           setLoading(false);
           onSuccess();
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
+          logError(error, { name: "useCallCloudFunction" });
           onError();
         });
     },

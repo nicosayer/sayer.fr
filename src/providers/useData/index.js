@@ -1,6 +1,6 @@
 import { useListenData } from "hooks/useListenData";
 import { useUser } from "providers/UserProvider";
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useState } from "react";
 import { formatDate, formatTime } from "utils/date";
 
 const DataContext = React.createContext();
@@ -17,7 +17,7 @@ export const DataProvider = ({ children }) => {
 
   const [profiles = [], loading] = useListenData({
     collection: "profiles",
-    where: useMemo(() => [["userId", "==", user?.uid]], [user]),
+    where: [["userId", "==", user?.uid]],
     skip: !user,
   });
 

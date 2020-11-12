@@ -1,8 +1,10 @@
 import { ENV } from "config/enums";
 import firebase from "firebase/app";
+import { REACT_APP_FIREBASE_EMULATOR } from "config/env";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/functions";
+import { testEnv } from "utils";
 
 const config = {
   apiKey: "AIzaSyDonP87rw7qNm073e_usZRG-E-eIb6ntIc",
@@ -15,7 +17,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
 
-if (process.env.NODE_ENV === ENV.DEV) {
+if (testEnv(REACT_APP_FIREBASE_EMULATOR) && process.env.NODE_ENV === ENV.DEV) {
   firebase.functions().useEmulator("localhost", 5001);
 }
 
