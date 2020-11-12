@@ -5,13 +5,49 @@ export const ENV = {
 export const MOBILE_COMPUTER_BREAKPOINT = 768;
 
 export const REASONS = [
-  { slug: "work", label: "👨‍🔧 Travail" },
-  { slug: "buy", label: "🥖 Courses" },
-  { slug: "health", label: "💊 Santé" },
-  { slug: "family", label: "👨‍👩‍👧‍👦 Famille" },
-  { slug: "handicap", label: "👨‍🦽 Handicap" },
-  { slug: "sport", label: "🏃‍♂️ Balade / Sport" },
-  { slug: "legal", label: "👩‍💼 Judiciaire" },
-  { slug: "mission", label: "🚸 Intérêt général" },
-  { slug: "child", label: "👨‍🏫 École" },
+  {
+    slug: "travail",
+    label: "👨‍🔧 Travail",
+    name: "Travail",
+  },
+  {
+    slug: "achats",
+    label: "🥖 Courses",
+    name: "Courses",
+  },
+  {
+    slug: "sante",
+    label: "💊 Santé",
+    name: "Santé",
+  },
+  {
+    slug: "famille",
+    label: "👨‍👩‍👧‍👦 Famille",
+    name: "Famille",
+  },
+  {
+    slug: "handicap",
+    label: "👨‍🦽 Handicap",
+    name: "Handicap",
+  },
+  {
+    slug: "sport_animaux",
+    label: "🏃‍♂️ Balade / Sport",
+    name: "Balade / Sport",
+  },
+  {
+    slug: "convocation",
+    label: "👩‍💼 Judiciaire",
+    name: "Judiciaire",
+  },
+  {
+    slug: "missions",
+    label: "🚸 Intérêt général",
+    name: "Intérêt général",
+  },
+  {
+    slug: "enfants",
+    label: "👨‍🏫 École",
+    name: "École",
+  },
 ];

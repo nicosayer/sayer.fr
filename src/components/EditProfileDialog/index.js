@@ -7,38 +7,38 @@ import { DateInput } from "@blueprintjs/datetime";
 import { useWriteData } from "hooks/useWriteData";
 import { Intent } from "@blueprintjs/core";
 import { useToaster } from "providers/ToasterProvider";
-import { useUser } from "providers/UserProvider";
-import { formatDate, formatFirestoreDate, parseDate } from "utils/date";
+import { formatDate, parseDate } from "utils/date";
 import { ConfirmDeleteButton } from "components/ConfirmDeleteButton";
 import { useData } from "providers/useData";
 import { uniq } from "lodash/fp";
+import { useUser } from "providers/UserProvider";
 
 export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
   const { selectedProfiles, setSelectedProfiles } = useData();
+  const { user } = useUser();
   const defaultData = useMemo(
     () => ({
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      birthDate: formatFirestoreDate(profile.birthDate),
-      birthPlace: profile.birthPlace,
+      firstname: profile.firstname,
+      lastname: profile.lastname,
+      birthday: profile.birthday,
+      placeofbirth: profile.placeofbirth,
       address: profile.address,
       city: profile.city,
-      zipCode: profile.zipCode,
+      zipcode: profile.zipcode,
     }),
     [
-      profile.firstName,
-      profile.lastName,
-      profile.birthDate,
-      profile.birthPlace,
+      profile.firstname,
+      profile.lastname,
+      profile.birthday,
+      profile.placeofbirth,
       profile.address,
       profile.city,
-      profile.zipCode,
+      profile.zipcode,
     ]
   );
   const [data, setData] = useState(defaultData);
   const [writeData, loading] = useWriteData();
   const { primaryToast, toast } = useToaster();
-  const { user } = useUser();
 
   useEffect(() => {
     setData(defaultData);
@@ -64,13 +64,13 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
           <Button
             type="submit"
             disabled={
-              !data.firstName ||
-              !data.lastName ||
-              !data.birthDate ||
-              !data.birthPlace ||
+              !data.firstname ||
+              !data.lastname ||
+              !data.birthday ||
+              !data.placeofbirth ||
               !data.address ||
               !data.city ||
-              !data.zipCode
+              !data.zipcode
             }
             loading={loading}
             large
@@ -78,9 +78,9 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
             onClick={(event) => {
               event.preventDefault();
               writeData({
-                collection: `users/${user.email}/profiles`,
+                collection: "profiles",
                 id: profile.uid,
-                data: data,
+                data: { ...data, userId: user.uid },
                 onSuccess: () => {
                   setSelectedProfiles(uniq([...selectedProfiles, profile.uid]));
                   onClose();
@@ -120,8 +120,8 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
             component={Input}
             componentProps={{
               large: true,
-              value: data.firstName,
-              onChange: handleChange("firstName"),
+              value: data.firstname,
+              onChange: handleChange("firstname"),
             }}
           />
           <Label
@@ -130,8 +130,8 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
             component={Input}
             componentProps={{
               large: true,
-              value: data.lastName,
-              onChange: handleChange("lastName"),
+              value: data.lastname,
+              onChange: handleChange("lastname"),
             }}
           />
           <Label
@@ -141,8 +141,8 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
             componentProps={{
               fill: true,
               inputProps: { large: true },
-              value: data.birthDate,
-              onChange: handleChange("birthDate"),
+              value: parseDate(data.birthday),
+              onChange: (value) => handleChange("birthday")(formatDate(value)),
               formatDate: formatDate,
               parseDate: parseDate,
               minDate: new Date("1900-01-01"),
@@ -155,8 +155,8 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
             component={Input}
             componentProps={{
               large: true,
-              value: data.birthPlace,
-              onChange: handleChange("birthPlace"),
+              value: data.placeofbirth,
+              onChange: handleChange("placeofbirth"),
             }}
           />
           <Label
@@ -185,8 +185,8 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
             component={Input}
             componentProps={{
               large: true,
-              value: data.zipCode,
-              onChange: handleChange("zipCode"),
+              value: data.zipcode,
+              onChange: handleChange("zipcode"),
             }}
           />
         </>

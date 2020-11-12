@@ -4,8 +4,8 @@ export const ONE_HOUR = 60 * ONE_MINUTE;
 export const ONE_DAY = 24 * ONE_HOUR;
 export const ONE_WEEK = 7 * ONE_DAY;
 
-export const formatFirestoreDate = (date) => {
-  return new Date(date.seconds * ONE_SECOND);
+export const isDate = (date) => {
+  return date instanceof Date && !isNaN(date);
 };
 
 export const twoDigits = (string) => {
@@ -13,7 +13,7 @@ export const twoDigits = (string) => {
 };
 
 export const formatISODate = (date) => {
-  if (date === "Invalid Date") {
+  if (!isDate(date)) {
     return null;
   }
 
@@ -21,7 +21,7 @@ export const formatISODate = (date) => {
 };
 
 export const formatDate = (date) => {
-  if (date === "Invalid Date") {
+  if (!isDate(date)) {
     return null;
   }
 
@@ -31,7 +31,7 @@ export const formatDate = (date) => {
 };
 
 export const formatTime = (date) => {
-  if (date === "Invalid Date") {
+  if (!isDate(date)) {
     return null;
   }
 
@@ -39,7 +39,7 @@ export const formatTime = (date) => {
 };
 
 export const formatDateTime = (date) => {
-  if (date === "Invalid Date") {
+  if (!isDate(date)) {
     return null;
   }
 
@@ -47,11 +47,15 @@ export const formatDateTime = (date) => {
 };
 
 export const parseDate = (string) => {
+  if (isDate(string)) {
+    return string;
+  }
+
   const [day, month, year] = string.split("/");
 
   const date = new Date(year, Number(month) - 1, day);
 
-  if (date === "Invalid Date") {
+  if (!isDate(date)) {
     return null;
   }
 
@@ -59,13 +63,17 @@ export const parseDate = (string) => {
 };
 
 export const parseDateTime = (string) => {
+  if (isDate(string)) {
+    return string;
+  }
+
   const [dateString, timeString] = string.split(" ");
   const [day, month, year] = dateString.split("/");
   const [hours, minutes] = timeString.split(":");
 
   const date = new Date(year, Number(month) - 1, day, hours, minutes);
 
-  if (date === "Invalid Date") {
+  if (!isDate(date)) {
     return null;
   }
 

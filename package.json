@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^12.1.10",
     "emotion": "^10.0.27",
     "firebase": "^8.0.0",
+    "pdf-lib": "^1.11.2",
+    "qrcode": "^1.4.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.0",

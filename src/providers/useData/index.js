@@ -1,4 +1,6 @@
-import React, { useContext, useState } from "react";
+import { useListenData } from "hooks/useListenData";
+import { useUser } from "providers/UserProvider";
+import React, { useContext, useMemo, useState } from "react";
 
 const DataContext = React.createContext();
 
@@ -9,6 +11,14 @@ export const DataProvider = ({ children }) => {
   const [selectedReasons, setSelectedReasons] = useState([]);
   const [date, setData] = useState(new Date());
 
+  const { user } = useUser();
+
+  const [profiles = [], loading] = useListenData({
+    collection: "profiles",
+    where: useMemo(() => [["userId", "==", user?.uid]], [user]),
+    skip: !user,
+  });
+
   return (
     <DataContext.Provider
       value={{
@@ -18,6 +28,8 @@ export const DataProvider = ({ children }) => {
         setSelectedReasons,
         date,
         setData,
+        profiles,
+        loading,
       }}
     >
       {children}

@@ -1,14 +1,10 @@
 import { Box } from "components/Box";
-import { useUser } from "providers/UserProvider";
 import { DateInput, TimePrecision } from "@blueprintjs/datetime";
 import { Callout, Intent, Spinner } from "@blueprintjs/core";
-import { useEffect, useMemo } from "react";
 import { DialogButton } from "components/DialogButton";
 import { REASONS } from "config/enums";
 import { NewProfileDialog } from "components/NewProfileDialog";
-import { useListenData } from "hooks/useListenData";
 import { useData } from "providers/useData";
-import { useReadData } from "hooks/useReadData";
 import { caseInsensitiveSortBy } from "utils";
 import { formatDateTime, parseDateTime } from "utils/date";
 import { EditProfileDialog } from "components/EditProfileDialog";
@@ -113,35 +109,9 @@ function Body() {
     setSelectedReasons,
     date,
     setData,
+    loading,
+    profiles,
   } = useData();
-
-  const { user } = useUser();
-  const [data = {}, loadingData] = useReadData({
-    collection: "users",
-    id: user.email,
-  });
-  const [profiles = [], loadingProfiles] = useListenData({
-    collection: "profiles",
-    src: data.ref,
-    skip: !data.ref,
-  });
-
-  useEffect(() => {
-    if (data.reasons) {
-      setSelectedReasons(data.reasons);
-    }
-  }, [data.reasons, setSelectedReasons]);
-
-  useEffect(() => {
-    if (data.profiles) {
-      setSelectedProfiles(data.profiles);
-    }
-  }, [data.profiles, setSelectedProfiles]);
-
-  const loading = useMemo(() => loadingData || loadingProfiles, [
-    loadingData,
-    loadingProfiles,
-  ]);
 
   if (loading) {
     return (
@@ -194,7 +164,7 @@ function Body() {
       />
       <Box style={{ marginBottom: "40px" }}>
         <Grid
-          items={caseInsensitiveSortBy(profiles, ["firstName", "lastName"])}
+          items={caseInsensitiveSortBy(profiles, ["firstname", "lastname"])}
           selectedItems={selectedProfiles}
           setSelectedItems={setSelectedProfiles}
           renderTitle={(profile) => (
@@ -207,7 +177,7 @@ function Body() {
                 alignItems: "center",
               }}
             >
-              {profile.firstName[0]}. {profile.lastName}
+              {profile.firstname[0]}. {profile.lastname}
             </Box>
           )}
           renderContent={(profile) => (
