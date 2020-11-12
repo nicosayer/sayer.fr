@@ -9,7 +9,7 @@ export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
   const [selectedProfiles, setSelectedProfiles] = useState([]);
-  const [selectedReasons, setSelectedReasons] = useState([]);
+  const [selectedReason, setSelectedReason] = useState("");
   const [date, setData] = useState(formatDate(new Date()));
   const [time, setTime] = useState(formatTime(new Date()));
 
@@ -26,8 +26,8 @@ export const DataProvider = ({ children }) => {
       value={{
         selectedProfiles,
         setSelectedProfiles,
-        selectedReasons,
-        setSelectedReasons,
+        selectedReason,
+        setSelectedReason,
         date,
         setData,
         profiles,

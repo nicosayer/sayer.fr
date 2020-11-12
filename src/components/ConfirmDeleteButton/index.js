@@ -7,7 +7,7 @@ import { useState } from "react";
 export const ConfirmDeleteButton = ({
   src,
   onSuccess = () => null,
-  message = "Are you sure you want to delete this?",
+  message = "Êtes-vous sûr de vouloir le supprimer ?",
   onClick,
   ...rest
 }) => {
@@ -25,7 +25,7 @@ export const ConfirmDeleteButton = ({
             <div className={Classes.DIALOG_FOOTER_ACTIONS}>
               <Box style={{ marginRight: "10px" }}>
                 <Button disabled={loading} onClick={() => setIsOpen(false)}>
-                  Cancel
+                  Annuler
                 </Button>
               </Box>
               <Button
@@ -39,7 +39,7 @@ export const ConfirmDeleteButton = ({
                 }}
                 loading={loading}
               >
-                Delete
+                Supprimer
               </Button>
             </div>
           </>

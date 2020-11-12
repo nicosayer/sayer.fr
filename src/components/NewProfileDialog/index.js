@@ -48,7 +48,7 @@ export const NewProfileDialog = ({ isOpen, onClose }) => {
       actions={
         <>
           <Button large onClick={onClose} disabled={loading}>
-            Cancel
+            Annuler
           </Button>
           <Button
             type="submit"

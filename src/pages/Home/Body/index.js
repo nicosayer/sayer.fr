@@ -21,13 +21,7 @@ const Title = ({ title, description }) => {
   );
 };
 
-const Grid = ({
-  items,
-  selectedItems,
-  setSelectedItems,
-  renderTitle = (item) => item.label,
-  renderContent = () => null,
-}) => {
+const Grid = ({ children }) => {
   return (
     <Box
       style={{
@@ -37,27 +31,7 @@ const Grid = ({
         gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
       }}
     >
-      {items.map((item) => (
-        <Item
-          key={item.slug || item.uid}
-          item={item}
-          title={renderTitle(item)}
-          checked={selectedItems.includes(item.slug || item.uid)}
-          setChecked={(checked) => {
-            if (checked) {
-              setSelectedItems([...selectedItems, item.slug || item.uid]);
-            } else {
-              setSelectedItems(
-                selectedItems.filter(
-                  (selectedReason) => selectedReason !== (item.slug || item.uid)
-                )
-              );
-            }
-          }}
-        >
-          {renderContent(item)}
-        </Item>
-      ))}
+      {children}
     </Box>
   );
 };
@@ -78,7 +52,7 @@ const Item = ({ checked, setChecked, children, title, item }) => {
         title={
           <Box style={{ display: "flex", alignItens: "center" }}>
             {title}
-            {item.uid && (
+            {item?.uid && (
               <Box style={{ marginLeft: "4px" }}>
                 <DialogButton
                   minimal
@@ -108,8 +82,8 @@ function Body() {
   const {
     selectedProfiles,
     setSelectedProfiles,
-    selectedReasons,
-    setSelectedReasons,
+    selectedReason,
+    setSelectedReason,
     date,
     setData,
     loading,
@@ -196,50 +170,77 @@ function Body() {
             </Box>
           </>
         }
+        description="Vous pouvez en sélectionnez plusieurs"
       />
       <Box style={{ marginBottom: "40px" }}>
-        <Grid
-          items={caseInsensitiveSortBy(profiles, ["firstname", "lastname"])}
-          selectedItems={selectedProfiles}
-          setSelectedItems={setSelectedProfiles}
-          renderTitle={(profile) => (
-            <Box
-              style={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "inline-flex",
-                alignItems: "center",
-              }}
-            >
-              {profile.firstname[0]}. {profile.lastname}
-            </Box>
+        <Grid>
+          {caseInsensitiveSortBy(profiles, ["firstname", "lastname"]).map(
+            (profile) => (
+              <Item
+                key={profile.uid}
+                item={profile}
+                title={
+                  <Box
+                    style={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "inline-flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {profile.firstname[0]}. {profile.lastname}
+                  </Box>
+                }
+                checked={selectedProfiles.includes(profile.uid)}
+                setChecked={(checked) => {
+                  if (checked) {
+                    setSelectedProfiles([...selectedProfiles, profile.uid]);
+                  } else {
+                    setSelectedProfiles(
+                      selectedProfiles.filter(
+                        (selectedProfile) => selectedProfile !== profile.uid
+                      )
+                    );
+                  }
+                }}
+              >
+                <Box
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {profile.address}
+                </Box>
+              </Item>
+            )
           )}
-          renderContent={(profile) => (
-            <Box
-              style={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {profile.address}
-            </Box>
-          )}
-        />
+        </Grid>
       </Box>
-      <Title title="Motifs" />
+      <Title title="Motif" />
       <Box style={{ marginBottom: "40px" }}>
-        <Grid
-          items={REASONS}
-          selectedItems={selectedReasons}
-          setSelectedItems={setSelectedReasons}
-          renderTitle={(item) => (
-            <Box style={{ paddingTop: "10px", paddingBottom: "10px" }}>
-              {item.label}
-            </Box>
-          )}
-        />
+        <Grid>
+          {REASONS.map((reason) => (
+            <Item
+              key={reason.slug}
+              title={
+                <Box style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+                  {reason.label}
+                </Box>
+              }
+              checked={selectedReason === reason.slug}
+              setChecked={(checked) => {
+                if (checked) {
+                  setSelectedReason(reason.slug);
+                } else {
+                  setSelectedReason("");
+                }
+              }}
+            />
+          ))}
+        </Grid>
       </Box>
     </Box>
   );

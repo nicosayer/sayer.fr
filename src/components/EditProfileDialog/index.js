@@ -59,7 +59,7 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
       actions={
         <>
           <Button large onClick={onClose} disabled={loading}>
-            Cancel
+            Annuler
           </Button>
           <Button
             type="submit"
@@ -109,7 +109,7 @@ export const EditProfileDialog = ({ isOpen, onClose, item: profile }) => {
             );
           }}
         >
-          Delete
+          Supprimer
         </ConfirmDeleteButton>
       }
       inputs={

@@ -23,14 +23,14 @@ const blobToBase64 = (blob) => {
 
 function Header() {
   const { isOnComputer } = useWindowSize();
-  const { selectedProfiles, selectedReasons, date, profiles } = useData();
+  const { selectedProfiles, selectedReason, date, profiles } = useData();
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const { successToast, dangerToast } = useToaster();
 
   const disabled = useMemo(
-    () => !date || !selectedProfiles.length || !selectedReasons.length,
-    [selectedProfiles.length, selectedReasons.length, date]
+    () => !date || !selectedProfiles.length || !selectedReason,
+    [selectedProfiles.length, selectedReason, date]
   );
 
   return (
@@ -66,34 +66,31 @@ function Header() {
           loading={loading}
           onClick={async () => {
             setLoading(true);
+
             const validProfiles = selectedProfiles
               .map((profile) => profiles.find(({ uid }) => uid === profile))
               .filter(Boolean);
 
-            const validReasons = selectedReasons
-              .map((reason) => REASONS.find(({ slug }) => slug === reason))
-              .filter(Boolean);
+            const validReason = REASONS.find(
+              ({ slug }) => slug === selectedReason
+            );
 
             const files = await Promise.all(
-              validReasons.flatMap((reason) =>
-                validProfiles.map((profile) =>
-                  certificateGenerator({
-                    profiles: {
-                      ...profile,
-                      datesortie: formatDate(date),
-                      heuresortie: formatTime(date),
-                    },
-                    reasons: reason.slug,
-                  }).then(blobToBase64)
-                )
+              validProfiles.map((profile) =>
+                certificateGenerator({
+                  profiles: {
+                    ...profile,
+                    datesortie: formatDate(date),
+                    heuresortie: formatTime(date),
+                  },
+                  reasons: validReason.slug,
+                }).then(blobToBase64)
               )
             ).then((base64) =>
-              validReasons.flatMap((reason, reasonIndex) =>
-                validProfiles.map((profile, profileIndex) => ({
-                  filename: `${profile.firstname[0]}_${profile.lastname}_${reason.name}_${profile.address}.pdf`,
-                  path: base64[reasonIndex * profiles.length + profileIndex],
-                }))
-              )
+              validProfiles.map((profile, index) => ({
+                filename: `${profile.firstname[0]}_${profile.lastname}_${validReason.name}.pdf`,
+                path: base64[index],
+              }))
             );
 
             const sendEmail = functions().httpsCallable("sendEmail");
