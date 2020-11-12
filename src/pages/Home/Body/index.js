@@ -11,7 +11,6 @@ import { EditProfileDialog } from "components/EditProfileDialog";
 import { css } from "emotion";
 import { Button } from "components/Button";
 import { Input } from "components/Input";
-import { useWindowSize } from "providers/WindowSizeProvider";
 
 const Title = ({ title, description }) => {
   return (
@@ -117,7 +116,6 @@ function Body() {
     time,
     setTime,
   } = useData();
-  const { isOnComputer } = useWindowSize();
 
   if (loading) {
     return (
