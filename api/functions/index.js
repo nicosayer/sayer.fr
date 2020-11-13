@@ -24,8 +24,8 @@ exports.sendEmail = functions.https.onCall(async ({ date, files }, context) => {
     from: '"Nicolas Sayer" <nsayerfr@gmail.com>',
     to: email,
     subject: `Attestations • ${date}`,
-    text: "Generated with covid.sayer.fr",
-    html: "<b>Generated with covid.sayer.fr</b>",
+    text: "Generated with attestation.sayer.fr",
+    html: "<b>Generated with attestation.sayer.fr</b>",
     attachments,
   });
 
