@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "emotion": "^10.0.27",
     "firebase": "^8.0.0",
+    "is-ua-webview": "^1.0.5",
     "pdf-lib": "^1.11.2",
     "qrcode": "^1.4.4",
     "react": "^17.0.1",

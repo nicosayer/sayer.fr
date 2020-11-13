@@ -1,4 +1,5 @@
-import { Button, TagInput } from "@blueprintjs/core";
+import { TagInput } from "@blueprintjs/core";
+import { Button } from "components/Button";
 
 import { Tooltip } from "components/Tooltip";
 

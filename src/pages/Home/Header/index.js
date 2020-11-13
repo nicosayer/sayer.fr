@@ -1,6 +1,7 @@
-import { Button, Intent } from "@blueprintjs/core";
+import { Intent } from "@blueprintjs/core";
 import { certificateGenerator } from "certificateGenerator";
 import { Box } from "components/Box";
+import { Button } from "components/Button";
 import { LogoutButton } from "components/LogoutButton";
 import { REASONS } from "config/enums";
 import { useCallCloudFunction } from "hooks/useCallCloudFunction";

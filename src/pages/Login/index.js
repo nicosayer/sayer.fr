@@ -1,20 +1,28 @@
-import { Button, Intent } from "@blueprintjs/core";
+import { Intent, NonIdealState } from "@blueprintjs/core";
 import { Center } from "components/Center";
-import { loginWithGoogle } from "utils/auth";
+import { LoginWithGoogleButton } from "components/LoginWithGoogleButton";
+import { useWindowSize } from "providers/WindowSizeProvider";
 
 function Login({ loading }) {
+  const { isWebview } = useWindowSize();
+
   return (
     <Center>
-      <Button
+      <LoginWithGoogleButton
         large
-        onClick={loginWithGoogle}
         rightIcon="arrow-right"
         intent={Intent.SUCCESS}
         loading={loading}
         style={{ whiteSpace: "nowrap" }}
       >
         Login with Google
-      </Button>
+      </LoginWithGoogleButton>
+      {isWebview && (
+        <NonIdealState
+          icon="shield"
+          description="Veuillez ouvrir l'application dans votre navigateur"
+        />
+      )}
     </Center>
   );
 }

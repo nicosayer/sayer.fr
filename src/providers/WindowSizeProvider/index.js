@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { MOBILE_COMPUTER_BREAKPOINT } from "config/enums";
+import isWebview from "is-ua-webview";
 
 const WindowSizeContext = React.createContext();
 
@@ -31,6 +32,7 @@ export const WindowSizeProvider = ({ children }) => {
       value={{
         isOnMobile: !isOnComputer,
         isOnComputer: isOnComputer,
+        isWebview: isWebview(navigator.userAgent),
       }}
     >
       {windowSize ? children : null}
