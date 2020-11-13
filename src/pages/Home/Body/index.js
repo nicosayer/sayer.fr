@@ -170,7 +170,7 @@ function Body() {
             </Box>
           </>
         }
-        description="Vous pouvez en sélectionnez plusieurs"
+        description="Vous pouvez en sélectionner plusieurs"
       />
       <Box style={{ marginBottom: "40px" }}>
         <Grid>

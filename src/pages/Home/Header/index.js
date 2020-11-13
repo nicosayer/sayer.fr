@@ -61,7 +61,7 @@ function Header() {
           large
           fill
           intent={Intent.SUCCESS}
-          rightIcon="arrow-right"
+          icon="envelope"
           disabled={disabled}
           loading={loading}
           onClick={async () => {
