@@ -170,7 +170,9 @@ function Body() {
             </Box>
           </>
         }
-        description="Vous pouvez en sélectionner plusieurs"
+        description={
+          profiles.length ? "Vous pouvez en sélectionner plusieurs" : undefined
+        }
       />
       <Box style={{ marginBottom: "40px" }}>
         <Grid>
