@@ -20,14 +20,57 @@ export const formatISODate = (date) => {
   return date.toISOString();
 };
 
+export const getDate = (value) => {
+  if (isDate(value)) {
+    return {
+      day: value.getDate(),
+      month: value.getMonth() + 1,
+      year: value.getFullYear(),
+    };
+  }
+
+  if (value.length === 8) {
+    return {
+      day: value.substring(0, 2),
+      month: value.substring(2, 4),
+      year: value.substring(4, 8),
+    };
+  }
+
+  const [day, month, year] = value.split("/");
+
+  return { day, month, year };
+};
+
+export const getTime = (value) => {
+  if (isDate(value)) {
+    return { hours: value.getHours(), minutes: value.getMinutes() };
+  }
+
+  if (value.length === 4) {
+    return { hours: value.substring(0, 2), minutes: value.substring(2, 4) };
+  }
+
+  const [hours, minutes] = value.split(":");
+
+  return { hours, minutes };
+};
+
+export const getDateTime = (value) => {
+  const { day, month, year } = getDate(value);
+  const { hours, minutes } = getTime(value);
+
+  return { day, month, year, hours, minutes };
+};
+
 export const formatDate = (date) => {
   if (!isDate(date)) {
     return null;
   }
 
-  return `${twoDigits(date.getDate())}/${twoDigits(
-    date.getMonth() + 1
-  )}/${date.getFullYear()}`;
+  const { day, month, year } = getDate(date);
+
+  return `${twoDigits(day)}/${twoDigits(month)}/${year}`;
 };
 
 export const formatTime = (date) => {
@@ -35,7 +78,9 @@ export const formatTime = (date) => {
     return null;
   }
 
-  return `${twoDigits(date.getHours())}:${twoDigits(date.getMinutes())}`;
+  const { hours, minutes } = getTime(date);
+
+  return `${twoDigits(hours)}:${twoDigits(minutes)}`;
 };
 
 export const formatDateTime = (date) => {
@@ -51,7 +96,7 @@ export const parseDate = (string) => {
     return string;
   }
 
-  const [day, month, year] = string.split("/");
+  const { day, month, year } = getDate(string);
 
   const date = new Date(year, Number(month) - 1, day);
 
@@ -67,7 +112,7 @@ export const parseTime = (string) => {
     return string;
   }
 
-  const [hours, minutes] = string.split(":");
+  const { hours, minutes } = getTime(string);
 
   const date = new Date(0, 0, 0, hours, minutes);
 
@@ -83,11 +128,9 @@ export const parseDateTime = (string) => {
     return string;
   }
 
-  const [dateString, timeString] = string.split(" ");
-  const [day, month, year] = dateString.split("/");
-  const [hours, minutes] = timeString.split(":");
+  const { hours, minutes, day, month, year } = getDateTime(string);
 
-  const date = new Date(year, Number(month) - 1, day, hours, minutes);
+  const date = new Date(year, month, day, hours, minutes);
 
   if (!isDate(date)) {
     return null;
