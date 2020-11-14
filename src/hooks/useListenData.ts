@@ -2,11 +2,24 @@ import { db } from "config/firebase";
 import { useEffect } from "react";
 import { useMemo } from "react";
 import { useState } from "react";
-import { logError } from "utils";
+import { log } from "utils";
 import { cleanSnapshot } from "utils/firebase";
+import firebase from "firebase/app";
 
-export const useListenData = ({ collection, id, src, where, skip } = {}) => {
-  const [data, setData] = useState();
+export const useListenData = ({
+  collection,
+  id,
+  src,
+  where,
+  skip,
+}: {
+  collection?: string;
+  id?: string;
+  src?: firebase.firestore.DocumentReference;
+  where?: [string, string, string][];
+  skip?: boolean;
+}) => {
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(!skip);
 
   useEffect(() => {
@@ -14,7 +27,7 @@ export const useListenData = ({ collection, id, src, where, skip } = {}) => {
       return;
     }
 
-    let unsubscribe = src || db;
+    let unsubscribe: any = src || db;
     if (collection) {
       unsubscribe = unsubscribe.collection(collection);
     }
@@ -26,15 +39,15 @@ export const useListenData = ({ collection, id, src, where, skip } = {}) => {
         unsubscribe = unsubscribe.where(...w);
       });
     }
-    unsubscribe.onSnapshot(
+    (unsubscribe as firebase.firestore.Query).onSnapshot(
       (snapshot) => {
         setData(cleanSnapshot(snapshot));
         setLoading(false);
       },
       (error) => {
-        setData();
+        setData({});
         setLoading(false);
-        logError(error);
+        log(error);
       }
     );
 

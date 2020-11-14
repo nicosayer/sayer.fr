@@ -1,6 +1,6 @@
 import { functions } from "config/firebase";
 import { useState } from "react";
-import { logError } from "utils";
+import { log } from "utils";
 
 export const useCallCloudFunction = () => {
   const [loading, setLoading] = useState(false);
@@ -13,9 +13,9 @@ export const useCallCloudFunction = () => {
       onError = () => null,
     }: {
       name: string;
-      data: Object;
-      onSuccess: () => void;
-      onError: () => void;
+      data?: Object;
+      onSuccess?: () => void;
+      onError?: () => void;
     }): Promise<void> => {
       setLoading(true);
       const cloudFunction = functions().httpsCallable(name);
@@ -26,7 +26,7 @@ export const useCallCloudFunction = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
+          log(error);
           onError();
         });
     },

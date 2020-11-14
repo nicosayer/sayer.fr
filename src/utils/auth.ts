@@ -1,9 +1,9 @@
 import { auth } from "config/firebase";
-import { logError } from "utils";
+import { log } from "utils";
 
 export const loginWithGoogle = (): void => {
   const provider = new auth.GoogleAuthProvider();
-  auth().signInWithRedirect(provider).catch(logError);
+  auth().signInWithRedirect(provider).catch(log);
 };
 
 export const logout = (): void => {
@@ -12,5 +12,5 @@ export const logout = (): void => {
     .then(() => {
       window.location.reload();
     })
-    .catch(logError);
+    .catch(log);
 };

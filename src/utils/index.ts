@@ -8,8 +8,8 @@ export const isSet = (value: any): boolean => {
   return !isUnset(value);
 };
 
-export const logError = (error: string): void => {
-  console.log(`Error: ${error}`);
+export const log = (value: any): void => {
+  console.log(value);
 };
 
 export const sanitize = (string: string): string => {
@@ -36,7 +36,7 @@ export const isEmail = (string: string): boolean => {
 };
 
 export const caseInsensitiveSortBy = <
-  T extends { [any: string]: string | undefined }
+  T extends { [key: string]: string | undefined }
 >(
   array: T[],
   strings: string[]

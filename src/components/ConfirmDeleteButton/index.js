@@ -3,6 +3,7 @@ import { Box } from "components/Box";
 import { Button } from "components/Button";
 import { useDeleteData } from "hooks/useDeleteData";
 import { useState } from "react";
+import React from "react";
 
 export const ConfirmDeleteButton = ({
   src,

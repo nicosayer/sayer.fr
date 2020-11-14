@@ -1,6 +1,6 @@
 import { db } from "config/firebase";
 import { useState } from "react";
-import { logError } from "utils";
+import { log } from "utils";
 
 export const useWriteData = () => {
   const [loading, setLoading] = useState(false);
@@ -31,8 +31,8 @@ export const useWriteData = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
-          onError();
+          log(error);
+          onError(error);
         });
     },
     loading,

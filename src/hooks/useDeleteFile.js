@@ -1,6 +1,6 @@
 import { storage } from "config/firebase";
 import { useState } from "react";
-import { logError } from "utils";
+import { log } from "utils";
 
 export const useDeleteFile = () => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ export const useDeleteFile = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
+          log(error);
           onError();
         });
     },

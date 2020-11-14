@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import { auth } from "config/firebase";
-import { logError } from "utils";
+import { log } from "utils";
 import { logout } from "utils/auth";
 
 const UserContext = React.createContext();
@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
       (error) => {
         setUser();
         setLoading(false);
-        logError(error);
+        log(error);
       }
     );
 

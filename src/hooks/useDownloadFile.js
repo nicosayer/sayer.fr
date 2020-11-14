@@ -1,6 +1,6 @@
 import { storage } from "config/firebase";
 import { useState } from "react";
-import { logError, uniqueId } from "utils";
+import { log, uniqueId } from "utils";
 import FileSaver from "file-saver";
 
 export const useDownloadFile = () => {
@@ -30,7 +30,7 @@ export const useDownloadFile = () => {
         })
         .catch((error) => {
           setLoading(false);
-          logError(error);
+          log(error);
           onError();
         });
     },

@@ -2,15 +2,32 @@ import { db } from "config/firebase";
 import { useEffect } from "react";
 import { useMemo } from "react";
 import { useState } from "react";
-import { logError } from "utils";
+import { log } from "utils";
 import { cleanSnapshot } from "utils/firebase";
+import firebase from "firebase/app";
 
-export const useReadData = ({ collection, id, src, where } = {}) => {
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(true);
+export const useReadData = ({
+  collection,
+  id,
+  src,
+  where,
+  skip,
+}: {
+  collection?: string;
+  id?: string;
+  src?: firebase.firestore.DocumentReference;
+  where?: [string, string, string][];
+  skip?: boolean;
+}) => {
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(!skip);
 
   useEffect(() => {
-    let query = src || db;
+    if (skip) {
+      return;
+    }
+
+    let query: any = src || db;
     if (collection) {
       query = query.collection(collection);
     }
@@ -22,16 +39,16 @@ export const useReadData = ({ collection, id, src, where } = {}) => {
         query = query.where(...w);
       });
     }
-    query
+    (query as firebase.firestore.Query)
       .get()
       .then((snapshot) => {
         setData(cleanSnapshot(snapshot));
         setLoading(false);
       })
       .catch((error) => {
-        setData();
+        setData({});
         setLoading(false);
-        logError(error);
+        log(error);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collection, id, src, JSON.stringify(where)]);

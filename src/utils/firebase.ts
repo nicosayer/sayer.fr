@@ -1,6 +1,12 @@
 import firebase from "firebase/app";
 
-export const cleanDoc = (doc: firebase.firestore.DocumentSnapshot) => {
+export const cleanDoc = (
+  doc: firebase.firestore.DocumentSnapshot
+): {
+  uid: string;
+  ref: firebase.firestore.DocumentReference;
+  [key: string]: any;
+} => {
   return { uid: doc.id, ref: doc.ref, ...doc.data() };
 };
 

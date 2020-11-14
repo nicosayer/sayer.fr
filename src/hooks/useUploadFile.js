@@ -1,6 +1,6 @@
 import { storage } from "config/firebase";
 import { useState } from "react";
-import { logError, uniqueId } from "utils";
+import { log, uniqueId } from "utils";
 
 export const useUploadFile = () => {
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ export const useUploadFile = () => {
         .catch((error) => {
           setLoading(false);
           onError(error);
-          logError(error);
+          log(error);
         });
     },
     loading,
