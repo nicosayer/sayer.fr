@@ -1,10 +1,10 @@
 import { Intent, NonIdealState } from "@blueprintjs/core";
 import { Center } from "components/Center";
 import { LoginWithGoogleButton } from "components/LoginWithGoogleButton";
-import { useWindowSize } from "providers/WindowSizeProvider";
+import { useDevice } from "providers/DeviceProvider";
 
 function Login({ loading }) {
-  const { isWebview } = useWindowSize();
+  const { isWebview } = useDevice();
 
   return (
     <Center>

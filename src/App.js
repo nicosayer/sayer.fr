@@ -5,18 +5,18 @@ import "styles/global.css";
 import { UserProvider } from "providers/UserProvider";
 import Root from "pages";
 import { ToasterProvider } from "providers/ToasterProvider";
-import { WindowSizeProvider } from "providers/WindowSizeProvider";
+import { DeviceProvider } from "providers/DeviceProvider";
 import { DataProvider } from "providers/useData";
 
 function App() {
   return (
     <UserProvider>
       <ToasterProvider>
-        <WindowSizeProvider>
+        <DeviceProvider>
           <DataProvider>
             <Root />
           </DataProvider>
-        </WindowSizeProvider>
+        </DeviceProvider>
       </ToasterProvider>
     </UserProvider>
   );

@@ -1,9 +1,9 @@
 import { Button } from "components/Button";
-import { useWindowSize } from "providers/WindowSizeProvider";
+import { useDevice } from "providers/DeviceProvider";
 import { loginWithGoogle } from "utils/auth";
 
 export const LoginWithGoogleButton = (props) => {
-  const { isWebview } = useWindowSize();
+  const { isWebview } = useDevice();
 
   if (isWebview) {
     return null;

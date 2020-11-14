@@ -1,12 +1,12 @@
 import { auth } from "config/firebase";
 import { logError } from "utils";
 
-export const loginWithGoogle = () => {
+export const loginWithGoogle = (): void => {
   const provider = new auth.GoogleAuthProvider();
   auth().signInWithRedirect(provider).catch(logError);
 };
 
-export const logout = () => {
+export const logout = (): void => {
   auth()
     .signOut()
     .then(() => {

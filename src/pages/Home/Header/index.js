@@ -8,7 +8,7 @@ import { useCallCloudFunction } from "hooks/useCallCloudFunction";
 import { useToaster } from "providers/ToasterProvider";
 import { useData } from "providers/useData";
 import { useUser } from "providers/UserProvider";
-import { useWindowSize } from "providers/WindowSizeProvider";
+import { useDevice } from "providers/DeviceProvider";
 import { useMemo, useState } from "react";
 
 const blobToBase64 = (blob) => {
@@ -22,7 +22,7 @@ const blobToBase64 = (blob) => {
 };
 
 function Header() {
-  const { isOnComputer } = useWindowSize();
+  const { isComputerSize } = useDevice();
   const { selectedProfiles, selectedReason, date, profiles, time } = useData();
   const { user } = useUser();
   const [callCloudFunction] = useCallCloudFunction();
@@ -126,7 +126,7 @@ function Header() {
             large
             tooltipProps={{ content: user.email }}
           >
-            {isOnComputer && "Déconnexion"}
+            {isComputerSize && "Déconnexion"}
           </LogoutButton>
         </Box>
       </Box>

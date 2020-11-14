@@ -1,11 +1,11 @@
 import { Tooltip as BPTooltip } from "@blueprintjs/core";
-import { useWindowSize } from "providers/WindowSizeProvider";
+import { useDevice } from "providers/DeviceProvider";
 import React from "react";
 
 export const Tooltip = ({ children = null, ...rest }) => {
-  const { isOnMobile } = useWindowSize();
+  const { isMobileSize } = useDevice();
 
-  if (isOnMobile) {
+  if (isMobileSize) {
     return children;
   }
 

@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { MOBILE_COMPUTER_BREAKPOINT } from "config/enums";
 import isWebview from "is-ua-webview";
+import { isBrowser, isMobile } from "react-device-detect";
 
-const WindowSizeContext = React.createContext();
+const DeviceContext = React.createContext();
 
-export const useWindowSize = () => useContext(WindowSizeContext);
+export const useDevice = () => useContext(DeviceContext);
 
-export const WindowSizeProvider = ({ children }) => {
+export const DeviceProvider = ({ children }) => {
   const [windowSize, setWindowSize] = useState();
 
   useEffect(() => {
@@ -23,19 +24,22 @@ export const WindowSizeProvider = ({ children }) => {
     }
   }, []);
 
-  const isOnComputer = useMemo(() => windowSize > MOBILE_COMPUTER_BREAKPOINT, [
-    windowSize,
-  ]);
+  const isComputerSize = useMemo(
+    () => windowSize > MOBILE_COMPUTER_BREAKPOINT,
+    [windowSize]
+  );
 
   return (
-    <WindowSizeContext.Provider
+    <DeviceContext.Provider
       value={{
-        isOnMobile: !isOnComputer,
-        isOnComputer: isOnComputer,
+        isComputer: isBrowser,
+        isComputerSize: isComputerSize,
+        isMobile,
+        isMobileSize: !isComputerSize,
         isWebview: isWebview(navigator.userAgent),
       }}
     >
       {windowSize ? children : null}
-    </WindowSizeContext.Provider>
+    </DeviceContext.Provider>
   );
 };
