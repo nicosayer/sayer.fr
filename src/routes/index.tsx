@@ -1,24 +1,32 @@
+import { Button, RefreshIcon } from "evergreen-ui";
 import React, { useState, useCallback } from "react";
 import ReactFamilyTree from "react-family-tree";
 import { IFamilyNode, IFamilyExtNode } from "relatives-tree/lib/types";
 
-import FamilyNode from "../FamilyNode/FamilyNode";
-import PinchZoomPan from "../PinchZoomPan/PinchZoomPan";
-import styles from "./App.module.css";
-import data from "./data.json";
+import { Box } from "components/Box";
+import { FamilyNode } from "components/FamilyNode/FamilyNode";
+import { PinchZoomPan } from "components/PinchZoomPan/PinchZoomPan";
+import data from "routes/data.json";
 
 const myID = "N Sayer";
 
 const WIDTH = 200;
 const HEIGHT = 200;
 
-export default React.memo<{}>(function App() {
+export const App = React.memo<{}>(() => {
   const [rootId, setRootId] = useState<string>(myID);
   const onResetClick = useCallback(() => setRootId(myID), []);
 
   return (
-    <div className={styles.root}>
-      <PinchZoomPan min={0.5} max={2.5} captureWheel className={styles.wrapper}>
+    <Box
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        background: "#f7f9fc",
+        height: "100%",
+      }}
+    >
+      <PinchZoomPan min={0.5} max={2.5} captureWheel>
         <ReactFamilyTree
           nodes={data as IFamilyNode[]}
           rootId={rootId}
@@ -34,9 +42,7 @@ export default React.memo<{}>(function App() {
                 onSubClick={setRootId}
                 style={{
                   width: WIDTH,
-                  maxWidth: WIDTH,
                   height: HEIGHT,
-                  maxHeight: HEIGHT,
                   overflow: "hidden",
                   transform: `translate(${node.left * (WIDTH / 2)}px, ${
                     node.top * (HEIGHT / 2)
@@ -48,10 +54,19 @@ export default React.memo<{}>(function App() {
         />
       </PinchZoomPan>
       {rootId !== myID && (
-        <div className={styles.reset} onClick={onResetClick}>
-          Reset
-        </div>
+        <Box
+          style={{
+            position: "absolute",
+            left: "10px",
+            top: "10px",
+          }}
+          onClick={onResetClick}
+        >
+          <Button iconBefore={<RefreshIcon />} onClick={onResetClick}>
+            Reset
+          </Button>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 });
