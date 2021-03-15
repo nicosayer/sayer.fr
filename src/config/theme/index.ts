@@ -1,6 +1,14 @@
-import { Colors } from "@blueprintjs/core";
+export const theme = {
+  boxShadow: {},
+  size: {},
+  color: {},
+  fontSize: {},
+  border: {},
+  radius: {},
+};
 
 export const cssKeyToThemeKey = {
+  fontFamily: "fontFamily",
   fontSize: "fontSize",
   lineHeight: "fontSize",
   borderRadius: "radius",
@@ -11,6 +19,7 @@ export const cssKeyToThemeKey = {
   boxShadow: "boxShadow",
   color: "color",
   backgroundColor: "color",
+  borderColor: "color",
   width: "size",
   minWidth: "size",
   maxWidth: "size",
@@ -21,38 +30,28 @@ export const cssKeyToThemeKey = {
   bottom: "size",
   left: "size",
   right: "size",
+  margin: "size",
+  gridColumnGap: "size",
+  gridRowGap: "size",
   marginTop: "size",
   marginBottom: "size",
   marginLeft: "size",
   marginRight: "size",
+  padding: "size",
   paddingTop: "size",
   paddingBottom: "size",
   paddingLeft: "size",
   paddingRight: "size",
   gridGap: "size",
-  fontFamily: "fontFamily",
   border: "border",
   borderTop: "border",
   borderRight: "border",
   borderBottom: "border",
   borderLeft: "border",
-};
-
-export const theme = {
-  radius: { classic: "4px" },
-  boxShadow: { classic: "0 0 10px #00000080" },
-  size: {
-    max: "700px",
-  },
-  color: {
-    black: Colors.DARK_GRAY5,
-    lightgray: Colors.LIGHT_GRAY3,
-    gray: Colors.GRAY1,
-  },
-  fontSize: {
-    title: "18px",
-  },
-  border: { classic: "1px solid" },
+  borderTopColor: "color",
+  borderRightColor: "color",
+  borderBottomColor: "color",
+  borderLeftColor: "color",
 };
 
 export default theme;
