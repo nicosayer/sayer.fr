@@ -51,6 +51,8 @@ export const FamilyNode = React.memo<Props>(({ node }) => {
             : "2px solid rgba(0, 0, 0, 0.1)",
           padding: "4px",
           background: "white",
+          maxWidth: NODE_WIDTH * 0.6,
+          maxHeight: NODE_HEIGHT * 0.6,
         }}
         onDoubleClick={() => {
           setRootId(node.id);
@@ -64,8 +66,6 @@ export const FamilyNode = React.memo<Props>(({ node }) => {
         <Box
           style={{
             marginTop: "8px",
-            maxWidth: NODE_WIDTH / 2,
-            maxHeight: NODE_HEIGHT / 4,
             textOverflow: "ellipsis",
             overflow: "hidden",
           }}
