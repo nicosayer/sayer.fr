@@ -44,17 +44,17 @@ export const FamilyNode = React.memo<Props>(({ node }) => {
           flex: 1,
           borderRadius: "4px",
           border: isRoot
-            ? "1px solid rgba(0, 0, 0, 0.4)"
+            ? "1px solid rgba(0, 0, 0, 0.6)"
             : "1px solid rgba(0, 0, 0, 0.1)",
           borderBottom: isRoot
-            ? "2px solid rgba(0, 0, 0, 0.4)"
+            ? "2px solid rgba(0, 0, 0, 0.6)"
             : "2px solid rgba(0, 0, 0, 0.1)",
           padding: "4px",
           background: "white",
           maxWidth: NODE_WIDTH * 0.6,
           maxHeight: NODE_HEIGHT * 0.6,
         }}
-        onClick={() => {
+        onDoubleClick={() => {
           setRootId(node.id);
         }}
         onContextMenu={(event) => {

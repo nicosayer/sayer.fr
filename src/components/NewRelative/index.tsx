@@ -9,12 +9,14 @@ import React, { ChangeEvent, useState } from "react";
 
 import { db } from "config/firebase";
 import { GenderType } from "config/relative";
+import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useSideSheet } from "providers/SideSheet";
 import { isSet } from "utils/general";
 import { cleanName } from "utils/relative";
 
 export const NewRelative = () => {
   const { openSideSheet } = useSideSheet();
+  const { updateRelatives } = useOneTimeRelatives();
   const [isShown, setIsShown] = useState(false);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -23,6 +25,7 @@ export const NewRelative = () => {
   return (
     <>
       <Button
+        appearance="primary"
         iconBefore={PlusIcon}
         onClick={() => {
           setIsShown(true);
@@ -46,6 +49,7 @@ export const NewRelative = () => {
                 gender,
               })
               .then((doc) => {
+                updateRelatives();
                 openSideSheet(doc.id);
               });
           }

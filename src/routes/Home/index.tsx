@@ -21,12 +21,11 @@ export const Home = React.memo<{}>(() => {
       style={{
         cursor: "grab",
         display: "flex",
-        flexDirection: "column",
         background: "#f7f9fc",
         height: "100%",
       }}
     >
-      <PinchZoomPan min={0.5} max={2.5} captureWheel>
+      <PinchZoomPan>
         <ReactFamilyTree
           nodes={relatives}
           rootId={rootId}
@@ -86,6 +85,7 @@ export const Home = React.memo<{}>(() => {
         }}
       >
         <Button
+          appearance="primary"
           iconBefore={RefreshIcon}
           onClick={() => {
             window.location.reload(false);

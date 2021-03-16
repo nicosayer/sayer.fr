@@ -4,55 +4,50 @@ import React, { useEffect, useRef } from "react";
 import { Box } from "components/Box";
 
 interface IProps {
-  min?: number;
-  max?: number;
-  captureWheel?: boolean;
   style?: React.CSSProperties;
   children: React.ReactNode;
 }
 
-export const PinchZoomPan = React.memo<IProps>(
-  ({ min, max, captureWheel, style, children }) => {
-    const root = useRef<HTMLDivElement>(null);
+export const PinchZoomPan = React.memo<IProps>(({ style, children }) => {
+  const root = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-      const element = root.current;
-      if (element) {
-        create({ element, minZoom: min, maxZoom: max, captureWheel });
-      }
-    }, [min, max, captureWheel]);
+  useEffect(() => {
+    const element = root.current;
+    if (element) {
+      create({ element, minZoom: 0.2, maxZoom: 2.5, captureWheel: true });
+    }
+  }, []);
 
-    return (
+  return (
+    <Box
+      myRef={root}
+      style={{
+        ...style,
+        flex: 1,
+        position: "relative",
+        transform: "translateZ(0)",
+        overflow: "hidden",
+      }}
+    >
       <Box
-        myRef={root}
         style={{
-          ...style,
-          flex: 1,
-          position: "relative",
-          transform: "translateZ(0)",
-          overflow: "hidden",
+          position: "absolute",
+          width: "0",
+          height: "0",
+          transform: "translate(0, 0) scale(1)",
+          transformOrigin: "center",
+          willChange: "transform",
         }}
       >
         <Box
           style={{
             position: "absolute",
-            width: "0",
-            height: "0",
-            transform: "translate(0, 0) scale(1)",
-            transformOrigin: "center",
-            willChange: "transform",
+            transform: "translate(-50%, -50%)",
           }}
         >
-          <Box
-            style={{
-              position: "absolute",
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            {children}
-          </Box>
+          {children}
         </Box>
       </Box>
-    );
-  }
-);
+    </Box>
+  );
+});

@@ -14,11 +14,13 @@ import { cleanName, cleanSubRelatives } from "utils/relative";
 export interface IOneTimeRelativesContext {
   relatives: IRelative[];
   searchableRelatives: Record<string, string>;
+  updateRelatives: () => void;
 }
 
 const OneTimeRelativesContext = React.createContext<IOneTimeRelativesContext>({
   relatives: [],
   searchableRelatives: {},
+  updateRelatives: () => {},
 });
 
 export const useOneTimeRelatives = (): IOneTimeRelativesContext =>
@@ -29,6 +31,7 @@ export const OneTimeRelativesProvider = ({
 }: {
   children: ReactNode;
 }) => {
+  const [version, setVersion] = useState(0);
   const [relatives, setRelatives] = useState<IRelative[]>([]);
 
   useEffect(() => {
@@ -65,7 +68,7 @@ export const OneTimeRelativesProvider = ({
             )
         );
       });
-  }, []);
+  }, [version]);
 
   const searchableRelatives = useMemo(() => {
     return relatives.reduce(
@@ -79,7 +82,13 @@ export const OneTimeRelativesProvider = ({
 
   return (
     <OneTimeRelativesContext.Provider
-      value={{ relatives, searchableRelatives }}
+      value={{
+        relatives,
+        searchableRelatives,
+        updateRelatives: () => {
+          setVersion((old) => old + 1);
+        },
+      }}
     >
       {relatives.length ? children : null}
     </OneTimeRelativesContext.Provider>
