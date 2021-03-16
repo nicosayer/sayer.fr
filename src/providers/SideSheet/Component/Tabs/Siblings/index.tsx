@@ -9,17 +9,19 @@ import {
   Select,
   IconButton,
   TrashIcon,
+  PlusIcon,
 } from "evergreen-ui";
 import firebase from "firebase/app";
 import React, { ChangeEvent, useEffect, useState } from "react";
 
 import { Box } from "components/Box";
+import { NewRelativeButton } from "components/NewRelativeButton";
 import { DocumentData } from "config/firebase";
 import { RelativeType } from "config/relative";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useSideSheet } from "providers/SideSheet";
 import { isSet } from "utils/general";
-import { relativeData, relativeDoc } from "utils/relative";
+import { linkSiblings, relativeData, relativeDoc } from "utils/relative";
 
 const TableRow = ({
   sibling,
@@ -120,7 +122,7 @@ export const Siblings = ({ relative }: { relative: DocumentData }) => {
               <Pane key={relative.id} display="flex" padding={16}>
                 <TextInput
                   ref={getRef}
-                  placeholder="Add new sibling"
+                  placeholder="Search sibling"
                   {...getInputProps()}
                 />
                 <Select
@@ -136,32 +138,34 @@ export const Siblings = ({ relative }: { relative: DocumentData }) => {
                   <option value={RelativeType.half}>Half</option>
                 </Select>
                 <Button
+                  marginRight={16}
                   appearance="primary"
                   onClick={() => {
                     if (isSet(newSiblingType) && newSiblingId) {
-                      const newSiblingDoc = relativeDoc(newSiblingId);
-                      const currentRelativeDoc = relativeDoc(relative.id);
-
-                      newSiblingDoc.update({
-                        siblings: firebase.firestore.FieldValue.arrayUnion({
-                          type: newSiblingType,
-                          relative: currentRelativeDoc,
-                        }),
-                      });
-
-                      currentRelativeDoc.update({
-                        siblings: firebase.firestore.FieldValue.arrayUnion({
-                          type: newSiblingType,
-                          relative: newSiblingDoc,
-                        }),
+                      linkSiblings({
+                        sibling1: relativeDoc(relative.id),
+                        sibling2: relativeDoc(newSiblingId),
+                        type: newSiblingType,
                       });
 
                       clearSelection();
                     }
                   }}
                 >
-                  Save
+                  Add
                 </Button>
+                <NewRelativeButton
+                  iconBefore={PlusIcon}
+                  onCompleted={(sibling2: DocumentData) => {
+                    linkSiblings({
+                      sibling1: relativeDoc(relative.id),
+                      sibling2,
+                      type: newSiblingType ?? RelativeType.blood,
+                    });
+                  }}
+                >
+                  New
+                </NewRelativeButton>
               </Pane>
             );
           }}

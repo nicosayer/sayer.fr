@@ -8,16 +8,18 @@ import {
   TextInput,
   IconButton,
   TrashIcon,
+  PlusIcon,
 } from "evergreen-ui";
 import firebase from "firebase/app";
 import React, { useEffect, useState } from "react";
 
 import { Box } from "components/Box";
+import { NewRelativeButton } from "components/NewRelativeButton";
 import { DocumentData } from "config/firebase";
 import { RelativeType } from "config/relative";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useSideSheet } from "providers/SideSheet";
-import { relativeData, relativeDoc } from "utils/relative";
+import { linkParentAndChild, relativeData, relativeDoc } from "utils/relative";
 
 const TableRow = ({
   child,
@@ -107,38 +109,38 @@ export const Children = ({ relative }: { relative: DocumentData }) => {
               <Pane key={relative.id} display="flex" padding={16}>
                 <TextInput
                   ref={getRef}
-                  placeholder="Add new child"
+                  placeholder="Search child"
                   width="100%"
-                  marginRight={16}
                   {...getInputProps()}
                 />
                 <Button
+                  marginLeft={16}
+                  marginRight={16}
                   appearance="primary"
                   onClick={() => {
                     if (newChildId) {
-                      const newChildDoc = relativeDoc(newChildId);
-                      const currentRelativeDoc = relativeDoc(relative.id);
-
-                      newChildDoc.update({
-                        parents: firebase.firestore.FieldValue.arrayUnion({
-                          type: RelativeType.blood,
-                          relative: currentRelativeDoc,
-                        }),
-                      });
-
-                      currentRelativeDoc.update({
-                        children: firebase.firestore.FieldValue.arrayUnion({
-                          type: RelativeType.blood,
-                          relative: newChildDoc,
-                        }),
+                      linkParentAndChild({
+                        parentDoc: relativeDoc(relative.id),
+                        childDoc: relativeDoc(newChildId),
                       });
 
                       clearSelection();
                     }
                   }}
                 >
-                  Save
+                  Add
                 </Button>
+                <NewRelativeButton
+                  iconBefore={PlusIcon}
+                  onCompleted={(childDoc: DocumentData) => {
+                    linkParentAndChild({
+                      parentDoc: relativeDoc(relative.id),
+                      childDoc,
+                    });
+                  }}
+                >
+                  New
+                </NewRelativeButton>
               </Pane>
             );
           }}

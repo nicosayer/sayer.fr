@@ -9,17 +9,19 @@ import {
   Select,
   IconButton,
   TrashIcon,
+  PlusIcon,
 } from "evergreen-ui";
 import firebase from "firebase/app";
 import React, { ChangeEvent, useEffect, useState } from "react";
 
 import { Box } from "components/Box";
+import { NewRelativeButton } from "components/NewRelativeButton";
 import { DocumentData } from "config/firebase";
 import { RelativeType } from "config/relative";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useSideSheet } from "providers/SideSheet";
 import { isSet } from "utils/general";
-import { relativeData, relativeDoc } from "utils/relative";
+import { linkSpouses, relativeData, relativeDoc } from "utils/relative";
 
 const TableRow = ({
   spouse,
@@ -120,7 +122,7 @@ export const Spouses = ({ relative }: { relative: DocumentData }) => {
               <Pane key={relative.id} display="flex" padding={16}>
                 <TextInput
                   ref={getRef}
-                  placeholder="Add new spouse"
+                  placeholder="Search spouse"
                   {...getInputProps()}
                 />
                 <Select
@@ -137,31 +139,33 @@ export const Spouses = ({ relative }: { relative: DocumentData }) => {
                 </Select>
                 <Button
                   appearance="primary"
+                  marginRight={16}
                   onClick={() => {
                     if (isSet(newSpouseType) && newSpouseId) {
-                      const newSpouseDoc = relativeDoc(newSpouseId);
-                      const currentRelativeDoc = relativeDoc(relative.id);
-
-                      newSpouseDoc.update({
-                        spouses: firebase.firestore.FieldValue.arrayUnion({
-                          type: newSpouseType,
-                          relative: currentRelativeDoc,
-                        }),
-                      });
-
-                      currentRelativeDoc.update({
-                        spouses: firebase.firestore.FieldValue.arrayUnion({
-                          type: newSpouseType,
-                          relative: newSpouseDoc,
-                        }),
+                      linkSpouses({
+                        spouse1: relativeDoc(relative.id),
+                        spouse2: relativeDoc(newSpouseId),
+                        type: newSpouseType,
                       });
 
                       clearSelection();
                     }
                   }}
                 >
-                  Save
+                  Add
                 </Button>
+                <NewRelativeButton
+                  iconBefore={PlusIcon}
+                  onCompleted={(spouse2: DocumentData) => {
+                    linkSpouses({
+                      spouse1: relativeDoc(relative.id),
+                      spouse2,
+                      type: newSpouseType ?? RelativeType.married,
+                    });
+                  }}
+                >
+                  New
+                </NewRelativeButton>
               </Pane>
             );
           }}

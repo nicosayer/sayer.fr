@@ -1,19 +1,28 @@
-import { Autocomplete, Button, RefreshIcon, TextInput } from "evergreen-ui";
+import {
+  Autocomplete,
+  Button,
+  PlusIcon,
+  RefreshIcon,
+  TextInput,
+} from "evergreen-ui";
 import React from "react";
 import ReactFamilyTree from "react-family-tree";
 import { IFamilyExtNode } from "relatives-tree/lib/types";
 
 import { Box } from "components/Box";
 import { FamilyNode } from "components/FamilyNode/FamilyNode";
-import { NewRelative } from "components/NewRelative";
+import { NewRelativeButton } from "components/NewRelativeButton";
 import { PinchZoomPan } from "components/PinchZoomPan/PinchZoomPan";
+import { DocumentData } from "config/firebase";
 import { NODE_WIDTH, NODE_HEIGHT } from "config/general";
 import { IRelative } from "config/relative";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useRootId } from "providers/RootId";
+import { useSideSheet } from "providers/SideSheet";
 
 export const Home = React.memo<{}>(() => {
   const { relatives, searchableRelatives } = useOneTimeRelatives();
+  const { openSideSheet } = useSideSheet();
   const { rootId, setRootId } = useRootId();
 
   return (
@@ -48,8 +57,36 @@ export const Home = React.memo<{}>(() => {
           top: "8px",
         }}
       >
-        <NewRelative />
+        <NewRelativeButton
+          appearance="primary"
+          iconBefore={PlusIcon}
+          onCompleted={(doc: DocumentData) => {
+            openSideSheet(doc.id);
+          }}
+        >
+          New relative
+        </NewRelativeButton>
       </Box>
+      {searchableRelatives[rootId] && (
+        <Box
+          style={{
+            display: "flex",
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: "8px",
+          }}
+        >
+          <Button
+            margin="auto"
+            onClick={() => {
+              openSideSheet(rootId);
+            }}
+          >
+            {searchableRelatives[rootId]}
+          </Button>
+        </Box>
+      )}
       <Box
         style={{
           position: "absolute",

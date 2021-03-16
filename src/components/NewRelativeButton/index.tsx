@@ -1,21 +1,22 @@
 import {
   Button,
+  ButtonProps,
   Dialog,
-  PlusIcon,
   SelectField,
   TextInputField,
 } from "evergreen-ui";
 import React, { ChangeEvent, useState } from "react";
 
-import { db } from "config/firebase";
+import { db, DocumentData } from "config/firebase";
 import { GenderType } from "config/relative";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
-import { useSideSheet } from "providers/SideSheet";
 import { isSet } from "utils/general";
 import { cleanName } from "utils/relative";
 
-export const NewRelative = () => {
-  const { openSideSheet } = useSideSheet();
+export const NewRelativeButton = ({
+  onCompleted = () => {},
+  ...rest
+}: ButtonProps & { onCompleted?: (doc: DocumentData) => void }) => {
   const { updateRelatives } = useOneTimeRelatives();
   const [isShown, setIsShown] = useState(false);
   const [firstName, setFirstName] = useState<string>("");
@@ -25,14 +26,11 @@ export const NewRelative = () => {
   return (
     <>
       <Button
-        appearance="primary"
-        iconBefore={PlusIcon}
         onClick={() => {
           setIsShown(true);
         }}
-      >
-        New relative
-      </Button>
+        {...rest}
+      />
       <Dialog
         isShown={isShown}
         title="New relative"
@@ -50,7 +48,7 @@ export const NewRelative = () => {
               })
               .then((doc) => {
                 updateRelatives();
-                openSideSheet(doc.id);
+                onCompleted(doc);
               });
           }
 
@@ -61,6 +59,7 @@ export const NewRelative = () => {
         }}
       >
         <TextInputField
+          autoFocus
           label="First name"
           placeholder="John"
           value={firstName}
