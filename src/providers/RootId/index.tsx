@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, useState } from "react";
 
-export const DEFAULT_ROOT_ID = "bG1N4H1zBcNDwWDiZSuB";
+export const DEFAULT_ROOT_ID = "ccxdzia5sKyms9CRSMEx";
 
 export interface IRootIdContext {
   defaultRootId: string;

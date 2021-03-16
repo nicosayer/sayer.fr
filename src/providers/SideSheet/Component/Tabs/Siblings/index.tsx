@@ -170,6 +170,7 @@ export const Siblings = ({ relative }: { relative: DocumentData }) => {
           <Table.Head>
             <Table.TextHeaderCell>Name</Table.TextHeaderCell>
             <Table.TextHeaderCell>Type</Table.TextHeaderCell>
+            <Table.TextHeaderCell flexBasis={60} flexShrink={0} flexGrow={0} />
           </Table.Head>
           <Table.VirtualBody height={240}>
             {(data.siblings ?? []).map(

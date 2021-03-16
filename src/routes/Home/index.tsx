@@ -1,10 +1,11 @@
-import { Button, PlusIcon, RefreshIcon } from "evergreen-ui";
+import { Autocomplete, Button, RefreshIcon, TextInput } from "evergreen-ui";
 import React from "react";
 import ReactFamilyTree from "react-family-tree";
 import { IFamilyExtNode } from "relatives-tree/lib/types";
 
 import { Box } from "components/Box";
 import { FamilyNode } from "components/FamilyNode/FamilyNode";
+import { NewRelative } from "components/NewRelative";
 import { PinchZoomPan } from "components/PinchZoomPan/PinchZoomPan";
 import { NODE_WIDTH, NODE_HEIGHT } from "config/general";
 import { IRelative } from "config/relative";
@@ -12,8 +13,8 @@ import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useRootId } from "providers/RootId";
 
 export const Home = React.memo<{}>(() => {
-  const { relatives } = useOneTimeRelatives();
-  const { rootId } = useRootId();
+  const { relatives, searchableRelatives } = useOneTimeRelatives();
+  const { rootId, setRootId } = useRootId();
 
   return (
     <Box
@@ -48,21 +49,40 @@ export const Home = React.memo<{}>(() => {
           top: "8px",
         }}
       >
-        <Button
-          marginLeft="8px"
-          iconBefore={PlusIcon}
-          onClick={() => {
-            window.location.reload(false);
-          }}
-        >
-          New relative
-        </Button>
+        <NewRelative />
       </Box>
       <Box
         style={{
           position: "absolute",
           right: "8px",
           top: "8px",
+        }}
+      >
+        <Autocomplete
+          items={Object.keys(searchableRelatives)}
+          onChange={setRootId}
+          itemToString={(searchableRelativeId) => {
+            return searchableRelatives[searchableRelativeId] ?? "";
+          }}
+        >
+          {(props) => {
+            const { getInputProps, getRef } = props;
+
+            return (
+              <TextInput
+                ref={getRef}
+                placeholder="Search for a relative"
+                {...getInputProps()}
+              />
+            );
+          }}
+        </Autocomplete>
+      </Box>
+      <Box
+        style={{
+          position: "absolute",
+          right: "8px",
+          bottom: "8px",
         }}
       >
         <Button

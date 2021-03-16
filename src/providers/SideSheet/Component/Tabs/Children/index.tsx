@@ -52,12 +52,7 @@ const TableRow = ({
           </Box>
         )}
       </Table.Cell>
-      <Table.Cell
-        textTransform="capitalize"
-        flexBasis={60}
-        flexShrink={0}
-        flexGrow={0}
-      >
+      <Table.Cell flexBasis={60} flexShrink={0} flexGrow={0}>
         <IconButton
           icon={TrashIcon}
           intent="danger"

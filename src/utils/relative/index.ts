@@ -1,4 +1,4 @@
-import { db, DocumentData } from "config/firebase";
+import { db } from "config/firebase";
 import {
   IFirebaseSubRelative,
   ISubRelative,
@@ -18,19 +18,6 @@ export const cleanSubRelatives = (
       type: RelativeType[type] as keyof typeof RelativeType,
     }))
     .filter(({ id, type }) => id && type);
-};
-
-export const spreadData = (doc: DocumentData) => {
-  const data = doc.data();
-
-  return data
-    ? {
-        ...data,
-        id: doc.id,
-        firstName: cleanName(data.firstName ?? ""),
-        lastName: cleanName(data.lastName ?? ""),
-      }
-    : undefined;
 };
 
 export const relativeDoc = (id: string) => {

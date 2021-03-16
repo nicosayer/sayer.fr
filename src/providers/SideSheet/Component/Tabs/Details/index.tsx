@@ -16,7 +16,7 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
       <Card backgroundColor="white" elevation={0} padding={16}>
         <TextInputField
           label="First name"
-          placeholder="Nicolas"
+          placeholder="John"
           value={firstName}
           onChange={(event: ChangeEvent) => {
             // @ts-ignore
@@ -25,7 +25,7 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
         />
         <TextInputField
           label="Last name"
-          placeholder="Sayer"
+          placeholder="Doe"
           value={lastName}
           onChange={(event: ChangeEvent) => {
             // @ts-ignore
@@ -53,7 +53,7 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
               .set(
                 {
                   firstName: cleanName(firstName),
-                  lastName: cleanName(lastName),
+                  lastName,
                   gender: Number(gender),
                 },
                 { merge: true }

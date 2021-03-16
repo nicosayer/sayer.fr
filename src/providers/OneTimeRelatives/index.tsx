@@ -51,7 +51,7 @@ export const OneTimeRelativesProvider = ({
               return {
                 id: relative.id,
                 firstName: cleanName(firstName),
-                lastName: cleanName(lastName),
+                lastName,
                 gender: GenderType[gender] as keyof typeof GenderType,
                 parents: cleanSubRelatives(parents),
                 siblings: cleanSubRelatives(siblings),
