@@ -72,13 +72,12 @@ export const Home = React.memo<{}>(() => {
           style={{
             display: "flex",
             position: "absolute",
-            left: 0,
-            right: 0,
+            marginLeft: "50%",
             top: "8px",
           }}
         >
           <Button
-            margin="auto"
+            marginLeft="-50%"
             onClick={() => {
               openSideSheet(rootId);
             }}
