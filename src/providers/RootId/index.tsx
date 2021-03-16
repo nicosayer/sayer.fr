@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useMemo } from "react";
+import React, { ReactNode, useContext, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useHistory } from "react-router-dom";
 
@@ -27,8 +27,19 @@ export const RootIdProvider = ({ children }: { children: ReactNode }) => {
     if (searchableRelatives[relativeId]) {
       return relativeId;
     }
+
+    if (searchableRelatives[localStorage.rootId]) {
+      return localStorage.rootId;
+    }
+
     return DEFAULT_ROOT_ID;
   }, [relativeId]);
+
+  useEffect(() => {
+    if (rootId) {
+      localStorage.setItem("rootId", rootId);
+    }
+  }, [rootId]);
 
   return (
     <RootIdContext.Provider
@@ -36,7 +47,7 @@ export const RootIdProvider = ({ children }: { children: ReactNode }) => {
         rootId,
         setRootId: (newRootId) => {
           if (newRootId !== relativeId) {
-            history.push(newRootId);
+            history.push("/" + newRootId);
           }
         },
       }}

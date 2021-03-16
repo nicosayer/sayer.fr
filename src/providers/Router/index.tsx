@@ -8,7 +8,11 @@ export const RouterProvider = ({ children }: { children: ReactNode }) => {
     <BrowserRouter>
       <Switch>
         <Route path="/:relativeId">{children}</Route>
-        <Route render={() => <Redirect to={`/${DEFAULT_ROOT_ID}`} />} />
+        <Route
+          render={() => (
+            <Redirect to={`/${localStorage.rootId ?? DEFAULT_ROOT_ID}`} />
+          )}
+        />
       </Switch>
     </BrowserRouter>
   );
