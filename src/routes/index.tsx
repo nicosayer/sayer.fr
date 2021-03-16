@@ -1,5 +1,6 @@
 import React from "react";
 
+import { CornerDialog } from "components/CornerDialog";
 import { AuthProvider } from "providers/Auth";
 import { OneTimeRelativesProvider } from "providers/OneTimeRelatives";
 import { RootIdProvider } from "providers/RootId";
@@ -14,6 +15,7 @@ export const App = React.memo<{}>(() => {
         <SideSheetProvider>
           <RouterProvider>
             <RootIdProvider>
+              <CornerDialog />
               <Home />
             </RootIdProvider>
           </RouterProvider>
