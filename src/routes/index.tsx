@@ -1,5 +1,6 @@
 import React from "react";
 
+import { AuthProvider } from "providers/Auth";
 import { OneTimeRelativesProvider } from "providers/OneTimeRelatives";
 import { RootIdProvider } from "providers/RootId";
 import { RouterProvider } from "providers/Router";
@@ -9,13 +10,15 @@ import { Home } from "routes/Home";
 export const App = React.memo<{}>(() => {
   return (
     <OneTimeRelativesProvider>
-      <SideSheetProvider>
-        <RouterProvider>
-          <RootIdProvider>
-            <Home />
-          </RootIdProvider>
-        </RouterProvider>
-      </SideSheetProvider>
+      <AuthProvider>
+        <SideSheetProvider>
+          <RouterProvider>
+            <RootIdProvider>
+              <Home />
+            </RootIdProvider>
+          </RouterProvider>
+        </SideSheetProvider>
+      </AuthProvider>
     </OneTimeRelativesProvider>
   );
 });

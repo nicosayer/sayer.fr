@@ -1,10 +1,4 @@
-import {
-  Autocomplete,
-  Button,
-  PlusIcon,
-  RefreshIcon,
-  TextInput,
-} from "evergreen-ui";
+import { Autocomplete, Button, PlusIcon, TextInput } from "evergreen-ui";
 import React from "react";
 import ReactFamilyTree from "react-family-tree";
 import { IFamilyExtNode } from "relatives-tree/lib/types";
@@ -16,14 +10,17 @@ import { PinchZoomPan } from "components/PinchZoomPan/PinchZoomPan";
 import { DocumentData } from "config/firebase";
 import { NODE_WIDTH, NODE_HEIGHT } from "config/general";
 import { IRelative } from "config/relative";
+import { useAuth } from "providers/Auth";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useRootId } from "providers/RootId";
 import { useSideSheet } from "providers/SideSheet";
+import { loginWithGoogle, logout } from "utils/auth";
 
 export const Home = React.memo<{}>(() => {
   const { relatives, searchableRelatives } = useOneTimeRelatives();
   const { openSideSheet } = useSideSheet();
   const { rootId, setRootId } = useRootId();
+  const { isAuth } = useAuth();
 
   return (
     <Box
@@ -41,7 +38,6 @@ export const Home = React.memo<{}>(() => {
           width={NODE_WIDTH}
           height={NODE_HEIGHT}
           renderNode={(node) => {
-            console.log(node);
             return (
               <FamilyNode
                 key={node.id}
@@ -58,35 +54,14 @@ export const Home = React.memo<{}>(() => {
           top: "8px",
         }}
       >
-        <NewRelativeButton
-          appearance="primary"
-          iconBefore={PlusIcon}
-          onCompleted={(doc: DocumentData) => {
-            openSideSheet(doc.id);
+        <Button
+          onClick={() => {
+            openSideSheet(rootId);
           }}
         >
-          New relative
-        </NewRelativeButton>
+          {searchableRelatives[rootId]}
+        </Button>
       </Box>
-      {searchableRelatives[rootId] && (
-        <Box
-          style={{
-            display: "flex",
-            position: "absolute",
-            marginLeft: "50%",
-            top: "8px",
-          }}
-        >
-          <Button
-            marginLeft="-50%"
-            onClick={() => {
-              openSideSheet(rootId);
-            }}
-          >
-            {searchableRelatives[rootId]}
-          </Button>
-        </Box>
-      )}
       <Box
         style={{
           position: "absolute",
@@ -96,14 +71,27 @@ export const Home = React.memo<{}>(() => {
       >
         <Autocomplete
           items={Object.keys(searchableRelatives)}
-          onChange={setRootId}
+          onChange={(newRootId) => {
+            if (newRootId) {
+              setRootId(newRootId);
+            }
+          }}
           itemToString={(searchableRelativeId) => {
             return searchableRelatives[searchableRelativeId] ?? "";
           }}
         >
           {(props) => {
-            const { getInputProps, getRef } = props;
-
+            const {
+              getInputProps,
+              getRef,
+              // @ts-ignore
+              selectedItem,
+              // @ts-ignore
+              clearSelection,
+            } = props;
+            if (selectedItem) {
+              clearSelection();
+            }
             return (
               <TextInput
                 ref={getRef}
@@ -114,6 +102,25 @@ export const Home = React.memo<{}>(() => {
           }}
         </Autocomplete>
       </Box>
+      {isAuth && (
+        <Box
+          style={{
+            position: "absolute",
+            left: "8px",
+            bottom: "8px",
+          }}
+        >
+          <NewRelativeButton
+            appearance="primary"
+            iconBefore={PlusIcon}
+            onCompleted={(doc: DocumentData) => {
+              openSideSheet(doc.id);
+            }}
+          >
+            New relative
+          </NewRelativeButton>
+        </Box>
+      )}
       <Box
         style={{
           position: "absolute",
@@ -121,15 +128,13 @@ export const Home = React.memo<{}>(() => {
           bottom: "8px",
         }}
       >
-        <Button
-          appearance="primary"
-          iconBefore={RefreshIcon}
-          onClick={() => {
-            window.location.reload(false);
-          }}
-        >
-          Refresh
-        </Button>
+        {isAuth ? (
+          <Button appearance="primary" onClick={logout}>
+            Logout
+          </Button>
+        ) : (
+          <Button onClick={loginWithGoogle}>Login with Google</Button>
+        )}
       </Box>
     </Box>
   );

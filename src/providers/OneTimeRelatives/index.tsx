@@ -81,8 +81,10 @@ export const OneTimeRelativesProvider = ({
         [id]:
           birthYear && deathYear
             ? `${firstName} ${lastName} (${birthYear} → ${deathYear})`
-            : birthYear || deathYear
-            ? `${firstName} ${lastName} (${birthYear || deathYear})`
+            : birthYear
+            ? `${firstName} ${lastName} (${birthYear})`
+            : deathYear
+            ? `${firstName} ${lastName} (? → ${deathYear})`
             : `${firstName} ${lastName}`,
       }),
       {}

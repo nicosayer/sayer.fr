@@ -5,6 +5,7 @@ import "firebase/firestore";
 
 const config = {
   apiKey: "AIzaSyC9ZYWZtUwwl19ZXhR65sxvT5K6B_PXwrE",
+  authDomain: "sayer-fr-family.firebaseapp.com",
   databaseURL: "https://sayer-fr-family.firebaseio.com",
   projectId: "sayer-fr-family",
 };

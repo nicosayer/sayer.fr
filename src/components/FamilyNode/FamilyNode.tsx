@@ -78,7 +78,9 @@ export const FamilyNode = React.memo<Props>(({ node }) => {
             <Text color="muted" size={300}>
               {node.birthYear && node.deathYear
                 ? `(${node.birthYear} → ${node.deathYear})`
-                : `(${node.birthYear || node.deathYear})`}
+                : node.birthYear
+                ? `(${node.birthYear})`
+                : `(? → ${node.deathYear})`}
             </Text>
           )}
         </Box>

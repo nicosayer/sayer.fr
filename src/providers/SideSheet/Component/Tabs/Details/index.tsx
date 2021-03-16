@@ -10,10 +10,12 @@ import React, { ChangeEvent, useState } from "react";
 
 import { DateSelect } from "components/DateSelect";
 import { db } from "config/firebase";
+import { useAuth } from "providers/Auth";
 import { cleanName } from "utils/relative";
 
 export const Details = ({ relative }: { relative: Record<string, any> }) => {
   const data = relative.data();
+  const { isAuth } = useAuth();
 
   const [firstName, setFirstName] = useState<string>(data.firstName);
   const [lastName, setLastName] = useState<string>(data.lastName);
@@ -41,6 +43,7 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
     <Pane background="tint1" padding={16}>
       <Card backgroundColor="white" elevation={0} padding={16}>
         <TextInputField
+          disabled={!isAuth}
           label="First name"
           placeholder="John"
           value={firstName}
@@ -50,6 +53,7 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
           }}
         />
         <TextInputField
+          disabled={!isAuth}
           label="Last name"
           placeholder="Doe"
           value={lastName}
@@ -59,6 +63,7 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
           }}
         />
         <SelectField
+          disabled={!isAuth}
           label="Gender"
           value={gender}
           onChange={(event: ChangeEvent) => {
@@ -71,6 +76,7 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
         </SelectField>
         <FormField label="Date of birth" marginBottom={24}>
           <DateSelect
+            disabled={!isAuth}
             day={birthDay}
             month={birthMonth}
             year={birthYear}
@@ -81,6 +87,7 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
         </FormField>
         <FormField label="Date of death">
           <DateSelect
+            disabled={!isAuth}
             day={deathDay}
             month={deathMonth}
             year={deathYear}
@@ -89,35 +96,37 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
             setYear={setDeathYear}
           />
         </FormField>
-        <Button
-          appearance="primary"
-          display="flex"
-          marginLeft="auto"
-          onClick={() => {
-            db.collection("relatives")
-              .doc(relative.id)
-              .set(
-                {
-                  firstName: cleanName(firstName),
-                  lastName,
-                  gender: gender,
-                  birthDate: {
-                    day: birthDay,
-                    month: birthMonth,
-                    year: birthYear,
+        {isAuth && (
+          <Button
+            appearance="primary"
+            display="flex"
+            marginLeft="auto"
+            onClick={() => {
+              db.collection("relatives")
+                .doc(relative.id)
+                .set(
+                  {
+                    firstName: cleanName(firstName),
+                    lastName,
+                    gender: gender,
+                    birthDate: {
+                      day: birthDay,
+                      month: birthMonth,
+                      year: birthYear,
+                    },
+                    deathDate: {
+                      day: deathDay,
+                      month: deathMonth,
+                      year: deathYear,
+                    },
                   },
-                  deathDate: {
-                    day: deathDay,
-                    month: deathMonth,
-                    year: deathYear,
-                  },
-                },
-                { merge: true }
-              );
-          }}
-        >
-          Save
-        </Button>
+                  { merge: true }
+                );
+            }}
+          >
+            Save
+          </Button>
+        )}
       </Card>
     </Pane>
   );

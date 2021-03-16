@@ -10,7 +10,9 @@ export const DateSelect = ({
   setDay,
   setMonth,
   setYear,
+  disabled,
 }: {
+  disabled?: boolean;
   day: number | null;
   month: number | null;
   year: number | null;
@@ -21,6 +23,7 @@ export const DateSelect = ({
   return (
     <>
       <Select
+        disabled={disabled}
         marginRight={8}
         value={day ?? ""}
         onChange={(event: ChangeEvent) => {
@@ -62,6 +65,7 @@ export const DateSelect = ({
         <option value={31}>31</option>
       </Select>
       <Select
+        disabled={disabled}
         marginRight={8}
         value={month ?? ""}
         onChange={(event: ChangeEvent) => {
@@ -84,6 +88,7 @@ export const DateSelect = ({
         <option value={12}>December</option>
       </Select>
       <Select
+        disabled={disabled}
         marginRight={8}
         value={year ?? ""}
         onChange={(event: ChangeEvent) => {
@@ -98,16 +103,18 @@ export const DateSelect = ({
           </option>
         ))}
       </Select>
-      <Button
-        appearance="minimal"
-        onClick={() => {
-          setDay(null);
-          setMonth(null);
-          setYear(null);
-        }}
-      >
-        Clear
-      </Button>
+      {!disabled && (
+        <Button
+          appearance="minimal"
+          onClick={() => {
+            setDay(null);
+            setMonth(null);
+            setYear(null);
+          }}
+        >
+          Clear
+        </Button>
+      )}
     </>
   );
 };

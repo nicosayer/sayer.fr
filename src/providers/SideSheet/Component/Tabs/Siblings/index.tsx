@@ -18,6 +18,7 @@ import { Box } from "components/Box";
 import { NewRelativeButton } from "components/NewRelativeButton";
 import { DocumentData } from "config/firebase";
 import { RelativeType } from "config/relative";
+import { useAuth } from "providers/Auth";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useSideSheet } from "providers/SideSheet";
 import { isSet } from "utils/general";
@@ -30,6 +31,7 @@ const TableRow = ({
   relative: DocumentData;
   sibling: { type: RelativeType; relative: DocumentData };
 }) => {
+  const { isAuth } = useAuth();
   const { openSideSheet } = useSideSheet();
   const [data, setData] = useState<DocumentData>();
 
@@ -59,43 +61,45 @@ const TableRow = ({
       <Table.Cell textTransform="capitalize">
         {RelativeType[sibling.type]}
       </Table.Cell>
-      <Table.Cell
-        textTransform="capitalize"
-        flexBasis={60}
-        flexShrink={0}
-        flexGrow={0}
-      >
-        <IconButton
-          icon={TrashIcon}
-          intent="danger"
-          // @ts-ignore
-          onClick={(event: MouseEvent) => {
-            event.stopPropagation();
-            const currentRelativeDoc = relativeDoc(relative.id);
+      {isAuth && (
+        <Table.Cell
+          textTransform="capitalize"
+          flexBasis={60}
+          flexShrink={0}
+          flexGrow={0}
+        >
+          <IconButton
+            icon={TrashIcon}
+            intent="danger"
+            // @ts-ignore
+            onClick={(event: MouseEvent) => {
+              event.stopPropagation();
+              const currentRelativeDoc = relativeDoc(relative.id);
 
-            sibling.relative.update({
-              siblings: firebase.firestore.FieldValue.arrayRemove({
-                type: sibling.type,
-                relative: currentRelativeDoc,
-              }),
-            });
+              sibling.relative.update({
+                siblings: firebase.firestore.FieldValue.arrayRemove({
+                  type: sibling.type,
+                  relative: currentRelativeDoc,
+                }),
+              });
 
-            currentRelativeDoc.update({
-              siblings: firebase.firestore.FieldValue.arrayRemove({
-                type: sibling.type,
-                relative: sibling.relative,
-              }),
-            });
-          }}
-        />
-      </Table.Cell>
+              currentRelativeDoc.update({
+                siblings: firebase.firestore.FieldValue.arrayRemove({
+                  type: sibling.type,
+                  relative: sibling.relative,
+                }),
+              });
+            }}
+          />
+        </Table.Cell>
+      )}
     </Table.Row>
   );
 };
 
 export const Siblings = ({ relative }: { relative: DocumentData }) => {
   const data = relative.data();
-
+  const { isAuth } = useAuth();
   const { searchableRelatives } = useOneTimeRelatives();
   const [newSiblingId, setNewSiblingId] = useState<string>();
   const [newSiblingType, setNewSiblingType] = useState<
@@ -105,76 +109,84 @@ export const Siblings = ({ relative }: { relative: DocumentData }) => {
   return (
     <Pane background="tint1" padding={16}>
       <Card backgroundColor="white" elevation={0}>
-        <Autocomplete
-          items={Object.keys(searchableRelatives).filter(
-            (searchableRelativeId) => searchableRelativeId !== relative.id
-          )}
-          onChange={setNewSiblingId}
-          itemToString={(searchableRelativeId) => {
-            return searchableRelatives[searchableRelativeId] ?? "";
-          }}
-        >
-          {(props) => {
-            // @ts-ignore
-            const { getInputProps, getRef, clearSelection } = props;
+        {isAuth && (
+          <Autocomplete
+            items={Object.keys(searchableRelatives).filter(
+              (searchableRelativeId) => searchableRelativeId !== relative.id
+            )}
+            onChange={setNewSiblingId}
+            itemToString={(searchableRelativeId) => {
+              return searchableRelatives[searchableRelativeId] ?? "";
+            }}
+          >
+            {(props) => {
+              // @ts-ignore
+              const { getInputProps, getRef, clearSelection } = props;
 
-            return (
-              <Pane key={relative.id} display="flex" padding={16}>
-                <TextInput
-                  ref={getRef}
-                  placeholder="Search sibling"
-                  {...getInputProps()}
-                />
-                <Select
-                  value={newSiblingType}
-                  onChange={(event: ChangeEvent) => {
-                    // @ts-ignore
-                    setNewSiblingType(event.target.value);
-                  }}
-                  marginLeft={16}
-                  marginRight={16}
-                >
-                  <option value={RelativeType.blood}>Blood</option>
-                  <option value={RelativeType.half}>Half</option>
-                </Select>
-                <Button
-                  marginRight={16}
-                  appearance="primary"
-                  onClick={() => {
-                    if (isSet(newSiblingType) && newSiblingId) {
+              return (
+                <Pane key={relative.id} display="flex" padding={16}>
+                  <TextInput
+                    ref={getRef}
+                    placeholder="Search sibling"
+                    {...getInputProps()}
+                  />
+                  <Select
+                    value={newSiblingType}
+                    onChange={(event: ChangeEvent) => {
+                      // @ts-ignore
+                      setNewSiblingType(event.target.value);
+                    }}
+                    marginLeft={16}
+                    marginRight={16}
+                  >
+                    <option value={RelativeType.blood}>Blood</option>
+                    <option value={RelativeType.half}>Half</option>
+                  </Select>
+                  <Button
+                    marginRight={16}
+                    appearance="primary"
+                    onClick={() => {
+                      if (isSet(newSiblingType) && newSiblingId) {
+                        linkSiblings({
+                          sibling1: relativeDoc(relative.id),
+                          sibling2: relativeDoc(newSiblingId),
+                          type: newSiblingType,
+                        });
+
+                        clearSelection();
+                      }
+                    }}
+                  >
+                    Add
+                  </Button>
+                  <NewRelativeButton
+                    iconBefore={PlusIcon}
+                    onCompleted={(sibling2: DocumentData) => {
                       linkSiblings({
                         sibling1: relativeDoc(relative.id),
-                        sibling2: relativeDoc(newSiblingId),
-                        type: newSiblingType,
+                        sibling2,
+                        type: newSiblingType ?? RelativeType.blood,
                       });
-
-                      clearSelection();
-                    }
-                  }}
-                >
-                  Add
-                </Button>
-                <NewRelativeButton
-                  iconBefore={PlusIcon}
-                  onCompleted={(sibling2: DocumentData) => {
-                    linkSiblings({
-                      sibling1: relativeDoc(relative.id),
-                      sibling2,
-                      type: newSiblingType ?? RelativeType.blood,
-                    });
-                  }}
-                >
-                  New
-                </NewRelativeButton>
-              </Pane>
-            );
-          }}
-        </Autocomplete>
+                    }}
+                  >
+                    New
+                  </NewRelativeButton>
+                </Pane>
+              );
+            }}
+          </Autocomplete>
+        )}
         <Table>
           <Table.Head>
             <Table.TextHeaderCell>Name</Table.TextHeaderCell>
             <Table.TextHeaderCell>Type</Table.TextHeaderCell>
-            <Table.TextHeaderCell flexBasis={60} flexShrink={0} flexGrow={0} />
+            {isAuth && (
+              <Table.TextHeaderCell
+                flexBasis={60}
+                flexShrink={0}
+                flexGrow={0}
+              />
+            )}
           </Table.Head>
           <Table.VirtualBody height={240}>
             {(data.siblings ?? []).map(
