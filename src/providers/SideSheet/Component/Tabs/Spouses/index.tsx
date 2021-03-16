@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Table,
   Pane,
@@ -10,17 +9,18 @@ import {
   IconButton,
   TrashIcon,
   PlusIcon,
+  Text,
 } from "evergreen-ui";
 import firebase from "firebase/app";
 import React, { ChangeEvent, useEffect, useState } from "react";
 
-import { Box } from "components/Box";
 import { NewRelativeButton } from "components/NewRelativeButton";
 import { DocumentData } from "config/firebase";
 import { RelativeType } from "config/relative";
 import { useAuth } from "providers/Auth";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useSideSheet } from "providers/SideSheet";
+import { NameCell } from "providers/SideSheet/Component/Tabs/NameCell";
 import { isSet } from "utils/general";
 import { linkSpouses, relativeData, relativeDoc } from "utils/relative";
 
@@ -47,22 +47,13 @@ const TableRow = ({
         openSideSheet(spouse.relative.id);
       }}
     >
-      <Table.Cell>
-        {data && (
-          <Box style={{ display: "flex", alignItems: "center" }}>
-            <Avatar
-              name={`${data.firstName} ${data.lastName}`}
-              marginRight={8}
-            />
-            {data.firstName} {data.lastName}
-          </Box>
-        )}
-      </Table.Cell>
-      <Table.Cell textTransform="capitalize">
-        {RelativeType[spouse.type]}
-      </Table.Cell>
+      {/* @ts-ignore */}
+      <NameCell data={data} />
+      <Table.TextCell textTransform="capitalize">
+        <Text>{RelativeType[spouse.type]}</Text>
+      </Table.TextCell>
       {isAuth && (
-        <Table.Cell
+        <Table.TextCell
           textTransform="capitalize"
           flexBasis={60}
           flexShrink={0}
@@ -91,7 +82,7 @@ const TableRow = ({
               });
             }}
           />
-        </Table.Cell>
+        </Table.TextCell>
       )}
     </Table.Row>
   );
@@ -178,7 +169,7 @@ export const Spouses = ({ relative }: { relative: DocumentData }) => {
         )}
         <Table>
           <Table.Head>
-            <Table.TextHeaderCell>Name</Table.TextHeaderCell>
+            <Table.TextHeaderCell flexGrow={2}>Name</Table.TextHeaderCell>
             <Table.TextHeaderCell>Type</Table.TextHeaderCell>
             {isAuth && (
               <Table.TextHeaderCell

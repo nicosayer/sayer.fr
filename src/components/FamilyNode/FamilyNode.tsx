@@ -72,7 +72,9 @@ export const FamilyNode = React.memo<Props>(({ node }) => {
           }}
         >
           <Box>
-            {node.firstName} {node.lastName}
+            <Text>
+              {node.firstName} {node.lastName}{" "}
+            </Text>
           </Box>
           {Boolean(node.birthYear || node.deathYear) && (
             <Text color="muted" size={300}>

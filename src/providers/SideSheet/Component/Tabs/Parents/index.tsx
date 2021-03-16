@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Table,
   Pane,
@@ -13,13 +12,13 @@ import {
 import firebase from "firebase/app";
 import React, { useEffect, useState } from "react";
 
-import { Box } from "components/Box";
 import { NewRelativeButton } from "components/NewRelativeButton";
 import { DocumentData } from "config/firebase";
 import { RelativeType } from "config/relative";
 import { useAuth } from "providers/Auth";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 import { useSideSheet } from "providers/SideSheet";
+import { NameCell } from "providers/SideSheet/Component/Tabs/NameCell";
 import { linkParentAndChild, relativeData, relativeDoc } from "utils/relative";
 
 const TableRow = ({
@@ -45,19 +44,10 @@ const TableRow = ({
         openSideSheet(parent.relative.id);
       }}
     >
-      <Table.Cell>
-        {data && (
-          <Box style={{ display: "flex", alignItems: "center" }}>
-            <Avatar
-              name={`${data.firstName} ${data.lastName}`}
-              marginRight={8}
-            />
-            {data.firstName} {data.lastName}
-          </Box>
-        )}
-      </Table.Cell>
+      {/* @ts-ignore */}
+      <NameCell data={data} />
       {isAuth && (
-        <Table.Cell flexBasis={60} flexShrink={0} flexGrow={0}>
+        <Table.TextCell flexBasis={60} flexShrink={0} flexGrow={0}>
           <IconButton
             icon={TrashIcon}
             intent="danger"
@@ -81,7 +71,7 @@ const TableRow = ({
               });
             }}
           />
-        </Table.Cell>
+        </Table.TextCell>
       )}
     </Table.Row>
   );
@@ -154,7 +144,7 @@ export const Parents = ({ relative }: { relative: DocumentData }) => {
         )}
         <Table>
           <Table.Head>
-            <Table.TextHeaderCell>Name</Table.TextHeaderCell>
+            <Table.TextHeaderCell flexGrow={2}>Name</Table.TextHeaderCell>
             {isAuth && (
               <Table.TextHeaderCell
                 flexBasis={60}

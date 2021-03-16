@@ -1,5 +1,11 @@
-import { Autocomplete, Button, PlusIcon, TextInput } from "evergreen-ui";
-import React from "react";
+import {
+  Autocomplete,
+  Button,
+  PlusIcon,
+  Spinner,
+  TextInput,
+} from "evergreen-ui";
+import React, { useEffect, useState } from "react";
 import ReactFamilyTree from "react-family-tree";
 import { IFamilyExtNode } from "relatives-tree/lib/types";
 
@@ -21,6 +27,29 @@ export const Home = React.memo<{}>(() => {
   const { openSideSheet } = useSideSheet();
   const { rootId, setRootId } = useRootId();
   const { isAuth } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, [rootId]);
+
+  if (loading) {
+    return (
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <Spinner />
+      </Box>
+    );
+  }
 
   return (
     <Box

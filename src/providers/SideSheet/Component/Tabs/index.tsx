@@ -1,4 +1,4 @@
-import { Avatar, Heading, Pane, Tab, Tablist } from "evergreen-ui";
+import { Avatar, Heading, Pane, Tab, Tablist, Text } from "evergreen-ui";
 import React, { useState } from "react";
 
 import { Children } from "providers/SideSheet/Component/Tabs/Children";
@@ -22,6 +22,20 @@ export const Tabs = ({ relative }: { relative: Record<string, any> }) => {
               marginRight={8}
             />
             {data.firstName} {data.lastName}
+            <Text size={600} marginLeft={8} marginRight={8} color="muted">
+              {data.gender ? "♀" : "♂"}
+            </Text>
+            {(data.birthDate?.year || data.deathDate?.year) && (
+              <Text color="muted">
+                (
+                {data.birthDate?.year && data.deathDate?.year
+                  ? `${data.birthDate.year} → ${data.deathDate.year}`
+                  : data.birthDate?.year
+                  ? data.birthDate?.year
+                  : `? → ${data.deathDate.year}`}
+                )
+              </Text>
+            )}
           </Heading>
         </Pane>
         <Pane display="flex" padding={8} borderBottom="muted">
