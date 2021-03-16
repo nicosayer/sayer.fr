@@ -1,4 +1,4 @@
-import { Avatar, SymbolCircleIcon } from "evergreen-ui";
+import { Avatar, SymbolCircleIcon, Text } from "evergreen-ui";
 import React, { useMemo } from "react";
 import { IFamilyExtNode } from "relatives-tree/lib/types";
 
@@ -51,10 +51,11 @@ export const FamilyNode = React.memo<Props>(({ node }) => {
             : "2px solid rgba(0, 0, 0, 0.1)",
           padding: "4px",
           background: "white",
-          maxWidth: NODE_WIDTH * 0.6,
-          maxHeight: NODE_HEIGHT * 0.6,
+          maxWidth: NODE_WIDTH,
+          maxHeight: NODE_HEIGHT,
         }}
-        onDoubleClick={() => {
+        onDoubleClick={(event) => {
+          event.preventDefault();
           setRootId(node.id);
         }}
         onContextMenu={(event) => {
@@ -70,15 +71,24 @@ export const FamilyNode = React.memo<Props>(({ node }) => {
             overflow: "hidden",
           }}
         >
-          {node.firstName} {node.lastName}
+          <Box>
+            {node.firstName} {node.lastName}
+          </Box>
+          {Boolean(node.birthYear || node.deathYear) && (
+            <Text color="muted" size={300}>
+              {node.birthYear && node.deathYear
+                ? `(${node.birthYear} → ${node.deathYear})`
+                : `(${node.birthYear || node.deathYear})`}
+            </Text>
+          )}
         </Box>
       </Box>
       {node.hasSubTree && (
         <Box
           style={{
             position: "absolute",
-            top: "43px",
-            right: "43px",
+            top: "34px",
+            right: "34px",
             cursor: "pointer",
           }}
           onClick={() => {

@@ -12,7 +12,6 @@ import { DateSelect } from "components/DateSelect";
 import { db, DocumentData } from "config/firebase";
 import { GenderType } from "config/relative";
 import { useOneTimeRelatives } from "providers/OneTimeRelatives";
-import { formatDate } from "utils/date";
 import { isSet } from "utils/general";
 import { cleanName } from "utils/relative";
 
@@ -65,16 +64,16 @@ export const NewRelativeButton = ({
                 firstName: cleanedFirstName,
                 lastName: lastName,
                 gender: gender,
-                birthDate: formatDate({
+                birthDate: {
                   day: birthDay,
                   month: birthMonth,
                   year: birthYear,
-                }),
-                deathDate: formatDate({
+                },
+                deathDate: {
                   day: deathDay,
                   month: deathMonth,
                   year: deathYear,
-                }),
+                },
               })
               .then((doc) => {
                 updateRelatives();

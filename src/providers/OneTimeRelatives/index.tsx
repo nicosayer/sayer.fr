@@ -49,6 +49,8 @@ export const OneTimeRelativesProvider = ({
                 siblings = [],
                 spouses = [],
                 children = [],
+                birthDate,
+                deathDate,
               } = relative.data() as IFirebaseRelative;
 
               return {
@@ -60,6 +62,8 @@ export const OneTimeRelativesProvider = ({
                 siblings: cleanSubRelatives(siblings),
                 spouses: cleanSubRelatives(spouses),
                 children: cleanSubRelatives(children),
+                birthYear: birthDate?.year ?? null,
+                deathYear: deathDate?.year ?? null,
               };
             })
             .filter(
@@ -72,9 +76,14 @@ export const OneTimeRelativesProvider = ({
 
   const searchableRelatives = useMemo(() => {
     return relatives.reduce(
-      (acc, { id, firstName, lastName }) => ({
+      (acc, { id, firstName, lastName, birthYear, deathYear }) => ({
         ...acc,
-        [id]: `${firstName} ${lastName}`,
+        [id]:
+          birthYear && deathYear
+            ? `${firstName} ${lastName} (${birthYear} → ${deathYear})`
+            : birthYear || deathYear
+            ? `${firstName} ${lastName} (${birthYear || deathYear})`
+            : `${firstName} ${lastName}`,
       }),
       {}
     );

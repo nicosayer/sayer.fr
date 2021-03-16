@@ -1,4 +1,4 @@
-import { Select } from "evergreen-ui";
+import { Button, Select } from "evergreen-ui";
 import React, { ChangeEvent } from "react";
 
 import { currentYear } from "utils/date";
@@ -21,7 +21,8 @@ export const DateSelect = ({
   return (
     <>
       <Select
-        defaultValue={day ?? ""}
+        marginRight={8}
+        value={day ?? ""}
         onChange={(event: ChangeEvent) => {
           // @ts-ignore
           setDay(event.target.value ?? null);
@@ -61,9 +62,8 @@ export const DateSelect = ({
         <option value={31}>31</option>
       </Select>
       <Select
-        marginLeft={8}
         marginRight={8}
-        defaultValue={month ?? ""}
+        value={month ?? ""}
         onChange={(event: ChangeEvent) => {
           // @ts-ignore
           setMonth(event.target.value ?? null);
@@ -84,7 +84,8 @@ export const DateSelect = ({
         <option value={12}>December</option>
       </Select>
       <Select
-        defaultValue={year ?? ""}
+        marginRight={8}
+        value={year ?? ""}
         onChange={(event: ChangeEvent) => {
           // @ts-ignore
           setYear(event.target.value ?? null);
@@ -97,6 +98,16 @@ export const DateSelect = ({
           </option>
         ))}
       </Select>
+      <Button
+        appearance="minimal"
+        onClick={() => {
+          setDay(null);
+          setMonth(null);
+          setYear(null);
+        }}
+      >
+        Clear
+      </Button>
     </>
   );
 };

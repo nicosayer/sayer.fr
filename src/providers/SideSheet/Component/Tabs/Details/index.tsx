@@ -10,7 +10,6 @@ import React, { ChangeEvent, useState } from "react";
 
 import { DateSelect } from "components/DateSelect";
 import { db } from "config/firebase";
-import { formatDate } from "utils/date";
 import { cleanName } from "utils/relative";
 
 export const Details = ({ relative }: { relative: Record<string, any> }) => {
@@ -102,16 +101,16 @@ export const Details = ({ relative }: { relative: Record<string, any> }) => {
                   firstName: cleanName(firstName),
                   lastName,
                   gender: gender,
-                  birthDate: formatDate({
+                  birthDate: {
                     day: birthDay,
                     month: birthMonth,
                     year: birthYear,
-                  }),
-                  deathDate: formatDate({
+                  },
+                  deathDate: {
                     day: deathDay,
                     month: deathMonth,
                     year: deathYear,
-                  }),
+                  },
                 },
                 { merge: true }
               );

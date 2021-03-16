@@ -41,6 +41,7 @@ export const Home = React.memo<{}>(() => {
           width={NODE_WIDTH}
           height={NODE_HEIGHT}
           renderNode={(node) => {
+            console.log(node);
             return (
               <FamilyNode
                 key={node.id}

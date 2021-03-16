@@ -1,3 +1,5 @@
+import { DateType } from "config/date";
+
 export interface IFirebaseSubRelative {
   relative: { id: string };
   type: number;
@@ -11,6 +13,8 @@ export interface IFirebaseRelative {
   siblings: IFirebaseSubRelative[];
   spouses: IFirebaseSubRelative[];
   children: IFirebaseSubRelative[];
+  birthDate: DateType;
+  deathDate: DateType;
 }
 
 export enum RelativeType {
@@ -40,6 +44,8 @@ export interface IRelative {
   siblings: ISubRelative[];
   spouses: ISubRelative[];
   children: ISubRelative[];
+  birthYear: number | null;
+  deathYear: number | null;
 }
 
 export interface ISearchableRelative {

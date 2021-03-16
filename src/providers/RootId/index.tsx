@@ -1,5 +1,8 @@
 import React, { ReactNode, useContext } from "react";
+import { Helmet } from "react-helmet";
 import { useParams, useHistory } from "react-router-dom";
+
+import { useOneTimeRelatives } from "providers/OneTimeRelatives";
 
 export const DEFAULT_ROOT_ID = "ccxdzia5sKyms9CRSMEx";
 
@@ -17,6 +20,7 @@ export const useRootId = (): IRootIdContext => useContext(RootIdContext);
 
 export const RootIdProvider = ({ children }: { children: ReactNode }) => {
   const history = useHistory();
+  const { searchableRelatives } = useOneTimeRelatives();
   const { relativeId } = useParams<{ relativeId: string }>();
 
   return (
@@ -30,6 +34,9 @@ export const RootIdProvider = ({ children }: { children: ReactNode }) => {
         },
       }}
     >
+      <Helmet>
+        <title>{searchableRelatives[relativeId]}</title>
+      </Helmet>
       {children}
     </RootIdContext.Provider>
   );
