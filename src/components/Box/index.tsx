@@ -3,7 +3,7 @@ import { kebabCase } from "lodash/fp";
 import React, { AllHTMLAttributes, CSSProperties, ReactHTML } from "react";
 
 import theme, { cssKeyToThemeKey } from "config/theme";
-import { isUnset } from "utils";
+import { isUnset } from "utils/general";
 
 const getValueFromTheme = (key: string, value?: string) => {
   // @ts-ignore
