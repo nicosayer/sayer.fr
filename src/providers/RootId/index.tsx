@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode, useContext, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useHistory } from "react-router-dom";
 
@@ -23,10 +23,17 @@ export const RootIdProvider = ({ children }: { children: ReactNode }) => {
   const { searchableRelatives } = useOneTimeRelatives();
   const { relativeId } = useParams<{ relativeId: string }>();
 
+  const rootId = useMemo(() => {
+    if (searchableRelatives[relativeId]) {
+      return relativeId;
+    }
+    return DEFAULT_ROOT_ID;
+  }, [relativeId]);
+
   return (
     <RootIdContext.Provider
       value={{
-        rootId: relativeId,
+        rootId,
         setRootId: (newRootId) => {
           if (newRootId !== relativeId) {
             history.push(newRootId);
@@ -35,7 +42,7 @@ export const RootIdProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       <Helmet>
-        <title>{searchableRelatives[relativeId]}</title>
+        <title>{searchableRelatives[rootId]}</title>
       </Helmet>
       {children}
     </RootIdContext.Provider>

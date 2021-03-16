@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsAuth(true);
       } else {
         if (user) {
-          toaster.notify("Only administrator are alowed to edit the tree.");
+          toaster.notify("Only administrators are allowed to edit the tree.");
         }
         setIsAuth(false);
         logout();
