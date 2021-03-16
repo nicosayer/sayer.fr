@@ -1,11 +1,4 @@
-import { Spinner } from "evergreen-ui";
-import React, {
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { ReactNode, useContext, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useHistory } from "react-router-dom";
 
