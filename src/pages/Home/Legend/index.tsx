@@ -29,8 +29,8 @@ export const Legend = () => {
     >
       <Card bodyStyle={{ padding: 16 }}>
         <Title level={5}>Legend</Title>
-        <Item color={Color.red}>Tech experience</Item>
         <Item color={Color.blue}>Education</Item>
+        <Item color={Color.red}>Tech experience</Item>
         <Item color={Color.gray}>Other experience</Item>
       </Card>
     </Box>

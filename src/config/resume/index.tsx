@@ -7,6 +7,7 @@ import { HEC } from "config/resume/HEC";
 import { HelloGaston } from "config/resume/HelloGaston";
 import { IsoPSP } from "config/resume/IsoPSP";
 import { Mandarin } from "config/resume/Mandarin";
+import { Mongol } from "config/resume/Mongol";
 import { Peninsula } from "config/resume/Peninsula";
 import { ShakeShack } from "config/resume/ShakeShack";
 import { SharePlace } from "config/resume/SharePlace";
@@ -67,6 +68,7 @@ export const RESUME: ResumeItem[] = [
     location: "Ulaanbaatar, Mongolia",
     date: "Jul 2016 → Aug 2016",
     color: Color.gray,
+    description: <Mongol />,
   },
   {
     label: "HEC Paris",

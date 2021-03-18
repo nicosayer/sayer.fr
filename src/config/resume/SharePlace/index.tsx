@@ -1,22 +1,22 @@
-import { Typography } from "antd";
 import React from "react";
 
 import { Box } from "components/Box";
-
-const { Text } = Typography;
+import { Skills } from "components/Skills";
+import { Skill } from "config/skills";
 
 export const SharePlace = () => {
   return (
     <Box>
       <Box style={{ fontWeight: 600 }}>Full stack engineer • Internship</Box>
-      <Box>
-        <Text code>React</Text>
-        <Text code>NodeJS</Text>
-        <Text code>GraphQL</Text>
-        <br />
-        <Text code>Redux</Text>
-        <Text code>MySQL</Text>
-      </Box>
+      <Skills
+        skills={[
+          Skill.reactJs,
+          Skill.nodeJs,
+          Skill.graphQL,
+          Skill.redux,
+          Skill.mySql,
+        ]}
+      />
     </Box>
   );
 };

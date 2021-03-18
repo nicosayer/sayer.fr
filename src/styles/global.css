@@ -29,3 +29,7 @@
      background-color: #f7f9fc;
      font-feature-settings: 'tnum';
  }
+ 
+ code {
+     white-space: nowrap;
+ }

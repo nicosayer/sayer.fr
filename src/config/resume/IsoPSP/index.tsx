@@ -1,21 +1,14 @@
-import { Typography } from "antd";
 import React from "react";
 
 import { Box } from "components/Box";
-
-const { Text } = Typography;
+import { Skills } from "components/Skills";
+import { Skill } from "config/skills";
 
 export const IsoPSP = () => {
   return (
     <Box>
       <Box style={{ fontWeight: 600 }}>Founder</Box>
-      <Box>
-        <Text code>HTML</Text>
-        <Text code>Javascript</Text>
-        <Text code>PHP</Text>
-        <br />
-        <Text code>MySQL</Text>
-      </Box>
+      <Skills skills={[Skill.html, Skill.javascript, Skill.mySql, Skill.php]} />
     </Box>
   );
 };
