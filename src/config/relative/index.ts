@@ -35,7 +35,7 @@ export interface ISubRelative {
   type: keyof typeof RelativeType;
 }
 
-export interface IRelative {
+export type IRelative = {
   id: string;
   firstName: string;
   lastName: string;
@@ -46,7 +46,7 @@ export interface IRelative {
   children: ISubRelative[];
   birthYear: number | null;
   deathYear: number | null;
-}
+};
 
 export interface ISearchableRelative {
   id: string;

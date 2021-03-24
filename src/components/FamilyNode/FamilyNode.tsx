@@ -1,6 +1,5 @@
 import { Avatar, SymbolCircleIcon, Text } from "evergreen-ui";
 import React, { useMemo } from "react";
-import { IFamilyExtNode } from "relatives-tree/lib/types";
 
 import { Box } from "components/Box";
 import { NODE_HEIGHT, NODE_WIDTH } from "config/general";
@@ -9,10 +8,14 @@ import { useRootId } from "providers/RootId";
 import { useSideSheet } from "providers/SideSheet";
 
 interface Props {
-  node: IRelative & IFamilyExtNode;
+  node: IRelative & {
+    top: number;
+    left: number;
+    hasSubTree: boolean;
+  };
 }
 
-export const FamilyNode = React.memo<Props>(({ node }) => {
+export const FamilyNode = ({ node }: Props) => {
   const { rootId, setRootId } = useRootId();
   const { openSideSheet } = useSideSheet();
 
@@ -104,4 +107,4 @@ export const FamilyNode = React.memo<Props>(({ node }) => {
       )}
     </Box>
   );
-});
+};

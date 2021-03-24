@@ -7,7 +7,6 @@ import {
 } from "evergreen-ui";
 import React, { useEffect, useState } from "react";
 import ReactFamilyTree from "react-family-tree";
-import { IFamilyExtNode } from "relatives-tree/lib/types";
 
 import { Box } from "components/Box";
 import { FamilyNode } from "components/FamilyNode/FamilyNode";
@@ -62,6 +61,7 @@ export const Home = React.memo<{}>(() => {
     >
       <PinchZoomPan>
         <ReactFamilyTree
+          // @ts-ignore
           nodes={relatives}
           rootId={rootId}
           width={NODE_WIDTH}
@@ -70,7 +70,13 @@ export const Home = React.memo<{}>(() => {
             return (
               <FamilyNode
                 key={node.id}
-                node={node as IRelative & IFamilyExtNode}
+                node={
+                  node as IRelative & {
+                    top: number;
+                    left: number;
+                    hasSubTree: boolean;
+                  }
+                }
               />
             );
           }}
