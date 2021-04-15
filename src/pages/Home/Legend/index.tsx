@@ -24,7 +24,7 @@ export const Legend = () => {
       style={{
         position: "fixed",
         bottom: 20,
-        left: 20,
+        right: 20,
       }}
     >
       <Card bodyStyle={{ padding: 16 }}>
