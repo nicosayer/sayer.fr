@@ -1,7 +1,9 @@
+import "antd/dist/antd.css";
 import "styles/global.css";
 
-import { App } from "pages";
 import React from "react";
 import ReactDOM from "react-dom";
+
+import App from "pages";
 
 ReactDOM.render(<App />, document.getElementById("root"));
