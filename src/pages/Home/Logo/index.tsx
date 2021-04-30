@@ -47,7 +47,9 @@ const Logo = () => {
         justifyContent="center"
         textAlign="center"
       >
-        <Tooltip title={clicked ? undefined : "Cliquez ici !"}>
+        <Tooltip
+          title={clicked ? undefined : "Cliquez pour lancer la musique !"}
+        >
           <x.div
             fontFamily="Caslon"
             fontSize={64}
