@@ -25,44 +25,42 @@ const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
       <Dropdown
         placement="bottomRight"
         overlay={
-          <>
-            <Menu>
-              <Menu.Item
-                onClick={() => {
-                  openRoute(1);
-                }}
-                style={{ fontSize: 16 }}
+          <Menu>
+            <Menu.Item
+              onClick={() => {
+                openRoute(1);
+              }}
+              style={{ fontSize: 16 }}
+            >
+              LE PROGRAMME
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => {
+                openRoute(2);
+              }}
+              style={{ fontSize: 16 }}
+            >
+              S&apos;Y RENDRE
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => {
+                openRoute(3);
+              }}
+              style={{ fontSize: 16 }}
+            >
+              OÙ DORMIR
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item style={{ fontSize: 16 }}>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://forms.gle/Gn8T7gHDdzjsHtRz6"
               >
-                LE PROGRAMME
-              </Menu.Item>
-              <Menu.Item
-                onClick={() => {
-                  openRoute(2);
-                }}
-                style={{ fontSize: 16 }}
-              >
-                S&apos;Y RENDRE
-              </Menu.Item>
-              <Menu.Item
-                onClick={() => {
-                  openRoute(3);
-                }}
-                style={{ fontSize: 16 }}
-              >
-                OÙ DORMIR
-              </Menu.Item>
-              <Menu.Divider />
-              <Menu.Item style={{ fontSize: 16 }}>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://forms.gle/Gn8T7gHDdzjsHtRz6"
-                >
-                  RSVP
-                </a>
-              </Menu.Item>
-            </Menu>
-          </>
+                RSVP
+              </a>
+            </Menu.Item>
+          </Menu>
         }
       >
         <Button type="text" icon={<MenuOutlined />} size="large">
