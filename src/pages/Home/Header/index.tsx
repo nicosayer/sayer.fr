@@ -1,8 +1,10 @@
-import { useWindowWidth } from "@react-hook/window-size";
 import { x } from "@xstyled/emotion";
 import React from "react";
+
+import useIsMobile from "hooks/useIsMobile";
+
 const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
-  const windowWidth = useWindowWidth();
+  const isMobile = useIsMobile();
 
   return (
     <x.div
@@ -28,7 +30,7 @@ const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
           openRoute(1);
         }}
       >
-        {windowWidth < 768 ? "" : "LE"} PROGRAMME
+        {isMobile ? "" : "LE"} PROGRAMME
       </x.div>
       <x.div
         cursor="pointer"
@@ -38,7 +40,7 @@ const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
           openRoute(2);
         }}
       >
-        {windowWidth < 768 ? "" : "COMMENT"} VENIR
+        {isMobile ? "" : "COMMENT"} VENIR
       </x.div>
       <x.a
         cursor="pointer"

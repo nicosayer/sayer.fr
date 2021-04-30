@@ -9,7 +9,3 @@ body {
   letter-spacing: 0.0625em;
   color: #222222;
 }
-
-#root {
-  height: -webkit-fill-available;
-}

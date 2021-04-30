@@ -1,3 +1,4 @@
+import { BackTop } from "antd";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 
 import Coming from "pages/Home/Coming";
@@ -31,6 +32,7 @@ const Home = () => {
 
   return (
     <>
+      <BackTop />
       <Header openRoute={openRoute} />
       <Logo openRoute={openRoute} />
       <div ref={ref}>{routeSwitch}</div>
