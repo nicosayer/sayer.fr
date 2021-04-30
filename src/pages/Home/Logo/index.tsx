@@ -22,54 +22,66 @@ const Logo = ({
   }, []);
 
   useEffect(() => {
-    console.log(music, hover);
     if (music) {
       if (hover) {
         music.play();
       } else {
         music.pause();
+        music.currentTime = 0;
       }
     }
   }, [hover, music]);
 
   return (
-    <x.div
-      h="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      textAlign="center"
-    >
+    <>
       <x.div
-        fontFamily="Caslon"
-        fontSize={64}
-        cursor={`url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎉</text></svg>") 16 0, auto`}
-        onMouseEnter={() => {
-          setHover(true);
-        }}
-        onMouseLeave={() => {
-          setHover(false);
-        }}
-        onClick={() => {
-          if (!isMobile) {
-            openRoute(route ? undefined : 1);
-          }
-        }}
+        zIndex={1005}
+        pointerEvents="none"
+        position="fixed"
+        top={0}
+        right={0}
+        bottom={0}
+        left={0}
       >
         <Confetti numberOfPieces={hover ? 200 : 0} />
-        <x.span
-          textDecoration={hover ? "line-through" : "auto"}
-          opacity={hover ? 0.4 : 1}
-          transition="all 0.4s"
+      </x.div>
+      <x.div
+        h="100vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        textAlign="center"
+      >
+        <x.div
+          fontFamily="Caslon"
+          fontSize={64}
+          cursor={`url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎉</text></svg>") 16 0, auto`}
+          onMouseEnter={() => {
+            setHover(true);
+          }}
+          onMouseLeave={() => {
+            setHover(false);
+          }}
+          onClick={() => {
+            if (!isMobile) {
+              openRoute(route ? undefined : 1);
+            }
+          }}
         >
-          charlotte
-          <br />& nicolas
-        </x.span>
-        <x.div h={hover ? 100 : 0} overflow="hidden" transition="all 0.4s">
-          octave
+          <x.span
+            textDecoration={hover ? "line-through" : "auto"}
+            opacity={hover ? 0.4 : 1}
+            transition="all 0.4s"
+          >
+            charlotte
+            <br />& nicolas
+          </x.span>
+          <x.div h={hover ? 100 : 0} overflow="hidden" transition="all 0.4s">
+            octave
+          </x.div>
         </x.div>
       </x.div>
-    </x.div>
+    </>
   );
 };
 

@@ -15,7 +15,8 @@ const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
       left={0}
       right={0}
       top={0}
-      display="flex"
+      display="grid"
+      gridTemplateColumns="1fr 1fr 1fr"
       alignItems="center"
       justifyContent="space-around"
       fontSize="larger"
