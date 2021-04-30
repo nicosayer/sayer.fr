@@ -61,9 +61,7 @@ const Logo = () => {
             }
           }}
           onMouseLeave={() => {
-            if (!isMobile) {
-              setHover(false);
-            }
+            setHover(false);
           }}
           onClick={() => {
             if (isMobile) {
@@ -74,11 +72,7 @@ const Logo = () => {
             }
           }}
         >
-          <x.span
-            textDecoration={hover ? "line-through" : "auto"}
-            opacity={hover ? 0.4 : 1}
-            transition="all 0.4s"
-          >
+          <x.span opacity={hover ? 0.4 : 1} transition="all 0.4s">
             charlotte
             <br />& nicolas
           </x.span>
