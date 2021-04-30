@@ -48,7 +48,13 @@ const Logo = () => {
         textAlign="center"
       >
         <Tooltip
-          title={clicked ? undefined : "Cliquez pour lancer la musique !"}
+          title={
+            clicked
+              ? undefined
+              : isMobile
+              ? undefined
+              : "Cliquez pour lancer la musique !"
+          }
         >
           <x.div
             fontFamily="Caslon"

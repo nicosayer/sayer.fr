@@ -18,30 +18,30 @@ const Program = () => {
           </Timeline.Item>
           <Timeline.Item>
             <Text strong>11h</Text>
-            <br />
-            <Text type="secondary">Église de Glanville</Text>
-            <br />
+            <div>
+              <Text type="secondary">Église de Glanville</Text>
+            </div>
             Bapteme d&apos;Octave
           </Timeline.Item>
           <Timeline.Item>
             <Text strong>12h</Text>
-            <br />
-            <Text type="secondary">Haras de la Huderie</Text>
-            <br />
+            <div>
+              <Text type="secondary">Haras de la Huderie</Text>
+            </div>
             Déjeuner sur le pouce (food truck)
           </Timeline.Item>
           <Timeline.Item>
             <Text strong>17h</Text>
-            <br />
-            <Text type="secondary">Mairie de Glanville</Text>
-            <br />
+            <div>
+              <Text type="secondary">Mairie de Glanville</Text>
+            </div>
             Mariage de Charlotte & Nicolas
           </Timeline.Item>
           <Timeline.Item>
             <Text strong>18h</Text>
-            <br />
-            <Text type="secondary">Haras de la Huderie</Text>
-            <br />
+            <div>
+              <Text type="secondary">Haras de la Huderie</Text>
+            </div>
             Cocktail, diner et fête !
           </Timeline.Item>
           <Timeline.Item color="red">
@@ -49,9 +49,9 @@ const Program = () => {
           </Timeline.Item>
           <Timeline.Item color="red">
             <Text strong>12h</Text>
-            <br />
-            <Text type="secondary">Haras de la Huderie</Text>
-            <br />
+            <div>
+              <Text type="secondary">Haras de la Huderie</Text>
+            </div>
             Brunch
           </Timeline.Item>
         </Timeline>

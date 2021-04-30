@@ -37,7 +37,7 @@ const Coming = () => {
           footer={<Title level={4} />}
           dataSource={[
             <List.Item key={1}>
-              Nous allons installer des tipis sur le terrain afin de pouvoir en
+              Nous allons installer des tipis sur le terrain afin de pouvoir
               loger un maximum d&apos;entre vous ! Si vous êtes intéressé,
               écrivez-nous à{" "}
               <Link href="charlottenicolasmariage@gmail.com" target="_blank">
