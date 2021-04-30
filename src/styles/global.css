@@ -8,4 +8,5 @@ body {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
   letter-spacing: 0.0625em;
   color: #222222;
+  scroll-behavior: smooth;
 }
