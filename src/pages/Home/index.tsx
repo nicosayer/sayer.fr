@@ -1,5 +1,6 @@
 import { BackTop } from "antd";
 import React, { useCallback, useMemo, useRef, useState } from "react";
+import scrollIntoView from "scroll-into-view";
 
 import Coming from "pages/Home/Coming";
 import Header from "pages/Home/Header";
@@ -14,7 +15,7 @@ const Home = () => {
     setRoute(route);
     if (route) {
       setTimeout(() => {
-        ref.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+        scrollIntoView(ref.current);
       }, 0);
     }
   }, []);

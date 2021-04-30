@@ -1,22 +1,89 @@
 import { x } from "@xstyled/emotion";
-import { Card, Divider, Typography } from "antd";
+import { Card, Divider, Typography, List } from "antd";
 import React from "react";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
+
+const renderItem = ({
+  name,
+  distance,
+  description,
+}: {
+  name: string;
+  distance: string;
+  description: string;
+}) => (
+  <List.Item>
+    <Text strong>{name}</Text> · <Text type="secondary">{distance}</Text> ·{" "}
+    {description}
+  </List.Item>
+);
 
 const Coming = () => {
   return (
-    <x.div margin="auto" w="fit-content" px={16} pb={64} pt={128}>
+    <x.div margin="auto" w="fit-content" px={16} pb={64} pt={64}>
       <Card>
         <x.span fontFamily="Caslon">
-          <Title level={3}>Coming venir</Title>
+          <Title level={3}>Comment venir</Title>
         </x.span>
         <Divider />
-        <x.div position="relative" textAlign="right" h={400} w="100%">
+        <List
+          header={<Title level={4}>Avion</Title>}
+          footer={<Title level={4} />}
+          dataSource={[
+            {
+              name: "Aéroport Caen Carpiquet",
+              distance: "50 km",
+              description: "Puis vous pouvez louer une voiture.",
+            },
+            {
+              name: "Aéroports de Paris CDG ou Orly",
+              distance: "250 km",
+              description: "Puis vous pouvez louer une voiture.",
+            },
+          ]}
+          renderItem={renderItem}
+        />
+        <List
+          header={<Title level={4}>Train</Title>}
+          footer={<Title level={4} />}
+          dataSource={[
+            {
+              name: "Gare de Deauville",
+              distance: "12 km",
+              description: "Puis vous pouvez louer une voiture chez Avis.",
+            },
+            {
+              name: "Gare de Pont-l'Évêque",
+              distance: "12 km",
+              description: "Puis vous pouvez prendre un taxi.",
+            },
+          ]}
+          renderItem={renderItem}
+        />
+        <List
+          header={<Title level={4}>Voiture</Title>}
+          footer={<Title level={4} />}
+          dataSource={[
+            {
+              name: "Depuis Paris",
+              distance: "2h - 200 km",
+              description: "Prendre A13 direction Caen, puis sortie 29A.",
+            },
+            {
+              name: "Depuis Lyon",
+              distance: "6h - 650 km",
+              description:
+                "Prendre A6 direction Paris,puis A13 direction Caen, puis sortie 29A.",
+            },
+          ]}
+          renderItem={renderItem}
+        />
+        <x.div position="relative" textAlign="right" h={500} w="100%">
           <x.div
             overflow="hidden"
             background="none !important"
-            h={400}
+            h={500}
             w="100%"
           >
             <iframe

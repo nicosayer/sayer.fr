@@ -6,7 +6,7 @@ const { Text, Title } = Typography;
 
 const Program = () => {
   return (
-    <x.div margin="auto" w="fit-content" px={16} pb={64} pt={128}>
+    <x.div margin="auto" w="fit-content" px={16} pb={64} pt={64}>
       <Card>
         <x.span fontFamily="Caslon">
           <Title level={3}>Le programme</Title>

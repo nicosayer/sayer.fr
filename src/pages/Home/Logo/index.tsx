@@ -22,7 +22,6 @@ const Logo = () => {
         music.play();
       } else {
         music.pause();
-        music.currentTime = 0;
       }
     }
   }, [hover, music, clicked]);
@@ -53,7 +52,7 @@ const Logo = () => {
           cursor={
             clicked
               ? `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎉</text></svg>") 16 0, auto`
-              : "pointer"
+              : `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎶</text></svg>") 16 0, auto`
           }
           onMouseEnter={() => {
             if (!isMobile) {
@@ -76,7 +75,12 @@ const Logo = () => {
             charlotte
             <br />& nicolas
           </x.span>
-          <x.div h={hover ? 100 : 0} overflow="hidden" transition="all 0.4s">
+          <x.div
+            h={hover ? (isMobile ? 100 : 201) : 0}
+            overflow="hidden"
+            transition="all 0.4s"
+            fontSize={isMobile ? undefined : 128}
+          >
             octave
           </x.div>
         </x.div>
