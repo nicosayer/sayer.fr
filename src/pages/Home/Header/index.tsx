@@ -11,7 +11,7 @@ const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
   return (
     <x.div
       zIndex={1000}
-      background="#d5eee8"
+      background={isMobile ? "#d5eee8" : undefined}
       position="fixed"
       h={64}
       left={0}
