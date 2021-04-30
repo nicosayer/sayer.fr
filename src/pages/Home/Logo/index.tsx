@@ -80,6 +80,7 @@ const Logo = () => {
             overflow="hidden"
             transition="all 0.4s"
             fontSize={isMobile ? undefined : 128}
+            className="text-gradient"
           >
             octave
           </x.div>

@@ -10,3 +10,10 @@ body {
   color: #222222;
   scroll-behavior: smooth;
 }
+
+.text-gradient {
+  background: -webkit-linear-gradient(45deg,#3DCC91, #4580e6);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
