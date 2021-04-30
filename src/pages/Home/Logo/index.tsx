@@ -4,13 +4,8 @@ import Confetti from "react-confetti";
 
 import useIsMobile from "hooks/useIsMobile";
 
-const Logo = ({
-  route,
-  openRoute,
-}: {
-  route?: number;
-  openRoute: (route?: number) => void;
-}) => {
+const Logo = () => {
+  const [clicked, setClicked] = useState(false);
   const [hover, setHover] = useState(false);
   const isMobile = useIsMobile();
   const [music, setMusic] = useState<HTMLAudioElement>();
@@ -22,7 +17,7 @@ const Logo = ({
   }, []);
 
   useEffect(() => {
-    if (music) {
+    if (music && clicked) {
       if (hover) {
         music.play();
       } else {
@@ -30,7 +25,7 @@ const Logo = ({
         music.currentTime = 0;
       }
     }
-  }, [hover, music]);
+  }, [hover, music, clicked]);
 
   return (
     <>
@@ -43,7 +38,7 @@ const Logo = ({
         bottom={0}
         left={0}
       >
-        <Confetti numberOfPieces={hover ? 200 : 0} />
+        <Confetti numberOfPieces={hover && clicked ? 200 : 0} />
       </x.div>
       <x.div
         h="100vh"
@@ -55,16 +50,27 @@ const Logo = ({
         <x.div
           fontFamily="Caslon"
           fontSize={64}
-          cursor={`url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎉</text></svg>") 16 0, auto`}
+          cursor={
+            clicked
+              ? `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎉</text></svg>") 16 0, auto`
+              : "pointer"
+          }
           onMouseEnter={() => {
-            setHover(true);
+            if (!isMobile) {
+              setHover(true);
+            }
           }}
           onMouseLeave={() => {
-            setHover(false);
+            if (!isMobile) {
+              setHover(false);
+            }
           }}
           onClick={() => {
-            if (!isMobile) {
-              openRoute(route ? undefined : 1);
+            if (isMobile) {
+              setHover((old) => !old);
+            }
+            if (!clicked) {
+              setClicked(true);
             }
           }}
         >

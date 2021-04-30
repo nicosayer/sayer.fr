@@ -34,7 +34,7 @@ const Home = () => {
     <>
       <BackTop />
       <Header openRoute={openRoute} />
-      <Logo openRoute={openRoute} />
+      <Logo />
       <div ref={ref}>{routeSwitch}</div>
     </>
   );
