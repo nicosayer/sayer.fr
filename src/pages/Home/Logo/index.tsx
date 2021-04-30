@@ -81,10 +81,14 @@ const Logo = () => {
               }
             }}
           >
-            <x.span opacity={hover ? 0.4 : 1} transition="all 0.4s">
-              charlotte
-              <br />& nicolas
-            </x.span>
+            <x.div>
+              <x.div opacity={hover ? 0.4 : 1} transition="all 0.4s">
+                charlotte
+              </x.div>
+              <x.div opacity={hover ? 0.4 : 1} transition="all 0.4s">
+                & nicolas
+              </x.div>
+            </x.div>
             <x.div
               h={hover ? (isMobile ? 100 : 201) : 0}
               overflow="hidden"
