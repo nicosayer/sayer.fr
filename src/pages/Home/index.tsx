@@ -6,6 +6,7 @@ import Coming from "pages/Home/Coming";
 import Header from "pages/Home/Header";
 import Logo from "pages/Home/Logo";
 import Program from "pages/Home/Program";
+import Sleeping from "pages/Home/Sleeping";
 
 const Home = () => {
   const ref = useRef<any>();
@@ -26,6 +27,8 @@ const Home = () => {
         return <Program />;
       case 2:
         return <Coming />;
+      case 3:
+        return <Sleeping />;
       default:
         return null;
     }

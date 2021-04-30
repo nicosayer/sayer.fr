@@ -24,7 +24,7 @@ const Coming = () => {
     <x.div margin="auto" w="fit-content" px={16} pb={64} pt={64}>
       <Card>
         <x.span fontFamily="Caslon">
-          <Title level={3}>Comment venir</Title>
+          <Title level={3}>S&apos;y rendre</Title>
         </x.span>
         <Divider />
         <List

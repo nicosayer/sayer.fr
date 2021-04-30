@@ -43,6 +43,14 @@ const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
               >
                 S&apos;Y RENDRE
               </Menu.Item>
+              <Menu.Item
+                onClick={() => {
+                  openRoute(3);
+                }}
+                style={{ fontSize: 16 }}
+              >
+                OÙ DORMIR
+              </Menu.Item>
               <Menu.Divider />
               <Menu.Item style={{ fontSize: 16 }}>
                 <a
