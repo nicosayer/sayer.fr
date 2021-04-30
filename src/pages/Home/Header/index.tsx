@@ -24,7 +24,7 @@ const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
     >
       <Dropdown
         placement="bottomRight"
-        trigger={["click"]}
+        trigger={isMobile ? ["click"] : undefined}
         overlay={
           <Menu>
             <Menu.Item
