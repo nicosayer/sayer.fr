@@ -1,4 +1,5 @@
 import { x } from "@xstyled/emotion";
+import { Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 
@@ -46,45 +47,47 @@ const Logo = () => {
         justifyContent="center"
         textAlign="center"
       >
-        <x.div
-          fontFamily="Caslon"
-          fontSize={64}
-          cursor={
-            clicked
-              ? `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎉</text></svg>") 16 0, auto`
-              : `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎶</text></svg>") 16 0, auto`
-          }
-          onMouseEnter={() => {
-            if (!isMobile) {
-              setHover(true);
-            }
-          }}
-          onMouseLeave={() => {
-            setHover(false);
-          }}
-          onClick={() => {
-            if (isMobile) {
-              setHover((old) => !old);
-            }
-            if (!clicked) {
-              setClicked(true);
-            }
-          }}
-        >
-          <x.span opacity={hover ? 0.4 : 1} transition="all 0.4s">
-            charlotte
-            <br />& nicolas
-          </x.span>
+        <Tooltip title={clicked ? undefined : "Cliquez ici !"}>
           <x.div
-            h={hover ? (isMobile ? 100 : 201) : 0}
-            overflow="hidden"
-            transition="all 0.4s"
-            fontSize={isMobile ? undefined : 128}
-            className="text-gradient"
+            fontFamily="Caslon"
+            fontSize={64}
+            cursor={
+              clicked
+                ? `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎉</text></svg>") 16 0, auto`
+                : `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎶</text></svg>") 16 0, auto`
+            }
+            onMouseEnter={() => {
+              if (!isMobile) {
+                setHover(true);
+              }
+            }}
+            onMouseLeave={() => {
+              setHover(false);
+            }}
+            onClick={() => {
+              if (isMobile) {
+                setHover((old) => !old);
+              }
+              if (!clicked) {
+                setClicked(true);
+              }
+            }}
           >
-            octave
+            <x.span opacity={hover ? 0.4 : 1} transition="all 0.4s">
+              charlotte
+              <br />& nicolas
+            </x.span>
+            <x.div
+              h={hover ? (isMobile ? 100 : 201) : 0}
+              overflow="hidden"
+              transition="all 0.4s"
+              fontSize={isMobile ? undefined : 128}
+              className="text-gradient"
+            >
+              octave
+            </x.div>
           </x.div>
-        </x.div>
+        </Tooltip>
       </x.div>
     </>
   );
