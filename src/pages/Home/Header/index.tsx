@@ -41,7 +41,7 @@ const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
                 }}
                 style={{ fontSize: 16 }}
               >
-                COMMENT VENIR
+                S&apos;Y RENDRE
               </Menu.Item>
               <Menu.Divider />
               <Menu.Item style={{ fontSize: 16 }}>
