@@ -9,37 +9,39 @@ import Program from "pages/Home/Program";
 import Sleeping from "pages/Home/Sleeping";
 
 const Home = () => {
-  const ref = useRef<any>();
-  const [route, setRoute] = useState<number>();
+  const programRef = useRef<any>();
+  const comingRef = useRef<any>();
+  const sleepingRef = useRef<any>();
 
-  const openRoute = useCallback((route?: number) => {
-    setRoute(route);
-    if (route) {
-      setTimeout(() => {
-        scrollIntoView(ref.current);
-      }, 0);
-    }
+  const openRoute = useCallback((route: number) => {
+    setTimeout(() => {
+      switch (route) {
+        case 1:
+          return scrollIntoView(programRef.current);
+        case 2:
+          return scrollIntoView(comingRef.current);
+        case 3:
+          return scrollIntoView(sleepingRef.current);
+        default:
+          return null;
+      }
+    }, 0);
   }, []);
-
-  const routeSwitch = useMemo(() => {
-    switch (route) {
-      case 1:
-        return <Program />;
-      case 2:
-        return <Coming />;
-      case 3:
-        return <Sleeping />;
-      default:
-        return null;
-    }
-  }, [route]);
 
   return (
     <>
       <BackTop />
       <Header openRoute={openRoute} />
       <Logo />
-      <div ref={ref}>{routeSwitch}</div>
+      <div ref={programRef}>
+        <Program />
+      </div>
+      <div ref={comingRef}>
+        <Coming />
+      </div>
+      <div ref={sleepingRef}>
+        <Sleeping />
+      </div>
     </>
   );
 };

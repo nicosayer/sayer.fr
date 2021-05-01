@@ -5,7 +5,7 @@ import React from "react";
 
 import useIsMobile from "hooks/useIsMobile";
 
-const Header = ({ openRoute }: { openRoute: (route?: number) => void }) => {
+const Header = ({ openRoute }: { openRoute: (route: number) => void }) => {
   const isMobile = useIsMobile();
 
   return (
