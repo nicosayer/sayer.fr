@@ -62,7 +62,9 @@ const Logo = () => {
             cursor={
               clicked && hover
                 ? `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎉</text></svg>") 16 0, auto`
-                : `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎶</text></svg>") 16 0, auto`
+                : clicked
+                ? `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎶</text></svg>") 16 0, auto`
+                : "pointer"
             }
             onMouseEnter={() => {
               if (!isMobile) {
