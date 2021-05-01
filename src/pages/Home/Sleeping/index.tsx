@@ -60,7 +60,10 @@ const Coming = () => {
           footer={
             <>
               Et pleins d&apos;autres hôtels en{" "}
-              <Link href="https://www.google.com/travel/hotels/Glanville?hrf=CgUIrwEQACIDRVVSKhYKBwjkDxAHGAsSBwjkDxAHGAwYASABsAEAWAFoAYoBKAoSCYvR2AbBnkhAEQAQxk_joJk_EhIJzgkUEdGoSEARAITx0zhCvT-aATISCUdsYW52aWxsZRolMHg0N2UxZDZhMGFjNjYzMDgxOjB4MWRlNmZhM2U2Y2M2M2IyYqIBFgoJL20vMDJ5bTBtEglHbGFudmlsbGWSAQIgAQ&rp=aAE4AUgC&ap=KigKEgmL0dgGwZ5IQBEAEMZP46CZPxISCc4JFBHRqEhAEQCE8dM4Qr0_MAJaxQEKBQivARAAIgNFVVIqFgoHCOQPEAcYCxIHCOQPEAcYDBgBIAGwAQBYAWgBigEoChIJh3pGVMGiSEARABDGT-Mqlz8SEglG3b-8z6xIQBEAhPHTuKS8P5oBMhIJR2xhbnZpbGxlGiUweDQ3ZTFkNmEwYWM2NjMwODE6MHgxZGU2ZmEzZTZjYzYzYjJiogEWCgkvbS8wMnltMG0SCUdsYW52aWxsZaoBCgoCCCESAggNGAGqAQwKAwidARIDCJ4BGAGSAQIgAWgA">
+              <Link
+                href="https://www.google.com/travel/hotels/Glanville"
+                target="_blank"
+              >
                 cliquant ici
               </Link>
             </>
@@ -117,7 +120,10 @@ const Coming = () => {
           footer={
             <>
               Et pleins d&apos;autres gîtes en{" "}
-              <Link href="https://www.gites-de-france.com/fr/search?destination=Glanville&towns=40933&travelers=2">
+              <Link
+                href="https://www.gites-de-france.com/fr/search?destination=Glanville&towns=40933"
+                target="_blank"
+              >
                 cliquant ici
               </Link>
             </>
