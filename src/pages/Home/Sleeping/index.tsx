@@ -44,7 +44,10 @@ const Coming = () => {
               Nous allons installer des tipis sur le terrain afin de pouvoir
               loger un maximum d&apos;entre vous ! Si vous êtes intéressés,
               écrivez-nous à{" "}
-              <Link href="charlottenicolasmariage@gmail.com" target="_blank">
+              <Link
+                href="mailto:charlottenicolasmariage@gmail.com"
+                target="_blank"
+              >
                 charlottenicolasmariage@gmail.com
               </Link>
               .
