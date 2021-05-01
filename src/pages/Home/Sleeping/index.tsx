@@ -42,7 +42,7 @@ const Coming = () => {
           dataSource={[
             <List.Item key={1}>
               Nous allons installer des tipis sur le terrain afin de pouvoir
-              loger un maximum d&apos;entre vous ! Si vous êtes intéressé,
+              loger un maximum d&apos;entre vous ! Si vous êtes intéressés,
               écrivez-nous à{" "}
               <Link href="charlottenicolasmariage@gmail.com" target="_blank">
                 charlottenicolasmariage@gmail.com
