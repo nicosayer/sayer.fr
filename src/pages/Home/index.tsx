@@ -3,6 +3,7 @@ import React, { useCallback, useRef } from "react";
 import scrollIntoView from "scroll-into-view";
 
 import Coming from "pages/Home/Coming";
+import Footer from "pages/Home/Footer";
 import Header from "pages/Home/Header";
 import Logo from "pages/Home/Logo";
 import Program from "pages/Home/Program";
@@ -44,6 +45,7 @@ const Home = () => {
         <Sleeping />
       </div>
       <RSVP />
+      <Footer />
     </>
   );
 };
