@@ -1,11 +1,12 @@
 import { BackTop } from "antd";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import scrollIntoView from "scroll-into-view";
 
 import Coming from "pages/Home/Coming";
 import Header from "pages/Home/Header";
 import Logo from "pages/Home/Logo";
 import Program from "pages/Home/Program";
+import RSVP from "pages/Home/RSVP";
 import Sleeping from "pages/Home/Sleeping";
 
 const Home = () => {
@@ -42,6 +43,7 @@ const Home = () => {
       <div ref={sleepingRef}>
         <Sleeping />
       </div>
+      <RSVP />
     </>
   );
 };
