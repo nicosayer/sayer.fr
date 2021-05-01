@@ -16,11 +16,15 @@ const renderItem = ({
   url: string;
 }) => (
   <List.Item>
-    <Text strong>{name}</Text> · <Text type="secondary">{city}</Text>·{" "}
-    <Text type="secondary">{distance}</Text> ·{" "}
-    <Link href={url} target="_blank">
-      Site web
-    </Link>
+    <div>
+      <Text strong>{name}</Text>
+      <div>
+        <Text>{city}</Text> · <Text type="secondary">{distance}</Text> ·{" "}
+        <Link href={url} target="_blank">
+          Site web
+        </Link>
+      </div>
+    </div>
   </List.Item>
 );
 

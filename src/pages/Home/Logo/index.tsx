@@ -60,7 +60,7 @@ const Logo = () => {
             fontFamily="Caslon"
             fontSize={64}
             cursor={
-              clicked
+              clicked && hover
                 ? `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎉</text></svg>") 16 0, auto`
                 : `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='96' viewport='0 0 100 100' style='fill:black;font-size:48px;'><text y='50%'>🎶</text></svg>") 16 0, auto`
             }
@@ -73,11 +73,11 @@ const Logo = () => {
               setHover(false);
             }}
             onClick={() => {
-              if (isMobile) {
-                setHover((old) => !old);
-              }
               if (!clicked) {
                 setClicked(true);
+              }
+              if (isMobile || clicked) {
+                setHover((old) => !old);
               }
             }}
           >

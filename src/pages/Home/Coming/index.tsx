@@ -14,8 +14,8 @@ const renderItem = ({
   description: string;
 }) => (
   <List.Item>
-    <Text strong>{name}</Text> · <Text type="secondary">{distance}</Text> ·{" "}
-    {description}
+    <Text strong>{name}</Text> · <Text type="secondary">{distance}</Text>
+    <div>{description}</div>
   </List.Item>
 );
 
