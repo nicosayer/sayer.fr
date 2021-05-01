@@ -53,7 +53,7 @@ const Logo = () => {
               ? undefined
               : isMobile
               ? undefined
-              : "Cliquez pour lancer la musique !"
+              : "Cliquez pour lancer la musique"
           }
         >
           <x.div
