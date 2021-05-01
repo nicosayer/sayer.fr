@@ -1,5 +1,5 @@
 import { x } from "@xstyled/emotion";
-import { Card, Divider, Typography, Button, Space } from "antd";
+import { Card, Divider, Typography, Button } from "antd";
 import React from "react";
 
 const { Title } = Typography;
