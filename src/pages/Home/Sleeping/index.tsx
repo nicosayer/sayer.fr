@@ -30,7 +30,7 @@ const renderItem = ({
 
 const Coming = () => {
   return (
-    <x.div margin="auto" w="fit-content" px={16} pb={64} pt={64} maxWidth={800}>
+    <x.div margin="auto" w="fit-content" px={16} pb={64} pt={64} maxWidth={600}>
       <Card>
         <x.span fontFamily="Caslon">
           <Title level={3}>Où dormir</Title>
