@@ -2,6 +2,7 @@ import { x } from "@xstyled/emotion";
 import { Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
+import { useAudio } from "react-use";
 
 import useIsMobile from "hooks/useIsMobile";
 
@@ -9,26 +10,24 @@ const Logo = () => {
   const [clicked, setClicked] = useState(false);
   const [hover, setHover] = useState(false);
   const isMobile = useIsMobile();
-  const [music, setMusic] = useState<HTMLAudioElement>();
+
+  const [audio, state, controls] = useAudio({
+    src: process.env.PUBLIC_URL + "/sounds/TooLateToTurnBackNow.mp3",
+  });
 
   useEffect(() => {
-    setMusic(
-      new Audio(process.env.PUBLIC_URL + "/sounds/TooLateToTurnBackNow.mp3")
-    );
-  }, []);
-
-  useEffect(() => {
-    if (music && clicked) {
+    if (state.duration && clicked) {
       if (hover) {
-        music.play();
+        controls.play();
       } else {
-        music.pause();
+        controls.pause();
       }
     }
-  }, [hover, music, clicked]);
+  }, [hover, state.duration, clicked]);
 
   return (
     <>
+      {audio}
       <x.div
         zIndex={1005}
         pointerEvents="none"
@@ -74,8 +73,10 @@ const Logo = () => {
             }}
             onClick={() => {
               if (!clicked) {
+                controls.play();
                 setClicked(true);
               }
+
               if (isMobile || clicked) {
                 setHover((old) => !old);
               }
