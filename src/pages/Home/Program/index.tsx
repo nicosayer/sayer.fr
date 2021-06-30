@@ -24,7 +24,7 @@ const Program = () => {
             Bapteme d&apos;Octave
           </Timeline.Item>
           <Timeline.Item>
-            <Text strong>12h</Text>
+            <Text strong>13h</Text>
             <div>
               <Text type="secondary">Haras de la Huderie</Text>
             </div>
@@ -48,7 +48,7 @@ const Program = () => {
             <Text strong>Dimanche 11 juillet</Text>
           </Timeline.Item>
           <Timeline.Item color="red">
-            <Text strong>12h</Text>
+            <Text strong>11h</Text>
             <div>
               <Text type="secondary">Haras de la Huderie</Text>
             </div>
