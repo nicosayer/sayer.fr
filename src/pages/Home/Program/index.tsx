@@ -38,7 +38,7 @@ const Program = () => {
             Mariage de Charlotte & Nicolas
           </Timeline.Item>
           <Timeline.Item>
-            <Text strong>18h</Text>
+            <Text strong>18h30</Text>
             <div>
               <Text type="secondary">Haras de la Huderie</Text>
             </div>
