@@ -17,7 +17,7 @@ const Program = () => {
             <Text strong>Samedi 10 juillet</Text>
           </Timeline.Item>
           <Timeline.Item>
-            <Text strong>11h</Text>
+            <Text strong>12h</Text>
             <div>
               <Text type="secondary">Église de Glanville</Text>
             </div>
