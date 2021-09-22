@@ -4,6 +4,7 @@ export enum Skill {
   c = "C",
   docker = "Docker",
   excelJs = "ExcelJS",
+  firebase = "Firebase",
   git = "Git",
   graphQL = "GraphQL",
   html = "HTML",
@@ -22,5 +23,6 @@ export enum Skill {
   swift = "Swift",
   typescript = "Typescript",
   unix = "Unix",
+  xstyled = "xstyled",
   xstate = "XState",
 }

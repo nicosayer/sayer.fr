@@ -11,6 +11,7 @@ import { Mongol } from "config/resume/Mongol";
 import { Peninsula } from "config/resume/Peninsula";
 import { ShakeShack } from "config/resume/ShakeShack";
 import { SharePlace } from "config/resume/SharePlace";
+import { Stoik } from "config/resume/Stoik";
 
 export enum Color {
   "blue" = "blue",
@@ -101,8 +102,15 @@ export const RESUME: ResumeItem[] = [
   {
     label: "Equify",
     location: "Paris, France",
-    date: "Oct 2018 → Today",
+    date: "Oct 2018 → Aug 2021",
     color: Color.red,
     description: <Equify />,
+  },
+  {
+    label: "Stoïk",
+    location: "Paris, France",
+    date: "Aug 2021 → Today",
+    color: Color.red,
+    description: <Stoik />,
   },
 ];
