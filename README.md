@@ -1,5 +1,3 @@
-# sayer.fr
-
 Here is a list of tools created for personal use
 
 ## 👨🏼‍💻 [nicolas.sayer.fr](https://nicolas.sayer.fr/)
