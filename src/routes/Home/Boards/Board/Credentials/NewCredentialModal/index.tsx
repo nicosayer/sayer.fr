@@ -4,7 +4,11 @@ import { closeAllModals } from "@mantine/modals";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
-import { BoardDocument, Collection, CredentialDocument } from "types/firebase/collections";
+import {
+  BoardDocument,
+  Collection,
+  CredentialDocument,
+} from "types/firebase/collections";
 
 export interface NewCredentialModalProps {
   board: BoardDocument;
@@ -46,12 +50,15 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
       onSubmit={form.onSubmit((values) => {
         if (board?.ref) {
           start();
-          addDoc<CredentialDocument>(collection(board.ref, Collection.credentials), {
-            name: values.name,
-            username: values.username,
-            password: values.password,
-            url: values.url,
-          })
+          addDoc<CredentialDocument>(
+            collection(board.ref, Collection.credentials),
+            {
+              name: values.name,
+              username: values.username,
+              password: values.password,
+              url: values.url,
+            }
+          )
             .then(() => closeAllModals())
             .finally(stop);
         }
@@ -87,7 +94,14 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
         />
         <div className="flex ml-auto">
           <Group>
-            <Button variant='outline' color="dark" loading={loading} onClick={() => { closeAllModals() }}>
+            <Button
+              variant="outline"
+              color="dark"
+              loading={loading}
+              onClick={() => {
+                closeAllModals();
+              }}
+            >
               Annuler
             </Button>
             <Button type="submit" loading={loading}>

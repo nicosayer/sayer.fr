@@ -88,7 +88,14 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
         />
         <div className="flex ml-auto">
           <Group>
-            <Button variant='outline' color="dark" loading={loading} onClick={() => { closeAllModals() }}>
+            <Button
+              variant="outline"
+              color="dark"
+              loading={loading}
+              onClick={() => {
+                closeAllModals();
+              }}
+            >
               Annuler
             </Button>
             <Button type="submit" loading={loading}>

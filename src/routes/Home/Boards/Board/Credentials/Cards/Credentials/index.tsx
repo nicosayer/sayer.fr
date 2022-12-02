@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { openConfirmModal, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { IconCopy, IconEdit, IconExternalLink, IconPencil, IconTrash } from "@tabler/icons";
+import { IconCopy, IconEdit, IconExternalLink, IconTrash } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
 import { FC } from "react";
@@ -32,7 +32,9 @@ const CredentialsCards: FC = () => {
           </tr>
         </thead>
         <tbody>
-          {sortBy(credentials ?? [], credential => sanitize(credential.name ?? '')).map((credential) => (
+          {sortBy(credentials ?? [], (credential) =>
+            sanitize(credential.name ?? "")
+          ).map((credential) => (
             <tr key={credential.id} className="cursor-pointer">
               <td>
                 {credential.url ? (
@@ -111,7 +113,9 @@ const CredentialsCards: FC = () => {
                       openModal({
                         centered: true,
                         title: "Modifier le mot de passe",
-                        children: <EditCredentialModal credential={credential} />,
+                        children: (
+                          <EditCredentialModal credential={credential} />
+                        ),
                       });
                     }}
                   >
@@ -126,8 +130,8 @@ const CredentialsCards: FC = () => {
                         centered: true,
                         children: (
                           <Text size="sm">
-                            Voulez-vous vraiment supprimer le mot de passe ? Cette
-                            action est définitive et irrémédiable.
+                            Voulez-vous vraiment supprimer le mot de passe ?
+                            Cette action est définitive et irrémédiable.
                           </Text>
                         ),
                         labels: { confirm: "Supprimer", cancel: "Annuler" },
