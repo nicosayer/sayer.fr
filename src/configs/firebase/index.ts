@@ -23,7 +23,7 @@ export { auth, db };
 
 export const firestoreConverter: FirestoreDataConverter<any> = {
   toFirestore(data) {
-    const { id: _id, ...rest } = data;
+    const { id: _id, ref: _ref, ...rest } = data;
     return rest;
   },
   fromFirestore(snapshot, options) {
@@ -32,6 +32,7 @@ export const firestoreConverter: FirestoreDataConverter<any> = {
     return {
       ...data,
       id: snapshot.id,
+      ref: snapshot.ref,
     };
   },
 };
