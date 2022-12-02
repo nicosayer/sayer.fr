@@ -11,3 +11,12 @@ export interface BoardDocument {
   name?: string;
   users?: string[];
 }
+
+export interface CredentialDocument {
+  id?: string;
+  ref?: DocumentReference<BoardDocument>;
+  name?: string;
+  url?: string;
+  username?: string;
+  password?: string;
+}

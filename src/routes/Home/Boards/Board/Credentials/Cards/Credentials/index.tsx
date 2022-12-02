@@ -3,7 +3,8 @@ import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const CredentialsCards: FC = () => {
-  const { board } = useBoard();
+  const { credentials } = useBoard();
+  console.log(credentials);
 
   return <Card withBorder>Hello</Card>;
 };

@@ -1,15 +1,23 @@
+import { collection } from "firebase/firestore";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Navigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
-import { BoardDocument } from "types/firebase/collections";
+import {
+  BoardDocument,
+  Collection,
+  CredentialDocument,
+} from "types/firebase/collections";
 
 interface IBoardContext {
   board?: BoardDocument;
+  credentials?: CredentialDocument[];
   loading: boolean;
 }
 
 const BoardContext = createContext<IBoardContext>({
   board: undefined,
+  credentials: undefined,
   loading: false,
 });
 
@@ -29,9 +37,13 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     return boards?.find((board) => board.id === boardId);
   }, [boards, boardId]);
 
+  const [credentials] = useCollectionData<CredentialDocument>(
+    board?.ref ? collection(board.ref, Collection.credentials) : undefined
+  );
+
   const context = useMemo(() => {
-    return { board, loading: false };
-  }, [board]);
+    return { board, credentials, loading: false };
+  }, [board, credentials]);
 
   if (!board) {
     return <Navigate to="/" />;

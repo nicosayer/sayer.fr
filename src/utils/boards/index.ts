@@ -11,14 +11,14 @@ export const newBoard = ({
   user: User;
   boards: BoardDocument[];
 }) => {
-  const userName = user.displayName ?? user.email ?? "";
+  const username = user.displayName ?? user.email ?? "";
 
   const version = (boards ?? []).filter((board) => {
-    return board?.name && sanitize(userName).indexOf(sanitize(board?.name));
+    return board?.name && sanitize(username).indexOf(sanitize(board?.name));
   }).length;
 
   return addDoc(collection(db, Collection.boards), {
     users: [user.email],
-    name: `Board de ${userName}${version ? ` ${version + 1}` : ""}`,
+    name: `Board de ${username}${version ? ` ${version + 1}` : ""}`,
   });
 };
