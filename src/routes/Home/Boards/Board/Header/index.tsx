@@ -8,12 +8,13 @@ import {
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
-import { openModal, closeAllModals } from "@mantine/modals";
+import { closeAllModals, openModal } from "@mantine/modals";
 import {
   IconArrowRight,
   IconMoon,
   IconPlus,
   IconPower,
+  IconSettings,
   IconSun,
   IconSwitchHorizontal,
 } from "@tabler/icons";
@@ -24,8 +25,8 @@ import { FC } from "react";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { Collection } from "types/firebase/collections";
 import { useBoards } from "routes/Home/Boards/Provider";
+import { Collection } from "types/firebase/collections";
 
 const Header: FC = () => {
   const { opened, setOpened } = useAppShell();
@@ -82,11 +83,12 @@ const Header: FC = () => {
                       <Stack>
                         {boards?.map((board) => (
                           <Button
+                            key={board.id}
                             variant="light"
                             rightIcon={<IconArrowRight />}
                             onClick={() => {
-                              navigate(`../${board.id}`)
-                              closeAllModals()
+                              navigate(`../${board.id}`);
+                              closeAllModals();
                             }}
                           >
                             {board.name}
@@ -110,6 +112,14 @@ const Header: FC = () => {
                 onClick={() => toggleColorScheme()}
               >
                 {colorScheme === "dark" ? "Mode clair" : "Mode sombre"}
+              </Menu.Item>
+              <Menu.Item
+                icon={<IconSettings size={14} />}
+                onClick={() => {
+                  navigate("settings");
+                }}
+              >
+                Paramètres
               </Menu.Item>
               <Menu.Item
                 color="red"

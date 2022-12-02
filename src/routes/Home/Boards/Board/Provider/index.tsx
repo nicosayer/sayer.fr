@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
-import { BoardDocument } from "types/firebase/collections";
 import { useBoards } from "routes/Home/Boards/Provider";
+import { BoardDocument } from "types/firebase/collections";
 
 interface IBoardContext {
   board?: BoardDocument;
