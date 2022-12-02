@@ -1,4 +1,4 @@
-import { Button, Stack, TextInput } from "@mantine/core";
+import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import { addDoc, collection } from "firebase/firestore";
@@ -65,7 +65,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
           placeholder="admin@acme.com"
           {...form.getInputProps("username")}
         />
-        <TextInput
+        <PasswordInput
           disabled={loading}
           withAsterisk
           label="Mot de passe"
@@ -74,17 +74,17 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
         />
         <TextInput
           disabled={loading}
-          label="Nom"
+          label="Nom du site web"
           placeholder="Acme"
           {...form.getInputProps("name")}
         />
         <TextInput
           disabled={loading}
-          label="URL"
+          label="Lien vers le site web"
           placeholder="https://acme.com"
           {...form.getInputProps("url")}
         />
-        <div>
+        <div className="flex ml-auto">
           <Button type="submit" loading={loading}>
             Créer
           </Button>

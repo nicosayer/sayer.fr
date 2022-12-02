@@ -1,3 +1,4 @@
+import { firestoreConverter } from "configs/firebase";
 import { collection } from "firebase/firestore";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -38,7 +39,11 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   }, [boards, boardId]);
 
   const [credentials] = useCollectionData<CredentialDocument>(
-    board?.ref ? collection(board.ref, Collection.credentials) : undefined
+    board?.ref
+      ? collection(board.ref, Collection.credentials).withConverter(
+          firestoreConverter
+        )
+      : undefined
   );
 
   const context = useMemo(() => {
