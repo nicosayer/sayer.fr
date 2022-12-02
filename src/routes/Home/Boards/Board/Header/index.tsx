@@ -6,6 +6,7 @@ import {
   Menu,
   useMantineTheme,
 } from "@mantine/core";
+import { IconUser } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
 import { auth } from "configs/firebase";
 import { FC } from "react";
@@ -39,7 +40,7 @@ const Header: FC = () => {
         <div className="ml-auto">
           <Menu shadow="md" width={200}>
             <Menu.Target>
-              <Button variant="light">{user?.email}</Button>
+              <Button variant="light" leftIcon={<IconUser />}>{user?.email}</Button>
             </Menu.Target>
 
             <Menu.Dropdown>
