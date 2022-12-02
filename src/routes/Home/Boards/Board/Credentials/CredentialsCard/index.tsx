@@ -74,42 +74,38 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                 )}
               </td>
               <td>
-                <Tooltip label="Copier" withArrow>
-                  <span>
-                    <CopyButton value={String(credential.username)}>
-                      {({ copied, copy }) => (
-                        <Button
-                          variant="subtle"
-                          compact
-                          color={copied ? "teal" : "dark"}
-                          onClick={copy}
-                          rightIcon={<IconCopy size={18} />}
-                        >
-                          {credential.username}
-                        </Button>
-                      )}
-                    </CopyButton>
-                  </span>
-                </Tooltip>
+                <CopyButton value={String(credential.username)}>
+                  {({ copied, copy }) => (
+                    <Tooltip label={copied ? 'Copié' : "Copier"} withArrow>
+                      <Button
+                        variant="subtle"
+                        compact
+                        color={copied ? "teal" : "dark"}
+                        onClick={copy}
+                        rightIcon={<IconCopy size={18} />}
+                      >
+                        {credential.username}
+                      </Button>
+                    </Tooltip>
+                  )}
+                </CopyButton>
               </td>
               <td>
-                <Tooltip label="Copier" withArrow>
-                  <span>
-                    <CopyButton value={String(credential.password)}>
-                      {({ copied, copy }) => (
-                        <Button
-                          variant="subtle"
-                          compact
-                          color={copied ? "teal" : "dark"}
-                          onClick={copy}
-                          rightIcon={<IconCopy size={18} />}
-                        >
-                          {formatPassword(String(credential.password))}
-                        </Button>
-                      )}
-                    </CopyButton>
-                  </span>
-                </Tooltip>
+                <CopyButton value={String(credential.password)}>
+                  {({ copied, copy }) => (
+                    <Tooltip label={copied ? 'Copié' : "Copier"} withArrow>
+                      <Button
+                        variant="subtle"
+                        compact
+                        color={copied ? "teal" : "dark"}
+                        onClick={copy}
+                        rightIcon={<IconCopy size={18} />}
+                      >
+                        {formatPassword(String(credential.password))}
+                      </Button>
+                    </Tooltip>
+                  )}
+                </CopyButton>
               </td>
               <td>
                 <Group>
