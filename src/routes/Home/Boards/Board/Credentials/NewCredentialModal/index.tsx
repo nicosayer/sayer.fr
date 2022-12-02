@@ -23,7 +23,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
 
     validate: {
       name: (name) => {
-        return typeof name === "string" ? null : "Erreur";
+        return typeof name === "string" && name.length > 0 ? null : "Erreur";
       },
       url: (url) => {
         return typeof url === "string" ? null : "Erreur";
@@ -59,6 +59,13 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
     >
       <Stack>
         <TextInput
+          withAsterisk
+          disabled={loading}
+          label="Nom du site web"
+          placeholder="Acme"
+          {...form.getInputProps("name")}
+        />
+        <TextInput
           disabled={loading}
           withAsterisk
           label="Nom d'utilisateur"
@@ -71,12 +78,6 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
           label="Mot de passe"
           placeholder="••••••••••"
           {...form.getInputProps("password")}
-        />
-        <TextInput
-          disabled={loading}
-          label="Nom du site web"
-          placeholder="Acme"
-          {...form.getInputProps("name")}
         />
         <TextInput
           disabled={loading}

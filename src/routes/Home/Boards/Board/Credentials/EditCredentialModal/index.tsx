@@ -23,7 +23,7 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
 
     validate: {
       name: (name) => {
-        return typeof name === "string" ? null : "Erreur";
+        return typeof name === "string" && name.length > 0 ? null : "Erreur";
       },
       url: (url) => {
         return typeof url === "string" ? null : "Erreur";
@@ -61,6 +61,13 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
         <TextInput
           disabled={loading}
           withAsterisk
+          label="Nom du site web"
+          placeholder="Acme"
+          {...form.getInputProps("name")}
+        />
+        <TextInput
+          disabled={loading}
+          withAsterisk
           label="Nom d'utilisateur"
           placeholder="admin@acme.com"
           {...form.getInputProps("username")}
@@ -72,12 +79,7 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
           placeholder="••••••••••"
           {...form.getInputProps("password")}
         />
-        <TextInput
-          disabled={loading}
-          label="Nom du site web"
-          placeholder="Acme"
-          {...form.getInputProps("name")}
-        />
+
         <TextInput
           disabled={loading}
           label="Lien vers le site web"

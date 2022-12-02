@@ -11,9 +11,10 @@ import { openConfirmModal, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { IconCopy, IconEdit, IconExternalLink, IconPencil, IconTrash } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
+import { sortBy } from "lodash";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { formatPassword } from "utils/string";
+import { formatPassword, sanitize } from "utils/string";
 import EditCredentialModal from "../../EditCredentialModal";
 
 const CredentialsCards: FC = () => {
@@ -31,7 +32,7 @@ const CredentialsCards: FC = () => {
           </tr>
         </thead>
         <tbody>
-          {(credentials ?? []).map((credential) => (
+          {sortBy(credentials ?? [], credential => sanitize(credential.name ?? '')).map((credential) => (
             <tr key={credential.id} className="cursor-pointer">
               <td>
                 {credential.url ? (
@@ -49,7 +50,7 @@ const CredentialsCards: FC = () => {
                     rel="noopener noreferrer"
                     href={credential.url}
                   >
-                    {credential.name || credential.url}
+                    {credential.name}
                   </Button>
                 ) : (
                   <Button variant="subtle" compact color="dark">
@@ -104,7 +105,7 @@ const CredentialsCards: FC = () => {
               <td>
                 <Group>
                   <ActionIcon
-                  color="blue"
+                    color="blue"
                     variant="subtle"
                     onClick={() => {
                       openModal({
