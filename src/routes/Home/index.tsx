@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import Boards from "routes/Home/Boards";
 import Board from "routes/Home/Boards/Board";
+import Settings from "routes/Home/Boards/Board/Settings";
 import BoardsProvider from "routes/Home/Boards/Provider";
 import Error from "routes/Home/Error";
 
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
               { index: true, element: <Navigate to="passwords" /> },
               { path: "passwords", element: <div>Passwords</div> },
               { path: "documents", element: <div>Documents</div> },
-              { path: "settings", element: <div>Settings</div> },
+              { path: "settings", element: <Settings /> },
             ],
           },
         ],
