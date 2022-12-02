@@ -50,7 +50,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
             <tr key={credential.id} className="cursor-pointer">
               <td>
                 {credential.url ? (
-                  <Tooltip label={`Aller sur ${credential.url}`} withArrow>
+                  <Tooltip label='Aller sur le site' withArrow>
                     <Button
                       variant="subtle"
                       compact
