@@ -9,7 +9,6 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import { showNotification } from "@mantine/notifications";
 import { IconCopy, IconEdit, IconExternalLink, IconTrash } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
@@ -50,7 +49,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
             <tr key={credential.id} className="cursor-pointer">
               <td>
                 {credential.url ? (
-                  <Tooltip label='Aller sur le site' withArrow>
+                  <Tooltip label="Aller sur le site" withArrow>
                     <Button
                       variant="subtle"
                       compact
@@ -83,14 +82,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                           variant="subtle"
                           compact
                           color={copied ? "teal" : "dark"}
-                          onClick={() => {
-                            copy();
-                            showNotification({
-                              title: "Copié avec succès",
-                              message:
-                                "Le nom d'utilisateur a été copié dans le presse-papiers",
-                            });
-                          }}
+                          onClick={copy}
                           rightIcon={<IconCopy size={18} />}
                         >
                           {credential.username}
@@ -109,14 +101,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                           variant="subtle"
                           compact
                           color={copied ? "teal" : "dark"}
-                          onClick={() => {
-                            copy();
-                            showNotification({
-                              title: "Copié avec succès",
-                              message:
-                                "Le mot de passe a été copié dans le presse-papiers",
-                            });
-                          }}
+                          onClick={copy}
                           rightIcon={<IconCopy size={18} />}
                         >
                           {formatPassword(String(credential.password))}
