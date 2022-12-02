@@ -13,7 +13,7 @@ const DeleteCard: FC = () => {
     <Card withBorder>
       <Input.Wrapper
         label="Supprimer le board"
-        description="La suppression du board est irrémédiable"
+        description="La suppression du board est définitive et irrémédiable"
       >
         <Button
           loading={loading}

@@ -1,13 +1,14 @@
 import { Menu } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
-import { auth, db } from "configs/firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { auth } from "configs/firebase";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { Collection } from "types/firebase/collections";
+import { useBoards } from "routes/Home/Boards/Provider";
+import { newBoard } from "utils/boards";
 
 const NewBoardMenuItem: FC = () => {
+  const { boards } = useBoards();
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
@@ -16,10 +17,7 @@ const NewBoardMenuItem: FC = () => {
       icon={<IconPlus size={14} />}
       onClick={() => {
         if (user?.email) {
-          addDoc(collection(db, Collection.boards), {
-            users: [user.email],
-            name: `Board de ${user.displayName ?? user.email}`,
-          }).then((board) => {
+          newBoard({ user, boards: boards ?? [] }).then((board) => {
             navigate(`../${board.id}`);
           });
         }
