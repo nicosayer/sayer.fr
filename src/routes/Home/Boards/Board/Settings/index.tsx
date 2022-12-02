@@ -6,10 +6,11 @@ import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { Collection } from "types/firebase/collections";
+import { ONE_SECOND } from "utils/time";
 
 const Settings: FC = () => {
   const { board } = useBoard();
-  const [loading, start, stop] = useBooleanState();
+  const [loading, start, stop] = useBooleanState({ stopDelay: ONE_SECOND });
 
   const form = useForm({
     initialValues: {
@@ -33,7 +34,7 @@ const Settings: FC = () => {
           if (board?.id) {
             start();
             updateDoc(doc(db, Collection.boards, board.id), {
-              name: values.boardName,
+              name: values.boardName.trim(),
             }).finally(stop);
           }
         })}

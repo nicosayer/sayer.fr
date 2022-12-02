@@ -1,9 +1,17 @@
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { timer } from "utils/time";
 
-const useBooleanState = (
-  defaultValue = false
-): [
+export interface useBooleanStateProps {
+  defaultValue?: boolean;
+  startDelay?: number;
+  stopDelay?: number;
+}
+
+const useBooleanState = ({
+  defaultValue = false,
+  startDelay = 0,
+  stopDelay = 0,
+}: useBooleanStateProps = {}): [
   boolean,
   () => void,
   () => void,
@@ -15,19 +23,21 @@ const useBooleanState = (
   return useMemo(() => {
     return [
       value,
-      () => {
+      async () => {
+        await timer(startDelay);
         setValue(true);
       },
       async () => {
-        await timer(200);
+        await timer(stopDelay);
         setValue(false);
       },
-      () => {
+      async () => {
+        await timer(value ? stopDelay : startDelay);
         setValue((old) => !old);
       },
       setValue,
     ];
-  }, [value]);
+  }, [startDelay, stopDelay, value]);
 };
 
 export default useBooleanState;

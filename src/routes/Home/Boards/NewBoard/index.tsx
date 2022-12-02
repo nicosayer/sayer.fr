@@ -2,13 +2,14 @@ import { Button, Stack } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
 import { auth, db } from "configs/firebase";
 import { addDoc, collection } from "firebase/firestore";
-import { useState } from "react";
+import useBooleanState from "hooks/useBooleanState";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { Collection } from "types/firebase/collections";
+import { ONE_SECOND } from "utils/time";
 
 const NewBoard = () => {
   const [user] = useAuthState(auth);
-  const [loading, setLoading] = useState(false);
+  const [loading, start, stop] = useBooleanState({ stopDelay: ONE_SECOND });
   const [signOut] = useSignOut(auth);
 
   return (
@@ -18,13 +19,11 @@ const NewBoard = () => {
         loading={loading}
         onClick={() => {
           if (user?.email) {
-            setLoading(true);
+            start();
             addDoc(collection(db, Collection.boards), {
               users: [user.email],
               name: `Board de ${user.displayName ?? user.email}`,
-            }).finally(() => {
-              setLoading(false);
-            });
+            }).finally(stop);
           }
         }}
       >
