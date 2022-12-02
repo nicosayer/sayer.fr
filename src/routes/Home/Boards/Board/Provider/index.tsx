@@ -6,6 +6,7 @@ import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { Navigate } from "react-router-dom";
 import { BoardDocument, Collection } from "types/firebase/collections";
+import { useBoards } from "../../Provider";
 
 interface IBoardContext {
   board?: BoardDocument;
@@ -27,22 +28,19 @@ interface BoardProviderProps {
 }
 
 const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
-  const [board, loadingBoard] = useDocumentData<BoardDocument>(
-    doc(db, Collection.boards, boardId).withConverter(firestoreConverter)
-  );
+  const { boards } = useBoards()
 
-  const [loading] = useDebouncedValue(loadingBoard, 200);
+  const board = useMemo(() => {
+    return boards?.find(board => board.id === boardId)
+  }, [boards, boardId])
+
 
   const context = useMemo(() => {
-    return { board, loading };
-  }, [board, loading]);
-
-  if (loading) {
-    return <FullPageLoading />;
-  }
+    return { board, loading: false };
+  }, [board]);
 
   if (!board) {
-    return <Navigate to="/" />;
+    return <Navigate to='/' />
   }
 
   return (
