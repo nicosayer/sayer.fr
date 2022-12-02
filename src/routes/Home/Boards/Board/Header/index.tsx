@@ -40,7 +40,9 @@ const Header: FC = () => {
         <div className="ml-auto">
           <Menu shadow="md" width={200}>
             <Menu.Target>
-              <Button variant="light" leftIcon={<IconUser />}>{user?.email}</Button>
+              <Button variant="light" leftIcon={<IconUser />}>
+                {user?.email}
+              </Button>
             </Menu.Target>
 
             <Menu.Dropdown>

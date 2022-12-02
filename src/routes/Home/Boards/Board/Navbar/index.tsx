@@ -9,7 +9,7 @@ const menu = [
     icon: <IconLockOpen size={16} />,
     color: "blue",
     label: "Mot de passes",
-    to: "passwords",
+    to: "credentials",
   },
   {
     icon: <IconId size={16} />,

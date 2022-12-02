@@ -8,6 +8,7 @@ import Board from "routes/Home/Boards/Board";
 import Settings from "routes/Home/Boards/Board/Settings";
 import BoardsProvider from "routes/Home/Boards/Provider";
 import Error from "routes/Home/Error";
+import Credentials from "./Boards/Board/Credentials";
 
 const router = createBrowserRouter([
   {
@@ -30,8 +31,8 @@ const router = createBrowserRouter([
             path: ":boardId",
             element: <Board />,
             children: [
-              { index: true, element: <Navigate to="passwords" /> },
-              { path: "passwords", element: <div>Passwords</div> },
+              { index: true, element: <Navigate to="credentials" /> },
+              { path: "credentials", element: <Credentials /> },
               { path: "documents", element: <div>Documents</div> },
               { path: "settings", element: <Settings /> },
             ],

@@ -2,6 +2,7 @@ import { DocumentReference } from "firebase/firestore";
 
 export enum Collection {
   boards = "boards",
+  credentials = "credentials",
 }
 
 export interface BoardDocument {
