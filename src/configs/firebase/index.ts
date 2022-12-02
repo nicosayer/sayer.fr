@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, inMemoryPersistence, setPersistence } from "firebase/auth";
 import { FirestoreDataConverter, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -16,8 +16,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// TODO: Put back on
-// setPersistence(auth, inMemoryPersistence);
+setPersistence(auth, inMemoryPersistence);
 
 export { auth, db };
 
