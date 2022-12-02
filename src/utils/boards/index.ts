@@ -14,7 +14,7 @@ export const newBoard = ({
   const username = user.displayName ?? user.email ?? "";
 
   const version = (boards ?? []).filter((board) => {
-    return board?.name && sanitize(username).indexOf(sanitize(board?.name));
+    return sanitize(String(board.name)).indexOf(sanitize(username)) > -1;
   }).length;
 
   return addDoc<BoardDocument>(collection(db, Collection.boards), {

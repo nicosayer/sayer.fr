@@ -27,20 +27,24 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
 
     validate: {
       name: (name) => {
-        return typeof name === "string" && name.length > 0 ? null : "Erreur";
+        return typeof name === "string" && name.length > 0
+          ? null
+          : "Ce champ ne doit pas être vide";
       },
       url: (url) => {
-        return typeof url === "string" ? null : "Erreur";
+        return typeof url === "string"
+          ? null
+          : "Ce champ ne doit pas être vide";
       },
       username: (username) => {
         return typeof username === "string" && username.length > 0
           ? null
-          : "Erreur";
+          : "Ce champ ne doit pas être vide";
       },
       password: (password) => {
         return typeof password === "string" && password.length > 0
           ? null
-          : "Erreur";
+          : "Ce champ ne doit pas être vide";
       },
     },
   });

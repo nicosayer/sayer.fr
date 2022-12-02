@@ -8,7 +8,7 @@ const SignOutMenuItem: FC = () => {
   const [signOut] = useSignOut(auth);
 
   return (
-    <Menu.Item color="red" icon={<IconPower size={14} />} onClick={signOut}>
+    <Menu.Item color="red" icon={<IconPower size={18} />} onClick={signOut}>
       Se déconnecter
     </Menu.Item>
   );

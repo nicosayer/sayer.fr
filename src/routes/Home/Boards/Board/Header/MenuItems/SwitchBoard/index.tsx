@@ -15,7 +15,7 @@ const SitchBoardMenuItem: FC = () => {
 
   return (
     <Menu.Item
-      icon={<IconSwitchHorizontal size={14} />}
+      icon={<IconSwitchHorizontal size={18} />}
       onClick={() => {
         openModal({
           centered: true,
@@ -26,7 +26,7 @@ const SitchBoardMenuItem: FC = () => {
                 <Button
                   key={board.id}
                   variant="light"
-                  rightIcon={<IconArrowRight />}
+                  rightIcon={<IconArrowRight size={18} />}
                   onClick={() => {
                     navigate(`../${board.id}`);
                     closeAllModals();

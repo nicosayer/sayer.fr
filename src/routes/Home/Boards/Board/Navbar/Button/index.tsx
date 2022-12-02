@@ -29,6 +29,11 @@ const NavbarButton: FC<NavbarButtonProps> = ({ icon, color, label, to }) => {
         borderRadius: theme.radius.sm,
         color:
           theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+        backgroundColor: isActive
+          ? theme.colorScheme === "dark"
+            ? theme.colors.dark[6]
+            : theme.colors.gray[0]
+          : undefined,
         "&:hover": {
           backgroundColor:
             theme.colorScheme === "dark"
@@ -38,11 +43,7 @@ const NavbarButton: FC<NavbarButtonProps> = ({ icon, color, label, to }) => {
       })}
     >
       <Group>
-        <ThemeIcon
-          color={color}
-          variant="light"
-          className={`${isActive ? "" : "bg-transparent"}`}
-        >
+        <ThemeIcon color={color} variant="light">
           {icon}
         </ThemeIcon>
         <Text size="sm">{label}</Text>

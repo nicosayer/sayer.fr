@@ -21,7 +21,9 @@ const SettingsCard: FC = () => {
 
     validate: {
       boardName: (name) => {
-        return typeof name === "string" && name.length > 0 ? null : "Erreur";
+        return typeof name === "string" && name.length > 0
+          ? null
+          : "Ce champ ne doit pas être vide";
       },
       boardUsers: (users) => {
         return Array.isArray(users) &&
@@ -29,7 +31,7 @@ const SettingsCard: FC = () => {
             (user) => typeof user === "string" && /^.+@.+\..+$/.test(user)
           )
           ? null
-          : "Erreur";
+          : "Ce champ ne doit pas être vide";
       },
     },
   });

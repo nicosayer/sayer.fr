@@ -12,13 +12,26 @@ import { showNotification } from "@mantine/notifications";
 import { IconCopy, IconEdit, IconExternalLink, IconTrash } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { formatPassword, sanitize } from "utils/string";
-import EditCredentialModal from "../../EditCredentialModal";
+import EditCredentialModal from "./EditCredentialModal";
 
-const CredentialsCards: FC = () => {
+export interface CredentialsCardsProps {
+  search: string;
+}
+
+const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
   const { credentials } = useBoard();
+
+  const filteredCredentials = useMemo(() => {
+    return sortBy(
+      (credentials ?? []).filter((credential) => {
+        return sanitize(String(credential.name)).indexOf(sanitize(search)) > -1;
+      }),
+      (credential) => sanitize(credential.name ?? "")
+    );
+  }, [credentials, search]);
 
   return (
     <Card withBorder>
@@ -32,9 +45,7 @@ const CredentialsCards: FC = () => {
           </tr>
         </thead>
         <tbody>
-          {sortBy(credentials ?? [], (credential) =>
-            sanitize(credential.name ?? "")
-          ).map((credential) => (
+          {filteredCredentials.map((credential) => (
             <tr key={credential.id} className="cursor-pointer">
               <td>
                 {credential.url ? (

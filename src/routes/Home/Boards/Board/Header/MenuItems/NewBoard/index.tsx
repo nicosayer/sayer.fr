@@ -14,7 +14,7 @@ const NewBoardMenuItem: FC = () => {
 
   return (
     <Menu.Item
-      icon={<IconPlus size={14} />}
+      icon={<IconPlus size={18} />}
       onClick={() => {
         if (user?.email) {
           newBoard({ user, boards: boards ?? [] }).then((board) => {

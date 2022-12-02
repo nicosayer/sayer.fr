@@ -8,7 +8,7 @@ const SettingsMenuItem: FC = () => {
 
   return (
     <Menu.Item
-      icon={<IconSettings size={14} />}
+      icon={<IconSettings size={18} />}
       onClick={() => {
         navigate("settings");
       }}

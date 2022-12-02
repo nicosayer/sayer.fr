@@ -16,7 +16,7 @@ const NewBoard = () => {
   return (
     <Stack className="flex items-center justify-center h-full">
       <Button
-        leftIcon={<IconPlus />}
+        leftIcon={<IconPlus size={18} />}
         loading={loading}
         onClick={() => {
           if (user?.email) {

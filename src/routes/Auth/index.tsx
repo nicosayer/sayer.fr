@@ -10,7 +10,7 @@ const Auth = () => {
   return (
     <div className="flex items-center justify-center h-full">
       <Button
-        leftIcon={<IconBrandGoogle />}
+        leftIcon={<IconBrandGoogle size={18} />}
         onClick={() => signInWithGoogle()}
         loading={loadingSignInWithGoogle}
       >

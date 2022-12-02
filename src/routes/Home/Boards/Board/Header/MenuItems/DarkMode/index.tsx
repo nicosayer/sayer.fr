@@ -8,7 +8,7 @@ const DarkModeMenuItem: FC = () => {
   return (
     <Menu.Item
       icon={
-        colorScheme === "dark" ? <IconSun size={14} /> : <IconMoon size={14} />
+        colorScheme === "dark" ? <IconSun size={18} /> : <IconMoon size={18} />
       }
       onClick={() => toggleColorScheme()}
     >
