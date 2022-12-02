@@ -6,6 +6,7 @@ import {
   MantineProvider as MantineProviderComponent,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+import { ModalsProvider } from "@mantine/modals";
 
 const MantineProvider = ({ children }: PropsWithChildren) => {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -26,7 +27,7 @@ const MantineProvider = ({ children }: PropsWithChildren) => {
         withGlobalStyles
         withNormalizeCSS
       >
-        {children}
+        <ModalsProvider>{children}</ModalsProvider>
       </MantineProviderComponent>
     </ColorSchemeProvider>
   );

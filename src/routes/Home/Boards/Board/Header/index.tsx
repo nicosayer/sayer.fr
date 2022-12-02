@@ -4,18 +4,28 @@ import {
   Header as HeaderComponent,
   MediaQuery,
   Menu,
+  Stack,
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
-import { IconMoon, IconPower, IconSun, IconPlus } from "@tabler/icons";
+import { openModal, closeAllModals } from "@mantine/modals";
+import {
+  IconArrowRight,
+  IconMoon,
+  IconPlus,
+  IconPower,
+  IconSun,
+  IconSwitchHorizontal,
+} from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
 import { auth, db } from "configs/firebase";
+import { addDoc, collection } from "firebase/firestore";
 import { FC } from "react";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
-import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { addDoc, collection } from "firebase/firestore";
-import { Collection } from "types/firebase/collections";
 import { useNavigate } from "react-router-dom";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { Collection } from "types/firebase/collections";
+import { useBoards } from "routes/Home/Boards/Provider";
 
 const Header: FC = () => {
   const { opened, setOpened } = useAppShell();
@@ -24,7 +34,8 @@ const Header: FC = () => {
   const [signOut] = useSignOut(auth);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { board } = useBoard();
-  const navigate = useNavigate()
+  const { boards } = useBoards();
+  const navigate = useNavigate();
 
   return (
     <HeaderComponent height={{ base: 50, md: 70 }} p="md">
@@ -47,21 +58,46 @@ const Header: FC = () => {
 
             <Menu.Dropdown>
               <Menu.Item
-                icon={
-                  <IconPlus size={14} />
-                }
+                icon={<IconPlus size={14} />}
                 onClick={() => {
                   if (user?.email) {
                     addDoc(collection(db, Collection.boards), {
                       users: [user.email],
                       name: `Board de ${user.displayName ?? user.email}`,
                     }).then((board) => {
-                      navigate(`../${board.id}`)
-                    })
+                      navigate(`../${board.id}`);
+                    });
                   }
                 }}
               >
                 Nouveau board
+              </Menu.Item>
+              <Menu.Item
+                icon={<IconSwitchHorizontal size={14} />}
+                onClick={() => {
+                  openModal({
+                    centered: true,
+                    title: "Changer de board",
+                    children: (
+                      <Stack>
+                        {boards?.map((board) => (
+                          <Button
+                            variant="light"
+                            rightIcon={<IconArrowRight />}
+                            onClick={() => {
+                              navigate(`../${board.id}`)
+                              closeAllModals()
+                            }}
+                          >
+                            {board.name}
+                          </Button>
+                        ))}
+                      </Stack>
+                    ),
+                  });
+                }}
+              >
+                Changer de board
               </Menu.Item>
               <Menu.Item
                 icon={

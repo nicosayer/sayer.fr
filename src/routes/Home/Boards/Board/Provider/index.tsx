@@ -1,12 +1,7 @@
-import { useDebouncedValue } from "@mantine/hooks";
-import { db, firestoreConverter } from "configs/firebase";
-import { doc } from "firebase/firestore";
-import FullPageLoading from "providers/FullPageLoading/FullPage";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
-import { useDocumentData } from "react-firebase-hooks/firestore";
 import { Navigate } from "react-router-dom";
-import { BoardDocument, Collection } from "types/firebase/collections";
-import { useBoards } from "../../Provider";
+import { BoardDocument } from "types/firebase/collections";
+import { useBoards } from "routes/Home/Boards/Provider";
 
 interface IBoardContext {
   board?: BoardDocument;
@@ -28,19 +23,18 @@ interface BoardProviderProps {
 }
 
 const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
-  const { boards } = useBoards()
+  const { boards } = useBoards();
 
   const board = useMemo(() => {
-    return boards?.find(board => board.id === boardId)
-  }, [boards, boardId])
-
+    return boards?.find((board) => board.id === boardId);
+  }, [boards, boardId]);
 
   const context = useMemo(() => {
     return { board, loading: false };
   }, [board]);
 
   if (!board) {
-    return <Navigate to='/' />
+    return <Navigate to="/" />;
   }
 
   return (
