@@ -17,8 +17,8 @@ export const newBoard = ({
     return board?.name && sanitize(username).indexOf(sanitize(board?.name));
   }).length;
 
-  return addDoc(collection(db, Collection.boards), {
-    users: [user.email],
+  return addDoc<BoardDocument>(collection(db, Collection.boards), {
+    users: user.email ? [user.email] : [],
     name: `Board de ${username}${version ? ` ${version + 1}` : ""}`,
   });
 };

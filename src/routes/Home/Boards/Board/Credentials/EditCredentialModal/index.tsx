@@ -1,24 +1,24 @@
 import { Button, Group, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
-import { addDoc, collection } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
-import { BoardDocument, Collection, CredentialDocument } from "types/firebase/collections";
+import { CredentialDocument } from "types/firebase/collections";
 
-export interface NewCredentialModalProps {
-  board: BoardDocument;
+export interface EditCredentialModalProps {
+  credential: CredentialDocument;
 }
 
-const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
+const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
   const [loading, start, stop] = useBooleanState();
 
   const form = useForm({
     initialValues: {
-      name: "",
-      url: "",
-      username: "",
-      password: "",
+      name: credential.name ?? "",
+      url: credential.url ?? "",
+      username: credential.username ?? "",
+      password: credential.password ?? "",
     },
 
     validate: {
@@ -44,9 +44,9 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        if (board?.ref) {
+        if (credential?.ref) {
           start();
-          addDoc<CredentialDocument>(collection(board.ref, Collection.credentials), {
+          updateDoc<CredentialDocument>(credential.ref, {
             name: values.name,
             username: values.username,
             password: values.password,
@@ -90,7 +90,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
               Annuler
             </Button>
             <Button type="submit" loading={loading}>
-              Créer
+              Modifier
             </Button>
           </Group>
         </div>
@@ -99,4 +99,4 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
   );
 };
 
-export default NewCredentialModal;
+export default EditCredentialModal;

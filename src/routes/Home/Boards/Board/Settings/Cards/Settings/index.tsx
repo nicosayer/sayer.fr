@@ -4,6 +4,7 @@ import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { BoardDocument } from "types/firebase/collections";
 import { ONE_SECOND } from "utils/time";
 
 const SettingsCard: FC = () => {
@@ -39,7 +40,7 @@ const SettingsCard: FC = () => {
         onSubmit={form.onSubmit((values) => {
           if (board?.ref) {
             start();
-            updateDoc(board.ref, {
+            updateDoc<BoardDocument>(board.ref, {
               name: values.boardName.trim(),
               users: values.boardUsers,
             }).finally(stop);

@@ -3,16 +3,18 @@ import {
   Button,
   Card,
   CopyButton,
+  Group,
   Table,
   Text,
 } from "@mantine/core";
-import { openConfirmModal } from "@mantine/modals";
+import { openConfirmModal, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { IconCopy, IconExternalLink, IconTrash } from "@tabler/icons";
+import { IconCopy, IconEdit, IconExternalLink, IconPencil, IconTrash } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { formatPassword } from "utils/string";
+import EditCredentialModal from "../../EditCredentialModal";
 
 const CredentialsCards: FC = () => {
   const { credentials } = useBoard();
@@ -100,31 +102,46 @@ const CredentialsCards: FC = () => {
                 </CopyButton>
               </td>
               <td>
-                <ActionIcon
-                  color="red"
-                  variant="subtle"
-                  onClick={() => {
-                    openConfirmModal({
-                      title: "Supprimer le mot de passe",
-                      centered: true,
-                      children: (
-                        <Text size="sm">
-                          Voulez-vous vraiment supprimer le mot de passe ? Cette
-                          action est définitive et irrémédiable.
-                        </Text>
-                      ),
-                      labels: { confirm: "Supprimer", cancel: "Annuler" },
-                      confirmProps: { color: "red" },
-                      onConfirm: () => {
-                        if (credential.ref) {
-                          deleteDoc(credential.ref);
-                        }
-                      },
-                    });
-                  }}
-                >
-                  <IconTrash size={18} />
-                </ActionIcon>
+                <Group>
+                  <ActionIcon
+                  color="blue"
+                    variant="subtle"
+                    onClick={() => {
+                      openModal({
+                        centered: true,
+                        title: "Modifier le mot de passe",
+                        children: <EditCredentialModal credential={credential} />,
+                      });
+                    }}
+                  >
+                    <IconEdit size={18} />
+                  </ActionIcon>
+                  <ActionIcon
+                    color="red"
+                    variant="subtle"
+                    onClick={() => {
+                      openConfirmModal({
+                        title: "Supprimer le mot de passe",
+                        centered: true,
+                        children: (
+                          <Text size="sm">
+                            Voulez-vous vraiment supprimer le mot de passe ? Cette
+                            action est définitive et irrémédiable.
+                          </Text>
+                        ),
+                        labels: { confirm: "Supprimer", cancel: "Annuler" },
+                        confirmProps: { color: "red" },
+                        onConfirm: () => {
+                          if (credential.ref) {
+                            deleteDoc(credential.ref);
+                          }
+                        },
+                      });
+                    }}
+                  >
+                    <IconTrash size={18} />
+                  </ActionIcon>
+                </Group>
               </td>
             </tr>
           ))}
