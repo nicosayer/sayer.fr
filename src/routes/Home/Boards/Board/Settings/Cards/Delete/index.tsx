@@ -22,8 +22,8 @@ const DeleteCard: FC = () => {
               centered: true,
               children: (
                 <Text size="sm">
-                  Voulez-vous vraiment supprimer ce board ? Cette action
-                  est définitive et irrémédiable.
+                  Voulez-vous vraiment supprimer ce board ? Cette action est
+                  définitive et irrémédiable.
                 </Text>
               ),
               labels: { confirm: "Supprimer", cancel: "Annuler" },

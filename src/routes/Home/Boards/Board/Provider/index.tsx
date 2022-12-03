@@ -8,17 +8,20 @@ import {
   BoardDocument,
   Collection,
   CredentialDocument,
+  DocumentDocument,
 } from "types/firebase/collections";
 
 interface IBoardContext {
   board?: BoardDocument;
   credentials?: CredentialDocument[];
+  documents?: DocumentDocument[];
   loading: boolean;
 }
 
 const BoardContext = createContext<IBoardContext>({
   board: undefined,
   credentials: undefined,
+  documents: undefined,
   loading: false,
 });
 
@@ -38,17 +41,30 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     return boards?.find((board) => board.id === boardId);
   }, [boards, boardId]);
 
-  const [credentials] = useCollectionData<CredentialDocument>(
+  const [credentials, loadingCredentials] =
+    useCollectionData<CredentialDocument>(
+      board?.ref
+        ? collection(board.ref, Collection.credentials).withConverter(
+            firestoreConverter
+          )
+        : undefined
+    );
+
+  const [documents, loadingDocuments] = useCollectionData<DocumentDocument>(
     board?.ref
-      ? collection(board.ref, Collection.credentials).withConverter(
+      ? collection(board.ref, Collection.documents).withConverter(
           firestoreConverter
         )
       : undefined
   );
 
+  const loading = useMemo(() => {
+    return loadingCredentials || loadingDocuments;
+  }, [loadingCredentials, loadingDocuments]);
+
   const context = useMemo(() => {
-    return { board, credentials, loading: false };
-  }, [board, credentials]);
+    return { board, credentials, documents, loading };
+  }, [board, credentials, documents, loading]);
 
   if (!board) {
     return <Navigate to="/" />;

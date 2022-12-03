@@ -109,7 +109,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
               Annuler
             </Button>
             <Button type="submit" loading={loading}>
-              Créer
+              Ajouter
             </Button>
           </Group>
         </div>

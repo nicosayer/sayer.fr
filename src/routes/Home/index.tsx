@@ -9,6 +9,7 @@ import Settings from "routes/Home/Boards/Board/Settings";
 import BoardsProvider from "routes/Home/Boards/Provider";
 import Error from "routes/Home/Error";
 import Credentials from "./Boards/Board/Credentials";
+import Documents from "./Boards/Board/Documents";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
             children: [
               { index: true, element: <Navigate to="credentials" /> },
               { path: "credentials", element: <Credentials /> },
-              { path: "documents", element: <div>Documents</div> },
+              { path: "documents", element: <Documents /> },
               { path: "settings", element: <Settings /> },
             ],
           },
