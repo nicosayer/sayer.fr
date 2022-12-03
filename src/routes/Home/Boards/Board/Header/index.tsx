@@ -1,12 +1,16 @@
 import {
+  ActionIcon,
   Burger,
   Button,
+  Group,
   Header as HeaderComponent,
   MediaQuery,
   Menu,
+  TextInput,
   useMantineTheme,
 } from "@mantine/core";
-import { IconUser } from "@tabler/icons";
+import { useSpotlight } from "@mantine/spotlight";
+import { IconSearch, IconUser } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
 import { auth } from "configs/firebase";
 import { FC } from "react";
@@ -23,37 +27,48 @@ const Header: FC = () => {
   const theme = useMantineTheme();
   const [user] = useAuthState(auth);
   const { board } = useBoard();
+  const spotlight = useSpotlight();
 
   return (
     <HeaderComponent height={{ base: 50, md: 70 }} p="md">
-      <div className="flex items-center h-full">
-        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-          <Burger
-            opened={opened}
-            onClick={() => setOpened((o) => !o)}
-            size="sm"
-            color={theme.colors.gray[6]}
-            mr="xl"
-          />
-        </MediaQuery>
-        <div>{board?.name}</div>
-        <div className="ml-auto">
-          <Menu shadow="md" width={200}>
-            <Menu.Target>
-              <Button variant="light" leftIcon={<IconUser size={18} />}>
-                {user?.email}
-              </Button>
-            </Menu.Target>
-
-            <Menu.Dropdown>
-              <NewBoardMenuItem />
-              <SwitchBoardMenuItem />
-              <DarkModeMenuItem />
-              <SettingsMenuItem />
-              <SignOutMenuItem />
-            </Menu.Dropdown>
-          </Menu>
+      <div className="flex items-center justify-between h-full">
+        <div className="flex items-center h-full">
+          <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+            <Burger
+              opened={opened}
+              onClick={() => setOpened((o) => !o)}
+              size="sm"
+              color={theme.colors.gray[6]}
+              mr="xl"
+            />
+          </MediaQuery>
+          <div>{board?.name}
+          </div>
         </div>
+        <TextInput
+          placeholder="Recherche"
+          variant="filled"
+          icon={<IconSearch size={18} />}
+          onFocus={event => {
+            spotlight.openSpotlight()
+            event.target.blur()
+          }}
+        />
+        <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <Button variant="light" leftIcon={<IconUser size={18} />}>
+              {user?.email}
+            </Button>
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            <NewBoardMenuItem />
+            <SwitchBoardMenuItem />
+            <DarkModeMenuItem />
+            <SettingsMenuItem />
+            <SignOutMenuItem />
+          </Menu.Dropdown>
+        </Menu>
       </div>
     </HeaderComponent>
   );

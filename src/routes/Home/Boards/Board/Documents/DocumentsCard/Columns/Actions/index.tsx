@@ -33,7 +33,8 @@ const ActionsColumns: FC<ActionsColumnsProps> = ({ document }) => {
               getDownloadURL(
                 ref(
                   storage,
-                  `boards/${board?.id}/documents/${document.id
+                  `boards/${board?.id}/documents/${
+                    document.id
                   }/document.${getExtension(String(document.mime))}`
                 )
               )
@@ -103,7 +104,8 @@ const ActionsColumns: FC<ActionsColumnsProps> = ({ document }) => {
                     deleteObject(
                       ref(
                         storage,
-                        `boards/${board?.id}/documents/${document.id
+                        `boards/${board?.id}/documents/${
+                          document.id
                         }/document.${getExtension(String(document.mime))}`
                       )
                     );

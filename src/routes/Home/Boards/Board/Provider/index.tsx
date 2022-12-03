@@ -1,8 +1,9 @@
+import { SpotlightProvider } from "@mantine/spotlight";
 import { firestoreConverter } from "configs/firebase";
 import { collection } from "firebase/firestore";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
 import {
   BoardDocument,
@@ -10,6 +11,7 @@ import {
   CredentialDocument,
   DocumentDocument,
 } from "types/firebase/collections";
+import { sanitize } from "utils/string";
 
 interface IBoardContext {
   board?: BoardDocument;
@@ -36,6 +38,7 @@ interface BoardProviderProps {
 
 const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   const { boards } = useBoards();
+  const navigate = useNavigate();
 
   const board = useMemo(() => {
     return boards?.find((board) => board.id === boardId);
@@ -71,7 +74,38 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   }
 
   return (
-    <BoardContext.Provider value={context}>{children}</BoardContext.Provider>
+    <BoardContext.Provider value={context}>
+      <SpotlightProvider
+        shortcut="mod + K"
+        actions={[
+          ...(credentials ?? []).map((credential) => {
+            return {
+              title: credential.name ?? "",
+              group: "Mot de passe",
+              onTrigger: () => {
+                navigate(`/boards/${boardId}/credentials/${credential.id}`);
+              },
+            };
+          }),
+          ...(documents ?? []).map((document) => {
+            return {
+              title: `${document.type} - ${document.owner}`,
+              group: "Document",
+              onTrigger: () => {
+                navigate(`/boards/${boardId}/documents/${document.id}`);
+              },
+            };
+          }),
+        ]}
+        filter={(query, actions) =>
+          actions.filter(
+            (action) => sanitize(action.title).indexOf(sanitize(query)) > -1
+          )
+        }
+      >
+        {children}
+      </SpotlightProvider>
+    </BoardContext.Provider>
   );
 };
 
