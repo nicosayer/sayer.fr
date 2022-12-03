@@ -23,24 +23,13 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
 
     validate: {
       name: (name) => {
-        return typeof name === "string" && name.length > 0
-          ? null
-          : "Ce champ ne doit pas être vide";
-      },
-      url: (url) => {
-        return typeof url === "string"
-          ? null
-          : "Ce champ ne doit pas être vide";
+        return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
       username: (username) => {
-        return typeof username === "string" && username.length > 0
-          ? null
-          : "Ce champ ne doit pas être vide";
+        return username.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
       password: (password) => {
-        return typeof password === "string" && password.length > 0
-          ? null
-          : "Ce champ ne doit pas être vide";
+        return password.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
     },
   });

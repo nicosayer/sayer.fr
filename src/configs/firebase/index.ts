@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, inMemoryPersistence, setPersistence } from "firebase/auth";
 import { FirestoreDataConverter, getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDKUdxvqC_0Nb8KXitDLijpCLqhGTGiTcU",
@@ -15,10 +16,11 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 setPersistence(auth, inMemoryPersistence);
 
-export { auth, db };
+export { auth, db, storage };
 
 export const firestoreConverter: FirestoreDataConverter<any> = {
   toFirestore(data) {

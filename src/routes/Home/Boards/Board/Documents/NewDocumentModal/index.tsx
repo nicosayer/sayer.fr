@@ -1,16 +1,19 @@
-import { Button, Group, Input, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { Button, Group, Input, Stack, TextInput } from "@mantine/core";
+import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
-import { IconPhoto, IconUpload, IconX } from "@tabler/icons";
+import { storage } from "configs/firebase";
 import { addDoc, collection } from "firebase/firestore";
+import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
+import { useUploadFile } from "react-firebase-hooks/storage";
 import {
   BoardDocument,
   Collection,
   DocumentDocument,
 } from "types/firebase/collections";
+import { getExtension } from "utils/storage";
 
 export interface NewDocumentModalProps {
   board: BoardDocument;
@@ -18,32 +21,36 @@ export interface NewDocumentModalProps {
 
 const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState();
+  const [uploadFile] = useUploadFile();
 
   const form = useForm({
     initialValues: {
       type: "",
       owner: "",
+      file: undefined as FileWithPath | undefined,
     },
 
     validate: {
       type: (type) => {
-        return typeof type === "string" && type.length > 0
-          ? null
-          : "Ce champ ne doit pas être vide";
+        return type.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
       owner: (owner) => {
-        return typeof owner === "string" && owner.length > 0
-          ? null
-          : "Ce champ ne doit pas être vide";
+        return owner.length > 0 ? null : "Ce champ ne doit pas être vide";
+      },
+      file: (file?: FileWithPath) => {
+        return file ? null : "Ce champ ne doit pas être vide";
       },
     },
   });
 
   return (
     <form
-      onSubmit={form.onSubmit((values) => {
-        if (board?.ref) {
+      onSubmit={form.onSubmit(async (values) => {
+        if (board?.ref && values.file?.type) {
           start();
+
+          const arrayBuffer = await values.file?.arrayBuffer();
+
           addDoc<DocumentDocument>(
             collection(board.ref, Collection.documents),
             {
@@ -51,6 +58,20 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
               owner: values.owner,
             }
           )
+            .then((document) => {
+              return uploadFile(
+                ref(
+                  storage,
+                  `boards/${board.id}/documents/${
+                    document.id
+                  }/document.${getExtension(String(values.file?.type))}`
+                ),
+                arrayBuffer,
+                {
+                  contentType: values.file?.type,
+                }
+              );
+            })
             .then(() => closeAllModals())
             .finally(stop);
         }
@@ -71,13 +92,22 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
           placeholder="John Doe"
           {...form.getInputProps("owner")}
         />
-        <Input.Wrapper label="Document" withAsterisk>
+        <Input.Wrapper
+          label="Document"
+          withAsterisk
+          error={form.getInputProps("file").error}
+        >
           <Dropzone
             maxFiles={1}
-            maxSize={5 * 1024 ** 2} // 5MB
-            onDrop={([file]) => { console.log(file) }}
-            accept={["image/png", "image/jpeg", "application/pdf"]}>
-            Déposer le document ici
+            maxSize={10 * 1024 ** 2} // 10MB
+            onDrop={([file]) => {
+              form.getInputProps("file").onChange(file);
+            }}
+            accept={["image/png", "image/jpeg", "application/pdf"]}
+          >
+            {form.getInputProps("file").value
+              ? form.getInputProps("file").value.name
+              : "Déposer le document ici"}
           </Dropzone>
         </Input.Wrapper>
         <div className="flex ml-auto">

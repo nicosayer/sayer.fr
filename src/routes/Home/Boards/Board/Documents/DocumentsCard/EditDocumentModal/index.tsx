@@ -21,14 +21,10 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
 
     validate: {
       type: (type) => {
-        return typeof type === "string" && type.length > 0
-          ? null
-          : "Ce champ ne doit pas être vide";
+        return type.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
       owner: (owner) => {
-        return typeof owner === "string" && owner.length > 0
-          ? null
-          : "Ce champ ne doit pas être vide";
+        return owner.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
     },
   });
