@@ -63,12 +63,18 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       href={credential.url}
+                      className="max-w-[256px]"
                     >
                       {credential.name}
                     </Button>
                   </Tooltip>
                 ) : (
-                  <Button variant="subtle" compact color="dark">
+                  <Button
+                    variant="subtle"
+                    compact
+                    color="dark"
+                    className="max-w-[256px]"
+                  >
                     {credential.name}
                   </Button>
                 )}
@@ -83,6 +89,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                         color={copied ? "teal" : "dark"}
                         onClick={copy}
                         rightIcon={<IconCopy size={18} />}
+                        className="max-w-[256px]"
                       >
                         {credential.username}
                       </Button>
