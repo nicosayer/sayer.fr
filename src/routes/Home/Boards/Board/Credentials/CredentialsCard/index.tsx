@@ -53,10 +53,10 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                 <CredentialNameCopyButton credential={credential} />
               </td>
               <td>
-                <CredentialPasswordCopyButton credential={credential} />
+                <CredentialUsernameCopyButton credential={credential} />
               </td>
               <td>
-                <CredentialUsernameCopyButton credential={credential} />
+                <CredentialPasswordCopyButton credential={credential} />
               </td>
               <td>
                 <Group position="right">
