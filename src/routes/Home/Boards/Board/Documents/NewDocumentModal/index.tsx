@@ -1,6 +1,8 @@
-import { Button, Group, Stack, TextInput } from "@mantine/core";
+import { Button, Group, Input, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
+import { Dropzone } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
+import { IconPhoto, IconUpload, IconX } from "@tabler/icons";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
@@ -16,6 +18,7 @@ export interface NewDocumentModalProps {
 
 const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState();
+  const theme = useMantineTheme();
 
   const form = useForm({
     initialValues: {
@@ -69,6 +72,14 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
           placeholder="John Doe"
           {...form.getInputProps("owner")}
         />
+        <Input.Wrapper label="Document" withAsterisk>
+          <Dropzone
+            maxFiles={1}
+            maxSize={5 * 1024 ** 2} // 5MB
+            onDrop={([file]) => { console.log(file) }}>
+            Déposer le document ici
+          </Dropzone>
+        </Input.Wrapper>
         <div className="flex ml-auto">
           <Group>
             <Button
