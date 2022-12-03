@@ -1,6 +1,6 @@
-import { ActionIcon, Group, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, CopyButton, Group, Text, Tooltip } from "@mantine/core";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import { IconDownload, IconEdit, IconTrash } from "@tabler/icons";
+import { IconDownload, IconEdit, IconLink, IconTrash } from "@tabler/icons";
 import { storage } from "configs/firebase";
 import { deleteDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -52,6 +52,21 @@ const ActionsColumns: FC<ActionsColumnsProps> = ({ document }) => {
             <IconDownload size={18} />
           </ActionIcon>
         </Tooltip>
+        <CopyButton
+          value={`${process.env.REACT_APP_URL}/boards/${board?.id}/documents/${document.id}`}
+        >
+          {({ copied, copy }) => (
+            <Tooltip label={copied ? "Lien copié" : "Copier le lien"} withArrow>
+              <ActionIcon
+                variant="subtle"
+                color={copied ? "teal" : "blue"}
+                onClick={copy}
+              >
+                <IconLink size={18} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </CopyButton>
         <Tooltip label="Modifier" withArrow>
           <ActionIcon
             color="blue"

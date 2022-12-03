@@ -42,6 +42,7 @@ const router = createBrowserRouter([
                 element: <Credentials />,
               },
               { path: "documents", element: <Documents /> },
+              { path: "documents/:documentId", element: <Documents /> },
               { path: "settings", element: <Settings /> },
             ],
           },

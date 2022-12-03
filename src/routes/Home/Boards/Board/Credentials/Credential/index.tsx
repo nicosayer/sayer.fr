@@ -1,4 +1,4 @@
-import { Drawer, Group, Stack, Text } from "@mantine/core";
+import { Drawer, Input, Stack } from "@mantine/core";
 import CredentialNameCopyButton from "components/molecules/CopyButton/CredentialName";
 import CredentialPasswordCopyButton from "components/molecules/CopyButton/CredentialPassword";
 import CredentialUsernameCopyButton from "components/molecules/CopyButton/CredentialUsername";
@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "../../Provider";
 
 const Credential: FC = () => {
-  const { credentials } = useBoard();
+  const { board, credentials } = useBoard();
   const { credentialId } = useParams();
   const navigate = useNavigate();
 
@@ -22,27 +22,27 @@ const Credential: FC = () => {
   return (
     <Drawer
       opened={Boolean(credentialId)}
-      onClose={() => navigate("../")}
+      onClose={() => navigate(`/boards/${board?.id}/credentials`)}
       title="Mot de passe"
       padding="xl"
       position="right"
     >
-      <Stack>
-        <Group spacing="xs">
-          <Text>Site web</Text>
-          <Text>:</Text>
-          <CredentialNameCopyButton credential={credential} />
-        </Group>
-        <Group spacing="xs">
-          <Text>Nom d'utilisateur</Text>
-          <Text>:</Text>
-          <CredentialUsernameCopyButton credential={credential} />
-        </Group>
-        <Group spacing="xs">
-          <Text>Mot de passe</Text>
-          <Text>:</Text>
-          <CredentialPasswordCopyButton credential={credential} />
-        </Group>
+      <Stack spacing="xl">
+        <Input.Wrapper label="Site web">
+          <div>
+            <CredentialNameCopyButton credential={credential} />
+          </div>
+        </Input.Wrapper>
+        <Input.Wrapper label="Nom d'utilisateur">
+          <div>
+            <CredentialUsernameCopyButton credential={credential} />
+          </div>
+        </Input.Wrapper>
+        <Input.Wrapper label="Mot de passe">
+          <div>
+            <CredentialPasswordCopyButton credential={credential} />
+          </div>
+        </Input.Wrapper>
       </Stack>
     </Drawer>
   );
