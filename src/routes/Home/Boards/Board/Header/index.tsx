@@ -1,8 +1,6 @@
 import {
-  ActionIcon,
   Burger,
   Button,
-  Group,
   Header as HeaderComponent,
   MediaQuery,
   Menu,
@@ -42,16 +40,15 @@ const Header: FC = () => {
               mr="xl"
             />
           </MediaQuery>
-          <div>{board?.name}
-          </div>
+          <div>{board?.name}</div>
         </div>
         <TextInput
-          placeholder="Recherche"
+          placeholder="Rechercher"
           variant="filled"
           icon={<IconSearch size={18} />}
-          onFocus={event => {
-            spotlight.openSpotlight()
-            event.target.blur()
+          onFocus={(event) => {
+            spotlight.openSpotlight();
+            event.target.blur();
           }}
         />
         <Menu shadow="md" width={200}>

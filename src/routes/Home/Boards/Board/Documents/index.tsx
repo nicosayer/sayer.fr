@@ -52,7 +52,7 @@ const Documents: FC = () => {
           <Title order={3}>Documents</Title>
           <Group>
             <TextInput
-              placeholder="Recherche"
+              placeholder="Rechercher"
               variant="filled"
               icon={<IconSearch size={18} />}
               value={search}

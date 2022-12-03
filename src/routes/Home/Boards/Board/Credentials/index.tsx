@@ -52,7 +52,7 @@ const Credentials: FC = () => {
           <Title order={3}>Mot de passes</Title>
           <Group>
             <TextInput
-              placeholder="Recherche"
+              placeholder="Rechercher"
               variant="filled"
               icon={<IconSearch size={18} />}
               value={search}
