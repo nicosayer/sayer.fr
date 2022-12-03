@@ -46,7 +46,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
         </thead>
         <tbody>
           {filteredCredentials.map((credential) => (
-            <tr key={credential.id} className="cursor-pointer">
+            <tr key={credential.id}>
               <td>
                 {credential.url ? (
                   <Tooltip label="Aller sur le site" withArrow>
