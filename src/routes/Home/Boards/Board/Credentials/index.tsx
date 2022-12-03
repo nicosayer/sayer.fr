@@ -1,4 +1,4 @@
-import { Button, Group, Stack, TextInput, Title } from "@mantine/core";
+import { Button, Group, LoadingOverlay, Stack, TextInput, Title } from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
 import { FC, useState } from "react";
@@ -10,6 +10,10 @@ import NewCredentialModal from "./NewCredentialModal";
 const Credentials: FC = () => {
   const { board, credentials } = useBoard();
   const [search, setSearch] = useState("");
+
+  if (!credentials) {
+    return <LoadingOverlay visible />
+  }
 
   if (!credentials?.length) {
     return (
