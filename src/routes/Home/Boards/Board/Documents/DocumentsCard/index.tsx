@@ -37,8 +37,16 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
         <tbody>
           {filteredDocuments.map((document) => (
             <tr key={document.id}>
-              <td><div className="max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">{document.type}</div></td>
-              <td><div className="max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">{document.owner}</div></td>
+              <td>
+                <div className="max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
+                  {document.type}
+                </div>
+              </td>
+              <td>
+                <div className="max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
+                  {document.owner}
+                </div>
+              </td>
               <ActionsColumns document={document} />
             </tr>
           ))}

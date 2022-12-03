@@ -33,7 +33,14 @@ const router = createBrowserRouter([
             element: <Board />,
             children: [
               { index: true, element: <Navigate to="credentials" /> },
-              { path: "credentials", element: <Credentials /> },
+              {
+                path: "credentials",
+                element: <Credentials />,
+              },
+              {
+                path: "credentials/:credentialId",
+                element: <Credentials />,
+              },
               { path: "documents", element: <Documents /> },
               { path: "settings", element: <Settings /> },
             ],

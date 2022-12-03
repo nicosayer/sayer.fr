@@ -1,6 +1,5 @@
 import {
   ActionIcon,
-  Button,
   Card,
   CopyButton,
   Group,
@@ -9,12 +8,15 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import { IconCopy, IconEdit, IconExternalLink, IconTrash } from "@tabler/icons";
+import { IconEdit, IconLink, IconTrash } from "@tabler/icons";
+import CredentialNameCopyButton from "components/molecules/CopyButton/CredentialName";
+import CredentialPasswordCopyButton from "components/molecules/CopyButton/CredentialPassword";
+import CredentialUsernameCopyButton from "components/molecules/CopyButton/CredentialUsername";
 import { deleteDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { formatPassword, sanitize } from "utils/string";
+import { sanitize } from "utils/string";
 import EditCredentialModal from "./EditCredentialModal";
 
 export interface CredentialsCardsProps {
@@ -22,7 +24,7 @@ export interface CredentialsCardsProps {
 }
 
 const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
-  const { credentials } = useBoard();
+  const { board, credentials } = useBoard();
 
   const filteredCredentials = useMemo(() => {
     return sortBy(
@@ -48,74 +50,34 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
           {filteredCredentials.map((credential) => (
             <tr key={credential.id}>
               <td>
-                {credential.url ? (
-                  <Tooltip label="Aller sur le site" withArrow>
-                    <Button
-                      variant="subtle"
-                      compact
-                      color="dark"
-                      rightIcon={
-                        credential.url ? (
-                          <IconExternalLink size={18} />
-                        ) : undefined
-                      }
-                      component="a"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={credential.url}
-                      className="max-w-[200px]"
-                    >
-                      {credential.name}
-                    </Button>
-                  </Tooltip>
-                ) : (
-                  <Button
-                    variant="subtle"
-                    compact
-                    color="dark"
-                    className="max-w-[200px]"
-                  >
-                    {credential.name}
-                  </Button>
-                )}
+                <CredentialNameCopyButton credential={credential} />
               </td>
               <td>
-                <CopyButton value={String(credential.username)}>
-                  {({ copied, copy }) => (
-                    <Tooltip label={copied ? "Copié" : "Copier"} withArrow>
-                      <Button
-                        variant="subtle"
-                        compact
-                        color={copied ? "teal" : "dark"}
-                        onClick={copy}
-                        rightIcon={<IconCopy size={18} />}
-                        className="max-w-[200px]"
-                      >
-                        {credential.username}
-                      </Button>
-                    </Tooltip>
-                  )}
-                </CopyButton>
+                <CredentialPasswordCopyButton credential={credential} />
               </td>
               <td>
-                <CopyButton value={String(credential.password)}>
-                  {({ copied, copy }) => (
-                    <Tooltip label={copied ? "Copié" : "Copier"} withArrow>
-                      <Button
-                        variant="subtle"
-                        compact
-                        color={copied ? "teal" : "dark"}
-                        onClick={copy}
-                        rightIcon={<IconCopy size={18} />}
-                      >
-                        {formatPassword(String(credential.password))}
-                      </Button>
-                    </Tooltip>
-                  )}
-                </CopyButton>
+                <CredentialUsernameCopyButton credential={credential} />
               </td>
               <td>
                 <Group position="right">
+                  <CopyButton
+                    value={`${process.env.REACT_APP_URL}/boards/${board?.id}/credentials/${credential.id}`}
+                  >
+                    {({ copied, copy }) => (
+                      <Tooltip
+                        label={copied ? "Lien copié" : "Copier le lien"}
+                        withArrow
+                      >
+                        <ActionIcon
+                          variant="subtle"
+                          color={copied ? "teal" : "blue"}
+                          onClick={copy}
+                        >
+                          <IconLink size={18} />
+                        </ActionIcon>
+                      </Tooltip>
+                    )}
+                  </CopyButton>
                   <Tooltip label="Modifier" withArrow>
                     <ActionIcon
                       color="blue"

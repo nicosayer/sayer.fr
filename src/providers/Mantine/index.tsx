@@ -27,9 +27,7 @@ const MantineProvider = ({ children }: PropsWithChildren) => {
         withGlobalStyles
         withNormalizeCSS
       >
-        <ModalsProvider>
-          {children}
-        </ModalsProvider>
+        <ModalsProvider>{children}</ModalsProvider>
       </MantineProviderComponent>
     </ColorSchemeProvider>
   );
