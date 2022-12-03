@@ -19,7 +19,7 @@ export interface ActionsColumnsProps {
 const ActionsColumns: FC<ActionsColumnsProps> = ({ document }) => {
   const { board } = useBoard();
   const { download } = useDownloader();
-  const [loadingDownload, startDownload, stopDownload] = useBooleanState()
+  const [loadingDownload, startDownload, stopDownload] = useBooleanState();
 
   return (
     <td>
@@ -29,21 +29,24 @@ const ActionsColumns: FC<ActionsColumnsProps> = ({ document }) => {
             loading={loadingDownload}
             color="blue"
             onClick={async () => {
-              startDownload()
+              startDownload();
               getDownloadURL(
                 ref(
                   storage,
-                  `boards/${board?.id}/documents/${document.id
+                  `boards/${board?.id}/documents/${
+                    document.id
                   }/document.${getExtension(String(document.mime))}`
                 )
-              ).then((url) => {
-                return download(
-                  url,
-                  `${document.type} - ${document.owner}.${getExtension(
-                    String(document.mime)
-                  )}`
-                );
-              }).finally(stopDownload)
+              )
+                .then((url) => {
+                  return download(
+                    url,
+                    `${document.type} - ${document.owner}.${getExtension(
+                      String(document.mime)
+                    )}`
+                  );
+                })
+                .finally(stopDownload);
             }}
           >
             <IconDownload size={18} />
