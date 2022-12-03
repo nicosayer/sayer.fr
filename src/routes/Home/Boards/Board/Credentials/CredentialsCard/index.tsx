@@ -63,7 +63,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       href={credential.url}
-                      className="max-w-[256px]"
+                      className="max-w-[200px]"
                     >
                       {credential.name}
                     </Button>
@@ -73,7 +73,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                     variant="subtle"
                     compact
                     color="dark"
-                    className="max-w-[256px]"
+                    className="max-w-[200px]"
                   >
                     {credential.name}
                   </Button>
@@ -89,7 +89,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                         color={copied ? "teal" : "dark"}
                         onClick={copy}
                         rightIcon={<IconCopy size={18} />}
-                        className="max-w-[256px]"
+                        className="max-w-[200px]"
                       >
                         {credential.username}
                       </Button>

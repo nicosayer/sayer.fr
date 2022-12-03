@@ -18,11 +18,11 @@ const DeleteCard: FC = () => {
           className="mt-1"
           onClick={() => {
             openConfirmModal({
-              title: "Supprimer le mot de passe",
+              title: "Supprimer le board",
               centered: true,
               children: (
                 <Text size="sm">
-                  Voulez-vous vraiment supprimer le mot de passe ? Cette action
+                  Voulez-vous vraiment supprimer ce board ? Cette action
                   est définitive et irrémédiable.
                 </Text>
               ),
