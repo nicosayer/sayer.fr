@@ -76,7 +76,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
               <td>
                 <CopyButton value={String(credential.username)}>
                   {({ copied, copy }) => (
-                    <Tooltip label={copied ? 'Copié' : "Copier"} withArrow>
+                    <Tooltip label={copied ? "Copié" : "Copier"} withArrow>
                       <Button
                         variant="subtle"
                         compact
@@ -93,7 +93,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
               <td>
                 <CopyButton value={String(credential.password)}>
                   {({ copied, copy }) => (
-                    <Tooltip label={copied ? 'Copié' : "Copier"} withArrow>
+                    <Tooltip label={copied ? "Copié" : "Copier"} withArrow>
                       <Button
                         variant="subtle"
                         compact
@@ -108,7 +108,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                 </CopyButton>
               </td>
               <td>
-                <Group>
+                <Group position="right">
                   <Tooltip label="Modifier" withArrow>
                     <ActionIcon
                       color="blue"

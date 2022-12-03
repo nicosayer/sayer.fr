@@ -7,8 +7,30 @@ import CredentialsCards from "./CredentialsCard";
 import NewCredentialModal from "./NewCredentialModal";
 
 const Credentials: FC = () => {
-  const { board } = useBoard();
+  const { board, credentials } = useBoard();
   const [search, setSearch] = useState("");
+
+  if (!credentials?.length) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Button
+          size="lg"
+          leftIcon={<IconPlus size={18} />}
+          onClick={() => {
+            if (board) {
+              openModal({
+                centered: true,
+                title: "Nouveau mot de passe",
+                children: <NewCredentialModal board={board} />,
+              });
+            }
+          }}
+        >
+          Ajouter votre premier mot de passe
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <Stack>

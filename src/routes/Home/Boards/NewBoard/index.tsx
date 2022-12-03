@@ -16,6 +16,7 @@ const NewBoard = () => {
   return (
     <Stack className="flex items-center justify-center h-full">
       <Button
+        size="lg"
         leftIcon={<IconPlus size={18} />}
         loading={loading}
         onClick={() => {
