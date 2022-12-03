@@ -1,12 +1,9 @@
-import { ActionIcon, Card, Group, Table, Text, Tooltip } from "@mantine/core";
-import { openConfirmModal, openModal } from "@mantine/modals";
-import { IconEdit, IconEye, IconTrash } from "@tabler/icons";
-import { deleteDoc } from "firebase/firestore";
+import { Card, Table } from "@mantine/core";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize } from "utils/string";
-import EditDocumentModal from "./EditDocumentModal";
+import ActionsColumns from "./Columns/Actions";
 
 export interface DocumentsCardsProps {
   search: string;
@@ -18,7 +15,10 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
   const filteredDocuments = useMemo(() => {
     return sortBy(
       (documents ?? []).filter((document) => {
-        return sanitize(String(document.type)).indexOf(sanitize(search)) > -1;
+        return (
+          sanitize(String(document.type)).indexOf(sanitize(search)) > -1 ||
+          sanitize(String(document.owner)).indexOf(sanitize(search)) > -1
+        );
       }),
       (document) => sanitize(document.type ?? "")
     );
@@ -39,57 +39,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
             <tr key={document.id} className="cursor-pointer">
               <td>{document.type}</td>
               <td>{document.owner}</td>
-              <td>
-                <Group position="right">
-                  <Tooltip label="Ouvrir">
-                    <ActionIcon color="blue">
-                      <IconEye size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label="Modifier" withArrow>
-                    <ActionIcon
-                      color="blue"
-                      variant="subtle"
-                      onClick={() => {
-                        openModal({
-                          centered: true,
-                          title: "Modifier le document",
-                          children: <EditDocumentModal document={document} />,
-                        });
-                      }}
-                    >
-                      <IconEdit size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label="Supprimer" withArrow>
-                    <ActionIcon
-                      color="red"
-                      variant="subtle"
-                      onClick={() => {
-                        openConfirmModal({
-                          title: "Supprimer le document",
-                          centered: true,
-                          children: (
-                            <Text size="sm">
-                              Voulez-vous vraiment supprimer le document ? Cette
-                              action est définitive et irrémédiable.
-                            </Text>
-                          ),
-                          labels: { confirm: "Supprimer", cancel: "Annuler" },
-                          confirmProps: { color: "red" },
-                          onConfirm: () => {
-                            if (document.ref) {
-                              deleteDoc(document.ref);
-                            }
-                          },
-                        });
-                      }}
-                    >
-                      <IconTrash size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                </Group>
-              </td>
+              <ActionsColumns document={document} />
             </tr>
           ))}
         </tbody>

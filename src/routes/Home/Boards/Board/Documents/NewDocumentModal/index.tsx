@@ -56,6 +56,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             {
               type: values.type,
               owner: values.owner,
+              mime: values.file.type,
             }
           )
             .then((document) => {

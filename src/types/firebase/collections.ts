@@ -26,5 +26,6 @@ export interface DocumentDocument {
   id?: string;
   ref?: DocumentReference<BoardDocument>;
   type?: string;
+  mime?: string;
   owner?: string;
 }
