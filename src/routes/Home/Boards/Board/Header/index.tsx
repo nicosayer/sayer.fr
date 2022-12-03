@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Burger,
   Button,
   Header as HeaderComponent,
@@ -42,20 +43,42 @@ const Header: FC = () => {
           </MediaQuery>
           <div>{board?.name}</div>
         </div>
-        <TextInput
-          placeholder="Rechercher"
-          variant="filled"
-          icon={<IconSearch size={18} />}
-          onFocus={(event) => {
-            spotlight.openSpotlight();
-            event.target.blur();
-          }}
-        />
+        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+          <ActionIcon
+            variant="light"
+            onClick={() => {
+              spotlight.openSpotlight();
+            }}
+          >
+            <IconSearch size={18} />
+          </ActionIcon>
+        </MediaQuery>
+        <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+          <TextInput
+            placeholder="Rechercher"
+            variant="filled"
+            icon={<IconSearch size={18} />}
+            onFocus={(event) => {
+              spotlight.openSpotlight();
+              event.target.blur();
+            }}
+          />
+        </MediaQuery>
+
         <Menu shadow="md" width={200}>
           <Menu.Target>
-            <Button variant="light" leftIcon={<IconUser size={18} />}>
-              {user?.email}
-            </Button>
+            <div>
+              <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+                <ActionIcon variant="light" color="blue">
+                  <IconUser size={18} />
+                </ActionIcon>
+              </MediaQuery>
+              <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+                <Button variant="light" leftIcon={<IconUser size={18} />}>
+                  {user?.email}
+                </Button>
+              </MediaQuery>
+            </div>
           </Menu.Target>
 
           <Menu.Dropdown>
