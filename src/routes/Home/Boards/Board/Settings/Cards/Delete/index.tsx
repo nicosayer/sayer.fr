@@ -1,13 +1,11 @@
-import { Button, Card, Input } from "@mantine/core";
+import { Button, Card, Input, Text } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import { deleteDoc } from "firebase/firestore";
-import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { ONE_SECOND } from "utils/time";
 
 const DeleteCard: FC = () => {
   const { board } = useBoard();
-  const [loading, start, stop] = useBooleanState({ stopDelay: ONE_SECOND });
 
   return (
     <Card withBorder>
@@ -16,14 +14,26 @@ const DeleteCard: FC = () => {
         description="La suppression du board est définitive et irrémédiable"
       >
         <Button
-          loading={loading}
           color="red"
           className="mt-1"
           onClick={() => {
-            if (board?.ref) {
-              start();
-              deleteDoc(board.ref).finally(stop);
-            }
+            openConfirmModal({
+              title: "Supprimer le mot de passe",
+              centered: true,
+              children: (
+                <Text size="sm">
+                  Voulez-vous vraiment supprimer le mot de passe ? Cette action
+                  est définitive et irrémédiable.
+                </Text>
+              ),
+              labels: { confirm: "Supprimer", cancel: "Annuler" },
+              confirmProps: { color: "red" },
+              onConfirm: () => {
+                if (board?.ref) {
+                  return deleteDoc(board.ref);
+                }
+              },
+            });
           }}
         >
           Supprimer
