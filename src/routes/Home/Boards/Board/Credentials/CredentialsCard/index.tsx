@@ -144,7 +144,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                           children: (
                             <Text size="sm">
                               Voulez-vous vraiment supprimer le mot de passe ?
-                              Cette action est définitive et irrémédiable.
+                              Cette action est définitive et irréversible.
                             </Text>
                           ),
                           labels: { confirm: "Supprimer", cancel: "Annuler" },

@@ -6,7 +6,7 @@ import { storage } from "configs/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import {
   BoardDocument,
@@ -22,6 +22,7 @@ export interface NewDocumentModalProps {
 const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
+  const formRef = useRef<HTMLFormElement>(null);
 
   const form = useForm({
     initialValues: {
@@ -45,6 +46,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
 
   return (
     <form
+      ref={formRef}
       onSubmit={form.onSubmit(async (values) => {
         if (board?.ref && values.file?.type) {
           start();

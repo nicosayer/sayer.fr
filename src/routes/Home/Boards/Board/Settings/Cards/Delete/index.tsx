@@ -11,7 +11,7 @@ const DeleteCard: FC = () => {
     <Card withBorder>
       <Input.Wrapper
         label="Supprimer le board"
-        description="La suppression du board est définitive et irrémédiable"
+        description="La suppression du board est définitive et irréversible"
       >
         <Button
           color="red"
@@ -23,7 +23,7 @@ const DeleteCard: FC = () => {
               children: (
                 <Text size="sm">
                   Voulez-vous vraiment supprimer ce board ? Cette action est
-                  définitive et irrémédiable.
+                  définitive et irréversible.
                 </Text>
               ),
               labels: { confirm: "Supprimer", cancel: "Annuler" },

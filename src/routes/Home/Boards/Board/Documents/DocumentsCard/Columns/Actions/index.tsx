@@ -78,7 +78,7 @@ const ActionsColumns: FC<ActionsColumnsProps> = ({ document }) => {
                 children: (
                   <Text size="sm">
                     Voulez-vous vraiment supprimer le document ? Cette action
-                    est définitive et irrémédiable.
+                    est définitive et irréversible.
                   </Text>
                 ),
                 labels: { confirm: "Supprimer", cancel: "Annuler" },
