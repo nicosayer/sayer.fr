@@ -1,5 +1,5 @@
 import { Button, Group, Input, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
-import { Dropzone } from "@mantine/dropzone";
+import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import { IconPhoto, IconUpload, IconX } from "@tabler/icons";
@@ -18,7 +18,6 @@ export interface NewDocumentModalProps {
 
 const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState();
-  const theme = useMantineTheme();
 
   const form = useForm({
     initialValues: {
@@ -76,7 +75,8 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
           <Dropzone
             maxFiles={1}
             maxSize={5 * 1024 ** 2} // 5MB
-            onDrop={([file]) => { console.log(file) }}>
+            onDrop={([file]) => { console.log(file) }}
+            accept={["image/png", "image/jpeg", "application/pdf"]}>
             Déposer le document ici
           </Dropzone>
         </Input.Wrapper>
