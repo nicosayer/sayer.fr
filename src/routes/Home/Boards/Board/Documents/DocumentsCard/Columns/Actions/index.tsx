@@ -3,7 +3,7 @@ import { openConfirmModal, openModal } from "@mantine/modals";
 import { IconDownload, IconEdit, IconLink, IconTrash } from "@tabler/icons";
 import { storage } from "configs/firebase";
 import { deleteDoc } from "firebase/firestore";
-import { getDownloadURL, ref } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import useDownloader from "react-use-downloader";
@@ -33,8 +33,7 @@ const ActionsColumns: FC<ActionsColumnsProps> = ({ document }) => {
               getDownloadURL(
                 ref(
                   storage,
-                  `boards/${board?.id}/documents/${
-                    document.id
+                  `boards/${board?.id}/documents/${document.id
                   }/document.${getExtension(String(document.mime))}`
                 )
               )
@@ -101,6 +100,13 @@ const ActionsColumns: FC<ActionsColumnsProps> = ({ document }) => {
                 onConfirm: () => {
                   if (document.ref) {
                     deleteDoc(document.ref);
+                    deleteObject(
+                      ref(
+                        storage,
+                        `boards/${board?.id}/documents/${document.id
+                        }/document.${getExtension(String(document.mime))}`
+                      )
+                    );
                   }
                 },
               });
