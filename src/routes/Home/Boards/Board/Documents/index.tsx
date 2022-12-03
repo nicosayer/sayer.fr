@@ -1,4 +1,11 @@
-import { Button, Group, LoadingOverlay, Stack, TextInput, Title } from "@mantine/core";
+import {
+  Button,
+  Group,
+  LoadingOverlay,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
 import { FC, useState } from "react";
@@ -12,7 +19,7 @@ const Documents: FC = () => {
   const [search, setSearch] = useState("");
 
   if (!documents) {
-    return <LoadingOverlay visible />
+    return <LoadingOverlay visible />;
   }
 
   if (!documents?.length) {
