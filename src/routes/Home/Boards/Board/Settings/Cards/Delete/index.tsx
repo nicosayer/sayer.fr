@@ -30,6 +30,7 @@ const DeleteCard: FC = () => {
               confirmProps: { color: "red" },
               onConfirm: () => {
                 if (board?.ref) {
+                  // TODO Delete subcollections
                   return deleteDoc(board.ref);
                 }
               },
