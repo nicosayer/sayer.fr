@@ -111,15 +111,17 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     Prévisualiser
                   </Button>
                 ) : (
-                  <ActionIcon
-                    loading={loadingPreview}
-                    color="blue"
-                    onClick={() => {
-                      previewDocument(document);
-                    }}
-                  >
-                    <IconEye size={18} />
-                  </ActionIcon>
+                  <Tooltip label="Prévisualiser">
+                    <ActionIcon
+                      loading={loadingPreview}
+                      color="blue"
+                      onClick={() => {
+                        previewDocument(document);
+                      }}
+                    >
+                      <IconEye size={18} />
+                    </ActionIcon>
+                  </Tooltip>
                 )}
                 {is600Px ? (
                   <Button
