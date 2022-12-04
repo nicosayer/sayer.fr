@@ -1,12 +1,14 @@
 import {
   ActionIcon,
+  Button,
   Card,
   CopyButton,
   Group,
-  Table,
+  Stack,
   Text,
   Tooltip,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
 import { IconEdit, IconLink, IconTrash } from "@tabler/icons";
 import CredentialNameCopyButton from "components/molecules/CopyButton/CredentialName";
@@ -14,8 +16,9 @@ import CredentialPasswordCopyButton from "components/molecules/CopyButton/Creden
 import CredentialUsernameCopyButton from "components/molecules/CopyButton/CredentialUsername";
 import { deleteDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { CredentialDocument } from "types/firebase/collections";
 import { sanitize } from "utils/string";
 import EditCredentialModal from "./EditCredentialModal";
 
@@ -25,6 +28,7 @@ export interface CredentialsCardsProps {
 
 const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
   const { board, credentials } = useBoard();
+  const is600Px = useMediaQuery("(min-width: 600px)");
 
   const filteredCredentials = useMemo(() => {
     return sortBy(
@@ -35,100 +39,134 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
     );
   }, [credentials, search]);
 
+  const openEditModal = useCallback((credential: CredentialDocument) => {
+    return openModal({
+      centered: true,
+      title: "Modifier le mot de passe",
+      children: <EditCredentialModal credential={credential} />,
+    });
+  }, []);
+
+  const openDeleteModal = useCallback((credential: CredentialDocument) => {
+    openConfirmModal({
+      title: "Supprimer le mot de passe",
+      centered: true,
+      children: (
+        <Text size="sm">
+          Voulez-vous vraiment supprimer le mot de passe ? Cette action est
+          définitive et irréversible.
+        </Text>
+      ),
+      labels: { confirm: "Supprimer", cancel: "Annuler" },
+      confirmProps: { color: "red" },
+      onConfirm: () => {
+        if (credential.ref) {
+          deleteDoc(credential.ref);
+        }
+      },
+    });
+  }, []);
+
   return (
-    <Card withBorder>
-      <Table>
-        <thead>
-          <tr>
-            <th>Site web</th>
-            <th>Nom d'utilisateur</th>
-            <th>Mot de passe</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCredentials.map((credential) => (
-            <tr key={credential.id}>
-              <td>
+    <Stack>
+      {filteredCredentials.map((credential) => {
+        return (
+          <Card key={credential.id} withBorder>
+            <Stack>
+              <div className="m-auto">
                 <CredentialNameCopyButton credential={credential} />
-              </td>
-              <td>
-                <CredentialUsernameCopyButton credential={credential} />
-              </td>
-              <td>
-                <CredentialPasswordCopyButton credential={credential} />
-              </td>
-              <td>
-                <Group position="right">
-                  <CopyButton
-                    value={`${process.env.REACT_APP_URL}/boards/${board?.id}/credentials/${credential.id}`}
-                  >
-                    {({ copied, copy }) => (
+              </div>
+              <div className="grid">
+                <Group position="center" spacing="xs">
+                  <div>Nom d'utilisateur :</div>
+                  <CredentialUsernameCopyButton credential={credential} />
+                </Group>
+                <Group position="center" spacing="xs">
+                  <div>Mot de passe :</div>
+                  <CredentialPasswordCopyButton credential={credential} />
+                </Group>
+              </div>
+              <Group grow>
+                <CopyButton
+                  value={`${process.env.REACT_APP_URL}/boards/${board?.id}/credentials/${credential.id}`}
+                >
+                  {({ copied, copy }) =>
+                    is600Px ? (
+                      <Button
+                        fullWidth
+                        variant="subtle"
+                        color={copied ? "teal" : "blue"}
+                        onClick={copy}
+                        leftIcon={<IconLink size={18} />}
+                      >
+                        {copied ? "Lien copié" : "Copier le lien"}
+                      </Button>
+                    ) : (
                       <Tooltip
                         label={copied ? "Lien copié" : "Copier le lien"}
                         withArrow
                       >
                         <ActionIcon
-                          variant="subtle"
                           color={copied ? "teal" : "blue"}
                           onClick={copy}
                         >
                           <IconLink size={18} />
                         </ActionIcon>
                       </Tooltip>
-                    )}
-                  </CopyButton>
+                    )
+                  }
+                </CopyButton>
+                {is600Px ? (
+                  <Button
+                    variant="subtle"
+                    onClick={() => {
+                      openEditModal(credential);
+                    }}
+                    leftIcon={<IconEdit size={18} />}
+                  >
+                    Modifier
+                  </Button>
+                ) : (
                   <Tooltip label="Modifier" withArrow>
                     <ActionIcon
                       color="blue"
-                      variant="subtle"
                       onClick={() => {
-                        openModal({
-                          centered: true,
-                          title: "Modifier le mot de passe",
-                          children: (
-                            <EditCredentialModal credential={credential} />
-                          ),
-                        });
+                        openEditModal(credential);
                       }}
                     >
                       <IconEdit size={18} />
                     </ActionIcon>
                   </Tooltip>
+                )}
+                {is600Px ? (
+                  <Button
+                    color="red"
+                    variant="subtle"
+                    onClick={() => {
+                      openDeleteModal(credential);
+                    }}
+                    leftIcon={<IconTrash size={18} />}
+                  >
+                    Supprimer
+                  </Button>
+                ) : (
                   <Tooltip label="Supprimer" withArrow>
                     <ActionIcon
                       color="red"
-                      variant="subtle"
                       onClick={() => {
-                        openConfirmModal({
-                          title: "Supprimer le mot de passe",
-                          centered: true,
-                          children: (
-                            <Text size="sm">
-                              Voulez-vous vraiment supprimer le mot de passe ?
-                              Cette action est définitive et irréversible.
-                            </Text>
-                          ),
-                          labels: { confirm: "Supprimer", cancel: "Annuler" },
-                          confirmProps: { color: "red" },
-                          onConfirm: () => {
-                            if (credential.ref) {
-                              deleteDoc(credential.ref);
-                            }
-                          },
-                        });
+                        openDeleteModal(credential);
                       }}
                     >
                       <IconTrash size={18} />
                     </ActionIcon>
                   </Tooltip>
-                </Group>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </Card>
+                )}
+              </Group>
+            </Stack>
+          </Card>
+        );
+      })}
+    </Stack>
   );
 };
 

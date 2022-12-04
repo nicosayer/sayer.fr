@@ -1,16 +1,141 @@
-import { Card, Table } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Card,
+  CopyButton,
+  Group,
+  Stack,
+  Text,
+  Tooltip,
+} from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { openConfirmModal, openModal } from "@mantine/modals";
+import {
+  IconDownload,
+  IconEdit,
+  IconEye,
+  IconLink,
+  IconTrash,
+} from "@tabler/icons";
+import { storage } from "configs/firebase";
+import { deleteDoc } from "firebase/firestore";
+import { deleteObject, getDownloadURL, ref } from "firebase/storage";
+import useBooleanState from "hooks/useBooleanState";
 import { sortBy } from "lodash";
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
+import useDownloader from "react-use-downloader";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { DocumentDocument } from "types/firebase/collections";
+import { getExtension } from "utils/storage";
 import { sanitize } from "utils/string";
-import ActionsColumns from "./Columns/Actions";
+import EditDocumentModal from "./EditDocumentModal";
 
 export interface DocumentsCardsProps {
   search: string;
 }
 
 const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
-  const { documents } = useBoard();
+  const { board, documents } = useBoard();
+  const { download } = useDownloader();
+  const [loadingPreview, startPreview, stopPreview] = useBooleanState();
+  const [loadingDownload, startDownload, stopDownload] = useBooleanState();
+  const is600Px = useMediaQuery("(min-width: 600px)");
+
+  const handlePreview = useCallback(
+    (document: DocumentDocument) => {
+      startPreview();
+      getDownloadURL(
+        ref(
+          storage,
+          `boards/${board?.id}/documents/${document.id}/document.${getExtension(
+            String(document.mime)
+          )}`
+        )
+      )
+        .then((url) => {
+          openModal({
+            centered: true,
+            children: (
+              <iframe
+                title="Document"
+                src={url}
+                className="w-full h-[80vh] border-0"
+              />
+            ),
+            size: "xl",
+            withCloseButton: false,
+            padding: 0,
+            classNames: { modal: "overflow-hidden h-[80vh]" },
+          });
+        })
+        .finally(stopPreview);
+    },
+    [board?.id, startPreview, stopPreview]
+  );
+
+  const handleDownload = useCallback(
+    (document: DocumentDocument) => {
+      startDownload();
+      getDownloadURL(
+        ref(
+          storage,
+          `boards/${board?.id}/documents/${document.id}/document.${getExtension(
+            String(document.mime)
+          )}`
+        )
+      )
+        .then((url) => {
+          return download(
+            url,
+            `${document.type} - ${document.owner}.${getExtension(
+              String(document.mime)
+            )}`
+          );
+        })
+        .finally(stopDownload);
+    },
+    [board?.id, download, startDownload, stopDownload]
+  );
+
+  const openEditModal = useCallback((document: DocumentDocument) => {
+    openModal({
+      centered: true,
+      title: "Modifier le document",
+      children: <EditDocumentModal document={document} />,
+    });
+  }, []);
+
+  const openDeleteModal = useCallback(
+    (document: DocumentDocument) => {
+      openConfirmModal({
+        title: "Supprimer le document",
+        centered: true,
+        children: (
+          <Text size="sm">
+            Voulez-vous vraiment supprimer le document ? Cette action est
+            définitive et irréversible.
+          </Text>
+        ),
+        labels: { confirm: "Supprimer", cancel: "Annuler" },
+        confirmProps: { color: "red" },
+        onConfirm: () => {
+          if (document.ref) {
+            console.log(document.ref.path);
+            deleteDoc(document.ref);
+            deleteObject(
+              ref(
+                storage,
+                `boards/${board?.id}/documents/${
+                  document.id
+                }/document.${getExtension(String(document.mime))}`
+              )
+            );
+          }
+        },
+      });
+    },
+    [board?.id]
+  );
 
   const filteredDocuments = useMemo(() => {
     return sortBy(
@@ -25,34 +150,142 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
   }, [documents, search]);
 
   return (
-    <Card withBorder>
-      <Table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Propriétaire</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredDocuments.map((document) => (
-            <tr key={document.id}>
-              <td>
-                <div className="max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
-                  {document.type}
-                </div>
-              </td>
-              <td>
-                <div className="max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
-                  {document.owner}
-                </div>
-              </td>
-              <ActionsColumns document={document} />
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </Card>
+    <Stack>
+      {filteredDocuments.map((document) => {
+        return (
+          <Card key={document.id} withBorder>
+            <Stack>
+              <Text fw={600} className="text-center">
+                {document.type} - {document.owner}
+              </Text>
+              <Group grow>
+                {is600Px ? (
+                  <Button
+                    variant="subtle"
+                    loading={loadingPreview}
+                    onClick={() => {
+                      handlePreview(document);
+                    }}
+                    leftIcon={<IconEye size={18} />}
+                  >
+                    Prévisualiser
+                  </Button>
+                ) : (
+                  <ActionIcon
+                    loading={loadingPreview}
+                    color="blue"
+                    onClick={() => {
+                      handlePreview(document);
+                    }}
+                  >
+                    <IconEye size={18} />
+                  </ActionIcon>
+                )}
+                {is600Px ? (
+                  <Button
+                    loading={loadingDownload}
+                    variant="subtle"
+                    onClick={() => {
+                      handleDownload(document);
+                    }}
+                    leftIcon={<IconDownload size={18} />}
+                  >
+                    Télécharger
+                  </Button>
+                ) : (
+                  <Tooltip label="Télécharger">
+                    <ActionIcon
+                      loading={loadingDownload}
+                      color="blue"
+                      onClick={() => {
+                        handleDownload(document);
+                      }}
+                    >
+                      <IconDownload size={18} />
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+              </Group>
+              <Group grow>
+                <CopyButton
+                  value={`${process.env.REACT_APP_URL}/boards/${board?.id}/documents/${document.id}`}
+                >
+                  {({ copied, copy }) =>
+                    is600Px ? (
+                      <Button
+                        variant="subtle"
+                        color={copied ? "teal" : "blue"}
+                        onClick={copy}
+                        leftIcon={<IconLink size={18} />}
+                      >
+                        {copied ? "Lien copié" : "Copier le lien"}
+                      </Button>
+                    ) : (
+                      <Tooltip
+                        label={copied ? "Lien copié" : "Copier le lien"}
+                        withArrow
+                      >
+                        <ActionIcon
+                          color={copied ? "teal" : "blue"}
+                          onClick={copy}
+                        >
+                          <IconLink size={18} />
+                        </ActionIcon>
+                      </Tooltip>
+                    )
+                  }
+                </CopyButton>
+                {is600Px ? (
+                  <Button
+                    variant="subtle"
+                    onClick={() => {
+                      openEditModal(document);
+                    }}
+                    leftIcon={<IconEdit size={18} />}
+                  >
+                    Modifier
+                  </Button>
+                ) : (
+                  <Tooltip label="Modifier" withArrow>
+                    <ActionIcon
+                      color="blue"
+                      onClick={() => {
+                        openEditModal(document);
+                      }}
+                    >
+                      <IconEdit size={18} />
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+                {is600Px ? (
+                  <Button
+                    color="red"
+                    variant="subtle"
+                    onClick={() => {
+                      openDeleteModal(document);
+                    }}
+                    leftIcon={<IconTrash size={18} />}
+                  >
+                    Supprimer
+                  </Button>
+                ) : (
+                  <Tooltip label="Supprimer" withArrow>
+                    <ActionIcon
+                      color="red"
+                      onClick={() => {
+                        openDeleteModal(document);
+                      }}
+                    >
+                      <IconTrash size={18} />
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+              </Group>
+            </Stack>
+          </Card>
+        );
+      })}
+    </Stack>
   );
 };
 

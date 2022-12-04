@@ -10,31 +10,26 @@ interface CredentialNameCopyButtonProps {
 const CredentialNameCopyButton: FC<CredentialNameCopyButtonProps> = ({
   credential,
 }) => {
-  if (credential?.url) {
-    return (
-      <Tooltip label="Aller sur le site" withArrow>
-        <Button
-          variant="subtle"
-          compact
-          color="dark"
-          rightIcon={
-            credential?.url ? <IconExternalLink size={18} /> : undefined
-          }
-          component="a"
-          target="_blank"
-          rel="noopener noreferrer"
-          href={credential?.url}
-          className="max-w-[200px]"
-        >
-          {credential?.name}
-        </Button>
-      </Tooltip>
-    );
-  }
   return (
-    <Button variant="subtle" compact color="dark" className="max-w-[200px]">
-      {credential?.name}
-    </Button>
+    <Tooltip label="Aller sur le site" withArrow>
+      <Button
+        variant="subtle"
+        compact
+        size="md"
+        color="dark"
+        rightIcon={<IconExternalLink size={18} />}
+        component="a"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={
+          credential?.url ||
+          `https://www.google.com/search?q=${credential.name}`
+        }
+        className="max-w-[200px]"
+      >
+        {credential?.name}
+      </Button>
+    </Tooltip>
   );
 };
 

@@ -17,6 +17,7 @@ const CredentialUsernameCopyButton: FC<CredentialUsernameCopyButtonProps> = ({
           <Button
             variant="subtle"
             compact
+            size="md"
             color={copied ? "teal" : "dark"}
             onClick={copy}
             rightIcon={<IconCopy size={18} />}
