@@ -57,7 +57,7 @@ const ActionsColumns: FC<ActionsColumnsProps> = ({ document }) => {
                   size: "xl",
                   withCloseButton: false,
                   padding: 0,
-                  classNames: { modal: "overflow-hidden" },
+                  classNames: { modal: "overflow-hidden h-[80vh]" },
                 });
               })
               .finally(stopPreview);

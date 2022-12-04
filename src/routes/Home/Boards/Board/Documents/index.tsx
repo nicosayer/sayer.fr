@@ -3,8 +3,8 @@ import {
   Group,
   LoadingOverlay,
   Stack,
+  Text,
   TextInput,
-  Title,
 } from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
@@ -49,7 +49,7 @@ const Documents: FC = () => {
       <Document />
       <Stack>
         <Group position="apart">
-          <Title order={3}>Documents</Title>
+          <Text fw={500}>Documents</Text>
           <Group>
             <TextInput
               placeholder="Rechercher"

@@ -3,8 +3,8 @@ import {
   Group,
   LoadingOverlay,
   Stack,
+  Text,
   TextInput,
-  Title,
 } from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
@@ -49,7 +49,7 @@ const Credentials: FC = () => {
       <Credential />
       <Stack>
         <Group position="apart">
-          <Title order={3}>Mot de passes</Title>
+          <Text fw={500}>Mot de passes</Text>
           <Group>
             <TextInput
               placeholder="Rechercher"

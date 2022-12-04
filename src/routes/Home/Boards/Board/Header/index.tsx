@@ -2,14 +2,16 @@ import {
   ActionIcon,
   Burger,
   Button,
+  Group,
   Header as HeaderComponent,
   MediaQuery,
   Menu,
+  Text,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
 import { useSpotlight } from "@mantine/spotlight";
-import { IconSearch, IconUser } from "@tabler/icons";
+import { IconHome, IconSearch, IconUser } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
 import { auth } from "configs/firebase";
 import { FC } from "react";
@@ -41,7 +43,10 @@ const Header: FC = () => {
               mr="xl"
             />
           </MediaQuery>
-          <div>{board?.name}</div>
+          <Group spacing="xs">
+            <IconHome size={18} />
+            <Text fw={500}>{board?.name}</Text>
+          </Group>
         </div>
         <MediaQuery largerThan="sm" styles={{ display: "none" }}>
           <ActionIcon
