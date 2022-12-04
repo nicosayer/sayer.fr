@@ -4,12 +4,12 @@ import {
   Button,
   Group,
   Header as HeaderComponent,
-  MediaQuery,
   Menu,
   Text,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useSpotlight } from "@mantine/spotlight";
 import { IconHome, IconSearch, IconUser } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
@@ -24,41 +24,37 @@ import SettingsMenuItem from "./MenuItems/Settings";
 import SignOutMenuItem from "./MenuItems/SignOut";
 
 const Header: FC = () => {
-  const { opened, setOpened } = useAppShell();
+  const { isNavbarOpened, toggleNavbar } = useAppShell();
   const theme = useMantineTheme();
   const [user] = useAuthState(auth);
   const { board } = useBoard();
   const spotlight = useSpotlight();
+  const is768px = useMediaQuery("(min-width: 768px)");
 
   return (
     <HeaderComponent height={{ base: 50, md: 70 }} p="md">
       <div className="flex items-center justify-between h-full">
         <div className="flex items-center h-full">
-          <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+          {is768px ? null : (
             <Burger
-              opened={opened}
-              onClick={() => setOpened((o) => !o)}
+              opened={isNavbarOpened}
+              onClick={toggleNavbar}
               size="sm"
               color={theme.colors.gray[6]}
               mr="xl"
             />
-          </MediaQuery>
+          )}
           <Group spacing="xs">
-            <IconHome size={18} />
-            <Text fw={500}>{board?.name}</Text>
+            {is768px ? <IconHome size={18} /> : null}
+            <Text
+              fw={500}
+              className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              {board?.name}
+            </Text>
           </Group>
         </div>
-        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-          <ActionIcon
-            variant="light"
-            onClick={() => {
-              spotlight.openSpotlight();
-            }}
-          >
-            <IconSearch size={18} />
-          </ActionIcon>
-        </MediaQuery>
-        <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+        {is768px ? (
           <TextInput
             placeholder="Rechercher"
             icon={<IconSearch size={18} />}
@@ -67,21 +63,28 @@ const Header: FC = () => {
               event.target.blur();
             }}
           />
-        </MediaQuery>
-
+        ) : (
+          <ActionIcon
+            variant="light"
+            onClick={() => {
+              spotlight.openSpotlight();
+            }}
+          >
+            <IconSearch size={18} />
+          </ActionIcon>
+        )}
         <Menu shadow="md" width={200}>
           <Menu.Target>
             <div>
-              <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-                <ActionIcon variant="light" color="blue">
-                  <IconUser size={18} />
-                </ActionIcon>
-              </MediaQuery>
-              <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+              {is768px ? (
                 <Button variant="light" leftIcon={<IconUser size={18} />}>
                   {user?.email}
                 </Button>
-              </MediaQuery>
+              ) : (
+                <ActionIcon variant="light" color="blue">
+                  <IconUser size={18} />
+                </ActionIcon>
+              )}
             </div>
           </Menu.Target>
 

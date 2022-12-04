@@ -20,13 +20,13 @@ const menu = [
 ];
 
 const Navbar: FC = () => {
-  const { opened } = useAppShell();
+  const { isNavbarOpened } = useAppShell();
 
   return (
     <MantineNavbar
       p="md"
       hiddenBreakpoint="sm"
-      hidden={!opened}
+      hidden={!isNavbarOpened}
       width={{ sm: 200, lg: 300 }}
     >
       <MantineNavbar.Section grow>

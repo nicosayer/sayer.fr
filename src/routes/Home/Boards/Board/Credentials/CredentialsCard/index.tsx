@@ -28,7 +28,7 @@ export interface CredentialsCardsProps {
 
 const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
   const { board, credentials } = useBoard();
-  const is600Px = useMediaQuery("(min-width: 600px)");
+  const is768Px = useMediaQuery("(min-width: 768px)");
 
   const filteredCredentials = useMemo(() => {
     return sortBy(
@@ -91,7 +91,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                   value={`${process.env.REACT_APP_URL}/boards/${board?.id}/credentials/${credential.id}`}
                 >
                   {({ copied, copy }) =>
-                    is600Px ? (
+                    is768Px ? (
                       <Button
                         fullWidth
                         variant="subtle"
@@ -116,7 +116,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                     )
                   }
                 </CopyButton>
-                {is600Px ? (
+                {is768Px ? (
                   <Button
                     variant="subtle"
                     onClick={() => {
@@ -138,7 +138,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                     </ActionIcon>
                   </Tooltip>
                 )}
-                {is600Px ? (
+                {is768Px ? (
                   <Button
                     color="red"
                     variant="subtle"

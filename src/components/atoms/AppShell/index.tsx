@@ -1,22 +1,26 @@
 import { AppShell as MantineAppShell, useMantineTheme } from "@mantine/core";
-import React, {
+import useBooleanState from "hooks/useBooleanState";
+import {
   createContext,
   FC,
   ReactElement,
   ReactNode,
   useContext,
   useMemo,
-  useState,
 } from "react";
 
 interface IAppShellContext {
-  opened: boolean;
-  setOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  isNavbarOpened: boolean;
+  openNavbar: () => void;
+  closeNavbar: () => void;
+  toggleNavbar: () => void;
 }
 
 const AppShellContext = createContext<IAppShellContext>({
-  opened: false,
-  setOpened: () => false,
+  isNavbarOpened: false,
+  openNavbar: () => {},
+  closeNavbar: () => {},
+  toggleNavbar: () => {},
 });
 
 AppShellContext.displayName = "AppShell";
@@ -31,11 +35,12 @@ interface AppShellProps {
 
 const AppShell: FC<AppShellProps> = ({ header, navbar, children }) => {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
+  const [isNavbarOpened, openNavbar, closeNavbar, toggleNavbar] =
+    useBooleanState();
 
   const context = useMemo(() => {
-    return { opened, setOpened };
-  }, [opened]);
+    return { isNavbarOpened, openNavbar, closeNavbar, toggleNavbar };
+  }, [isNavbarOpened, openNavbar, closeNavbar, toggleNavbar]);
 
   return (
     <AppShellContext.Provider value={context}>

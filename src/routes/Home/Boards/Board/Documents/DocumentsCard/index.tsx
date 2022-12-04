@@ -36,7 +36,7 @@ export interface DocumentsCardsProps {
 
 const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
   const { board, documents } = useBoard();
-  const is600Px = useMediaQuery("(min-width: 600px)");
+  const is768Px = useMediaQuery("(min-width: 768px)");
   const [previewDocument, loadingPreview] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
 
@@ -99,7 +99,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                 {document.type} - {document.owner}
               </Text>
               <Group grow>
-                {is600Px ? (
+                {is768Px ? (
                   <Button
                     variant="subtle"
                     loading={loadingPreview}
@@ -123,7 +123,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     </ActionIcon>
                   </Tooltip>
                 )}
-                {is600Px ? (
+                {is768Px ? (
                   <Button
                     loading={loadingDownload}
                     variant="subtle"
@@ -153,7 +153,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                   value={`${process.env.REACT_APP_URL}/boards/${board?.id}/documents/${document.id}`}
                 >
                   {({ copied, copy }) =>
-                    is600Px ? (
+                    is768Px ? (
                       <Button
                         variant="subtle"
                         color={copied ? "teal" : "blue"}
@@ -177,7 +177,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     )
                   }
                 </CopyButton>
-                {is600Px ? (
+                {is768Px ? (
                   <Button
                     variant="subtle"
                     onClick={() => {
@@ -199,7 +199,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     </ActionIcon>
                   </Tooltip>
                 )}
-                {is600Px ? (
+                {is768Px ? (
                   <Button
                     color="red"
                     variant="subtle"
