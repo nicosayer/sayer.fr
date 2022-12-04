@@ -1,8 +1,8 @@
+import { openModal } from "@mantine/modals";
 import { storage } from "configs/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { useMemo } from "react";
-import useDownloader from "react-use-downloader";
 import { DocumentDocument } from "types/firebase/collections";
 import { getExtension } from "utils/storage";
 
@@ -10,7 +10,6 @@ const usePreviewDocument = (): [
   (document: DocumentDocument) => void,
   boolean
 ] => {
-  const { download } = useDownloader();
   const [loading, start, stop] = useBooleanState();
 
   return useMemo(() => {
@@ -20,24 +19,32 @@ const usePreviewDocument = (): [
         getDownloadURL(
           ref(
             storage,
-            `${document.ref?.path}/document.${getExtension(
+            `${document?.ref?.path}/document.${getExtension(
               String(document.mime)
             )}`
           )
         )
           .then((url) => {
-            return download(
-              url,
-              `${document.type} - ${document.owner}.${getExtension(
-                String(document.mime)
-              )}`
-            );
+            openModal({
+              centered: true,
+              children: (
+                <iframe
+                  title="Document"
+                  src={url}
+                  className="w-full h-[80vh] border-0"
+                />
+              ),
+              size: "xl",
+              withCloseButton: false,
+              padding: 0,
+              classNames: { modal: "overflow-hidden h-[80vh]" },
+            });
           })
           .finally(stop);
       },
       loading,
     ];
-  }, [download, loading, start, stop]);
+  }, [loading, start, stop]);
 };
 
 export default usePreviewDocument;
