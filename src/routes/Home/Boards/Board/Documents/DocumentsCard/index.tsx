@@ -19,11 +19,11 @@ import {
 } from "@tabler/icons";
 import { storage } from "configs/firebase";
 import { deleteDoc } from "firebase/firestore";
-import { deleteObject, getDownloadURL, ref } from "firebase/storage";
-import useBooleanState from "hooks/useBooleanState";
+import { deleteObject, ref } from "firebase/storage";
+import useDownloadDocument from "hooks/useDownloadDocument";
+import usePreviewDocument from "hooks/usePreviewDocument";
 import { sortBy } from "lodash";
 import { FC, useCallback, useMemo } from "react";
-import useDownloader from "react-use-downloader";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument } from "types/firebase/collections";
 import { getExtension } from "utils/storage";
@@ -36,66 +36,9 @@ export interface DocumentsCardsProps {
 
 const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
   const { board, documents } = useBoard();
-  const { download } = useDownloader();
-  const [loadingPreview, startPreview, stopPreview] = useBooleanState();
-  const [loadingDownload, startDownload, stopDownload] = useBooleanState();
   const is600Px = useMediaQuery("(min-width: 600px)");
-
-  const handlePreview = useCallback(
-    (document: DocumentDocument) => {
-      startPreview();
-      getDownloadURL(
-        ref(
-          storage,
-          `boards/${board?.id}/documents/${document.id}/document.${getExtension(
-            String(document.mime)
-          )}`
-        )
-      )
-        .then((url) => {
-          openModal({
-            centered: true,
-            children: (
-              <iframe
-                title="Document"
-                src={url}
-                className="w-full h-[80vh] border-0"
-              />
-            ),
-            size: "xl",
-            withCloseButton: false,
-            padding: 0,
-            classNames: { modal: "overflow-hidden h-[80vh]" },
-          });
-        })
-        .finally(stopPreview);
-    },
-    [board?.id, startPreview, stopPreview]
-  );
-
-  const handleDownload = useCallback(
-    (document: DocumentDocument) => {
-      startDownload();
-      getDownloadURL(
-        ref(
-          storage,
-          `boards/${board?.id}/documents/${document.id}/document.${getExtension(
-            String(document.mime)
-          )}`
-        )
-      )
-        .then((url) => {
-          return download(
-            url,
-            `${document.type} - ${document.owner}.${getExtension(
-              String(document.mime)
-            )}`
-          );
-        })
-        .finally(stopDownload);
-    },
-    [board?.id, download, startDownload, stopDownload]
-  );
+  const [previewDocument, loadingPreview] = usePreviewDocument();
+  const [downloadDocument, loadingDownload] = useDownloadDocument();
 
   const openEditModal = useCallback((document: DocumentDocument) => {
     openModal({
@@ -161,7 +104,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     variant="subtle"
                     loading={loadingPreview}
                     onClick={() => {
-                      handlePreview(document);
+                      previewDocument(document);
                     }}
                     leftIcon={<IconEye size={18} />}
                   >
@@ -172,7 +115,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     loading={loadingPreview}
                     color="blue"
                     onClick={() => {
-                      handlePreview(document);
+                      previewDocument(document);
                     }}
                   >
                     <IconEye size={18} />
@@ -183,7 +126,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     loading={loadingDownload}
                     variant="subtle"
                     onClick={() => {
-                      handleDownload(document);
+                      downloadDocument(document);
                     }}
                     leftIcon={<IconDownload size={18} />}
                   >
@@ -195,7 +138,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                       loading={loadingDownload}
                       color="blue"
                       onClick={() => {
-                        handleDownload(document);
+                        downloadDocument(document);
                       }}
                     >
                       <IconDownload size={18} />

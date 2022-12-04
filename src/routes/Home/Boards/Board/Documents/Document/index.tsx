@@ -1,20 +1,17 @@
 import { Button, Drawer, Input, Stack } from "@mantine/core";
-import { IconDownload } from "@tabler/icons";
-import { storage } from "configs/firebase";
-import { getDownloadURL, ref } from "firebase/storage";
-import useBooleanState from "hooks/useBooleanState";
+import { IconDownload, IconEye } from "@tabler/icons";
+import useDownloadDocument from "hooks/useDownloadDocument";
+import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useDownloader from "react-use-downloader";
-import { getExtension } from "utils/storage";
 import { useBoard } from "../../Provider";
 
 const Document: FC = () => {
   const { board, documents } = useBoard();
   const { documentId } = useParams();
   const navigate = useNavigate();
-  const [loadingDownload, startDownload, stopDownload] = useBooleanState();
-  const { download } = useDownloader();
+  const [downloadDocument, loadingDownload] = useDownloadDocument();
+  const [previewDocument, loadingPreview] = usePreviewDocument();
 
   const document = useMemo(() => {
     return documents?.find((document) => document.id === documentId);
@@ -33,41 +30,40 @@ const Document: FC = () => {
       position="right"
     >
       <Stack spacing="xl">
-        <Input.Wrapper label="Type">
-          <div>{document.type}</div>
-        </Input.Wrapper>
-        <Input.Wrapper label="Propriétaire">
-          <div>{document.owner}</div>
-        </Input.Wrapper>
-        <Button
-          variant="light"
-          fullWidth
-          loading={loadingDownload}
-          color="blue"
-          onClick={async () => {
-            startDownload();
-            getDownloadURL(
-              ref(
-                storage,
-                `boards/${board?.id}/documents/${
-                  document.id
-                }/document.${getExtension(String(document.mime))}`
-              )
-            )
-              .then((url) => {
-                return download(
-                  url,
-                  `${document.type} - ${document.owner}.${getExtension(
-                    String(document.mime)
-                  )}`
-                );
-              })
-              .finally(stopDownload);
-          }}
-          leftIcon={<IconDownload size={18} />}
-        >
-          Télécharger
-        </Button>
+        <Stack spacing="xs">
+          <Input.Wrapper label="Type">
+            <div>{document.type}</div>
+          </Input.Wrapper>
+          <Input.Wrapper label="Propriétaire">
+            <div>{document.owner}</div>
+          </Input.Wrapper>
+        </Stack>
+        <Stack spacing="xs">
+          <Button
+            variant="light"
+            fullWidth
+            loading={loadingPreview}
+            color="blue"
+            onClick={() => {
+              previewDocument(document);
+            }}
+            leftIcon={<IconEye size={18} />}
+          >
+            Prévisualiser
+          </Button>
+          <Button
+            variant="light"
+            fullWidth
+            loading={loadingDownload}
+            color="blue"
+            onClick={() => {
+              downloadDocument(document);
+            }}
+            leftIcon={<IconDownload size={18} />}
+          >
+            Télécharger
+          </Button>
+        </Stack>
       </Stack>
     </Drawer>
   );
