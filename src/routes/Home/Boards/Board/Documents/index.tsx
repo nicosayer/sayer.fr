@@ -61,9 +61,8 @@ const Documents: FC = () => {
               }}
             />
             <Button
-              variant="subtle"
+              variant="default"
               leftIcon={<IconPlus size={18} />}
-              color="dark"
               onClick={() => {
                 if (board) {
                   openModal({

@@ -61,7 +61,6 @@ const Header: FC = () => {
         <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
           <TextInput
             placeholder="Rechercher"
-            variant="filled"
             icon={<IconSearch size={18} />}
             onFocus={(event) => {
               spotlight.openSpotlight();
