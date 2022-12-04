@@ -111,7 +111,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     Prévisualiser
                   </Button>
                 ) : (
-                  <Tooltip label="Prévisualiser">
+                  <Tooltip label="Prévisualiser" withArrow>
                     <ActionIcon
                       loading={loadingPreview}
                       color="blue"
@@ -135,7 +135,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     Télécharger
                   </Button>
                 ) : (
-                  <Tooltip label="Télécharger">
+                  <Tooltip label="Télécharger" withArrow>
                     <ActionIcon
                       loading={loadingDownload}
                       color="blue"
