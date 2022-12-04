@@ -105,37 +105,34 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
     });
   }, []);
 
-  const openDeleteModal = useCallback(
-    (document: DocumentDocument) => {
-      openConfirmModal({
-        title: "Supprimer le document",
-        centered: true,
-        children: (
-          <Text size="sm">
-            Voulez-vous vraiment supprimer le document ? Cette action est
-            définitive et irréversible.
-          </Text>
-        ),
-        labels: { confirm: "Supprimer", cancel: "Annuler" },
-        confirmProps: { color: "red" },
-        onConfirm: () => {
-          if (document.ref) {
-            console.log(document.ref.path);
-            deleteDoc(document.ref);
-            deleteObject(
-              ref(
-                storage,
-                `boards/${board?.id}/documents/${
-                  document.id
-                }/document.${getExtension(String(document.mime))}`
-              )
-            );
-          }
-        },
-      });
-    },
-    [board?.id]
-  );
+  const openDeleteModal = useCallback((document: DocumentDocument) => {
+    openConfirmModal({
+      title: "Supprimer le document",
+      centered: true,
+      children: (
+        <Text size="sm">
+          Voulez-vous vraiment supprimer le document ? Cette action est
+          définitive et irréversible.
+        </Text>
+      ),
+      labels: { confirm: "Supprimer", cancel: "Annuler" },
+      confirmProps: { color: "red" },
+      onConfirm: () => {
+        if (document.ref) {
+          console.log(document.ref.path);
+          deleteDoc(document.ref);
+          deleteObject(
+            ref(
+              storage,
+              `${document.ref.path}/document.${getExtension(
+                String(document.mime)
+              )}`
+            )
+          );
+        }
+      },
+    });
+  }, []);
 
   const filteredDocuments = useMemo(() => {
     return sortBy(
