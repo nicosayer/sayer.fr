@@ -10,24 +10,18 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import {
-  IconDownload,
-  IconEdit,
-  IconEye,
-  IconLink,
-  IconTrash,
-} from "@tabler/icons";
+import { IconEdit, IconLink, IconTrash } from "@tabler/icons";
 import { storage } from "configs/firebase";
 import { deleteDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
-import useDownloadDocument from "hooks/useDownloadDocument";
-import usePreviewDocument from "hooks/usePreviewDocument";
 import { sortBy } from "lodash";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument } from "types/firebase/collections";
 import { getExtension } from "utils/storage";
 import { sanitize } from "utils/string";
+import DownloadButton from "./Buttons/Download";
+import PreviewButton from "./Buttons/Preview";
 import EditDocumentModal from "./EditDocumentModal";
 
 export interface DocumentsCardsProps {
@@ -37,8 +31,6 @@ export interface DocumentsCardsProps {
 const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
   const { board, documents } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
-  const [previewDocument, loadingPreview] = usePreviewDocument();
-  const [downloadDocument, loadingDownload] = useDownloadDocument();
 
   const openEditModal = useCallback((document: DocumentDocument) => {
     openModal({
@@ -99,54 +91,8 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                 {document.type} - {document.owner}
               </Text>
               <Group grow>
-                {is768Px ? (
-                  <Button
-                    variant="subtle"
-                    loading={loadingPreview}
-                    onClick={() => {
-                      previewDocument(document);
-                    }}
-                    leftIcon={<IconEye size={18} />}
-                  >
-                    Prévisualiser
-                  </Button>
-                ) : (
-                  <Tooltip label="Prévisualiser" withArrow>
-                    <ActionIcon
-                      loading={loadingPreview}
-                      color="blue"
-                      onClick={() => {
-                        previewDocument(document);
-                      }}
-                    >
-                      <IconEye size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                )}
-                {is768Px ? (
-                  <Button
-                    loading={loadingDownload}
-                    variant="subtle"
-                    onClick={() => {
-                      downloadDocument(document);
-                    }}
-                    leftIcon={<IconDownload size={18} />}
-                  >
-                    Télécharger
-                  </Button>
-                ) : (
-                  <Tooltip label="Télécharger" withArrow>
-                    <ActionIcon
-                      loading={loadingDownload}
-                      color="blue"
-                      onClick={() => {
-                        downloadDocument(document);
-                      }}
-                    >
-                      <IconDownload size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                )}
+                <PreviewButton document={document} />
+                <DownloadButton document={document} />
               </Group>
               <Group grow>
                 <CopyButton
