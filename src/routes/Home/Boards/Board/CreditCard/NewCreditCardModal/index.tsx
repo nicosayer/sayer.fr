@@ -14,7 +14,7 @@ import { closeAllModals } from "@mantine/modals";
 import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import {
   BoardDocument,
   Collection,
@@ -29,9 +29,13 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
 
+  const colors = useMemo(() => {
+    return Object.keys(theme.colors);
+  }, [theme]);
+
   const form = useForm({
     initialValues: {
-      color: "blue",
+      color: colors[Math.floor(Math.random() * colors.length)],
       name: "",
       cardholder: "",
       number: "",
