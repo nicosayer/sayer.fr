@@ -3,14 +3,11 @@ import { IconExternalLink } from "@tabler/icons";
 import { FC } from "react";
 import { CredentialDocument } from "types/firebase/collections";
 
-interface CredentialNameCopyButtonProps extends TextProps {
+interface CredentialNameProps extends TextProps {
   credential: CredentialDocument;
 }
 
-const CredentialNameCopyButton: FC<CredentialNameCopyButtonProps> = ({
-  credential,
-  ...rest
-}) => {
+const CredentialName: FC<CredentialNameProps> = ({ credential, ...rest }) => {
   return (
     <Group spacing="xs">
       <Text
@@ -39,4 +36,4 @@ const CredentialNameCopyButton: FC<CredentialNameCopyButtonProps> = ({
   );
 };
 
-export default CredentialNameCopyButton;
+export default CredentialName;

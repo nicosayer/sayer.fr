@@ -11,9 +11,9 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
 import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
-import CredentialNameCopyButton from "components/molecules/CopyButton/CredentialName";
-import CredentialPasswordCopyButton from "components/molecules/CopyButton/CredentialPassword";
-import CredentialUsernameCopyButton from "components/molecules/CopyButton/CredentialUsername";
+import CredentialName from "components/organisms/CredentialName";
+import CredentialPassword from "components/organisms/CredentialPassword";
+import CredentialUsername from "components/organisms/CredentialUsername";
 import { deleteDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
 import { FC, useCallback, useMemo } from "react";
@@ -74,16 +74,16 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
           <Card key={credential.id} withBorder>
             <Stack>
               <div className="m-auto">
-                <CredentialNameCopyButton credential={credential} fw={600} />
+                <CredentialName credential={credential} fw={600} />
               </div>
               <div className="grid gap-2">
                 <Group position="center" spacing="xs">
                   <div>Nom d'utilisateur :</div>
-                  <CredentialUsernameCopyButton credential={credential} />
+                  <CredentialUsername credential={credential} />
                 </Group>
                 <Group position="center" spacing="xs">
                   <div>Mot de passe :</div>
-                  <CredentialPasswordCopyButton credential={credential} />
+                  <CredentialPassword credential={credential} />
                 </Group>
               </div>
               <Group grow>

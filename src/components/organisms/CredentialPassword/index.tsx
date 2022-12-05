@@ -3,24 +3,18 @@ import { IconCheck, IconCopy } from "@tabler/icons";
 import { FC } from "react";
 import { CredentialDocument } from "types/firebase/collections";
 
-interface CredentialUsernameCopyButtonProps {
+interface CredentialPasswordProps {
   credential: CredentialDocument;
 }
 
-const CredentialUsernameCopyButton: FC<CredentialUsernameCopyButtonProps> = ({
-  credential,
-}) => {
+const CredentialPassword: FC<CredentialPasswordProps> = ({ credential }) => {
   return (
     <Group spacing="xs">
-      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {credential?.username}
-      </Code>
-      <CopyButton value={String(credential?.username)}>
+      <Code>••••••••••</Code>
+      <CopyButton value={String(credential?.password)}>
         {({ copied, copy }) => (
           <Tooltip
-            label={
-              copied ? "Nom d'utilisateur copié" : "Copier le nom d'utilisateur"
-            }
+            label={copied ? "Mot de passe copié" : "Copier le mot de passe"}
             withArrow
           >
             <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
@@ -33,4 +27,4 @@ const CredentialUsernameCopyButton: FC<CredentialUsernameCopyButtonProps> = ({
   );
 };
 
-export default CredentialUsernameCopyButton;
+export default CredentialPassword;

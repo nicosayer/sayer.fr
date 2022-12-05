@@ -1,7 +1,7 @@
 import { Drawer, Input, Stack } from "@mantine/core";
-import CredentialNameCopyButton from "components/molecules/CopyButton/CredentialName";
-import CredentialPasswordCopyButton from "components/molecules/CopyButton/CredentialPassword";
-import CredentialUsernameCopyButton from "components/molecules/CopyButton/CredentialUsername";
+import CredentialName from "components/organisms/CredentialName";
+import CredentialPassword from "components/organisms/CredentialPassword";
+import CredentialUsername from "components/organisms/CredentialUsername";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "../../Provider";
@@ -30,17 +30,17 @@ const Credential: FC = () => {
       <Stack spacing="xl">
         <Input.Wrapper label="Site web">
           <div>
-            <CredentialNameCopyButton credential={credential} />
+            <CredentialName credential={credential} />
           </div>
         </Input.Wrapper>
         <Input.Wrapper label="Nom d'utilisateur">
           <div>
-            <CredentialUsernameCopyButton credential={credential} />
+            <CredentialUsername credential={credential} />
           </div>
         </Input.Wrapper>
         <Input.Wrapper label="Mot de passe">
           <div>
-            <CredentialPasswordCopyButton credential={credential} />
+            <CredentialPassword credential={credential} />
           </div>
         </Input.Wrapper>
       </Stack>
