@@ -11,7 +11,7 @@ import { IconPlus, IconSearch } from "@tabler/icons";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import Document from "./Document";
-import DocumentsCards from "./DocumentsCard";
+import DocumentsCards from "./DocumentsCards";
 import NewDocumentModal from "./NewDocumentModal";
 
 const Documents: FC = () => {

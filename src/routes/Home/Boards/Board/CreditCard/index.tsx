@@ -11,7 +11,7 @@ import { IconPlus, IconSearch } from "@tabler/icons";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import CreditCard from "./CreditCard";
-import CreditCardsCards from "./CreditCardsCard";
+import CreditCardsCards from "./CreditCardsCards";
 import NewCreditCardModal from "./NewCreditCardModal";
 
 const CreditCards: FC = () => {

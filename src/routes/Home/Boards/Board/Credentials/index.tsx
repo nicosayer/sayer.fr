@@ -11,7 +11,7 @@ import { IconPlus, IconSearch } from "@tabler/icons";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import Credential from "./Credential";
-import CredentialsCards from "./CredentialsCard";
+import CredentialsCards from "./CredentialsCards";
 import NewCredentialModal from "./NewCredentialModal";
 
 const Credentials: FC = () => {
