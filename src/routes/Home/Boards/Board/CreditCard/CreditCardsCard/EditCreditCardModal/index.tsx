@@ -90,7 +90,7 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
       })}
     >
       <Stack>
-        <Input.Wrapper label="Couleur" withAsterisk>
+        <Input.Wrapper label="Couleur de la carte" withAsterisk>
           <Group spacing="xs" className="mt-1">
             {Object.keys(theme.colors).map((color) => (
               <ColorSwatch
@@ -118,7 +118,7 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
         <TextInput
           disabled={loading}
           withAsterisk
-          label="Nom du titulaire"
+          label="Nom du titulaire sur la carte"
           placeholder="John Doe"
           {...form.getInputProps("cardholder")}
         />
