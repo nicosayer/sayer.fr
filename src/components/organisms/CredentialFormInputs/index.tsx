@@ -2,6 +2,7 @@ import { Badge, PasswordInput, Select, TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { FC } from "react";
 import { BoardDocument } from "types/firebase/collections";
+import { getColorFromString } from "utils/color";
 
 export interface CredentialForm {
   name: string;
@@ -28,6 +29,7 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
   return (
     <>
       <TextInput
+        data-autofocus
         withAsterisk
         disabled={loading}
         label="Nom du site web"
@@ -61,7 +63,7 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
         itemComponent={({ value, ...rest }) => {
           return (
             <div {...rest}>
-              <Badge variant="dot" color="red">
+              <Badge variant="dot" color={getColorFromString(value)}>
                 {value}
               </Badge>
             </div>

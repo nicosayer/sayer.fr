@@ -5,6 +5,7 @@ import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { BoardDocument, DocumentDocument } from "types/firebase/collections";
+import { getColorFromString } from "utils/color";
 
 export interface EditDocumentModalProps {
   board: BoardDocument;
@@ -43,6 +44,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ board, document }) => {
     >
       <Stack>
         <TextInput
+          data-autofocus
           disabled={loading}
           withAsterisk
           label="Type de document"
@@ -56,7 +58,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ board, document }) => {
           itemComponent={({ value, ...rest }) => {
             return (
               <div {...rest}>
-                <Badge variant="dot" color="red">
+                <Badge variant="dot" color={getColorFromString(value)}>
                   {value}
                 </Badge>
               </div>

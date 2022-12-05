@@ -27,6 +27,7 @@ import { sortBy } from "lodash";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, Mime } from "types/firebase/collections";
+import { getColorFromString } from "utils/color";
 import { getExtension } from "utils/storage";
 import { sanitize } from "utils/string";
 import DownloadButton from "./Buttons/Download";
@@ -111,7 +112,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                 {document.tag && (
                   <Badge
                     variant="dot"
-                    color="red"
+                    color={getColorFromString(document.tag)}
                     className="absolute right-[16px]"
                   >
                     {document.tag}

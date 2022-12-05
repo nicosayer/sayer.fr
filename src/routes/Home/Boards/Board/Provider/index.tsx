@@ -20,6 +20,7 @@ import {
   CreditCardDocument,
   DocumentDocument,
 } from "types/firebase/collections";
+import { getColorFromString } from "utils/color";
 import { sanitize } from "utils/string";
 
 interface IBoardContext {
@@ -78,7 +79,7 @@ function CustomAction({
           )}
         </div>
         {action.tag && (
-          <Badge color="red" variant="dot">
+          <Badge color={getColorFromString(action.tag)} variant="dot">
             {action.tag}
           </Badge>
         )}

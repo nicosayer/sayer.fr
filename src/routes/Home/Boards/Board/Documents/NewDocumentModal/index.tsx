@@ -88,6 +88,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
     >
       <Stack>
         <TextInput
+          data-autofocus
           withAsterisk
           disabled={loading}
           label="Type de document"

@@ -48,7 +48,7 @@ const Credentials: FC = () => {
     <>
       <Credential />
       <Stack>
-        <Group position="apart">
+        <Group position="apart" className="sticky z-50">
           <Text fw={500}>Mot de passes</Text>
           <Group>
             <TextInput

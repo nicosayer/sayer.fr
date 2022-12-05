@@ -14,6 +14,7 @@ import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { BoardDocument } from "types/firebase/collections";
+import { getColorFromString } from "utils/color";
 import { capitalizeFirsts } from "utils/string";
 import { ONE_SECOND } from "utils/time";
 
@@ -66,6 +67,7 @@ const SettingsCard: FC = () => {
       >
         <Stack>
           <TextInput
+            data-autofocus
             label="Nom du board"
             placeholder="Board de John"
             disabled={loading}
@@ -87,11 +89,9 @@ const SettingsCard: FC = () => {
               return query.length > 2;
             }}
             valueComponent={({ value, onRemove, ...p }) => {
-              console.log(p);
-
               return (
                 <Badge
-                  color="red"
+                  color={getColorFromString(value)}
                   variant="dot"
                   className="mr-2"
                   rightSection={

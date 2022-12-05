@@ -13,6 +13,7 @@ import { UseFormReturnType } from "@mantine/form";
 import { FC } from "react";
 import InputMask from "react-input-mask";
 import { BoardDocument } from "types/firebase/collections";
+import { getColorFromString } from "utils/color";
 
 export interface CreditCardForm {
   color: string;
@@ -43,6 +44,7 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
   return (
     <>
       <TextInput
+        data-autofocus
         withAsterisk
         disabled={loading}
         label="Nom de la carte"
@@ -106,7 +108,7 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         itemComponent={({ value, ...rest }) => {
           return (
             <div {...rest}>
-              <Badge variant="dot" color="red">
+              <Badge variant="dot" color={getColorFromString(value)}>
                 {value}
               </Badge>
             </div>

@@ -23,6 +23,7 @@ import { sortBy } from "lodash";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
+import { getColorFromString } from "utils/color";
 import { sanitize } from "utils/string";
 import EditCreditCardModal from "./EditCreditCardModal";
 
@@ -38,7 +39,11 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
   const filteredCreditCards = useMemo(() => {
     return sortBy(
       (creditCards ?? []).filter((creditCard) => {
-        return sanitize(`${creditCard.name}${creditCard.tag}`).indexOf(sanitize(search)) > -1;
+        return (
+          sanitize(`${creditCard.name}${creditCard.tag}`).indexOf(
+            sanitize(search)
+          ) > -1
+        );
       }),
       (creditCard) => sanitize(creditCard.name ?? "")
     );
@@ -93,7 +98,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                 {creditCard.tag && (
                   <Badge
                     variant="dot"
-                    color="red"
+                    color={getColorFromString(creditCard.tag)}
                     className="absolute right-[16px]"
                   >
                     {creditCard.tag}
