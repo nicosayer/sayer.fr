@@ -25,8 +25,11 @@ const CredentialNameCopyButton: FC<CredentialNameCopyButtonProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           href={
-            credential?.url ||
-            `https://www.google.com/search?q=${credential.name}`
+            credential?.url
+              ? credential?.url.startsWith("https://")
+                ? credential?.url
+                : `https://${credential?.url}`
+              : `https://www.google.com/search?q=${credential.name}`
           }
         >
           <IconExternalLink size={18} />
