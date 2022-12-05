@@ -25,7 +25,7 @@ const menu = [
   {
     icon: <IconCreditCard size={18} />,
     color: "red",
-    label: "Carte de crédit",
+    label: "Cartes de crédit",
     to: "credit-cards",
   },
 ];
