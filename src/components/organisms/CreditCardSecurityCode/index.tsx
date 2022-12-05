@@ -16,7 +16,9 @@ const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
   return (
     <Group spacing="xs">
       <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {visible ? creditCard.securityCode : "•••"}
+        {visible
+          ? creditCard.securityCode
+          : Array(creditCard.securityCode?.length).fill("•").join("")}
       </Code>
       <Tooltip
         label={

@@ -15,7 +15,7 @@ const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
     <Group spacing="xs">
       <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
         {visible ? (
-          creditCard.number
+          creditCard.number?.match(/.{1,4}/g)?.join(" ")
         ) : (
           <>
             •••• •••• ••••{" "}

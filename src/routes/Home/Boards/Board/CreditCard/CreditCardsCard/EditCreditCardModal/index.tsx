@@ -74,7 +74,7 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
           updateDoc<CreditCardDocument>(creditCard.ref, {
             color: values.color,
             name: values.name,
-            number: values.number,
+            number: values.number.replace(/ +/g, ""),
             cardholder: values.cardholder,
             expirationMonth: Number(expirationMonth),
             expirationYear: Number(expirationYear) + 2000,

@@ -54,7 +54,6 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
       confirmProps: { color: "red" },
       onConfirm: () => {
         if (document.ref) {
-          console.log(document.ref.path);
           deleteDoc(document.ref);
           deleteObject(
             ref(
