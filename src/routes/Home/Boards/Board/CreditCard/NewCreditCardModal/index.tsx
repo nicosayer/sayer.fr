@@ -132,7 +132,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
         <TextInput
           disabled={loading}
           withAsterisk
-          label="Numéros"
+          label="Numéro de la carte"
           placeholder="1234 5678 9012 3456"
           {...form.getInputProps("number")}
         />
