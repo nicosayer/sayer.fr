@@ -22,6 +22,7 @@ import {
   DocumentDocument,
   Mime,
 } from "types/firebase/collections";
+import { getColorFromString } from "utils/color";
 import { getExtension } from "utils/storage";
 
 export interface NewDocumentModalProps {
@@ -116,7 +117,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
           itemComponent={({ value, ...rest }) => {
             return (
               <div {...rest}>
-                <Badge variant="dot" color="red">
+                <Badge variant="dot" color={getColorFromString(value)}>
                   {value}
                 </Badge>
               </div>

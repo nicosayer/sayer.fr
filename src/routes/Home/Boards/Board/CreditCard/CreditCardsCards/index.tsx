@@ -45,7 +45,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
           ) > -1
         );
       }),
-      (creditCard) => sanitize(creditCard.name ?? "")
+      (creditCard) => sanitize(`${creditCard.name}${creditCard.tag}`)
     );
   }, [creditCards, search]);
 

@@ -41,7 +41,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
           ) > -1
         );
       }),
-      (credential) => sanitize(credential.name ?? "")
+      (credential) => sanitize(`${credential.name}${credential.tag}`)
     );
   }, [credentials, search]);
 
