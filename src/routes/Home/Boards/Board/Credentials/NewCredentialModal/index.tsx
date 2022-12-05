@@ -90,7 +90,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
             <Button
               variant="outline"
               color="dark"
-              loading={loading}
+              disabled={loading}
               onClick={() => {
                 closeAllModals();
               }}

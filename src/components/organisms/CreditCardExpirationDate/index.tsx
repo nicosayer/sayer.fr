@@ -1,5 +1,5 @@
 import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
-import { IconCopy } from "@tabler/icons";
+import { IconCheck, IconCopy } from "@tabler/icons";
 import { FC, useMemo } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
 
@@ -26,7 +26,7 @@ const CreditCardExpirationDate: FC<CreditCardExpirationDateProps> = ({
             withArrow
           >
             <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
-              <IconCopy size={18} />
+            {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
             </ActionIcon>
           </Tooltip>
         )}

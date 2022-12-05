@@ -1,5 +1,5 @@
-import { Button, CopyButton, Tooltip } from "@mantine/core";
-import { IconCopy } from "@tabler/icons";
+import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
+import { IconCheck, IconCopy } from "@tabler/icons";
 import { FC } from "react";
 import { CredentialDocument } from "types/firebase/collections";
 
@@ -11,27 +11,23 @@ const CredentialUsernameCopyButton: FC<CredentialUsernameCopyButtonProps> = ({
   credential,
 }) => {
   return (
-    <CopyButton value={String(credential?.username)}>
-      {({ copied, copy }) => (
-        <Tooltip
-          label={
-            copied ? "Nom d'utilisateur copié" : "Copier le nom d'utilisateur"
-          }
-          withArrow
-        >
-          <Button
-            variant="subtle"
-            compact
-            color={copied ? "teal" : "gray"}
-            onClick={copy}
-            rightIcon={<IconCopy size={18} />}
-            className="max-w-[200px]"
+    <Group spacing="xs">
+      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{credential?.username}</Code>
+      <CopyButton value={String(credential?.username)}>
+        {({ copied, copy }) => (
+          <Tooltip
+            label={
+              copied ? "Nom d'utilisateur copié" : "Copier le nom d'utilisateur"
+            }
+            withArrow
           >
-            {credential?.username}
-          </Button>
-        </Tooltip>
-      )}
-    </CopyButton>
+            <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
+              {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
+            </ActionIcon>
+          </Tooltip>
+        )}
+      </CopyButton>
+    </Group>
   );
 };
 

@@ -143,7 +143,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
             <Button
               variant="outline"
               color="dark"
-              loading={loading}
+              disabled={loading}
               onClick={() => {
                 closeAllModals();
               }}

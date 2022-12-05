@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import { IconEdit, IconLink, IconTrash } from "@tabler/icons";
+import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
 import CreditCardCardholder from "components/organisms/CreditCardCardholder";
 import CreditCardExpirationDate from "components/organisms/CreditCardExpirationDate";
 import CreditCardNumber from "components/organisms/CreditCardNumber";
@@ -106,7 +106,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                         variant="subtle"
                         color={copied ? "teal" : "blue"}
                         onClick={copy}
-                        leftIcon={<IconLink size={18} />}
+                        leftIcon={copied ? <IconCheck size={18} /> : <IconLink size={18} />}
                       >
                         {copied ? "Lien copié" : "Copier le lien"}
                       </Button>
@@ -119,7 +119,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                           color={copied ? "teal" : "blue"}
                           onClick={copy}
                         >
-                          <IconLink size={18} />
+                          {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
                         </ActionIcon>
                       </Tooltip>
                     )

@@ -1,5 +1,5 @@
 import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
-import { IconCopy, IconEye, IconEyeOff } from "@tabler/icons";
+import { IconCheck, IconCopy, IconEye, IconEyeOff } from "@tabler/icons";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
@@ -13,7 +13,7 @@ const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
 
   return (
     <Group spacing="xs">
-      <Code>
+      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
         {visible ? (
           creditCard.number
         ) : (
@@ -38,7 +38,7 @@ const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
             withArrow
           >
             <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
-              <IconCopy size={18} />
+            {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
             </ActionIcon>
           </Tooltip>
         )}

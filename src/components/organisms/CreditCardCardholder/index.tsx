@@ -1,5 +1,5 @@
 import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
-import { IconCopy } from "@tabler/icons";
+import { IconCheck, IconCopy } from "@tabler/icons";
 import { FC } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
 
@@ -12,7 +12,7 @@ const CreditCardCardholder: FC<CreditCardCardholderProps> = ({
 }) => {
   return (
     <Group spacing="xs">
-      <Code>{creditCard.cardholder}</Code>
+      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{creditCard.cardholder}</Code>
       <CopyButton value={String(creditCard.cardholder)}>
         {({ copied, copy }) => (
           <Tooltip
@@ -22,7 +22,7 @@ const CreditCardCardholder: FC<CreditCardCardholderProps> = ({
             withArrow
           >
             <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
-              <IconCopy size={18} />
+            {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
             </ActionIcon>
           </Tooltip>
         )}

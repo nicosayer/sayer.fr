@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import { IconEdit, IconLink, IconTrash } from "@tabler/icons";
+import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
 import { storage } from "configs/firebase";
 import { deleteDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
@@ -104,7 +104,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                         variant="subtle"
                         color={copied ? "teal" : "blue"}
                         onClick={copy}
-                        leftIcon={<IconLink size={18} />}
+                        leftIcon={copied ? <IconCheck size={18} /> : <IconLink size={18} />}
                       >
                         {copied ? "Lien copié" : "Copier le lien"}
                       </Button>
@@ -117,7 +117,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                           color={copied ? "teal" : "blue"}
                           onClick={copy}
                         >
-                          <IconLink size={18} />
+                          {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
                         </ActionIcon>
                       </Tooltip>
                     )

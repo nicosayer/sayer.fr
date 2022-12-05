@@ -84,7 +84,7 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
             <Button
               variant="outline"
               color="dark"
-              loading={loading}
+              disabled={loading}
               onClick={() => {
                 closeAllModals();
               }}

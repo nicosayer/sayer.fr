@@ -1,5 +1,5 @@
 import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
-import { IconCopy, IconEye, IconEyeOff } from "@tabler/icons";
+import { IconCheck, IconCopy, IconEye, IconEyeOff } from "@tabler/icons";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
@@ -15,7 +15,7 @@ const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
 
   return (
     <Group spacing="xs">
-      <Code>{visible ? creditCard.securityCode : "•••"}</Code>
+      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{visible ? creditCard.securityCode : "•••"}</Code>
       <Tooltip
         label={
           visible ? "Cacher le code de sécurité" : "Voir le code de sécurité"
@@ -35,7 +35,7 @@ const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
             withArrow
           >
             <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
-              <IconCopy size={18} />
+              {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
             </ActionIcon>
           </Tooltip>
         )}

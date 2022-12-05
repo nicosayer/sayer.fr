@@ -63,7 +63,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
             <Button
               variant="outline"
               color="dark"
-              loading={loading}
+              disabled={loading}
               onClick={() => {
                 closeAllModals();
               }}

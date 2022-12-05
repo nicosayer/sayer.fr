@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import { IconEdit, IconLink, IconTrash } from "@tabler/icons";
+import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
 import CredentialNameCopyButton from "components/molecules/CopyButton/CredentialName";
 import CredentialPasswordCopyButton from "components/molecules/CopyButton/CredentialPassword";
 import CredentialUsernameCopyButton from "components/molecules/CopyButton/CredentialUsername";
@@ -74,7 +74,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
           <Card key={credential.id} withBorder>
             <Stack>
               <div className="m-auto">
-                <CredentialNameCopyButton credential={credential} size="md" />
+                <CredentialNameCopyButton credential={credential} fw={600} />
               </div>
               <div className="grid">
                 <Group position="center" spacing="xs">
@@ -97,7 +97,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                         variant="subtle"
                         color={copied ? "teal" : "blue"}
                         onClick={copy}
-                        leftIcon={<IconLink size={18} />}
+                        leftIcon={copied ? <IconCheck size={18} /> : <IconLink size={18} />}
                       >
                         {copied ? "Lien copié" : "Copier le lien"}
                       </Button>
@@ -110,7 +110,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                           color={copied ? "teal" : "blue"}
                           onClick={copy}
                         >
-                          <IconLink size={18} />
+                          {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
                         </ActionIcon>
                       </Tooltip>
                     )

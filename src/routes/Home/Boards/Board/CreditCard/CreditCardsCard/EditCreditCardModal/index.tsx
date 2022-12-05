@@ -136,7 +136,7 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
             <Button
               variant="outline"
               color="dark"
-              loading={loading}
+              disabled={loading}
               onClick={() => {
                 closeAllModals();
               }}
