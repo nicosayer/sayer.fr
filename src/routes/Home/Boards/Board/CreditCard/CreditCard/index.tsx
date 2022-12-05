@@ -1,4 +1,11 @@
-import { Drawer, Input, Stack } from "@mantine/core";
+import {
+  ColorSwatch,
+  Drawer,
+  Group,
+  Input,
+  Stack,
+  useMantineTheme,
+} from "@mantine/core";
 import CreditCardCardholder from "components/organisms/CreditCardCardholder";
 import CreditCardExpirationDate from "components/organisms/CreditCardExpirationDate";
 import CreditCardNumber from "components/organisms/CreditCardNumber";
@@ -11,6 +18,7 @@ const CreditCard: FC = () => {
   const { board, creditCards } = useBoard();
   const { creditCardId } = useParams();
   const navigate = useNavigate();
+  const theme = useMantineTheme();
 
   const creditCard = useMemo(() => {
     return creditCards?.find((creditCard) => creditCard.id === creditCardId);
@@ -29,6 +37,14 @@ const CreditCard: FC = () => {
       position="right"
     >
       <Stack spacing="xl">
+        <Input.Wrapper label="Nom de la carte">
+          <Group className="m-auto" spacing="xs">
+            {creditCard.color && (
+              <ColorSwatch color={theme.colors[creditCard.color][6]} />
+            )}
+            {creditCard.name}
+          </Group>
+        </Input.Wrapper>
         <Input.Wrapper label="Titulaire">
           <div>
             <CreditCardCardholder creditCard={creditCard} />

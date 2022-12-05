@@ -1,10 +1,13 @@
 import {
   Button,
+  CheckIcon,
+  ColorSwatch,
   Group,
   Input,
   NumberInput,
   Stack,
   TextInput,
+  useMantineTheme,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
@@ -20,9 +23,11 @@ export interface EditCreditCardModalProps {
 
 const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
   const [loading, start, stop] = useBooleanState();
+  const theme = useMantineTheme();
 
   const form = useForm({
     initialValues: {
+      color: creditCard.color || "",
       name: creditCard.name || "",
       cardholder: creditCard.cardholder || "",
       number: creditCard.number || "",
@@ -32,6 +37,9 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
     },
 
     validate: {
+      color: (color) => {
+        return theme.colors[color][6] ? null : "Ce champ ne doit pas être vide";
+      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -65,6 +73,7 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
         if (creditCard?.ref && values.expirationYear) {
           start();
           updateDoc<CreditCardDocument>(creditCard.ref, {
+            color: values.color,
             name: values.name,
             number: values.number,
             cardholder: values.cardholder,
@@ -81,6 +90,24 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
       })}
     >
       <Stack>
+        <Input.Wrapper label="Couleur" withAsterisk>
+          <Group spacing="xs" className="mt-1">
+            {Object.keys(theme.colors).map((color) => (
+              <ColorSwatch
+                key={color}
+                color={theme.colors[color][6]}
+                className="text-white cursor-pointer"
+                onClick={() => {
+                  form.getInputProps("color").onChange(color);
+                }}
+              >
+                {form.getInputProps("color").value === color ? (
+                  <CheckIcon width={10} />
+                ) : null}
+              </ColorSwatch>
+            ))}
+          </Group>
+        </Input.Wrapper>
         <TextInput
           withAsterisk
           disabled={loading}

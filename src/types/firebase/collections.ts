@@ -32,6 +32,7 @@ export interface CreditCardDocument {
   expirationMonth?: number;
   expirationYear?: number;
   securityCode?: string;
+  color?: string;
 }
 
 export interface DocumentDocument {

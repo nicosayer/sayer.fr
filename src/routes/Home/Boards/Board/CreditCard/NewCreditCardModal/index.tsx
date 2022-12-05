@@ -1,10 +1,13 @@
 import {
   Button,
+  CheckIcon,
+  ColorSwatch,
   Group,
   Input,
   NumberInput,
   Stack,
   TextInput,
+  useMantineTheme,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
@@ -24,9 +27,11 @@ export interface NewCreditCardModalProps {
 
 const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState();
+  const theme = useMantineTheme();
 
   const form = useForm({
     initialValues: {
+      color: "blue",
       name: "",
       cardholder: "",
       number: "",
@@ -36,6 +41,9 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
     },
 
     validate: {
+      color: (color) => {
+        return theme.colors[color][6] ? null : "Ce champ ne doit pas être vide";
+      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -71,6 +79,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
           addDoc<CreditCardDocument>(
             collection(board.ref, Collection.creditCards),
             {
+              color: values.color,
               name: values.name,
               number: values.number,
               cardholder: values.cardholder,
@@ -88,6 +97,24 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       })}
     >
       <Stack>
+        <Input.Wrapper label="Couleur" withAsterisk>
+          <Group spacing="xs" className="mt-1">
+            {Object.keys(theme.colors).map((color) => (
+              <ColorSwatch
+                key={color}
+                color={theme.colors[color][6]}
+                className="text-white cursor-pointer"
+                onClick={() => {
+                  form.getInputProps("color").onChange(color);
+                }}
+              >
+                {form.getInputProps("color").value === color ? (
+                  <CheckIcon width={10} />
+                ) : null}
+              </ColorSwatch>
+            ))}
+          </Group>
+        </Input.Wrapper>
         <TextInput
           withAsterisk
           disabled={loading}

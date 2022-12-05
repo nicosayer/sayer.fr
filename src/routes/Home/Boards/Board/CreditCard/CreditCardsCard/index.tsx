@@ -2,11 +2,13 @@ import {
   ActionIcon,
   Button,
   Card,
+  ColorSwatch,
   CopyButton,
   Group,
   Stack,
   Text,
   Tooltip,
+  useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
@@ -29,6 +31,7 @@ export interface CreditCardsCardsProps {
 
 const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
   const { board, creditCards } = useBoard();
+  const theme = useMantineTheme();
   const is768Px = useMediaQuery("(min-width: 768px)");
 
   const filteredCreditCards = useMemo(() => {
@@ -74,9 +77,12 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
         return (
           <Card key={creditCard.id} withBorder>
             <Stack>
-              <Text fw={600} className="text-center">
-                {creditCard.name}
-              </Text>
+              <Group className="m-auto" spacing="xs">
+                {creditCard.color && (
+                  <ColorSwatch color={theme.colors[creditCard.color][6]} />
+                )}
+                <Text fw={600}>{creditCard.name}</Text>
+              </Group>
               <div className="grid gap-2">
                 <Group position="center" spacing="xs">
                   <div>Titulaire :</div>
