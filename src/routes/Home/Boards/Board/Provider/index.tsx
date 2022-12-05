@@ -100,16 +100,16 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     useCollectionData<CredentialDocument>(
       board?.ref
         ? collection(board.ref, Collection.credentials).withConverter(
-            firestoreConverter
-          )
+          firestoreConverter
+        )
         : undefined
     );
 
   const [documents, loadingDocuments] = useCollectionData<DocumentDocument>(
     board?.ref
       ? collection(board.ref, Collection.documents).withConverter(
-          firestoreConverter
-        )
+        firestoreConverter
+      )
       : undefined
   );
 
@@ -117,8 +117,8 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     useCollectionData<CreditCardDocument>(
       board?.ref
         ? collection(board.ref, Collection.creditCards).withConverter(
-            firestoreConverter
-          )
+          firestoreConverter
+        )
         : undefined
     );
 
@@ -139,7 +139,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       <SpotlightProvider
         shortcut="mod + K"
         nothingFoundMessage="Aucun résultat..."
-        actions={[
+        actions={(query) => query ? [
           ...(credentials ?? []).map((credential) => {
             return {
               title: credential.name ?? "",
@@ -172,7 +172,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
               },
             };
           }),
-        ]}
+        ] : []}
         filter={(query, actions) =>
           actions.filter(
             (action) =>
