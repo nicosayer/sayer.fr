@@ -49,7 +49,7 @@ const CreditCards: FC = () => {
       <CreditCard />
       <Stack>
         <Group position="apart">
-          <Text fw={500}>Carte de crédits</Text>
+          <Text fw={500}>Cartes de crédit</Text>
           <Group>
             <TextInput
               placeholder="Rechercher"

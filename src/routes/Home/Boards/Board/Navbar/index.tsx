@@ -40,14 +40,14 @@ const Navbar: FC = () => {
       hidden={!isNavbarOpened}
       width={{ sm: 200, lg: 300 }}
     >
-      <MantineNavbar.Section grow>
+      <MantineNavbar.Section>
         <Stack>
           {menu.map((element) => (
             <NavbarButton {...element} key={element.label} />
           ))}
         </Stack>
       </MantineNavbar.Section>
-      <MantineNavbar.Section>
+      <MantineNavbar.Section className="pt-4 mt-4 border-0 border-gray-200 border-solid border-t-[1px]">
         <NavbarButton
           icon={<IconSettings size={18} />}
           color="gray"

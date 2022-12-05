@@ -48,7 +48,9 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
         return cardholder.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
       number: (number) => {
-        return number.replace(/ +/g, "").length === 16 ? null : "Ce champ ne doit pas être vide";
+        return number.replace(/ +/g, "").length === 16
+          ? null
+          : "Ce champ ne doit pas être vide";
       },
       expirationDate: (expirationDate) => {
         return expirationDate.length === 5
