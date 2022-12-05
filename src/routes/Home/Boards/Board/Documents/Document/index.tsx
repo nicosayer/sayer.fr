@@ -1,9 +1,10 @@
-import { Button, Drawer, Input, Stack } from "@mantine/core";
+import { Badge, Button, Drawer, Input, Stack } from "@mantine/core";
 import { IconDownload, IconEye } from "@tabler/icons";
 import useDownloadDocument from "hooks/useDownloadDocument";
 import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getColorFromString } from "utils/color";
 import { useBoard } from "../../Provider";
 
 const Document: FC = () => {
@@ -34,6 +35,15 @@ const Document: FC = () => {
           <Input.Wrapper label="Nom">
             <div>{document.name}</div>
           </Input.Wrapper>
+          {document.tag && (
+            <Input.Wrapper label="Étiquette">
+              <div>
+                <Badge variant="dot" color={getColorFromString(document.tag)}>
+                  {document.tag}
+                </Badge>
+              </div>
+            </Input.Wrapper>
+          )}
         </Stack>
         <Stack spacing="xs">
           <Button

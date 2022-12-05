@@ -1,4 +1,5 @@
 import {
+  Badge,
   ColorSwatch,
   Drawer,
   Group,
@@ -12,6 +13,7 @@ import CreditCardNumber from "components/organisms/CreditCardNumber";
 import CreditCardSecurityCode from "components/organisms/CreditCardSecurityCode";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getColorFromString } from "utils/color";
 import { useBoard } from "../../Provider";
 
 const CreditCard: FC = () => {
@@ -45,6 +47,15 @@ const CreditCard: FC = () => {
             {creditCard.name}
           </Group>
         </Input.Wrapper>
+        {creditCard.tag && (
+          <Input.Wrapper label="Étiquette">
+            <div>
+              <Badge variant="dot" color={getColorFromString(creditCard.tag)}>
+                {creditCard.tag}
+              </Badge>
+            </div>
+          </Input.Wrapper>
+        )}
         <Input.Wrapper label="Titulaire">
           <div>
             <CreditCardCardholder creditCard={creditCard} />

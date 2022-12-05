@@ -1,9 +1,10 @@
-import { Drawer, Input, Stack } from "@mantine/core";
+import { Badge, Drawer, Input, Stack } from "@mantine/core";
 import CredentialName from "components/organisms/CredentialName";
 import CredentialPassword from "components/organisms/CredentialPassword";
 import CredentialUsername from "components/organisms/CredentialUsername";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getColorFromString } from "utils/color";
 import { useBoard } from "../../Provider";
 
 const Credential: FC = () => {
@@ -33,6 +34,15 @@ const Credential: FC = () => {
             <CredentialName credential={credential} />
           </div>
         </Input.Wrapper>
+        {credential.tag && (
+          <Input.Wrapper label="Étiquette">
+            <div>
+              <Badge variant="dot" color={getColorFromString(credential.tag)}>
+                {credential.tag}
+              </Badge>
+            </div>
+          </Input.Wrapper>
+        )}
         <Input.Wrapper label="Nom d'utilisateur">
           <div>
             <CredentialUsername credential={credential} />
