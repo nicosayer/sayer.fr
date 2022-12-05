@@ -91,8 +91,16 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                 {document.type} - {document.owner}
               </Text>
               <Group grow>
-                <PreviewButton document={document} />
-                <DownloadButton document={document} />
+                <div className="grid">
+                  <Group position="center" spacing="xs">
+                    <div>Prévisualiser :</div>
+                    <PreviewButton document={document} />
+                  </Group>
+                  <Group position="center" spacing="xs">
+                    <div>Télécharger :</div>
+                    <DownloadButton document={document} />
+                  </Group>
+                </div>
               </Group>
               <Group grow>
                 <CopyButton
@@ -104,7 +112,13 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                         variant="subtle"
                         color={copied ? "teal" : "blue"}
                         onClick={copy}
-                        leftIcon={copied ? <IconCheck size={18} /> : <IconLink size={18} />}
+                        leftIcon={
+                          copied ? (
+                            <IconCheck size={18} />
+                          ) : (
+                            <IconLink size={18} />
+                          )
+                        }
                       >
                         {copied ? "Lien copié" : "Copier le lien"}
                       </Button>
@@ -117,7 +131,11 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                           color={copied ? "teal" : "blue"}
                           onClick={copy}
                         >
-                          {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
+                          {copied ? (
+                            <IconCheck size={18} />
+                          ) : (
+                            <IconLink size={18} />
+                          )}
                         </ActionIcon>
                       </Tooltip>
                     )

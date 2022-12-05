@@ -12,7 +12,9 @@ const CredentialUsernameCopyButton: FC<CredentialUsernameCopyButtonProps> = ({
 }) => {
   return (
     <Group spacing="xs">
-      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{credential?.username}</Code>
+      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+        {credential?.username}
+      </Code>
       <CopyButton value={String(credential?.username)}>
         {({ copied, copy }) => (
           <Tooltip

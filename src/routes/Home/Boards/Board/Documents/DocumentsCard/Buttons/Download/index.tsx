@@ -1,5 +1,4 @@
-import { ActionIcon, Button, Tooltip } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { ActionIcon } from "@mantine/core";
 import { IconDownload } from "@tabler/icons";
 import useDownloadDocument from "hooks/useDownloadDocument";
 import { FC } from "react";
@@ -10,37 +9,19 @@ export interface DownloadButtonProps {
 }
 
 const DownloadButton: FC<DownloadButtonProps> = ({ document }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)");
   const [downloadDocument, loadingDownload] = useDownloadDocument();
 
-  if (is768Px) {
-    return (
-      <Button
-        loading={loadingDownload}
-        variant="light"
-        onClick={() => {
-          downloadDocument(document);
-        }}
-        leftIcon={<IconDownload size={18} />}
-      >
-        Télécharger
-      </Button>
-    );
-  }
-
   return (
-    <Tooltip label="Télécharger" withArrow>
-      <ActionIcon
-        loading={loadingDownload}
-        variant="light"
-        color="blue"
-        onClick={() => {
-          downloadDocument(document);
-        }}
-      >
-        <IconDownload size={18} />
-      </ActionIcon>
-    </Tooltip>
+    <ActionIcon
+      loading={loadingDownload}
+      variant="light"
+      color="blue"
+      onClick={() => {
+        downloadDocument(document);
+      }}
+    >
+      <IconDownload size={18} />
+    </ActionIcon>
   );
 };
 

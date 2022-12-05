@@ -20,7 +20,7 @@ const CredentialPasswordCopyButton: FC<CredentialPasswordCopyButtonProps> = ({
             withArrow
           >
             <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
-            {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
+              {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
             </ActionIcon>
           </Tooltip>
         )}

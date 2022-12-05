@@ -1,5 +1,4 @@
-import { ActionIcon, Button, Tooltip } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { ActionIcon } from "@mantine/core";
 import { IconEye } from "@tabler/icons";
 import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC } from "react";
@@ -10,37 +9,19 @@ export interface PreviewButtonProps {
 }
 
 const PreviewButton: FC<PreviewButtonProps> = ({ document }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)");
   const [previewDocument, loadingPreview] = usePreviewDocument();
 
-  if (is768Px) {
-    return (
-      <Button
-        variant="light"
-        loading={loadingPreview}
-        onClick={() => {
-          previewDocument(document);
-        }}
-        leftIcon={<IconEye size={18} />}
-      >
-        Prévisualiser
-      </Button>
-    );
-  }
-
   return (
-    <Tooltip label="Prévisualiser" withArrow>
-      <ActionIcon
-        loading={loadingPreview}
-        variant="light"
-        color="blue"
-        onClick={() => {
-          previewDocument(document);
-        }}
-      >
-        <IconEye size={18} />
-      </ActionIcon>
-    </Tooltip>
+    <ActionIcon
+      loading={loadingPreview}
+      variant="light"
+      color="blue"
+      onClick={() => {
+        previewDocument(document);
+      }}
+    >
+      <IconEye size={18} />
+    </ActionIcon>
   );
 };
 

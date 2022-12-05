@@ -106,7 +106,13 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                         variant="subtle"
                         color={copied ? "teal" : "blue"}
                         onClick={copy}
-                        leftIcon={copied ? <IconCheck size={18} /> : <IconLink size={18} />}
+                        leftIcon={
+                          copied ? (
+                            <IconCheck size={18} />
+                          ) : (
+                            <IconLink size={18} />
+                          )
+                        }
                       >
                         {copied ? "Lien copié" : "Copier le lien"}
                       </Button>
@@ -119,7 +125,11 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                           color={copied ? "teal" : "blue"}
                           onClick={copy}
                         >
-                          {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
+                          {copied ? (
+                            <IconCheck size={18} />
+                          ) : (
+                            <IconLink size={18} />
+                          )}
                         </ActionIcon>
                       </Tooltip>
                     )

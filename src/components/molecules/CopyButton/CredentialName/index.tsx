@@ -13,7 +13,12 @@ const CredentialNameCopyButton: FC<CredentialNameCopyButtonProps> = ({
 }) => {
   return (
     <Group spacing="xs">
-      <Text className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap" {...rest}>{credential?.name}</Text>
+      <Text
+        className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
+        {...rest}
+      >
+        {credential?.name}
+      </Text>
       <Tooltip label="Aller sur le site" withArrow>
         <ActionIcon
           component="a"

@@ -12,7 +12,9 @@ const CreditCardCardholder: FC<CreditCardCardholderProps> = ({
 }) => {
   return (
     <Group spacing="xs">
-      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{creditCard.cardholder}</Code>
+      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+        {creditCard.cardholder}
+      </Code>
       <CopyButton value={String(creditCard.cardholder)}>
         {({ copied, copy }) => (
           <Tooltip
@@ -22,7 +24,7 @@ const CreditCardCardholder: FC<CreditCardCardholderProps> = ({
             withArrow
           >
             <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
-            {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
+              {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
             </ActionIcon>
           </Tooltip>
         )}
