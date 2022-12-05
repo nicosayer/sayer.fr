@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Badge,
   Button,
   Card,
@@ -7,11 +8,13 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { IconX } from "@tabler/icons";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { BoardDocument } from "types/firebase/collections";
+import { capitalizeFirsts } from "utils/string";
 import { ONE_SECOND } from "utils/time";
 
 const SettingsCard: FC = () => {
@@ -76,16 +79,32 @@ const SettingsCard: FC = () => {
             creatable
             getCreateLabel={(query) => `+ Ajouter ${query}`}
             onCreate={(query) => {
-              const tag = query.trim()
+              const tag = capitalizeFirsts(query.trim());
               setTags((old) => [...old, tag]);
               return tag;
             }}
             shouldCreate={(query) => {
               return query.length > 2;
             }}
-            valueComponent={({ value }) => {
+            valueComponent={({ value, onRemove, ...p }) => {
+              console.log(p);
+
               return (
-                <Badge color="red" variant="dot" className="mr-2">
+                <Badge
+                  color="red"
+                  variant="dot"
+                  className="mr-2"
+                  rightSection={
+                    <ActionIcon
+                      size="xs"
+                      variant="transparent"
+                      onClick={onRemove}
+                      className="-mr-[6px]"
+                    >
+                      <IconX size={10} />
+                    </ActionIcon>
+                  }
+                >
                   {value}
                 </Badge>
               );
@@ -101,7 +120,7 @@ const SettingsCard: FC = () => {
             creatable
             getCreateLabel={(query) => `+ Ajouter ${query}`}
             onCreate={(query) => {
-              const user = query.trim()
+              const user = query.trim().toLowerCase();
               setUsers((old) => [...old, user]);
               return user;
             }}
