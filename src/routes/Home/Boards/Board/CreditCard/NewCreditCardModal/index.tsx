@@ -4,17 +4,17 @@ import {
   ColorSwatch,
   Group,
   Input,
-  NumberInput,
+  InputBase,
   Stack,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
-import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useMemo } from "react";
+import InputMask from "react-input-mask";
 import {
   BoardDocument,
   Collection,
@@ -39,36 +39,30 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       name: "",
       cardholder: "",
       number: "",
-      expirationMonth: undefined as number | undefined,
-      expirationYear: undefined as number | undefined,
+      expirationDate: "",
       securityCode: "",
     },
 
     validate: {
-      color: (color) => {
-        return theme.colors[color][6] ? null : "Ce champ ne doit pas être vide";
-      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
+      },
+      color: (color) => {
+        return theme.colors[color][6] ? null : "Ce champ ne doit pas être vide";
       },
       cardholder: (cardholder) => {
         return cardholder.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
       number: (number) => {
-        return number.length > 0 ? null : "Ce champ ne doit pas être vide";
+        return number.length === 19 ? null : "Ce champ ne doit pas être vide";
       },
-      expirationMonth: (expirationMonth?: number) => {
-        return expirationMonth && expirationMonth > 0 && expirationMonth < 13
-          ? null
-          : "Ce champ ne doit pas être vide";
-      },
-      expirationYear: (expirationYear?: number) => {
-        return expirationYear && expirationYear > 0
+      expirationDate: (expirationDate) => {
+        return expirationDate.length === 5
           ? null
           : "Ce champ ne doit pas être vide";
       },
       securityCode: (securityCode) => {
-        return securityCode.length > 0
+        return securityCode.length === 3 || securityCode.length === 4
           ? null
           : "Ce champ ne doit pas être vide";
       },
@@ -78,20 +72,20 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        if (board?.ref && values.expirationYear) {
+        if (board?.ref) {
+          const [expirationMonth, expirationYear] =
+            values.expirationDate.split("/");
+
           start();
           addDoc<CreditCardDocument>(
             collection(board.ref, Collection.creditCards),
             {
               color: values.color,
               name: values.name,
-              number: values.number,
+              number: values.number.replace(/ +/g, ""),
+              expirationMonth: Number(expirationMonth),
+              expirationYear: Number(expirationYear) + 2000,
               cardholder: values.cardholder,
-              expirationMonth: values.expirationMonth,
-              expirationYear:
-                values.expirationYear < 100
-                  ? values.expirationYear + 2000
-                  : values.expirationYear,
               securityCode: values.securityCode,
             }
           )
@@ -101,6 +95,13 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       })}
     >
       <Stack>
+        <TextInput
+          withAsterisk
+          disabled={loading}
+          label="Nom de la carte"
+          placeholder="Revolut"
+          {...form.getInputProps("name")}
+        />
         <Input.Wrapper label="Couleur de la carte" withAsterisk>
           <Group spacing="xs" className="mt-1">
             {Object.keys(theme.colors).map((color) => (
@@ -120,52 +121,36 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
           </Group>
         </Input.Wrapper>
         <TextInput
-          withAsterisk
-          disabled={loading}
-          label="Nom de la carte"
-          placeholder="Revolut"
-          {...form.getInputProps("name")}
-        />
-        <TextInput
           disabled={loading}
           withAsterisk
           label="Nom du titulaire sur la carte"
           placeholder="John Doe"
           {...form.getInputProps("cardholder")}
         />
-        <TextInput
-          disabled={loading}
-          withAsterisk
+        <InputBase
           label="Numéro de la carte"
-          placeholder="1234 5678 9012 3456"
+          withAsterisk
+          component={InputMask}
+          mask="9999 9999 9999 9999"
+          maskChar={null}
+          placeholder="1234 1234 1234 1234"
           {...form.getInputProps("number")}
         />
-        <Input.Wrapper label="Date d'expiration" withAsterisk>
-          <Group grow>
-            <NumberInput
-              hideControls
-              min={1}
-              max={12}
-              disabled={loading}
-              withAsterisk
-              placeholder={dayjs().month() + 1}
-              {...form.getInputProps("expirationMonth")}
-            />
-            <NumberInput
-              hideControls
-              min={1}
-              max={dayjs().year() + 20}
-              disabled={loading}
-              withAsterisk
-              placeholder={dayjs().year()}
-              {...form.getInputProps("expirationYear")}
-            />
-          </Group>
-        </Input.Wrapper>
-        <TextInput
-          disabled={loading}
+        <InputBase
+          label="Date d'expiration"
           withAsterisk
+          component={InputMask}
+          mask="99/99"
+          maskChar={null}
+          placeholder="MM/AA"
+          {...form.getInputProps("expirationDate")}
+        />
+        <InputBase
           label="Code de sécurité"
+          withAsterisk
+          component={InputMask}
+          mask="9999"
+          maskChar={null}
           placeholder="123"
           {...form.getInputProps("securityCode")}
         />
