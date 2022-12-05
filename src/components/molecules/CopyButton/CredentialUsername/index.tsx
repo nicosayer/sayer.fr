@@ -13,12 +13,16 @@ const CredentialUsernameCopyButton: FC<CredentialUsernameCopyButtonProps> = ({
   return (
     <CopyButton value={String(credential?.username)}>
       {({ copied, copy }) => (
-        <Tooltip label={copied ? "Copié" : "Copier"} withArrow>
+        <Tooltip
+          label={
+            copied ? "Nom d'utilisateur copié" : "Copier le nom d'utilisateur"
+          }
+          withArrow
+        >
           <Button
             variant="subtle"
             compact
-            size="md"
-            color={copied ? "teal" : "dark"}
+            color={copied ? "teal" : "gray"}
             onClick={copy}
             rightIcon={<IconCopy size={18} />}
             className="max-w-[200px]"

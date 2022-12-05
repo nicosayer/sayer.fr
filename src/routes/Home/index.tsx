@@ -9,6 +9,7 @@ import Settings from "routes/Home/Boards/Board/Settings";
 import BoardsProvider from "routes/Home/Boards/Provider";
 import Error from "routes/Home/Error";
 import Credentials from "./Boards/Board/Credentials";
+import CreditCards from "./Boards/Board/CreditCard";
 import Documents from "./Boards/Board/Documents";
 
 const router = createBrowserRouter([
@@ -41,6 +42,8 @@ const router = createBrowserRouter([
                 path: "credentials/:credentialId",
                 element: <Credentials />,
               },
+              { path: "credit-cards", element: <CreditCards /> },
+              { path: "credit-cards/:creditCardId", element: <CreditCards /> },
               { path: "documents", element: <Documents /> },
               { path: "documents/:documentId", element: <Documents /> },
               { path: "settings", element: <Settings /> },

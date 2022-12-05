@@ -1,5 +1,10 @@
 import { Navbar as MantineNavbar, Stack } from "@mantine/core";
-import { IconId, IconLockOpen, IconSettings } from "@tabler/icons";
+import {
+  IconCreditCard,
+  IconId,
+  IconLockOpen,
+  IconSettings,
+} from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
 import { FC } from "react";
 import NavbarButton from "routes/Home/Boards/Board/Navbar/Button";
@@ -16,6 +21,12 @@ const menu = [
     color: "green",
     label: "Documents",
     to: "documents",
+  },
+  {
+    icon: <IconCreditCard size={18} />,
+    color: "red",
+    label: "Carte de crédit",
+    to: "credit-cards",
   },
 ];
 

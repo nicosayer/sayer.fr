@@ -11,57 +11,58 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
 import { IconEdit, IconLink, IconTrash } from "@tabler/icons";
-import CredentialNameCopyButton from "components/molecules/CopyButton/CredentialName";
-import CredentialPasswordCopyButton from "components/molecules/CopyButton/CredentialPassword";
-import CredentialUsernameCopyButton from "components/molecules/CopyButton/CredentialUsername";
+import CreditCardCardholder from "components/organisms/CreditCardCardholder";
+import CreditCardExpirationDate from "components/organisms/CreditCardExpirationDate";
+import CreditCardNumber from "components/organisms/CreditCardNumber";
+import CreditCardSecurityCode from "components/organisms/CreditCardSecurityCode";
 import { deleteDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { CredentialDocument } from "types/firebase/collections";
+import { CreditCardDocument } from "types/firebase/collections";
 import { sanitize } from "utils/string";
-import EditCredentialModal from "./EditCredentialModal";
+import EditCreditCardModal from "./EditCreditCardModal";
 
-export interface CredentialsCardsProps {
+export interface CreditCardsCardsProps {
   search: string;
 }
 
-const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
-  const { board, credentials } = useBoard();
+const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
+  const { board, creditCards } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
 
-  const filteredCredentials = useMemo(() => {
+  const filteredCreditCards = useMemo(() => {
     return sortBy(
-      (credentials ?? []).filter((credential) => {
-        return sanitize(String(credential.name)).indexOf(sanitize(search)) > -1;
+      (creditCards ?? []).filter((creditCard) => {
+        return sanitize(String(creditCard.name)).indexOf(sanitize(search)) > -1;
       }),
-      (credential) => sanitize(credential.name ?? "")
+      (creditCard) => sanitize(creditCard.name ?? "")
     );
-  }, [credentials, search]);
+  }, [creditCards, search]);
 
-  const openEditModal = useCallback((credential: CredentialDocument) => {
+  const openEditModal = useCallback((creditCard: CreditCardDocument) => {
     return openModal({
       centered: true,
-      title: "Modifier le mot de passe",
-      children: <EditCredentialModal credential={credential} />,
+      title: "Modifier la carte de crédit",
+      children: <EditCreditCardModal creditCard={creditCard} />,
     });
   }, []);
 
-  const openDeleteModal = useCallback((credential: CredentialDocument) => {
+  const openDeleteModal = useCallback((creditCard: CreditCardDocument) => {
     openConfirmModal({
-      title: "Supprimer le mot de passe",
+      title: "Supprimer la carte de crédit",
       centered: true,
       children: (
         <Text size="sm">
-          Voulez-vous vraiment supprimer le mot de passe ? Cette action est
+          Voulez-vous vraiment supprimer la carte de crédit ? Cette action est
           définitive et irréversible.
         </Text>
       ),
       labels: { confirm: "Supprimer", cancel: "Annuler" },
       confirmProps: { color: "red" },
       onConfirm: () => {
-        if (credential.ref) {
-          deleteDoc(credential.ref);
+        if (creditCard.ref) {
+          deleteDoc(creditCard.ref);
         }
       },
     });
@@ -69,26 +70,34 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
 
   return (
     <Stack>
-      {filteredCredentials.map((credential) => {
+      {filteredCreditCards.map((creditCard) => {
         return (
-          <Card key={credential.id} withBorder>
+          <Card key={creditCard.id} withBorder>
             <Stack>
-              <div className="m-auto">
-                <CredentialNameCopyButton credential={credential} size="md" />
-              </div>
+              <Text fw={600} className="text-center">
+                {creditCard.name}
+              </Text>
               <div className="grid">
                 <Group position="center" spacing="xs">
-                  <div>Nom d'utilisateur :</div>
-                  <CredentialUsernameCopyButton credential={credential} />
+                  <div>Titulaire :</div>
+                  <CreditCardCardholder creditCard={creditCard} />
                 </Group>
                 <Group position="center" spacing="xs">
-                  <div>Mot de passe :</div>
-                  <CredentialPasswordCopyButton credential={credential} />
+                  <div>Numéro :</div>
+                  <CreditCardNumber creditCard={creditCard} />
+                </Group>
+                <Group position="center" spacing="xs">
+                  <div>Date d'expiration :</div>
+                  <CreditCardExpirationDate creditCard={creditCard} />
+                </Group>
+                <Group position="center" spacing="xs">
+                  <div>Code de sécurité :</div>
+                  <CreditCardSecurityCode creditCard={creditCard} />
                 </Group>
               </div>
               <Group grow>
                 <CopyButton
-                  value={`${process.env.REACT_APP_URL}/boards/${board?.id}/credentials/${credential.id}`}
+                  value={`${process.env.REACT_APP_URL}/boards/${board?.id}/credit-cards/${creditCard.id}`}
                 >
                   {({ copied, copy }) =>
                     is768Px ? (
@@ -120,7 +129,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                   <Button
                     variant="subtle"
                     onClick={() => {
-                      openEditModal(credential);
+                      openEditModal(creditCard);
                     }}
                     leftIcon={<IconEdit size={18} />}
                   >
@@ -131,7 +140,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                     <ActionIcon
                       color="blue"
                       onClick={() => {
-                        openEditModal(credential);
+                        openEditModal(creditCard);
                       }}
                     >
                       <IconEdit size={18} />
@@ -143,7 +152,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                     color="red"
                     variant="subtle"
                     onClick={() => {
-                      openDeleteModal(credential);
+                      openDeleteModal(creditCard);
                     }}
                     leftIcon={<IconTrash size={18} />}
                   >
@@ -154,7 +163,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                     <ActionIcon
                       color="red"
                       onClick={() => {
-                        openDeleteModal(credential);
+                        openDeleteModal(creditCard);
                       }}
                     >
                       <IconTrash size={18} />
@@ -170,4 +179,4 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
   );
 };
 
-export default CredentialsCards;
+export default CreditCardsCards;

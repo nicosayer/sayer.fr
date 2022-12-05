@@ -1,21 +1,21 @@
-import { Button, Tooltip } from "@mantine/core";
+import { Button, ButtonProps, Tooltip } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons";
 import { FC } from "react";
 import { CredentialDocument } from "types/firebase/collections";
 
-interface CredentialNameCopyButtonProps {
+interface CredentialNameCopyButtonProps extends ButtonProps {
   credential: CredentialDocument;
 }
 
 const CredentialNameCopyButton: FC<CredentialNameCopyButtonProps> = ({
   credential,
+  ...rest
 }) => {
   return (
     <Tooltip label="Aller sur le site" withArrow>
       <Button
         variant="subtle"
         compact
-        size="md"
         color="dark"
         rightIcon={<IconExternalLink size={18} />}
         component="a"
@@ -26,6 +26,7 @@ const CredentialNameCopyButton: FC<CredentialNameCopyButtonProps> = ({
           `https://www.google.com/search?q=${credential.name}`
         }
         className="max-w-[200px]"
+        {...rest}
       >
         {credential?.name}
       </Button>

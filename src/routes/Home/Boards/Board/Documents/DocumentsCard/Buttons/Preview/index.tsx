@@ -16,7 +16,7 @@ const PreviewButton: FC<PreviewButtonProps> = ({ document }) => {
   if (is768Px) {
     return (
       <Button
-        variant="subtle"
+        variant="light"
         loading={loadingPreview}
         onClick={() => {
           previewDocument(document);
@@ -32,6 +32,7 @@ const PreviewButton: FC<PreviewButtonProps> = ({ document }) => {
     <Tooltip label="Prévisualiser" withArrow>
       <ActionIcon
         loading={loadingPreview}
+        variant="light"
         color="blue"
         onClick={() => {
           previewDocument(document);

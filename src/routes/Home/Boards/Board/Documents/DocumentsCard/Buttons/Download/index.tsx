@@ -17,7 +17,7 @@ const DownloadButton: FC<DownloadButtonProps> = ({ document }) => {
     return (
       <Button
         loading={loadingDownload}
-        variant="subtle"
+        variant="light"
         onClick={() => {
           downloadDocument(document);
         }}
@@ -32,6 +32,7 @@ const DownloadButton: FC<DownloadButtonProps> = ({ document }) => {
     <Tooltip label="Télécharger" withArrow>
       <ActionIcon
         loading={loadingDownload}
+        variant="light"
         color="blue"
         onClick={() => {
           downloadDocument(document);

@@ -9,6 +9,7 @@ import {
   BoardDocument,
   Collection,
   CredentialDocument,
+  CreditCardDocument,
   DocumentDocument,
 } from "types/firebase/collections";
 import { sanitize } from "utils/string";
@@ -16,6 +17,7 @@ import { sanitize } from "utils/string";
 interface IBoardContext {
   board?: BoardDocument;
   credentials?: CredentialDocument[];
+  creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
   loading: boolean;
 }
@@ -23,6 +25,7 @@ interface IBoardContext {
 const BoardContext = createContext<IBoardContext>({
   board: undefined,
   credentials: undefined,
+  creditCards: undefined,
   documents: undefined,
   loading: false,
 });
@@ -61,13 +64,22 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       : undefined
   );
 
+  const [creditCards, loadingCreditCards] =
+    useCollectionData<CreditCardDocument>(
+      board?.ref
+        ? collection(board.ref, Collection.creditCards).withConverter(
+            firestoreConverter
+          )
+        : undefined
+    );
+
   const loading = useMemo(() => {
-    return loadingCredentials || loadingDocuments;
-  }, [loadingCredentials, loadingDocuments]);
+    return loadingCredentials || loadingCreditCards || loadingDocuments;
+  }, [loadingCredentials, loadingCreditCards, loadingDocuments]);
 
   const context = useMemo(() => {
-    return { board, credentials, documents, loading };
-  }, [board, credentials, documents, loading]);
+    return { board, credentials, creditCards, documents, loading };
+  }, [board, credentials, creditCards, documents, loading]);
 
   if (!board) {
     return <Navigate to="/" />;
@@ -80,7 +92,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
         actions={[
           ...(credentials ?? []).map((credential) => {
             return {
-              title: credential.name ?? "",
+              title: `${credential.name} - ${credential.username}`,
               group: "Mot de passe",
               onTrigger: () => {
                 navigate(`/boards/${boardId}/credentials/${credential.id}`);
@@ -93,6 +105,15 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
               group: "Document",
               onTrigger: () => {
                 navigate(`/boards/${boardId}/documents/${document.id}`);
+              },
+            };
+          }),
+          ...(creditCards ?? []).map((creditCard) => {
+            return {
+              title: `${creditCard.name} - ${creditCard.cardholder}`,
+              group: "Carte de crédit",
+              onTrigger: () => {
+                navigate(`/boards/${boardId}/credit-cards/${creditCard.id}`);
               },
             };
           }),

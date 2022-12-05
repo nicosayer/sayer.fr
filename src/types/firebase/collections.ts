@@ -3,6 +3,7 @@ import { DocumentReference } from "firebase/firestore";
 export enum Collection {
   boards = "boards",
   credentials = "credentials",
+  creditCards = "creditCards",
   documents = "documents",
 }
 
@@ -20,6 +21,17 @@ export interface CredentialDocument {
   url?: string;
   username?: string;
   password?: string;
+}
+
+export interface CreditCardDocument {
+  id?: string;
+  ref?: DocumentReference<BoardDocument>;
+  name?: string;
+  cardholder?: string;
+  number?: string;
+  expirationMonth?: number;
+  expirationYear?: number;
+  securityCode?: string;
 }
 
 export interface DocumentDocument {
