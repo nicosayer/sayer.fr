@@ -101,7 +101,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
           <Card key={document.id} withBorder>
             <Stack>
               <Text fw={600} className="text-center">
-                {document.type} — {document.owner}
+                {document.type} • {document.owner}
               </Text>
               <Group grow>
                 <div className="grid gap-2">
