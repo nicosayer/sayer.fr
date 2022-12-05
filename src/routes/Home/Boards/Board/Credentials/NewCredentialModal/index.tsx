@@ -24,6 +24,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
       url: "",
       username: "",
       password: "",
+      tag: "",
     },
 
     validate: {
@@ -51,6 +52,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
               username: values.username,
               password: values.password,
               url: values.url,
+              tag: values.tag,
             }
           )
             .then(() => closeAllModals())
@@ -59,7 +61,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <CredentialFormInputs loading={loading} form={form} />
+        <CredentialFormInputs loading={loading} form={form} board={board} />
         <div className="flex ml-auto">
           <Group>
             <Button

@@ -1,22 +1,24 @@
-import { Button, Group, Stack, TextInput } from "@mantine/core";
+import { Badge, Button, Group, Select, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
-import { DocumentDocument } from "types/firebase/collections";
+import { BoardDocument, DocumentDocument } from "types/firebase/collections";
 
 export interface EditDocumentModalProps {
+  board: BoardDocument;
   document: DocumentDocument;
 }
 
-const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
+const EditDocumentModal: FC<EditDocumentModalProps> = ({ board, document }) => {
   const [loading, start, stop] = useBooleanState();
 
   const form = useForm({
     initialValues: {
       type: document.type ?? "",
       owner: document.owner ?? "",
+      tag: document.tag ?? "",
     },
 
     validate: {
@@ -37,6 +39,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
           updateDoc<DocumentDocument>(document.ref, {
             type: values.type,
             owner: values.owner,
+            tag: values.tag,
           })
             .then(() => closeAllModals())
             .finally(stop);
@@ -57,6 +60,40 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
           label="Nom du propriétaire"
           placeholder="John Doe"
           {...form.getInputProps("owner")}
+        />
+        <Select
+          label="Étiquette"
+          data={board?.tags ?? []}
+          placeholder="John Doe"
+          itemComponent={({ value, ...rest }) => {
+            return (
+              <div {...rest}>
+                <Badge variant="dot" color="red">
+                  {value}
+                </Badge>
+              </div>
+            );
+          }}
+          clearable
+          styles={(theme) => ({
+            item: {
+              "&[data-selected]": {
+                "&, &:hover": {
+                  backgroundColor:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.gray[9]
+                      : theme.white,
+                },
+                "&:hover": {
+                  backgroundColor:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.gray[8]
+                      : theme.colors.gray[1],
+                },
+              },
+            },
+          })}
+          {...form.getInputProps("tag")}
         />
         <div className="flex ml-auto">
           <Group>

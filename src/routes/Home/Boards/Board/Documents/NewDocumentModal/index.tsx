@@ -1,4 +1,12 @@
-import { Button, Group, Input, Stack, TextInput } from "@mantine/core";
+import {
+  Badge,
+  Button,
+  Group,
+  Input,
+  Select,
+  Stack,
+  TextInput,
+} from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
@@ -30,6 +38,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
       type: "",
       owner: "",
       file: undefined as FileWithPath | undefined,
+      tag: "",
     },
 
     validate: {
@@ -59,6 +68,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             {
               type: values.type,
               owner: values.owner,
+              tag: values.tag,
               mime: values.file.type as Mime,
             }
           )
@@ -96,11 +106,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
           placeholder="John Doe"
           {...form.getInputProps("owner")}
         />
-        <Input.Wrapper
-          label="Document"
-          withAsterisk
-          error={form.getInputProps("file").error}
-        >
+        <Input.Wrapper label="Document" withAsterisk error={form.errors.file}>
           <Dropzone
             maxFiles={1}
             maxSize={10 * 1024 ** 2} // 10MB
@@ -109,11 +115,45 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             }}
             accept={[Mime.Jpeg, Mime.Png, Mime.Pdf]}
           >
-            {form.getInputProps("file").value
-              ? form.getInputProps("file").value.name
+            {form.values.file
+              ? form.values.file.name
               : "Déposer le document ici"}
           </Dropzone>
         </Input.Wrapper>
+        <Select
+          label="Étiquette"
+          data={board?.tags ?? []}
+          placeholder="John Doe"
+          itemComponent={({ value, ...rest }) => {
+            return (
+              <div {...rest}>
+                <Badge variant="dot" color="red">
+                  {value}
+                </Badge>
+              </div>
+            );
+          }}
+          clearable
+          styles={(theme) => ({
+            item: {
+              "&[data-selected]": {
+                "&, &:hover": {
+                  backgroundColor:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.gray[9]
+                      : theme.white,
+                },
+                "&:hover": {
+                  backgroundColor:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.gray[8]
+                      : theme.colors.gray[1],
+                },
+              },
+            },
+          })}
+          {...form.getInputProps("tag")}
+        />
         <div className="flex ml-auto">
           <Group>
             <Button

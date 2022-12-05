@@ -41,13 +41,18 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
   const { board, documents } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
 
-  const openEditModal = useCallback((document: DocumentDocument) => {
-    openModal({
-      centered: true,
-      title: "Modifier le document",
-      children: <EditDocumentModal document={document} />,
-    });
-  }, []);
+  const openEditModal = useCallback(
+    (document: DocumentDocument) => {
+      if (board) {
+        openModal({
+          centered: true,
+          title: "Modifier le document",
+          children: <EditDocumentModal document={document} board={board} />,
+        });
+      }
+    },
+    [board]
+  );
 
   const openDeleteModal = useCallback((document: DocumentDocument) => {
     openConfirmModal({
@@ -102,6 +107,15 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
             <Stack>
               <Text fw={600} className="text-center">
                 {document.type} • {document.owner}
+                {document.tag && (
+                  <Badge
+                    variant="dot"
+                    color="red"
+                    className="absolute right-[16px]"
+                  >
+                    {document.tag}
+                  </Badge>
+                )}
               </Text>
               <Group grow>
                 <div className="grid gap-2">

@@ -31,6 +31,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       number: "",
       expirationDate: "",
       securityCode: "",
+      tag: "",
     },
 
     validate: {
@@ -77,6 +78,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
               expirationYear: Number(expirationYear) + 2000,
               cardholder: values.cardholder,
               securityCode: values.securityCode,
+              tag: values.tag,
             }
           )
             .then(() => closeAllModals())
@@ -85,7 +87,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <CreditCardFormInputs loading={loading} form={form} />
+        <CreditCardFormInputs loading={loading} form={form} board={board} />
         <div className="flex ml-auto">
           <Group>
             <Button

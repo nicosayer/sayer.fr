@@ -1,47 +1,41 @@
 import {
+  Badge,
   CheckIcon,
   ColorSwatch,
   Group,
   Input,
   InputBase,
+  Select,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { FC } from "react";
 import InputMask from "react-input-mask";
+import { BoardDocument } from "types/firebase/collections";
+
+export interface CreditCardForm {
+  color: string;
+  name: string;
+  cardholder: string;
+  number: string;
+  expirationDate: string;
+  securityCode: string;
+  tag: string;
+}
 
 export interface CreditCardFormInputsProps {
   loading: boolean;
+  board: BoardDocument;
   form: UseFormReturnType<
-    {
-      color: string;
-      name: string;
-      cardholder: string;
-      number: string;
-      expirationDate: string;
-      securityCode: string;
-    },
-    (values: {
-      color: string;
-      name: string;
-      cardholder: string;
-      number: string;
-      expirationDate: string;
-      securityCode: string;
-    }) => {
-      color: string;
-      name: string;
-      cardholder: string;
-      number: string;
-      expirationDate: string;
-      securityCode: string;
-    }
+    CreditCardForm,
+    (values: CreditCardForm) => CreditCardForm
   >;
 }
 
 const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
   form,
+  board,
   loading,
 }) => {
   const theme = useMantineTheme();
@@ -66,9 +60,7 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
                 form.getInputProps("color").onChange(color);
               }}
             >
-              {form.getInputProps("color").value === color ? (
-                <CheckIcon width={10} />
-              ) : null}
+              {form.values.color === color ? <CheckIcon width={10} /> : null}
             </ColorSwatch>
           ))}
         </Group>
@@ -106,6 +98,40 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         maskChar={null}
         placeholder="123"
         {...form.getInputProps("securityCode")}
+      />
+      <Select
+        label="Étiquette"
+        data={board?.tags ?? []}
+        placeholder="John Doe"
+        itemComponent={({ value, ...rest }) => {
+          return (
+            <div {...rest}>
+              <Badge variant="dot" color="red">
+                {value}
+              </Badge>
+            </div>
+          );
+        }}
+        clearable
+        styles={(theme) => ({
+          item: {
+            "&[data-selected]": {
+              "&, &:hover": {
+                backgroundColor:
+                  theme.colorScheme === "dark"
+                    ? theme.colors.gray[9]
+                    : theme.white,
+              },
+              "&:hover": {
+                backgroundColor:
+                  theme.colorScheme === "dark"
+                    ? theme.colors.gray[8]
+                    : theme.colors.gray[1],
+              },
+            },
+          },
+        })}
+        {...form.getInputProps("tag")}
       />
     </>
   );

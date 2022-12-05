@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Badge,
   Button,
   Card,
   CopyButton,
@@ -39,13 +40,20 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
     );
   }, [credentials, search]);
 
-  const openEditModal = useCallback((credential: CredentialDocument) => {
-    return openModal({
-      centered: true,
-      title: "Modifier le mot de passe",
-      children: <EditCredentialModal credential={credential} />,
-    });
-  }, []);
+  const openEditModal = useCallback(
+    (credential: CredentialDocument) => {
+      if (board) {
+        return openModal({
+          centered: true,
+          title: "Modifier le mot de passe",
+          children: (
+            <EditCredentialModal credential={credential} board={board} />
+          ),
+        });
+      }
+    },
+    [board]
+  );
 
   const openDeleteModal = useCallback((credential: CredentialDocument) => {
     openConfirmModal({
@@ -73,9 +81,18 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
         return (
           <Card key={credential.id} withBorder>
             <Stack>
-              <div className="m-auto">
+              <Group className="m-auto">
                 <CredentialName credential={credential} fw={600} />
-              </div>
+                {credential.tag && (
+                  <Badge
+                    variant="dot"
+                    color="red"
+                    className="absolute right-[16px]"
+                  >
+                    {credential.tag}
+                  </Badge>
+                )}
+              </Group>
               <div className="grid gap-2">
                 <Group position="center" spacing="xs">
                   <div>Nom d'utilisateur :</div>

@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Badge,
   Button,
   Card,
   ColorSwatch,
@@ -43,13 +44,20 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
     );
   }, [creditCards, search]);
 
-  const openEditModal = useCallback((creditCard: CreditCardDocument) => {
-    return openModal({
-      centered: true,
-      title: "Modifier la carte de crédit",
-      children: <EditCreditCardModal creditCard={creditCard} />,
-    });
-  }, []);
+  const openEditModal = useCallback(
+    (creditCard: CreditCardDocument) => {
+      if (board) {
+        return openModal({
+          centered: true,
+          title: "Modifier la carte de crédit",
+          children: (
+            <EditCreditCardModal creditCard={creditCard} board={board} />
+          ),
+        });
+      }
+    },
+    [board]
+  );
 
   const openDeleteModal = useCallback((creditCard: CreditCardDocument) => {
     openConfirmModal({
@@ -82,6 +90,15 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                   <ColorSwatch color={theme.colors[creditCard.color][6]} />
                 )}
                 <Text fw={600}>{creditCard.name}</Text>
+                {creditCard.tag && (
+                  <Badge
+                    variant="dot"
+                    color="red"
+                    className="absolute right-[16px]"
+                  >
+                    {creditCard.tag}
+                  </Badge>
+                )}
               </Group>
               <div className="grid gap-2">
                 <Group position="center" spacing="xs">

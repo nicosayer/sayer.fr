@@ -12,6 +12,7 @@ export interface BoardDocument {
   ref?: DocumentReference<BoardDocument>;
   name?: string;
   users?: string[];
+  tags?: string[];
 }
 
 export interface CredentialDocument {
@@ -21,6 +22,7 @@ export interface CredentialDocument {
   url?: string;
   username?: string;
   password?: string;
+  tag?: string;
 }
 
 export interface CreditCardDocument {
@@ -33,6 +35,7 @@ export interface CreditCardDocument {
   expirationYear?: number;
   securityCode?: string;
   color?: string;
+  tag?: string;
 }
 
 export enum Mime {
@@ -47,4 +50,5 @@ export interface DocumentDocument {
   type?: string;
   mime?: Mime;
   owner?: string;
+  tag?: string;
 }
