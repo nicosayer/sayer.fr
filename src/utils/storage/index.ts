@@ -1,10 +1,12 @@
-export const getExtension = (type: string) => {
+import { Mime } from "types/firebase/collections";
+
+export const getExtension = (type: Mime) => {
   switch (type) {
-    case "image/png":
+    case Mime.Png:
       return "png";
-    case "image/jpeg":
+    case Mime.Jpeg:
       return "jpg";
-    case "application/pdf":
+    case Mime.Pdf:
       return "pdf";
   }
 };

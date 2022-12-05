@@ -1,4 +1,4 @@
-import { ActionIcon } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { IconDownload } from "@tabler/icons";
 import useDownloadDocument from "hooks/useDownloadDocument";
 import { FC } from "react";
@@ -12,16 +12,19 @@ const DownloadButton: FC<DownloadButtonProps> = ({ document }) => {
   const [downloadDocument, loadingDownload] = useDownloadDocument();
 
   return (
-    <ActionIcon
+    <Button
       loading={loadingDownload}
-      variant="light"
-      color="blue"
+      variant="subtle"
+      color="gray"
+      compact
+      size="xs"
       onClick={() => {
         downloadDocument(document);
       }}
+      leftIcon={<IconDownload size={18} />}
     >
-      <IconDownload size={18} />
-    </ActionIcon>
+      Télécharger
+    </Button>
   );
 };
 

@@ -1,23 +1,32 @@
 import {
   ActionIcon,
+  Badge,
   Button,
   Card,
   CopyButton,
   Group,
   Stack,
   Text,
+  ThemeIcon,
   Tooltip,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
+import {
+  IconCheck,
+  IconEdit,
+  IconFileText,
+  IconLink,
+  IconPhoto,
+  IconTrash,
+} from "@tabler/icons";
 import { storage } from "configs/firebase";
 import { deleteDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { sortBy } from "lodash";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { DocumentDocument } from "types/firebase/collections";
+import { DocumentDocument, Mime } from "types/firebase/collections";
 import { getExtension } from "utils/storage";
 import { sanitize } from "utils/string";
 import DownloadButton from "./Buttons/Download";
@@ -59,7 +68,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
             ref(
               storage,
               `${document.ref.path}/document.${getExtension(
-                String(document.mime)
+                document.mime as Mime
               )}`
             )
           );
@@ -83,6 +92,11 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
   return (
     <Stack>
       {filteredDocuments.map((document) => {
+        const MimeIcon = {
+          [Mime.Jpeg]: IconPhoto,
+          [Mime.Png]: IconPhoto,
+          [Mime.Pdf]: IconFileText,
+        }[document.mime ?? Mime.Pdf];
         return (
           <Card key={document.id} withBorder>
             <Stack>
@@ -92,11 +106,13 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
               <Group grow>
                 <div className="grid gap-2">
                   <Group position="center" spacing="xs">
-                    <div>Prévisualiser :</div>
+                    <ThemeIcon variant="light">
+                      <MimeIcon size={18} />
+                    </ThemeIcon>
+                    <Badge size="lg" radius="xs">
+                      {getExtension(document.mime as Mime)}
+                    </Badge>
                     <PreviewButton document={document} />
-                  </Group>
-                  <Group position="center" spacing="xs">
-                    <div>Télécharger :</div>
                     <DownloadButton document={document} />
                   </Group>
                 </div>

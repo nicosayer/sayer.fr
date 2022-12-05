@@ -35,10 +35,16 @@ export interface CreditCardDocument {
   color?: string;
 }
 
+export enum Mime {
+  Png = "image/png",
+  Jpeg = "image/jpeg",
+  Pdf = "application/pdf",
+}
+
 export interface DocumentDocument {
   id?: string;
   ref?: DocumentReference<BoardDocument>;
   type?: string;
-  mime?: string;
+  mime?: Mime;
   owner?: string;
 }

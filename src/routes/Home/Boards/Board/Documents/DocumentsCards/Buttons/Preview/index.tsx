@@ -1,4 +1,4 @@
-import { ActionIcon } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { IconEye } from "@tabler/icons";
 import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC } from "react";
@@ -12,16 +12,19 @@ const PreviewButton: FC<PreviewButtonProps> = ({ document }) => {
   const [previewDocument, loadingPreview] = usePreviewDocument();
 
   return (
-    <ActionIcon
+    <Button
       loading={loadingPreview}
-      variant="light"
-      color="blue"
+      variant="subtle"
+      compact
+      color="gray"
       onClick={() => {
         previewDocument(document);
       }}
+      leftIcon={<IconEye size={18} />}
+      size="xs"
     >
-      <IconEye size={18} />
-    </ActionIcon>
+      Prévisualiser
+    </Button>
   );
 };
 

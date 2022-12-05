@@ -12,6 +12,7 @@ import {
   BoardDocument,
   Collection,
   DocumentDocument,
+  Mime,
 } from "types/firebase/collections";
 import { getExtension } from "utils/storage";
 
@@ -58,7 +59,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             {
               type: values.type,
               owner: values.owner,
-              mime: values.file.type,
+              mime: values.file.type as Mime,
             }
           )
             .then((document) => {
@@ -67,7 +68,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
                   storage,
                   `boards/${board.id}/documents/${
                     document.id
-                  }/document.${getExtension(String(values.file?.type))}`
+                  }/document.${getExtension(values.file?.type as Mime)}`
                 ),
                 arrayBuffer,
                 {
@@ -106,7 +107,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             onDrop={([file]) => {
               form.getInputProps("file").onChange(file);
             }}
-            accept={["image/png", "image/jpeg", "application/pdf"]}
+            accept={[Mime.Jpeg, Mime.Png, Mime.Pdf]}
           >
             {form.getInputProps("file").value
               ? form.getInputProps("file").value.name

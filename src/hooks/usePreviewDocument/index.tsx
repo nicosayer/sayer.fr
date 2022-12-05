@@ -3,7 +3,7 @@ import { storage } from "configs/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { useMemo } from "react";
-import { DocumentDocument } from "types/firebase/collections";
+import { DocumentDocument, Mime } from "types/firebase/collections";
 import { getExtension } from "utils/storage";
 
 const usePreviewDocument = (): [
@@ -20,7 +20,7 @@ const usePreviewDocument = (): [
           ref(
             storage,
             `${document?.ref?.path}/document.${getExtension(
-              String(document.mime)
+              document.mime as Mime
             )}`
           )
         )

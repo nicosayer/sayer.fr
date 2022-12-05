@@ -3,7 +3,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { useMemo } from "react";
 import useDownloader from "react-use-downloader";
-import { DocumentDocument } from "types/firebase/collections";
+import { DocumentDocument, Mime } from "types/firebase/collections";
 import { getExtension } from "utils/storage";
 
 const useDownloadDocument = (): [
@@ -21,7 +21,7 @@ const useDownloadDocument = (): [
           ref(
             storage,
             `${document.ref?.path}/document.${getExtension(
-              String(document.mime)
+              document.mime as Mime
             )}`
           )
         )
@@ -29,7 +29,7 @@ const useDownloadDocument = (): [
             return download(
               url,
               `${document.type} - ${document.owner}.${getExtension(
-                String(document.mime)
+                document.mime as Mime
               )}`
             );
           })
