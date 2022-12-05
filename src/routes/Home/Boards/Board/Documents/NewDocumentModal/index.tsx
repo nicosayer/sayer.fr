@@ -35,18 +35,14 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
 
   const form = useForm({
     initialValues: {
-      type: "",
-      owner: "",
+      name: "",
       file: undefined as FileWithPath | undefined,
       tag: "",
     },
 
     validate: {
-      type: (type) => {
-        return type.length > 0 ? null : "Ce champ ne doit pas être vide";
-      },
-      owner: (owner) => {
-        return owner.length > 0 ? null : "Ce champ ne doit pas être vide";
+      name: (name) => {
+        return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
       file: (file?: FileWithPath) => {
         return file ? null : "Ce champ ne doit pas être vide";
@@ -66,8 +62,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
           addDoc<DocumentDocument>(
             collection(board.ref, Collection.documents),
             {
-              type: values.type,
-              owner: values.owner,
+              name: values.name,
               tag: values.tag,
               mime: values.file.type as Mime,
             }
@@ -97,14 +92,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
           disabled={loading}
           label="Type de document"
           placeholder="Passeport"
-          {...form.getInputProps("type")}
-        />
-        <TextInput
-          disabled={loading}
-          withAsterisk
-          label="Nom du propriétaire"
-          placeholder="John Doe"
-          {...form.getInputProps("owner")}
+          {...form.getInputProps("name")}
         />
         <Input.Wrapper label="Document" withAsterisk error={form.errors.file}>
           <Dropzone

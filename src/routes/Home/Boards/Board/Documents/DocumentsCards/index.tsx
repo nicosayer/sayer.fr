@@ -86,12 +86,12 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
     return sortBy(
       (documents ?? []).filter((document) => {
         return (
-          sanitize(`${document.type}${document.owner}`).indexOf(
+          sanitize(`${document.name}${document.tag}`).indexOf(
             sanitize(search)
           ) > -1
         );
       }),
-      (document) => sanitize(`${document.type}${document.owner}`)
+      (document) => sanitize(`${document.name}${document.tag}`)
     );
   }, [documents, search]);
 
@@ -107,7 +107,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
           <Card key={document.id} withBorder>
             <Stack>
               <Text fw={600} className="text-center">
-                {document.type} • {document.owner}
+                {document.name}
                 {document.tag && (
                   <Badge
                     variant="dot"

@@ -47,8 +47,7 @@ export enum Mime {
 export interface DocumentDocument {
   id?: string;
   ref?: DocumentReference<BoardDocument>;
-  type?: string;
+  name?: string;
   mime?: Mime;
-  owner?: string;
   tag?: string;
 }

@@ -28,9 +28,9 @@ const useDownloadDocument = (): [
           .then((url) => {
             return download(
               url,
-              `${document.type} - ${document.owner}.${getExtension(
-                document.mime as Mime
-              )}`
+              `${document.name}${
+                document.tag ? ` - ${document.tag.toUpperCase()}` : ""
+              }.${getExtension(document.mime as Mime)}`
             );
           })
           .finally(stop);

@@ -31,11 +31,8 @@ const Document: FC = () => {
     >
       <Stack spacing="xl">
         <Stack spacing="xs">
-          <Input.Wrapper label="Type">
-            <div>{document.type}</div>
-          </Input.Wrapper>
-          <Input.Wrapper label="Propriétaire">
-            <div>{document.owner}</div>
+          <Input.Wrapper label="Nom">
+            <div>{document.name}</div>
           </Input.Wrapper>
         </Stack>
         <Stack spacing="xs">

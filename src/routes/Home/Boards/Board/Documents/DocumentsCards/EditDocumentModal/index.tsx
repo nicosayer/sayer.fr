@@ -16,17 +16,13 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ board, document }) => {
 
   const form = useForm({
     initialValues: {
-      type: document.type ?? "",
-      owner: document.owner ?? "",
+      name: document.name ?? "",
       tag: document.tag ?? "",
     },
 
     validate: {
-      type: (type) => {
-        return type.length > 0 ? null : "Ce champ ne doit pas être vide";
-      },
-      owner: (owner) => {
-        return owner.length > 0 ? null : "Ce champ ne doit pas être vide";
+      name: (name) => {
+        return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
     },
   });
@@ -37,8 +33,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ board, document }) => {
         if (document?.ref) {
           start();
           updateDoc<DocumentDocument>(document.ref, {
-            type: values.type,
-            owner: values.owner,
+            name: values.name,
             tag: values.tag,
           })
             .then(() => closeAllModals())
@@ -52,14 +47,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ board, document }) => {
           withAsterisk
           label="Type de document"
           placeholder="Passeport"
-          {...form.getInputProps("type")}
-        />
-        <TextInput
-          disabled={loading}
-          withAsterisk
-          label="Nom du propriétaire"
-          placeholder="John Doe"
-          {...form.getInputProps("owner")}
+          {...form.getInputProps("name")}
         />
         <Select
           label="Étiquette"

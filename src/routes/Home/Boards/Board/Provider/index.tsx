@@ -152,8 +152,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
           }),
           ...(documents ?? []).map((document) => {
             return {
-              title: document.type ?? "",
-              description: document.owner,
+              title: document.name ?? "",
               tag: document.tag,
               group: "Document",
               onTrigger: () => {

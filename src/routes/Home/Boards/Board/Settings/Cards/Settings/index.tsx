@@ -55,8 +55,8 @@ const SettingsCard: FC = () => {
             start();
             updateDoc<BoardDocument>(board.ref, {
               name: values.name.trim(),
-              users: values.users,
-              tags: values.tags,
+              users: values.users.map((user) => user.trim()),
+              tags: values.tags.map((tag) => tag.trim()),
             }).finally(stop);
           }
         })}
