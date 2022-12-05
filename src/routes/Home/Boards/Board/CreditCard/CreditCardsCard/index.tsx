@@ -77,7 +77,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
               <Text fw={600} className="text-center">
                 {creditCard.name}
               </Text>
-              <div className="grid">
+              <div className="grid gap-2">
                 <Group position="center" spacing="xs">
                   <div>Titulaire :</div>
                   <CreditCardCardholder creditCard={creditCard} />

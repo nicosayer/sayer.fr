@@ -77,7 +77,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
           sanitize(String(document.owner)).indexOf(sanitize(search)) > -1
         );
       }),
-      (document) => sanitize(document.type ?? "")
+      (document) => sanitize(`${document.type}${document.owner}`)
     );
   }, [documents, search]);
 
@@ -91,7 +91,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                 {document.type} - {document.owner}
               </Text>
               <Group grow>
-                <div className="grid">
+                <div className="grid gap-2">
                   <Group position="center" spacing="xs">
                     <div>Prévisualiser :</div>
                     <PreviewButton document={document} />

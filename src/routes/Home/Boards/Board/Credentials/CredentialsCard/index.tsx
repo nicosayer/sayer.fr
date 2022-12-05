@@ -76,7 +76,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
               <div className="m-auto">
                 <CredentialNameCopyButton credential={credential} fw={600} />
               </div>
-              <div className="grid">
+              <div className="grid gap-2">
                 <Group position="center" spacing="xs">
                   <div>Nom d'utilisateur :</div>
                   <CredentialUsernameCopyButton credential={credential} />
