@@ -33,7 +33,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ board, document }) => {
         if (document?.ref) {
           start();
           updateDoc<DocumentDocument>(document.ref, {
-            name: values.name,
+            name: values.name.trim(),
             tag: values.tag,
           })
             .then(() => closeAllModals())

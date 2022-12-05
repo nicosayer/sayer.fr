@@ -55,8 +55,8 @@ const SettingsCard: FC = () => {
             start();
             updateDoc<BoardDocument>(board.ref, {
               name: values.name.trim(),
-              users: values.users.map((user) => user.trim()),
-              tags: values.tags.map((tag) => tag.trim()),
+              users: values.users,
+              tags: values.tags,
             }).finally(stop);
           }
         })}
@@ -76,8 +76,9 @@ const SettingsCard: FC = () => {
             creatable
             getCreateLabel={(query) => `+ Ajouter ${query}`}
             onCreate={(query) => {
-              setTags((current) => [...current, query]);
-              return query;
+              const tag = query.trim()
+              setTags((old) => [...old, tag]);
+              return tag;
             }}
             shouldCreate={(query) => {
               return query.length > 2;
@@ -100,8 +101,9 @@ const SettingsCard: FC = () => {
             creatable
             getCreateLabel={(query) => `+ Ajouter ${query}`}
             onCreate={(query) => {
-              setUsers((current) => [...current, query]);
-              return query;
+              const user = query.trim()
+              setUsers((old) => [...old, user]);
+              return user;
             }}
             shouldCreate={(query) => {
               return /^.+@.+\..+$/.test(query);

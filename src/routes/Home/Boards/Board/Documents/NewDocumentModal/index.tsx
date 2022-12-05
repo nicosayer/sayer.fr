@@ -62,7 +62,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
           addDoc<DocumentDocument>(
             collection(board.ref, Collection.documents),
             {
-              name: values.name,
+              name: values.name.trim(),
               tag: values.tag,
               mime: values.file.type as Mime,
             }

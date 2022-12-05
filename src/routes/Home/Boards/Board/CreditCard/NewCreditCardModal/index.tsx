@@ -72,11 +72,11 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
             collection(board.ref, Collection.creditCards),
             {
               color: values.color,
-              name: values.name,
+              name: values.name.trim(),
               number: values.number.replace(/ +/g, ""),
               expirationMonth: Number(expirationMonth),
               expirationYear: Number(expirationYear) + 2000,
-              cardholder: values.cardholder,
+              cardholder: values.cardholder.trim(),
               securityCode: values.securityCode,
               tag: values.tag,
             }

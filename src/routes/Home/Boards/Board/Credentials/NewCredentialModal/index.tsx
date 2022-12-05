@@ -48,10 +48,10 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
           addDoc<CredentialDocument>(
             collection(board.ref, Collection.credentials),
             {
-              name: values.name,
-              username: values.username,
+              name: values.name.trim(),
+              username: values.username.trim(),
               password: values.password,
-              url: values.url,
+              url: values.url.trim(),
               tag: values.tag,
             }
           )

@@ -46,11 +46,11 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
         if (credential?.ref) {
           start();
           updateDoc<CredentialDocument>(credential.ref, {
-            name: values.name,
-            username: values.username,
+            name: values.name.trim(),
+            username: values.username.trim(),
             password: values.password,
-            url: values.url,
-            tag: values.tag,
+            url: values.url.trim(),
+            tag: values.tag.trim(),
           })
             .then(() => closeAllModals())
             .finally(stop);

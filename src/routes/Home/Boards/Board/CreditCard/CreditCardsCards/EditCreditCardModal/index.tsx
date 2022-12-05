@@ -70,9 +70,9 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
           start();
           updateDoc<CreditCardDocument>(creditCard.ref, {
             color: values.color,
-            name: values.name,
+            name: values.name.trim(),
             number: values.number.replace(/ +/g, ""),
-            cardholder: values.cardholder,
+            cardholder: values.cardholder.trim(),
             expirationMonth: Number(expirationMonth),
             expirationYear: Number(expirationYear) + 2000,
             securityCode: values.securityCode,
