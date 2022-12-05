@@ -38,7 +38,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
   const filteredCreditCards = useMemo(() => {
     return sortBy(
       (creditCards ?? []).filter((creditCard) => {
-        return sanitize(String(creditCard.name)).indexOf(sanitize(search)) > -1;
+        return sanitize(`${creditCard.name}${creditCard.tag}`).indexOf(sanitize(search)) > -1;
       }),
       (creditCard) => sanitize(creditCard.name ?? "")
     );

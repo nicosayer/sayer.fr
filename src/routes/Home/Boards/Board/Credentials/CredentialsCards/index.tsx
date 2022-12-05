@@ -34,7 +34,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
   const filteredCredentials = useMemo(() => {
     return sortBy(
       (credentials ?? []).filter((credential) => {
-        return sanitize(String(credential.name)).indexOf(sanitize(search)) > -1;
+        return sanitize(`${credential.name}${credential.tag}`).indexOf(sanitize(search)) > -1;
       }),
       (credential) => sanitize(credential.name ?? "")
     );
