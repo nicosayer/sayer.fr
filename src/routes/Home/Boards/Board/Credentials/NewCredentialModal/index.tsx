@@ -1,6 +1,7 @@
-import { Button, Group, PasswordInput, Stack, TextInput } from "@mantine/core";
+import { Button, Group, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
+import CredentialFormInputs from "components/organisms/CredentialFormInputs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
@@ -58,38 +59,11 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <TextInput
-          withAsterisk
-          disabled={loading}
-          label="Nom du site web"
-          placeholder="Acme"
-          {...form.getInputProps("name")}
-        />
-        <TextInput
-          disabled={loading}
-          withAsterisk
-          label="Nom d'utilisateur"
-          placeholder="admin@acme.com"
-          {...form.getInputProps("username")}
-        />
-        <PasswordInput
-          disabled={loading}
-          withAsterisk
-          label="Mot de passe"
-          placeholder="••••••••••"
-          {...form.getInputProps("password")}
-        />
-        <TextInput
-          disabled={loading}
-          label="Lien vers le site web"
-          placeholder="https://acme.com"
-          {...form.getInputProps("url")}
-        />
+        <CredentialFormInputs loading={loading} form={form} />
         <div className="flex ml-auto">
           <Group>
             <Button
-              variant="outline"
-              color="dark"
+              variant="default"
               disabled={loading}
               onClick={() => {
                 closeAllModals();

@@ -116,8 +116,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
         <div className="flex ml-auto">
           <Group>
             <Button
-              variant="outline"
-              color="dark"
+              variant="default"
               disabled={loading}
               onClick={() => {
                 closeAllModals();

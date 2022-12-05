@@ -61,8 +61,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
         <div className="flex ml-auto">
           <Group>
             <Button
-              variant="outline"
-              color="dark"
+              variant="default"
               disabled={loading}
               onClick={() => {
                 closeAllModals();

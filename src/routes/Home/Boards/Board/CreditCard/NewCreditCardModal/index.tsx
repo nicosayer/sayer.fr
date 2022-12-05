@@ -1,20 +1,10 @@
-import {
-  Button,
-  CheckIcon,
-  ColorSwatch,
-  Group,
-  Input,
-  InputBase,
-  Stack,
-  TextInput,
-  useMantineTheme,
-} from "@mantine/core";
+import { Button, Group, Stack, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
+import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useMemo } from "react";
-import InputMask from "react-input-mask";
 import {
   BoardDocument,
   Collection,
@@ -95,70 +85,11 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <TextInput
-          withAsterisk
-          disabled={loading}
-          label="Nom de la carte"
-          placeholder="Revolut"
-          {...form.getInputProps("name")}
-        />
-        <Input.Wrapper label="Couleur de la carte" withAsterisk>
-          <Group spacing="xs" className="mt-1">
-            {Object.keys(theme.colors).map((color) => (
-              <ColorSwatch
-                key={color}
-                color={theme.colors[color][6]}
-                className="text-white cursor-pointer"
-                onClick={() => {
-                  form.getInputProps("color").onChange(color);
-                }}
-              >
-                {form.getInputProps("color").value === color ? (
-                  <CheckIcon width={10} />
-                ) : null}
-              </ColorSwatch>
-            ))}
-          </Group>
-        </Input.Wrapper>
-        <TextInput
-          disabled={loading}
-          withAsterisk
-          label="Nom du titulaire sur la carte"
-          placeholder="John Doe"
-          {...form.getInputProps("cardholder")}
-        />
-        <InputBase
-          label="Numéro de la carte"
-          withAsterisk
-          component={InputMask}
-          mask="9999 9999 9999 9999"
-          maskChar={null}
-          placeholder="1234 1234 1234 1234"
-          {...form.getInputProps("number")}
-        />
-        <InputBase
-          label="Date d'expiration"
-          withAsterisk
-          component={InputMask}
-          mask="99/99"
-          maskChar={null}
-          placeholder="MM/AA"
-          {...form.getInputProps("expirationDate")}
-        />
-        <InputBase
-          label="Code de sécurité"
-          withAsterisk
-          component={InputMask}
-          mask="9999"
-          maskChar={null}
-          placeholder="123"
-          {...form.getInputProps("securityCode")}
-        />
+        <CreditCardFormInputs loading={loading} form={form} />
         <div className="flex ml-auto">
           <Group>
             <Button
-              variant="outline"
-              color="dark"
+              variant="default"
               disabled={loading}
               onClick={() => {
                 closeAllModals();
