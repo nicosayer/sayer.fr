@@ -86,8 +86,9 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
     return sortBy(
       (documents ?? []).filter((document) => {
         return (
-          sanitize(String(document.type)).indexOf(sanitize(search)) > -1 ||
-          sanitize(String(document.owner)).indexOf(sanitize(search)) > -1
+          sanitize(`${document.type}${document.owner}`).indexOf(
+            sanitize(search)
+          ) > -1
         );
       }),
       (document) => sanitize(`${document.type}${document.owner}`)

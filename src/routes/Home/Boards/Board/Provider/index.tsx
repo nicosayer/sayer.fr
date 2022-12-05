@@ -1,4 +1,12 @@
-import { SpotlightProvider } from "@mantine/spotlight";
+import {
+  Badge,
+  Group,
+  Text,
+  UnstyledButton,
+  useMantineColorScheme,
+} from "@mantine/core";
+import { SpotlightActionProps, SpotlightProvider } from "@mantine/spotlight";
+import classNames from "classnames";
 import { firestoreConverter } from "configs/firebase";
 import { collection } from "firebase/firestore";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
@@ -37,6 +45,46 @@ export const useBoard = () => useContext(BoardContext);
 interface BoardProviderProps {
   boardId: string;
   children: ReactNode;
+}
+
+function CustomAction({
+  action,
+  styles,
+  hovered,
+  onTrigger,
+  ...others
+}: SpotlightActionProps) {
+  const theme = useMantineColorScheme();
+
+  return (
+    <UnstyledButton
+      className={classNames(
+        "relative block w-full py-[10px] px-[12px] rounded",
+        {
+          "bg-dark-400": hovered && theme.colorScheme === "dark",
+          "bg-gray-100": hovered && theme.colorScheme !== "dark",
+        }
+      )}
+      onClick={onTrigger}
+      {...others}
+    >
+      <Group noWrap>
+        <div className="flex-1">
+          <Text>{action.title}</Text>
+          {action.description && (
+            <Text color="dimmed" size="xs">
+              {action.description}
+            </Text>
+          )}
+        </div>
+        {action.tag && (
+          <Badge color="red" variant="dot">
+            {action.tag}
+          </Badge>
+        )}
+      </Group>
+    </UnstyledButton>
+  );
 }
 
 const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
@@ -89,10 +137,13 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     <BoardContext.Provider value={context}>
       <SpotlightProvider
         shortcut="mod + K"
+        nothingFoundMessage="Aucun résultat..."
         actions={[
           ...(credentials ?? []).map((credential) => {
             return {
-              title: `${credential.name} - ${credential.username}`,
+              title: credential.name ?? "",
+              description: credential.username,
+              tag: credential.tag,
               group: "Mot de passe",
               onTrigger: () => {
                 navigate(`/boards/${boardId}/credentials/${credential.id}`);
@@ -101,7 +152,9 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
           }),
           ...(documents ?? []).map((document) => {
             return {
-              title: `${document.type} - ${document.owner}`,
+              title: document.type ?? "",
+              description: document.owner,
+              tag: document.tag,
               group: "Document",
               onTrigger: () => {
                 navigate(`/boards/${boardId}/documents/${document.id}`);
@@ -110,7 +163,9 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
           }),
           ...(creditCards ?? []).map((creditCard) => {
             return {
-              title: `${creditCard.name} - ${creditCard.cardholder}`,
+              title: creditCard.name ?? "",
+              description: creditCard.cardholder,
+              tag: creditCard.tag,
               group: "Carte de crédit",
               onTrigger: () => {
                 navigate(`/boards/${boardId}/credit-cards/${creditCard.id}`);
@@ -120,9 +175,13 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
         ]}
         filter={(query, actions) =>
           actions.filter(
-            (action) => sanitize(action.title).indexOf(sanitize(query)) > -1
+            (action) =>
+              sanitize(
+                `${action.title}${action.description}${action.tag}`
+              ).indexOf(sanitize(query)) > -1
           )
         }
+        actionComponent={CustomAction}
       >
         {children}
       </SpotlightProvider>
