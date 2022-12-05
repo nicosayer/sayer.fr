@@ -124,7 +124,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     <ThemeIcon variant="light">
                       <MimeIcon size={18} />
                     </ThemeIcon>
-                    <Badge size="lg" radius="xs">
+                    <Badge size="lg" radius="sm">
                       {getExtension(document.mime as Mime)}
                     </Badge>
                     <PreviewButton document={document} />
