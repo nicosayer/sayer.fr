@@ -7,7 +7,7 @@ import { newBoard } from "utils/boards";
 import { ONE_SECOND } from "utils/time";
 import { useBoards } from "../Provider";
 
-const NewBoard = () => {
+const NoBoard = () => {
   const { boards } = useBoards();
   const [user] = useAuthState(auth);
   const [loading, start, stop] = useBooleanState({ stopDelay: ONE_SECOND });
@@ -35,4 +35,4 @@ const NewBoard = () => {
   );
 };
 
-export default NewBoard;
+export default NoBoard;

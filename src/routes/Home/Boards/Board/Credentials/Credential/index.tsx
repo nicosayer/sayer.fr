@@ -1,10 +1,7 @@
-import { Badge, Group, Modal, Stack } from "@mantine/core";
-import CredentialName from "components/organisms/CredentialName";
-import CredentialPassword from "components/organisms/CredentialPassword";
-import CredentialUsername from "components/organisms/CredentialUsername";
+import { Modal } from "@mantine/core";
+import CredentialCardContent from "components/organisms/CredentialCardContent";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getColorFromString } from "utils/color";
 import { useBoard } from "../../Provider";
 
 const Credential: FC = () => {
@@ -27,29 +24,9 @@ const Credential: FC = () => {
       withCloseButton={false}
       centered
       trapFocus={false}
+      size="xl"
     >
-      <Stack>
-        <Group position="center">
-          <CredentialName credential={credential} fw={600} />
-          {credential.tag && (
-            <Badge
-              variant="dot"
-              color={getColorFromString(credential.tag)}
-              className="absolute right-[16px]"
-            >
-              {credential.tag}
-            </Badge>
-          )}
-        </Group>
-        <Group position="center" spacing="xs">
-          <div>Nom d'utilisateur :</div>
-          <CredentialUsername credential={credential} />
-        </Group>
-        <Group position="center" spacing="xs">
-          <div>Mot de passe :</div>
-          <CredentialPassword credential={credential} />
-        </Group>
-      </Stack>
+      <CredentialCardContent credential={credential} />
     </Modal>
   );
 };

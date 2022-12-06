@@ -1,7 +1,7 @@
 import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useMemo } from "react";
 import { Navigate, Outlet, useParams } from "react-router-dom";
-import NewBoard from "routes/Home/Boards/NewBoard";
+import NoBoard from "routes/Home/Boards/NoBoard";
 import { useBoards } from "routes/Home/Boards/Provider";
 
 const Boards = () => {
@@ -29,7 +29,7 @@ const Boards = () => {
     return <Outlet />;
   }
 
-  return <NewBoard />;
+  return <NoBoard />;
 };
 
 export default Boards;

@@ -9,7 +9,7 @@ import Settings from "routes/Home/Boards/Board/Settings";
 import BoardsProvider from "routes/Home/Boards/Provider";
 import Error from "routes/Home/Error";
 import Credentials from "./Boards/Board/Credentials";
-import CreditCards from "./Boards/Board/CreditCard";
+import CreditCards from "./Boards/Board/CreditCards";
 import Documents from "./Boards/Board/Documents";
 
 const router = createBrowserRouter([
