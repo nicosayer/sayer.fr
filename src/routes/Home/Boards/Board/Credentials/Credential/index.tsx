@@ -26,9 +26,10 @@ const Credential: FC = () => {
       onClose={() => navigate(`/boards/${board?.id}/credentials`)}
       withCloseButton={false}
       centered
+      trapFocus={false}
     >
       <Stack>
-        <Group className="m-auto">
+        <Group position="center">
           <CredentialName credential={credential} fw={600} />
           {credential.tag && (
             <Badge
@@ -40,16 +41,14 @@ const Credential: FC = () => {
             </Badge>
           )}
         </Group>
-        <div className="grid gap-2">
-          <Group position="center" spacing="xs">
-            <div>Nom d'utilisateur :</div>
-            <CredentialUsername credential={credential} />
-          </Group>
-          <Group position="center" spacing="xs">
-            <div>Mot de passe :</div>
-            <CredentialPassword credential={credential} />
-          </Group>
-        </div>
+        <Group position="center" spacing="xs">
+          <div>Nom d'utilisateur :</div>
+          <CredentialUsername credential={credential} />
+        </Group>
+        <Group position="center" spacing="xs">
+          <div>Mot de passe :</div>
+          <CredentialPassword credential={credential} />
+        </Group>
       </Stack>
     </Modal>
   );

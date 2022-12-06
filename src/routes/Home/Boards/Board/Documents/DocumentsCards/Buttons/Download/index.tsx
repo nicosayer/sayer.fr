@@ -14,10 +14,7 @@ const DownloadButton: FC<DownloadButtonProps> = ({ document }) => {
   return (
     <Button
       loading={loadingDownload}
-      variant="subtle"
-      color="gray"
-      compact
-      size="xs"
+      variant="light"
       onClick={() => {
         downloadDocument(document);
       }}

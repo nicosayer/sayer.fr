@@ -115,19 +115,17 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                   </Badge>
                 )}
               </Text>
+              <Group position="center" spacing="xs">
+                <ThemeIcon variant="light" color="gray">
+                  <MimeIcon size={18} />
+                </ThemeIcon>
+                <Badge size="lg" radius="sm" color="gray">
+                  {getExtension(document.mime as Mime)}
+                </Badge>
+              </Group>
               <Group grow>
-                <div className="grid gap-2">
-                  <Group position="center" spacing="xs">
-                    <ThemeIcon variant="light">
-                      <MimeIcon size={18} />
-                    </ThemeIcon>
-                    <Badge size="lg" radius="sm">
-                      {getExtension(document.mime as Mime)}
-                    </Badge>
-                    <PreviewButton document={document} />
-                    <DownloadButton document={document} />
-                  </Group>
-                </div>
+                <PreviewButton document={document} />
+                <DownloadButton document={document} />
               </Group>
               <Group grow>
                 <CopyButton
@@ -137,6 +135,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                     is768Px ? (
                       <Button
                         variant="subtle"
+                        size="xs"
                         color={copied ? "teal" : "blue"}
                         onClick={copy}
                         leftIcon={
@@ -155,6 +154,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                         withArrow
                       >
                         <ActionIcon
+                          size="xs"
                           color={copied ? "teal" : "blue"}
                           onClick={copy}
                         >
@@ -170,6 +170,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                 </CopyButton>
                 {is768Px ? (
                   <Button
+                    size="xs"
                     variant="subtle"
                     onClick={() => {
                       openEditModal(document);
@@ -181,6 +182,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                 ) : (
                   <Tooltip label="Modifier" withArrow>
                     <ActionIcon
+                      size="xs"
                       color="blue"
                       onClick={() => {
                         openEditModal(document);
@@ -192,6 +194,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                 )}
                 {is768Px ? (
                   <Button
+                    size="xs"
                     color="red"
                     variant="subtle"
                     onClick={() => {
@@ -204,6 +207,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
                 ) : (
                   <Tooltip label="Supprimer" withArrow>
                     <ActionIcon
+                      size="xs"
                       color="red"
                       onClick={() => {
                         openDeleteModal(document);

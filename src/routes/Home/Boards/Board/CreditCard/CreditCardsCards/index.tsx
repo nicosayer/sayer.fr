@@ -86,7 +86,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
         return (
           <Card key={creditCard.id} withBorder>
             <Stack>
-              <Group className="m-auto" spacing="xs">
+              <Group position="center" spacing="xs">
                 {creditCard.color && (
                   <ColorSwatch color={theme.colors[creditCard.color][6]} />
                 )}
@@ -127,6 +127,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                     is768Px ? (
                       <Button
                         fullWidth
+                        size="xs"
                         variant="subtle"
                         color={copied ? "teal" : "blue"}
                         onClick={copy}
@@ -146,6 +147,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                         withArrow
                       >
                         <ActionIcon
+                          size="xs"
                           color={copied ? "teal" : "blue"}
                           onClick={copy}
                         >
@@ -162,6 +164,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                 {is768Px ? (
                   <Button
                     variant="subtle"
+                    size="xs"
                     onClick={() => {
                       openEditModal(creditCard);
                     }}
@@ -173,6 +176,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                   <Tooltip label="Modifier" withArrow>
                     <ActionIcon
                       color="blue"
+                      size="xs"
                       onClick={() => {
                         openEditModal(creditCard);
                       }}
@@ -185,6 +189,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                   <Button
                     color="red"
                     variant="subtle"
+                    size="xs"
                     onClick={() => {
                       openDeleteModal(creditCard);
                     }}
@@ -196,6 +201,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
                   <Tooltip label="Supprimer" withArrow>
                     <ActionIcon
                       color="red"
+                      size="xs"
                       onClick={() => {
                         openDeleteModal(creditCard);
                       }}

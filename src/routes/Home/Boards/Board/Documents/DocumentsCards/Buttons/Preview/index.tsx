@@ -14,14 +14,11 @@ const PreviewButton: FC<PreviewButtonProps> = ({ document }) => {
   return (
     <Button
       loading={loadingPreview}
-      variant="subtle"
-      compact
-      color="gray"
+      variant="light"
       onClick={() => {
         previewDocument(document);
       }}
       leftIcon={<IconEye size={18} />}
-      size="xs"
     >
       Prévisualiser
     </Button>

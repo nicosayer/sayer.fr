@@ -36,9 +36,10 @@ const CreditCard: FC = () => {
       onClose={() => navigate(`/boards/${board?.id}/credit-cards`)}
       withCloseButton={false}
       centered
+      trapFocus={false}
     >
       <Stack>
-        <Group className="m-auto" spacing="xs">
+        <Group position="center" spacing="xs">
           {creditCard.color && (
             <ColorSwatch color={theme.colors[creditCard.color][6]} />
           )}
@@ -53,24 +54,22 @@ const CreditCard: FC = () => {
             </Badge>
           )}
         </Group>
-        <div className="grid gap-2">
-          <Group position="center" spacing="xs">
-            <div>Titulaire :</div>
-            <CreditCardCardholder creditCard={creditCard} />
-          </Group>
-          <Group position="center" spacing="xs">
-            <div>Numéro :</div>
-            <CreditCardNumber creditCard={creditCard} />
-          </Group>
-          <Group position="center" spacing="xs">
-            <div>Date d'expiration :</div>
-            <CreditCardExpirationDate creditCard={creditCard} />
-          </Group>
-          <Group position="center" spacing="xs">
-            <div>Code de sécurité :</div>
-            <CreditCardSecurityCode creditCard={creditCard} />
-          </Group>
-        </div>
+        <Group position="center" spacing="xs">
+          <div>Titulaire :</div>
+          <CreditCardCardholder creditCard={creditCard} />
+        </Group>
+        <Group position="center" spacing="xs">
+          <div>Numéro :</div>
+          <CreditCardNumber creditCard={creditCard} />
+        </Group>
+        <Group position="center" spacing="xs">
+          <div>Date d'expiration :</div>
+          <CreditCardExpirationDate creditCard={creditCard} />
+        </Group>
+        <Group position="center" spacing="xs">
+          <div>Code de sécurité :</div>
+          <CreditCardSecurityCode creditCard={creditCard} />
+        </Group>
       </Stack>
     </Modal>
   );

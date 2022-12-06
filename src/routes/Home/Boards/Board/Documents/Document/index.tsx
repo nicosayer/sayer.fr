@@ -48,6 +48,7 @@ const Document: FC = () => {
       onClose={() => navigate(`/boards/${board?.id}/documents`)}
       centered
       withCloseButton={false}
+      trapFocus={false}
     >
       <Stack>
         <Text fw={600} className="text-center">
@@ -70,28 +71,28 @@ const Document: FC = () => {
             {getExtension(document.mime as Mime)}
           </Badge>
         </Group>
-        <Button
-          loading={loadingPreview}
-          variant="light"
-          onClick={() => {
-            previewDocument(document);
-          }}
-          leftIcon={<IconEye size={18} />}
-          size="xs"
-        >
-          Prévisualiser
-        </Button>
-        <Button
-          loading={loadingDownload}
-          variant="light"
-          size="xs"
-          onClick={() => {
-            downloadDocument(document);
-          }}
-          leftIcon={<IconDownload size={18} />}
-        >
-          Télécharger
-        </Button>
+        <Group grow>
+          <Button
+            loading={loadingPreview}
+            variant="light"
+            onClick={() => {
+              previewDocument(document);
+            }}
+            leftIcon={<IconEye size={18} />}
+          >
+            Prévisualiser
+          </Button>
+          <Button
+            loading={loadingDownload}
+            variant="light"
+            onClick={() => {
+              downloadDocument(document);
+            }}
+            leftIcon={<IconDownload size={18} />}
+          >
+            Télécharger
+          </Button>
+        </Group>
       </Stack>
     </Modal>
   );

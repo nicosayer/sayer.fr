@@ -82,7 +82,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
         return (
           <Card key={credential.id} withBorder>
             <Stack>
-              <Group className="m-auto">
+              <Group position="center">
                 <CredentialName credential={credential} fw={600} />
                 {credential.tag && (
                   <Badge
@@ -113,6 +113,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                       <Button
                         fullWidth
                         variant="subtle"
+                        size="xs"
                         color={copied ? "teal" : "blue"}
                         onClick={copy}
                         leftIcon={
@@ -132,6 +133,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                       >
                         <ActionIcon
                           color={copied ? "teal" : "blue"}
+                          size="xs"
                           onClick={copy}
                         >
                           {copied ? (
@@ -147,6 +149,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                 {is768Px ? (
                   <Button
                     variant="subtle"
+                    size="xs"
                     onClick={() => {
                       openEditModal(credential);
                     }}
@@ -158,6 +161,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                   <Tooltip label="Modifier" withArrow>
                     <ActionIcon
                       color="blue"
+                      size="xs"
                       onClick={() => {
                         openEditModal(credential);
                       }}
@@ -170,6 +174,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                   <Button
                     color="red"
                     variant="subtle"
+                    size="xs"
                     onClick={() => {
                       openDeleteModal(credential);
                     }}
@@ -180,6 +185,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
                 ) : (
                   <Tooltip label="Supprimer" withArrow>
                     <ActionIcon
+                      size="xs"
                       color="red"
                       onClick={() => {
                         openDeleteModal(credential);
