@@ -15,7 +15,7 @@ import { FC, useState } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { BoardDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
-import { capitalizeFirsts } from "utils/string";
+import { capitalizeFirsts, sanitize } from "utils/string";
 import { ONE_SECOND } from "utils/time";
 
 const SettingsCard: FC = () => {
@@ -86,7 +86,10 @@ const SettingsCard: FC = () => {
               return tag;
             }}
             shouldCreate={(query) => {
-              return query.length > 2;
+              return (
+                query.length > 2 &&
+                !tags.map(sanitize).includes(sanitize(query))
+              );
             }}
             valueComponent={({ value, onRemove, ...p }) => {
               return (

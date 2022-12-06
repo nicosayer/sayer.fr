@@ -1,8 +1,8 @@
-import { Badge, PasswordInput, Select, TextInput } from "@mantine/core";
+import { PasswordInput, TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
+import TagSelect from "components/molecules/Select/Tag";
 import { FC } from "react";
 import { BoardDocument } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
 
 export interface CredentialForm {
   name: string;
@@ -56,38 +56,9 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
         placeholder="https://acme.com"
         {...form.getInputProps("url")}
       />
-      <Select
-        label="Étiquette"
-        data={board?.tags ?? []}
-        placeholder="John Doe"
-        itemComponent={({ value, ...rest }) => {
-          return (
-            <div {...rest}>
-              <Badge variant="dot" color={getColorFromString(value)}>
-                {value}
-              </Badge>
-            </div>
-          );
-        }}
-        clearable
-        styles={(theme) => ({
-          item: {
-            "&[data-selected]": {
-              "&, &:hover": {
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.gray[9]
-                    : theme.white,
-              },
-              "&:hover": {
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.gray[8]
-                    : theme.colors.gray[1],
-              },
-            },
-          },
-        })}
+      <TagSelect
+        board={board}
+        loading={loading}
         {...form.getInputProps("tag")}
       />
     </>

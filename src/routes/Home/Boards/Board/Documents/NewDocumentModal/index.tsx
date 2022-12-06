@@ -1,17 +1,10 @@
-import {
-  Badge,
-  Button,
-  Group,
-  Input,
-  Select,
-  Stack,
-  TextInput,
-} from "@mantine/core";
+import { Button, Group, Input, Stack, TextInput } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import { IconUpload } from "@tabler/icons";
 import classNames from "classnames";
+import TagSelect from "components/molecules/Select/Tag";
 import { storage } from "configs/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
@@ -24,7 +17,6 @@ import {
   DocumentDocument,
   Mime,
 } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
 import { getExtension } from "utils/storage";
 
 export interface NewDocumentModalProps {
@@ -106,7 +98,11 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
               form.getInputProps("file").onChange(file);
             }}
             accept={[Mime.Jpeg, Mime.Png, Mime.Pdf]}
-            classNames={{ root: "px-[12px] border-[1px]" }}
+            classNames={{
+              root: classNames("px-[12px] border-[1px]", {
+                "border-red-400": form.errors.file,
+              }),
+            }}
           >
             <Group>
               <div
@@ -124,38 +120,9 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             </Group>
           </Dropzone>
         </Input.Wrapper>
-        <Select
-          label="Étiquette"
-          data={board?.tags ?? []}
-          placeholder="John Doe"
-          itemComponent={({ value, ...rest }) => {
-            return (
-              <div {...rest}>
-                <Badge variant="dot" color={getColorFromString(value)}>
-                  {value}
-                </Badge>
-              </div>
-            );
-          }}
-          clearable
-          styles={(theme) => ({
-            item: {
-              "&[data-selected]": {
-                "&, &:hover": {
-                  backgroundColor:
-                    theme.colorScheme === "dark"
-                      ? theme.colors.gray[9]
-                      : theme.white,
-                },
-                "&:hover": {
-                  backgroundColor:
-                    theme.colorScheme === "dark"
-                      ? theme.colors.gray[8]
-                      : theme.colors.gray[1],
-                },
-              },
-            },
-          })}
+        <TagSelect
+          board={board}
+          loading={loading}
           {...form.getInputProps("tag")}
         />
         <div className="flex ml-auto">

@@ -23,7 +23,36 @@ const MantineProvider = ({ children }: PropsWithChildren) => {
       toggleColorScheme={toggleColorScheme}
     >
       <MantineProviderComponent
-        theme={{ colorScheme }}
+        theme={{
+          colorScheme,
+          components: {
+            Input: {
+              classNames: {
+                input: "placeholder:text-gray-400",
+              },
+            },
+            TextInput: {
+              classNames: {
+                input: "placeholder:text-gray-400",
+              },
+            },
+            PasswordInput: {
+              classNames: {
+                input: "placeholder:text-gray-400",
+              },
+            },
+            Select: {
+              classNames: {
+                input: "placeholder:text-gray-400",
+              },
+            },
+            MultiSelect: {
+              classNames: {
+                input: "placeholder:text-gray-400",
+              },
+            },
+          },
+        }}
         withGlobalStyles
         withNormalizeCSS
       >

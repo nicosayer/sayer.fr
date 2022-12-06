@@ -1,19 +1,17 @@
 import {
-  Badge,
   CheckIcon,
   ColorSwatch,
   Group,
   Input,
   InputBase,
-  Select,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
+import TagSelect from "components/molecules/Select/Tag";
 import { FC } from "react";
 import InputMask from "react-input-mask";
 import { BoardDocument } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
 
 export interface CreditCardForm {
   color: string;
@@ -101,38 +99,9 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         placeholder="123"
         {...form.getInputProps("securityCode")}
       />
-      <Select
-        label="Étiquette"
-        data={board?.tags ?? []}
-        placeholder="John Doe"
-        itemComponent={({ value, ...rest }) => {
-          return (
-            <div {...rest}>
-              <Badge variant="dot" color={getColorFromString(value)}>
-                {value}
-              </Badge>
-            </div>
-          );
-        }}
-        clearable
-        styles={(theme) => ({
-          item: {
-            "&[data-selected]": {
-              "&, &:hover": {
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.gray[9]
-                    : theme.white,
-              },
-              "&:hover": {
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.gray[8]
-                    : theme.colors.gray[1],
-              },
-            },
-          },
-        })}
+      <TagSelect
+        board={board}
+        loading={loading}
         {...form.getInputProps("tag")}
       />
     </>

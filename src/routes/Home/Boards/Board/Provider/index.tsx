@@ -6,6 +6,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { SpotlightActionProps, SpotlightProvider } from "@mantine/spotlight";
+import { IconSearch } from "@tabler/icons";
 import classNames from "classnames";
 import { firestoreConverter } from "configs/firebase";
 import { collection } from "firebase/firestore";
@@ -138,7 +139,11 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     <BoardContext.Provider value={context}>
       <SpotlightProvider
         shortcut="mod + K"
-        nothingFoundMessage="Aucun résultat..."
+        nothingFoundMessage="Aucun résultat"
+        placeholder="Rechercher"
+        searchIcon={<IconSearch size={18} />}
+        limit={5}
+        searchPlaceholder="Rechercher"
         actions={(query) =>
           query
             ? [
