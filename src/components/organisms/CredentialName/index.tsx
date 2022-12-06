@@ -16,7 +16,7 @@ const CredentialName: FC<CredentialNameProps> = ({ credential, ...rest }) => {
       >
         {credential?.name}
       </Text>
-      <Tooltip label="Aller sur le site" withArrow>
+      <Tooltip label="Aller sur le site" withArrow withinPortal>
         <ActionIcon
           component="a"
           target="_blank"

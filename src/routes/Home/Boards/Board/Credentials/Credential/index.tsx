@@ -1,4 +1,4 @@
-import { Badge, Drawer, Input, Stack } from "@mantine/core";
+import { Badge, Group, Modal, Stack } from "@mantine/core";
 import CredentialName from "components/organisms/CredentialName";
 import CredentialPassword from "components/organisms/CredentialPassword";
 import CredentialUsername from "components/organisms/CredentialUsername";
@@ -21,40 +21,37 @@ const Credential: FC = () => {
   }
 
   return (
-    <Drawer
+    <Modal
       opened={Boolean(credentialId)}
       onClose={() => navigate(`/boards/${board?.id}/credentials`)}
-      title="Mot de passe"
-      padding="xl"
-      position="right"
+      withCloseButton={false}
+      centered
     >
-      <Stack spacing="xl">
-        <Input.Wrapper label="Site web">
-          <div>
-            <CredentialName credential={credential} />
-          </div>
-        </Input.Wrapper>
-        {credential.tag && (
-          <Input.Wrapper label="Étiquette">
-            <div>
-              <Badge variant="dot" color={getColorFromString(credential.tag)}>
-                {credential.tag}
-              </Badge>
-            </div>
-          </Input.Wrapper>
-        )}
-        <Input.Wrapper label="Nom d'utilisateur">
-          <div>
+      <Stack>
+        <Group className="m-auto">
+          <CredentialName credential={credential} fw={600} />
+          {credential.tag && (
+            <Badge
+              variant="dot"
+              color={getColorFromString(credential.tag)}
+              className="absolute right-[16px]"
+            >
+              {credential.tag}
+            </Badge>
+          )}
+        </Group>
+        <div className="grid gap-2">
+          <Group position="center" spacing="xs">
+            <div>Nom d'utilisateur :</div>
             <CredentialUsername credential={credential} />
-          </div>
-        </Input.Wrapper>
-        <Input.Wrapper label="Mot de passe">
-          <div>
+          </Group>
+          <Group position="center" spacing="xs">
+            <div>Mot de passe :</div>
             <CredentialPassword credential={credential} />
-          </div>
-        </Input.Wrapper>
+          </Group>
+        </div>
       </Stack>
-    </Drawer>
+    </Modal>
   );
 };
 

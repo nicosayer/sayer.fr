@@ -1,10 +1,10 @@
 import {
   Badge,
   ColorSwatch,
-  Drawer,
   Group,
-  Input,
+  Modal,
   Stack,
+  Text,
   useMantineTheme,
 } from "@mantine/core";
 import CreditCardCardholder from "components/organisms/CreditCardCardholder";
@@ -31,53 +31,48 @@ const CreditCard: FC = () => {
   }
 
   return (
-    <Drawer
+    <Modal
       opened={Boolean(creditCardId)}
       onClose={() => navigate(`/boards/${board?.id}/credit-cards`)}
-      title="Carte de crédit"
-      padding="xl"
-      position="right"
+      withCloseButton={false}
+      centered
     >
-      <Stack spacing="xl">
-        <Input.Wrapper label="Nom de la carte">
-          <Group className="m-auto" spacing="xs">
-            {creditCard.color && (
-              <ColorSwatch color={theme.colors[creditCard.color][6]} />
-            )}
-            {creditCard.name}
-          </Group>
-        </Input.Wrapper>
-        {creditCard.tag && (
-          <Input.Wrapper label="Étiquette">
-            <div>
-              <Badge variant="dot" color={getColorFromString(creditCard.tag)}>
-                {creditCard.tag}
-              </Badge>
-            </div>
-          </Input.Wrapper>
-        )}
-        <Input.Wrapper label="Titulaire">
-          <div>
+      <Stack>
+        <Group className="m-auto" spacing="xs">
+          {creditCard.color && (
+            <ColorSwatch color={theme.colors[creditCard.color][6]} />
+          )}
+          <Text fw={600}>{creditCard.name}</Text>
+          {creditCard.tag && (
+            <Badge
+              variant="dot"
+              color={getColorFromString(creditCard.tag)}
+              className="absolute right-[16px]"
+            >
+              {creditCard.tag}
+            </Badge>
+          )}
+        </Group>
+        <div className="grid gap-2">
+          <Group position="center" spacing="xs">
+            <div>Titulaire :</div>
             <CreditCardCardholder creditCard={creditCard} />
-          </div>
-        </Input.Wrapper>
-        <Input.Wrapper label="Numéro">
-          <div>
+          </Group>
+          <Group position="center" spacing="xs">
+            <div>Numéro :</div>
             <CreditCardNumber creditCard={creditCard} />
-          </div>
-        </Input.Wrapper>
-        <Input.Wrapper label="Date d'expiration">
-          <div>
+          </Group>
+          <Group position="center" spacing="xs">
+            <div>Date d'expiration :</div>
             <CreditCardExpirationDate creditCard={creditCard} />
-          </div>
-        </Input.Wrapper>
-        <Input.Wrapper label="Code de sécurité">
-          <div>
+          </Group>
+          <Group position="center" spacing="xs">
+            <div>Code de sécurité :</div>
             <CreditCardSecurityCode creditCard={creditCard} />
-          </div>
-        </Input.Wrapper>
+          </Group>
+        </div>
       </Stack>
-    </Drawer>
+    </Modal>
   );
 };
 

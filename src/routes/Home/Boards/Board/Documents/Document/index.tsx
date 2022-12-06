@@ -1,10 +1,20 @@
-import { Badge, Button, Drawer, Input, Stack } from "@mantine/core";
-import { IconDownload, IconEye } from "@tabler/icons";
+import {
+  Badge,
+  Button,
+  Group,
+  Modal,
+  Stack,
+  Text,
+  ThemeIcon,
+} from "@mantine/core";
+import { IconDownload, IconEye, IconFileText, IconPhoto } from "@tabler/icons";
 import useDownloadDocument from "hooks/useDownloadDocument";
 import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Mime } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
+import { getExtension } from "utils/storage";
 import { useBoard } from "../../Provider";
 
 const Document: FC = () => {
@@ -18,61 +28,72 @@ const Document: FC = () => {
     return documents?.find((document) => document.id === documentId);
   }, [documentId, documents]);
 
-  if (!document) {
+  const MimeIcon = useMemo(() => {
+    switch (document?.mime) {
+      case Mime.Jpeg:
+      case Mime.Png:
+        return IconPhoto;
+      case Mime.Pdf:
+        return IconFileText;
+    }
+  }, [document?.mime]);
+
+  if (!document || !MimeIcon) {
     return null;
   }
 
   return (
-    <Drawer
+    <Modal
       opened={Boolean(documentId)}
       onClose={() => navigate(`/boards/${board?.id}/documents`)}
-      title="Document"
-      padding="xl"
-      position="right"
+      centered
+      withCloseButton={false}
     >
-      <Stack spacing="xl">
-        <Stack spacing="xs">
-          <Input.Wrapper label="Nom">
-            <div>{document.name}</div>
-          </Input.Wrapper>
+      <Stack>
+        <Text fw={600} className="text-center">
+          {document.name}
           {document.tag && (
-            <Input.Wrapper label="Étiquette">
-              <div>
-                <Badge variant="dot" color={getColorFromString(document.tag)}>
-                  {document.tag}
-                </Badge>
-              </div>
-            </Input.Wrapper>
+            <Badge
+              variant="dot"
+              color={getColorFromString(document.tag)}
+              className="absolute right-[16px]"
+            >
+              {document.tag}
+            </Badge>
           )}
-        </Stack>
-        <Stack spacing="xs">
-          <Button
-            variant="light"
-            fullWidth
-            loading={loadingPreview}
-            color="blue"
-            onClick={() => {
-              previewDocument(document);
-            }}
-            leftIcon={<IconEye size={18} />}
-          >
-            Prévisualiser
-          </Button>
-          <Button
-            variant="light"
-            fullWidth
-            loading={loadingDownload}
-            color="blue"
-            onClick={() => {
-              downloadDocument(document);
-            }}
-            leftIcon={<IconDownload size={18} />}
-          >
-            Télécharger
-          </Button>
-        </Stack>
+        </Text>
+        <Group position="center" spacing="xs">
+          <ThemeIcon variant="light" color="gray">
+            <MimeIcon size={18} />
+          </ThemeIcon>
+          <Badge size="lg" radius="sm" color="gray">
+            {getExtension(document.mime as Mime)}
+          </Badge>
+        </Group>
+        <Button
+          loading={loadingPreview}
+          variant="light"
+          onClick={() => {
+            previewDocument(document);
+          }}
+          leftIcon={<IconEye size={18} />}
+          size="xs"
+        >
+          Prévisualiser
+        </Button>
+        <Button
+          loading={loadingDownload}
+          variant="light"
+          size="xs"
+          onClick={() => {
+            downloadDocument(document);
+          }}
+          leftIcon={<IconDownload size={18} />}
+        >
+          Télécharger
+        </Button>
       </Stack>
-    </Drawer>
+    </Modal>
   );
 };
 
