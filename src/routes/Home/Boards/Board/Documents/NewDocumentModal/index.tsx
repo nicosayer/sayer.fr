@@ -10,6 +10,8 @@ import {
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
+import { IconUpload } from "@tabler/icons";
+import classNames from "classnames";
 import { storage } from "configs/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
@@ -104,10 +106,22 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
               form.getInputProps("file").onChange(file);
             }}
             accept={[Mime.Jpeg, Mime.Png, Mime.Pdf]}
+            classNames={{ root: "px-[12px] border-[1px]" }}
           >
-            {form.values.file
-              ? form.values.file.name
-              : "Déposer le document ici"}
+            <Group>
+              <div
+                className={classNames("text-sm", {
+                  "text-[#adb5bd]": !form.values.file,
+                })}
+              >
+                {form.values.file
+                  ? form.values.file.name
+                  : "Déposer le document ici"}
+              </div>
+              {!form.values.file && (
+                <IconUpload className="ml-auto" size={18} />
+              )}
+            </Group>
           </Dropzone>
         </Input.Wrapper>
         <Select
