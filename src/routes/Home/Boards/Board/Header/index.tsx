@@ -16,6 +16,7 @@ import { useAppShell } from "components/atoms/AppShell";
 import { auth } from "configs/firebase";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
 import NewBoardMenuItem from "routes/Home/Boards/Board/Header/MenuItems/NewBoard";
 import SwitchBoardMenuItem from "routes/Home/Boards/Board/Header/MenuItems/SwitchBoard";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -30,6 +31,7 @@ const Header: FC = () => {
   const { board } = useBoard();
   const spotlight = useSpotlight();
   const is768px = useMediaQuery("(min-width: 768px)");
+  const navigate = useNavigate();
 
   return (
     <HeaderComponent height={{ base: 50, md: 70 }} p="md">
@@ -44,7 +46,13 @@ const Header: FC = () => {
               mr="xl"
             />
           )}
-          <Group spacing="xs">
+          <Group
+            spacing="xs"
+            className="cursor-pointer"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             {is768px ? <IconHome size={18} /> : null}
             <Text
               fw={500}
