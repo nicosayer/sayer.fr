@@ -21,7 +21,7 @@ import {
   DocumentDocument,
 } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
-import { sanitize, searchString } from "utils/string";
+import { searchString } from "utils/string";
 
 interface IBoardContext {
   board?: BoardDocument;
@@ -100,16 +100,16 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     useCollectionData<CredentialDocument>(
       board?.ref
         ? collection(board.ref, Collection.credentials).withConverter(
-          firestoreConverter
-        )
+            firestoreConverter
+          )
         : undefined
     );
 
   const [documents, loadingDocuments] = useCollectionData<DocumentDocument>(
     board?.ref
       ? collection(board.ref, Collection.documents).withConverter(
-        firestoreConverter
-      )
+          firestoreConverter
+        )
       : undefined
   );
 
@@ -117,8 +117,8 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     useCollectionData<CreditCardDocument>(
       board?.ref
         ? collection(board.ref, Collection.creditCards).withConverter(
-          firestoreConverter
-        )
+            firestoreConverter
+          )
         : undefined
     );
 
@@ -142,50 +142,52 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
         actions={(query) =>
           query
             ? [
-              ...(credentials ?? []).map((credential) => {
-                return {
-                  title: credential.name ?? "",
-                  description: credential.username,
-                  tag: credential.tag,
-                  group: "Mot de passe",
-                  onTrigger: () => {
-                    navigate(
-                      `/boards/${boardId}/credentials/${credential.id}`
-                    );
-                  },
-                };
-              }),
-              ...(documents ?? []).map((document) => {
-                return {
-                  title: document.name ?? "",
-                  tag: document.tag,
-                  group: "Document",
-                  onTrigger: () => {
-                    navigate(`/boards/${boardId}/documents/${document.id}`);
-                  },
-                };
-              }),
-              ...(creditCards ?? []).map((creditCard) => {
-                return {
-                  title: creditCard.name ?? "",
-                  description: creditCard.cardholder,
-                  tag: creditCard.tag,
-                  group: "Carte de crédit",
-                  onTrigger: () => {
-                    navigate(
-                      `/boards/${boardId}/credit-cards/${creditCard.id}`
-                    );
-                  },
-                };
-              }),
-            ]
+                ...(credentials ?? []).map((credential) => {
+                  return {
+                    title: credential.name ?? "",
+                    description: credential.username,
+                    tag: credential.tag,
+                    group: "Mot de passe",
+                    onTrigger: () => {
+                      navigate(
+                        `/boards/${boardId}/credentials/${credential.id}`
+                      );
+                    },
+                  };
+                }),
+                ...(documents ?? []).map((document) => {
+                  return {
+                    title: document.name ?? "",
+                    tag: document.tag,
+                    group: "Document",
+                    onTrigger: () => {
+                      navigate(`/boards/${boardId}/documents/${document.id}`);
+                    },
+                  };
+                }),
+                ...(creditCards ?? []).map((creditCard) => {
+                  return {
+                    title: creditCard.name ?? "",
+                    description: creditCard.cardholder,
+                    tag: creditCard.tag,
+                    group: "Carte de crédit",
+                    onTrigger: () => {
+                      navigate(
+                        `/boards/${boardId}/credit-cards/${creditCard.id}`
+                      );
+                    },
+                  };
+                }),
+              ]
             : []
         }
         filter={(query, actions) =>
-          actions.filter(
-            (action) => {
-              return searchString(`${action.title}${action.description}${action.tag}`, query)
-            })
+          actions.filter((action) => {
+            return searchString(
+              `${action.title}${action.description}${action.tag}`,
+              query
+            );
+          })
         }
         actionComponent={CustomAction}
       >
