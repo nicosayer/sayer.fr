@@ -2,7 +2,7 @@ import { db } from "configs/firebase";
 import { User } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 import { BoardDocument, Collection } from "types/firebase/collections";
-import { sanitize } from "utils/string";
+import { searchString } from "utils/string";
 
 export const newBoard = ({
   user,
@@ -14,7 +14,7 @@ export const newBoard = ({
   const username = user.displayName ?? user.email ?? "";
 
   const version = (boards ?? []).filter((board) => {
-    return sanitize(String(board.name)).indexOf(sanitize(username)) > -1;
+    return searchString(String(board.name), username);
   }).length;
 
   return addDoc<BoardDocument>(collection(db, Collection.boards), {

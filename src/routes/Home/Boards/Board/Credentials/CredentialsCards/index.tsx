@@ -21,7 +21,7 @@ import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CredentialDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
-import { sanitize } from "utils/string";
+import { sanitize, searchString } from "utils/string";
 import EditCredentialModal from "./EditCredentialModal";
 
 export interface CredentialsCardsProps {
@@ -35,11 +35,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
   const filteredCredentials = useMemo(() => {
     return sortBy(
       (credentials ?? []).filter((credential) => {
-        return (
-          sanitize(`${credential.name}${credential.tag}`).indexOf(
-            sanitize(search)
-          ) > -1
-        );
+        return searchString(`${credential.name}${credential.tag}`, search);
       }),
       (credential) => sanitize(`${credential.name}${credential.tag}`)
     );

@@ -13,3 +13,9 @@ export const capitalizeFirsts = (string: string) => {
     .map((word) => word[0].toUpperCase() + word.slice(1))
     .join(" ");
 };
+
+export const searchString = (string: string, query: string) => {
+  return query.split(" ").every((q) => {
+    return sanitize(string).indexOf(sanitize(q)) > -1;
+  });
+};

@@ -29,7 +29,7 @@ import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, Mime } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { getExtension } from "utils/storage";
-import { sanitize } from "utils/string";
+import { sanitize, searchString } from "utils/string";
 import DownloadButton from "./Buttons/Download";
 import PreviewButton from "./Buttons/Preview";
 import EditDocumentModal from "./EditDocumentModal";
@@ -86,11 +86,7 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
   const filteredDocuments = useMemo(() => {
     return sortBy(
       (documents ?? []).filter((document) => {
-        return (
-          sanitize(`${document.name}${document.tag}`).indexOf(
-            sanitize(search)
-          ) > -1
-        );
+        return searchString(`${document.name}${document.tag}`, search);
       }),
       (document) => sanitize(`${document.name}${document.tag}`)
     );

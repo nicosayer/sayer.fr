@@ -24,7 +24,7 @@ import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
-import { sanitize } from "utils/string";
+import { sanitize, searchString } from "utils/string";
 import EditCreditCardModal from "./EditCreditCardModal";
 
 export interface CreditCardsCardsProps {
@@ -39,11 +39,7 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
   const filteredCreditCards = useMemo(() => {
     return sortBy(
       (creditCards ?? []).filter((creditCard) => {
-        return (
-          sanitize(`${creditCard.name}${creditCard.tag}`).indexOf(
-            sanitize(search)
-          ) > -1
-        );
+        return searchString(`${creditCard.name}${creditCard.tag}`, search);
       }),
       (creditCard) => sanitize(`${creditCard.name}${creditCard.tag}`)
     );
