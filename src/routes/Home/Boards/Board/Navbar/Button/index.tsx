@@ -13,11 +13,11 @@ interface NavbarButtonProps {
 
 const NavbarButton: FC<NavbarButtonProps> = ({ icon, color, label, to }) => {
   const navigate = useNavigate();
-  const { last } = usePathname();
+  const { pathnames } = usePathname();
   const { closeNavbar } = useAppShell();
   const isActive = useMemo(() => {
-    return last === to;
-  }, [last, to]);
+    return pathnames[2] === to;
+  }, [pathnames, to]);
 
   return (
     <UnstyledButton

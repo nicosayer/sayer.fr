@@ -38,7 +38,7 @@ const MantineProvider = ({ children }: PropsWithChildren) => {
             },
             PasswordInput: {
               classNames: {
-                input: "placeholder:text-gray-400",
+                innerInput: "placeholder:text-gray-400",
               },
             },
             Select: {
