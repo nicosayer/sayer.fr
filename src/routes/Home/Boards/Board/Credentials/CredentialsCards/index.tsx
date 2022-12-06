@@ -26,7 +26,7 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
       {filteredCredentials.map((credential) => {
         return (
           <Card key={credential.id} withBorder>
-            <CredentialCardContent credential={(credential = {})} />
+            <CredentialCardContent credential={credential} />
           </Card>
         );
       })}
