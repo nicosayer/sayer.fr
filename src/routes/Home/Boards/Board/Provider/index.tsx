@@ -1,18 +1,8 @@
-import {
-  Badge,
-  Group,
-  Text,
-  UnstyledButton,
-  useMantineColorScheme,
-} from "@mantine/core";
-import { SpotlightActionProps, SpotlightProvider } from "@mantine/spotlight";
-import { IconSearch } from "@tabler/icons";
-import classNames from "classnames";
 import { firestoreConverter } from "configs/firebase";
 import { collection } from "firebase/firestore";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
 import {
   BoardDocument,
@@ -21,8 +11,6 @@ import {
   CreditCardDocument,
   DocumentDocument,
 } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
-import { searchString } from "utils/string";
 
 interface IBoardContext {
   board?: BoardDocument;
@@ -49,49 +37,8 @@ interface BoardProviderProps {
   children: ReactNode;
 }
 
-function CustomAction({
-  action,
-  styles,
-  hovered,
-  onTrigger,
-  ...others
-}: SpotlightActionProps) {
-  const theme = useMantineColorScheme();
-
-  return (
-    <UnstyledButton
-      className={classNames(
-        "relative block w-full py-[10px] px-[12px] rounded",
-        {
-          "bg-dark-400": hovered && theme.colorScheme === "dark",
-          "bg-gray-100": hovered && theme.colorScheme !== "dark",
-        }
-      )}
-      onClick={onTrigger}
-      {...others}
-    >
-      <Group noWrap>
-        <div className="flex-1">
-          <Text>{action.title}</Text>
-          {action.description && (
-            <Text color="dimmed" size="xs">
-              {action.description}
-            </Text>
-          )}
-        </div>
-        {action.tag && (
-          <Badge color={getColorFromString(action.tag)} variant="dot">
-            {action.tag}
-          </Badge>
-        )}
-      </Group>
-    </UnstyledButton>
-  );
-}
-
 const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   const { boards } = useBoards();
-  const navigate = useNavigate();
 
   const board = useMemo(() => {
     return boards?.find((board) => board.id === boardId);
@@ -136,69 +83,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   }
 
   return (
-    <BoardContext.Provider value={context}>
-      <SpotlightProvider
-        shortcut="mod + K"
-        nothingFoundMessage="Aucun résultat"
-        placeholder="Rechercher"
-        searchIcon={<IconSearch size={18} />}
-        limit={5}
-        searchPlaceholder="Rechercher"
-        actions={(query) =>
-          query
-            ? [
-                ...(credentials ?? []).map((credential) => {
-                  return {
-                    title: credential.name ?? "",
-                    description: credential.username,
-                    tag: credential.tag,
-                    group: "Mot de passe",
-                    onTrigger: () => {
-                      navigate(
-                        `/boards/${boardId}/credentials/${credential.id}`
-                      );
-                    },
-                  };
-                }),
-                ...(documents ?? []).map((document) => {
-                  return {
-                    title: document.name ?? "",
-                    tag: document.tag,
-                    group: "Document",
-                    onTrigger: () => {
-                      navigate(`/boards/${boardId}/documents/${document.id}`);
-                    },
-                  };
-                }),
-                ...(creditCards ?? []).map((creditCard) => {
-                  return {
-                    title: creditCard.name ?? "",
-                    description: creditCard.cardholder,
-                    tag: creditCard.tag,
-                    group: "Carte de crédit",
-                    onTrigger: () => {
-                      navigate(
-                        `/boards/${boardId}/credit-cards/${creditCard.id}`
-                      );
-                    },
-                  };
-                }),
-              ]
-            : []
-        }
-        filter={(query, actions) =>
-          actions.filter((action) => {
-            return searchString(
-              `${action.title}${action.description}${action.tag}`,
-              query
-            );
-          })
-        }
-        actionComponent={CustomAction}
-      >
-        {children}
-      </SpotlightProvider>
-    </BoardContext.Provider>
+    <BoardContext.Provider value={context}>{children}</BoardContext.Provider>
   );
 };
 

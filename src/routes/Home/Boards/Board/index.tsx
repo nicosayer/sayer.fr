@@ -4,6 +4,7 @@ import { Outlet, useParams } from "react-router-dom";
 import Header from "routes/Home/Boards/Board/Header";
 import Navbar from "routes/Home/Boards/Board/Navbar";
 import BoardProvider from "routes/Home/Boards/Board/Provider";
+import Spotlight from "./Spotlight";
 
 const Board = () => {
   const { boardId } = useParams();
@@ -14,9 +15,11 @@ const Board = () => {
 
   return (
     <BoardProvider boardId={boardId}>
-      <AppShell header={<Header />} navbar={<Navbar />}>
-        <Outlet />
-      </AppShell>
+      <Spotlight>
+        <AppShell header={<Header />} navbar={<Navbar />}>
+          <Outlet />
+        </AppShell>
+      </Spotlight>
     </BoardProvider>
   );
 };
