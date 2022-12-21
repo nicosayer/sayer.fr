@@ -15,10 +15,10 @@ import DocumentsCards from "./DocumentsCards";
 import NewDocumentModal from "./NewDocumentModal";
 
 const Documents: FC = () => {
-  const { board, documents } = useBoard();
+  const { board, loading, documents } = useBoard();
   const [search, setSearch] = useState("");
 
-  if (!documents) {
+  if (!documents || loading) {
     return <LoadingOverlay visible />;
   }
 

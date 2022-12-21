@@ -15,10 +15,10 @@ import CredentialsCards from "./CredentialsCards";
 import NewCredentialModal from "./NewCredentialModal";
 
 const Credentials: FC = () => {
-  const { boards, credentials } = useBoard();
+  const { boards, loading, credentials } = useBoard();
   const [search, setSearch] = useState("");
 
-  if (!credentials) {
+  if (!credentials || loading) {
     return <LoadingOverlay visible />;
   }
 

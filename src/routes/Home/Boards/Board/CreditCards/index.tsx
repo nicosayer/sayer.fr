@@ -15,10 +15,10 @@ import CreditCardsCards from "./CreditCardsCards";
 import NewCreditCardModal from "./NewCreditCardModal";
 
 const CreditCards: FC = () => {
-  const { board, creditCards } = useBoard();
+  const { board, loading, creditCards } = useBoard();
   const [search, setSearch] = useState("");
 
-  if (!creditCards) {
+  if (!creditCards || loading) {
     return <LoadingOverlay visible />;
   }
 

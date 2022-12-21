@@ -47,6 +47,8 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
         const board = boards.find(board => board.id === values.boardId)
 
         if (board?.ref) {
+          console.log(board);
+          
           start();
           addDoc<CredentialDocument>(
             collection(board.ref, Collection.credentials),
