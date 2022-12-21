@@ -4,13 +4,21 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
-    "@mantine/core": "^5.8.4",
+    "@mantine/core": "^5.9.5",
+    "@mantine/dates": "^5.9.5",
     "@mantine/dropzone": "^5.8.4",
     "@mantine/form": "^5.9.0",
-    "@mantine/hooks": "^5.8.4",
+    "@mantine/hooks": "^5.9.5",
     "@mantine/modals": "^5.8.4",
     "@mantine/spotlight": "^5.8.4",
-    "@tabler/icons": "^1.114.0",
+    "@mantine/tiptap": "^5.9.5",
+    "@tabler/icons": "^1.117.0",
+    "@tiptap/extension-highlight": "^2.0.0-beta.209",
+    "@tiptap/extension-link": "^2.0.0-beta.209",
+    "@tiptap/extension-placeholder": "^2.0.0-beta.209",
+    "@tiptap/extension-underline": "^2.0.0-beta.209",
+    "@tiptap/react": "^2.0.0-beta.209",
+    "@tiptap/starter-kit": "^2.0.0-beta.209",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.6",
     "firebase": "^9.13.0",
@@ -24,6 +32,12 @@
     "react-use-downloader": "^1.2.1",
     "typescript": "^4.9.3",
     "web-vitals": "^2.1.4"
+  },
+  "resolutions": {
+    "prosemirror-model": "1.18.1",
+    "prosemirror-state": "1.4.1",
+    "prosemirror-transform": "1.7.0",
+    "prosemirror-view": "1.28.2"
   },
   "scripts": {
     "start": "react-scripts start",

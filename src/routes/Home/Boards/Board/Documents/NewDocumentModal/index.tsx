@@ -142,6 +142,8 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
         )}
         {board?.tags?.length ? (
           <TagSelect
+            label="Étiquette"
+            placeholder="John Doe"
             board={board}
             loading={loading}
             {...form.getInputProps("tag")}

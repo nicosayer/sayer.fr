@@ -71,6 +71,8 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
       )}
       {board?.tags?.length ? (
         <TagSelect
+          label="Étiquette"
+          placeholder="John Doe"
           board={board}
           loading={loading}
           {...form.getInputProps("tag")}

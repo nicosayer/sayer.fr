@@ -8,6 +8,7 @@ import {
   CredentialDocument,
   CreditCardDocument,
   DocumentDocument,
+  NoteDocument,
 } from "types/firebase/collections";
 import { ALL_BOARDS_SLUG } from "utils/boards";
 
@@ -15,6 +16,7 @@ interface IBoardContext {
   board?: BoardDocument;
   boards?: BoardDocument[];
   credentials?: CredentialDocument[];
+  notes?: NoteDocument[];
   creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
   loading: boolean;
@@ -24,6 +26,7 @@ const BoardContext = createContext<IBoardContext>({
   board: undefined,
   boards: undefined,
   credentials: undefined,
+  notes: undefined,
   creditCards: undefined,
   documents: undefined,
   loading: false,
@@ -69,9 +72,19 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       Collection.creditCards
     );
 
+  const [notes, loadingNotes] = useBoardsCollectionsData<NoteDocument>(
+    currentBoards ?? [],
+    Collection.notes
+  );
+
   const loading = useMemo(() => {
-    return loadingCredentials || loadingCreditCards || loadingDocuments;
-  }, [loadingCredentials, loadingCreditCards, loadingDocuments]);
+    return (
+      loadingCredentials ||
+      loadingCreditCards ||
+      loadingDocuments ||
+      loadingNotes
+    );
+  }, [loadingCredentials, loadingCreditCards, loadingDocuments, loadingNotes]);
 
   const context = useMemo(() => {
     return {
@@ -80,9 +93,18 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       credentials,
       creditCards,
       documents,
+      notes,
       loading,
     };
-  }, [board, currentBoards, credentials, creditCards, documents, loading]);
+  }, [
+    board,
+    currentBoards,
+    notes,
+    credentials,
+    creditCards,
+    documents,
+    loading,
+  ]);
 
   if (!currentBoards?.length) {
     return <Navigate to="/" />;

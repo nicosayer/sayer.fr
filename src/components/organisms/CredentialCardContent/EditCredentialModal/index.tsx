@@ -62,7 +62,7 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
             username: values.username.trim(),
             password: values.password,
             url: values.url.trim(),
-            tag: values.tag.trim(),
+            tag: values.tag,
           })
             .then(() => closeAllModals())
             .finally(stop);

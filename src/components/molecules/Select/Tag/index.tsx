@@ -4,7 +4,7 @@ import { BoardDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 
 export interface TagSelectProps extends Omit<SelectProps, "data"> {
-  loading: boolean;
+  loading?: boolean;
   board: BoardDocument;
 }
 
@@ -12,9 +12,7 @@ const TagSelect: FC<TagSelectProps> = ({ loading, board, ...rest }) => {
   return (
     <Select
       disabled={loading}
-      label="Étiquette"
       data={board?.tags ?? []}
-      placeholder="John Doe"
       itemComponent={({ value, ...rest }) => {
         return (
           <div {...rest}>

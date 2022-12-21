@@ -3,6 +3,7 @@ import {
   IconCreditCard,
   IconId,
   IconLockOpen,
+  IconNotes,
   IconSettings,
 } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
@@ -27,6 +28,12 @@ const menu = [
     color: "red",
     label: "Cartes de crédit",
     to: "credit-cards",
+  },
+  {
+    icon: <IconNotes size={18} />,
+    color: "orange",
+    label: "Notes",
+    to: "notes",
   },
 ];
 

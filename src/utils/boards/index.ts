@@ -24,3 +24,5 @@ export const newBoard = ({
 };
 
 export const ALL_BOARDS_SLUG = "a";
+
+export const NOTE_MODAL_ID = "__note-modal-id__";

@@ -11,6 +11,7 @@ import Error from "routes/Home/Error";
 import Credentials from "./Boards/Board/Credentials";
 import CreditCards from "./Boards/Board/CreditCards";
 import Documents from "./Boards/Board/Documents";
+import Notes from "./Boards/Board/Notes";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,8 @@ const router = createBrowserRouter([
               { path: "credit-cards/:creditCardId", element: <CreditCards /> },
               { path: "documents", element: <Documents /> },
               { path: "documents/:documentId", element: <Documents /> },
+              { path: "notes", element: <Notes /> },
+              { path: "notes/:noteId", element: <Notes /> },
               { path: "settings", element: <Settings /> },
             ],
           },

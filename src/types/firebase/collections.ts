@@ -5,6 +5,7 @@ export enum Collection {
   credentials = "credentials",
   creditCards = "creditCards",
   documents = "documents",
+  notes = "notes",
 }
 
 export interface BoardDocument {
@@ -49,5 +50,14 @@ export interface DocumentDocument {
   ref?: DocumentReference<BoardDocument>;
   name?: string;
   mime?: Mime;
+  tag?: string;
+}
+
+export interface NoteDocument {
+  id?: string;
+  ref?: DocumentReference<BoardDocument>;
+  name?: string;
+  content?: string;
+  date?: string;
   tag?: string;
 }
