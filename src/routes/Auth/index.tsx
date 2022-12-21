@@ -1,7 +1,7 @@
 import { Button } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons";
-import { auth } from "configs/firebase";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { auth } from "utils/firebase";
 
 const Auth = () => {
   const [signInWithGoogle, , loadingSignInWithGoogle] =

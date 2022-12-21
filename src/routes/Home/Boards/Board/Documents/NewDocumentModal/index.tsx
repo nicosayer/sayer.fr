@@ -5,7 +5,6 @@ import { closeAllModals } from "@mantine/modals";
 import { IconUpload } from "@tabler/icons";
 import classNames from "classnames";
 import TagSelect from "components/molecules/Select/Tag";
-import { storage } from "configs/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
@@ -17,6 +16,7 @@ import {
   DocumentDocument,
   Mime,
 } from "types/firebase/collections";
+import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 
 export interface NewDocumentModalProps {

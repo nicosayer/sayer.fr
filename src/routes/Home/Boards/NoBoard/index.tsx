@@ -1,9 +1,9 @@
 import { Button, Stack } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
-import { auth } from "configs/firebase";
 import useBooleanState from "hooks/useBooleanState";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { newBoard } from "utils/boards";
+import { auth } from "utils/firebase";
 import { ONE_SECOND } from "utils/time";
 import { useBoards } from "../Provider";
 

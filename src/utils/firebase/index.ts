@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, inMemoryPersistence, setPersistence } from "firebase/auth";
-import { FirestoreDataConverter, getFirestore } from "firebase/firestore";
+import {
+  DocumentSnapshot,
+  FirestoreDataConverter,
+  getFirestore,
+  SnapshotOptions,
+} from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -28,12 +33,13 @@ export const firestoreConverter: FirestoreDataConverter<any> = {
     return rest;
   },
   fromFirestore(snapshot, options) {
-    const data = snapshot.data(options);
-
-    return {
-      ...data,
-      id: snapshot.id,
-      ref: snapshot.ref,
-    };
+    return spreadSnapshot(snapshot, options);
   },
+};
+
+export const spreadSnapshot = (
+  doc: DocumentSnapshot,
+  options?: SnapshotOptions
+) => {
+  return { ...doc.data(options), id: doc.id, ref: doc.ref };
 };

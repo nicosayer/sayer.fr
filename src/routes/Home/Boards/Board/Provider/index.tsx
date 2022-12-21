@@ -1,7 +1,5 @@
-import { firestoreConverter } from "configs/firebase";
-import { collection } from "firebase/firestore";
+import useBoardsCollectionsData from "hooks/useBoardsCollectionsData";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Navigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
 import {
@@ -11,9 +9,11 @@ import {
   CreditCardDocument,
   DocumentDocument,
 } from "types/firebase/collections";
+import { ALL_BOARDS_SLUG } from "utils/boards";
 
 interface IBoardContext {
   board?: BoardDocument;
+  boards?: BoardDocument[];
   credentials?: CredentialDocument[];
   creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
@@ -22,6 +22,7 @@ interface IBoardContext {
 
 const BoardContext = createContext<IBoardContext>({
   board: undefined,
+  boards: undefined,
   credentials: undefined,
   creditCards: undefined,
   documents: undefined,
@@ -40,34 +41,32 @@ interface BoardProviderProps {
 const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   const { boards } = useBoards();
 
-  const board = useMemo(() => {
-    return boards?.find((board) => board.id === boardId);
+  const currentBoards = useMemo(() => {
+    return boards?.filter(
+      (board) => board.id === boardId || boardId === ALL_BOARDS_SLUG
+    );
   }, [boards, boardId]);
 
+  const board = useMemo(() => {
+    return currentBoards?.length === 1 ? currentBoards[0] : undefined;
+  }, [currentBoards]);
+
   const [credentials, loadingCredentials] =
-    useCollectionData<CredentialDocument>(
-      board?.ref
-        ? collection(board.ref, Collection.credentials).withConverter(
-            firestoreConverter
-          )
-        : undefined
+    useBoardsCollectionsData<CredentialDocument>(
+      currentBoards ?? [],
+      Collection.credentials
     );
 
-  const [documents, loadingDocuments] = useCollectionData<DocumentDocument>(
-    board?.ref
-      ? collection(board.ref, Collection.documents).withConverter(
-          firestoreConverter
-        )
-      : undefined
-  );
+  const [documents, loadingDocuments] =
+    useBoardsCollectionsData<DocumentDocument>(
+      currentBoards ?? [],
+      Collection.documents
+    );
 
   const [creditCards, loadingCreditCards] =
-    useCollectionData<CreditCardDocument>(
-      board?.ref
-        ? collection(board.ref, Collection.creditCards).withConverter(
-            firestoreConverter
-          )
-        : undefined
+    useBoardsCollectionsData<CreditCardDocument>(
+      currentBoards ?? [],
+      Collection.creditCards
     );
 
   const loading = useMemo(() => {
@@ -75,10 +74,17 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   }, [loadingCredentials, loadingCreditCards, loadingDocuments]);
 
   const context = useMemo(() => {
-    return { board, credentials, creditCards, documents, loading };
-  }, [board, credentials, creditCards, documents, loading]);
+    return {
+      board,
+      boards: currentBoards,
+      credentials,
+      creditCards,
+      documents,
+      loading,
+    };
+  }, [board, currentBoards, credentials, creditCards, documents, loading]);
 
-  if (!board) {
+  if (!currentBoards?.length) {
     return <Navigate to="/" />;
   }
 

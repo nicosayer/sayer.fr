@@ -21,7 +21,6 @@ import {
   IconPhoto,
   IconTrash,
 } from "@tabler/icons";
-import { storage } from "configs/firebase";
 import { deleteDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import useDownloadDocument from "hooks/useDownloadDocument";
@@ -30,6 +29,7 @@ import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, Mime } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
+import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 import EditDocumentModal from "./EditDocumentModal";
 

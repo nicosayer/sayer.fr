@@ -1,7 +1,7 @@
-import { db } from "configs/firebase";
 import { User } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 import { BoardDocument, Collection } from "types/firebase/collections";
+import { db } from "utils/firebase";
 import { searchString } from "utils/string";
 
 export const newBoard = ({
@@ -22,3 +22,5 @@ export const newBoard = ({
     name: `Board de ${username}${version ? ` ${version + 1}` : ""}`,
   });
 };
+
+export const ALL_BOARDS_SLUG = "a";

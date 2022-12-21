@@ -1,11 +1,11 @@
 import { useDebouncedValue } from "@mantine/hooks";
-import { auth, db, firestoreConverter } from "configs/firebase";
 import { collection, query, where } from "firebase/firestore";
 import FullPageLoading from "providers/FullPageLoading/FullPage";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { BoardDocument, Collection } from "types/firebase/collections";
+import { auth, db, firestoreConverter } from "utils/firebase";
 
 interface IBoardsContext {
   boards?: BoardDocument[];

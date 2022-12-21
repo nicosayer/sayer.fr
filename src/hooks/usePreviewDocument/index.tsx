@@ -1,9 +1,9 @@
 import { openModal } from "@mantine/modals";
-import { storage } from "configs/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { useMemo } from "react";
 import { DocumentDocument, Mime } from "types/firebase/collections";
+import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 
 const usePreviewDocument = (): [

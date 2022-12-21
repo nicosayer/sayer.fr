@@ -1,8 +1,8 @@
 import { Menu } from "@mantine/core";
 import { IconPower } from "@tabler/icons";
-import { auth } from "configs/firebase";
 import { FC } from "react";
 import { useSignOut } from "react-firebase-hooks/auth";
+import { auth } from "utils/firebase";
 
 const SignOutMenuItem: FC = () => {
   const [signOut] = useSignOut(auth);

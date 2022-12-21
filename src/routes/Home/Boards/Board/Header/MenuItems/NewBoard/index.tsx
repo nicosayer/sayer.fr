@@ -1,11 +1,11 @@
 import { Menu } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
-import { auth } from "configs/firebase";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
 import { newBoard } from "utils/boards";
+import { auth } from "utils/firebase";
 
 const NewBoardMenuItem: FC = () => {
   const { boards } = useBoards();

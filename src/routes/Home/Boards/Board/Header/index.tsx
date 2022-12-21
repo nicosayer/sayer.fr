@@ -13,13 +13,13 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useSpotlight } from "@mantine/spotlight";
 import { IconHome, IconSearch, IconUser } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
-import { auth } from "configs/firebase";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import NewBoardMenuItem from "routes/Home/Boards/Board/Header/MenuItems/NewBoard";
 import SwitchBoardMenuItem from "routes/Home/Boards/Board/Header/MenuItems/SwitchBoard";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { auth } from "utils/firebase";
 import DarkModeMenuItem from "./MenuItems/DarkMode";
 import SettingsMenuItem from "./MenuItems/Settings";
 import SignOutMenuItem from "./MenuItems/SignOut";
@@ -58,7 +58,7 @@ const Header: FC = () => {
               fw={500}
               className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              {board?.name}
+              {board?.name ?? 'Tous les boards'}
             </Text>
           </Group>
         </div>
