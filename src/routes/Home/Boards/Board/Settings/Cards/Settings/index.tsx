@@ -12,14 +12,16 @@ import { IconX } from "@tabler/icons";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
-import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { BoardDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { capitalizeFirsts, sanitize } from "utils/string";
 import { ONE_SECOND } from "utils/time";
 
-const SettingsCard: FC = () => {
-  const { board } = useBoard();
+export interface SettingsCardProps {
+  board: BoardDocument;
+}
+
+const SettingsCard: FC<SettingsCardProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState({ stopDelay: ONE_SECOND });
 
   const [users, setUsers] = useState(board?.users ?? []);

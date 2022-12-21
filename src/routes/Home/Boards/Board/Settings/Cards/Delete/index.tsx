@@ -2,11 +2,13 @@ import { Button, Card, Input, Text } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { deleteDoc } from "firebase/firestore";
 import { FC } from "react";
-import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { BoardDocument } from "types/firebase/collections";
 
-const DeleteCard: FC = () => {
-  const { board } = useBoard();
+export interface DeleteCardProps {
+  board: BoardDocument;
+}
 
+const DeleteCard: FC<DeleteCardProps> = ({ board }) => {
   return (
     <Card withBorder>
       <Input.Wrapper
