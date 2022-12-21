@@ -39,7 +39,9 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
 
     validate: {
       boardId: (boardId?: string) => {
-        return boards.find(board => board.id === boardId) ? null : "Ce champ ne doit pas être vide";
+        return boards.find((board) => board.id === boardId)
+          ? null
+          : "Ce champ ne doit pas être vide";
       },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
@@ -51,14 +53,14 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
   });
 
   const board = useMemo(() => {
-    return boards.find(board => board.id === form.values.boardId)
-  }, [boards, form.values.boardId])
+    return boards.find((board) => board.id === form.values.boardId);
+  }, [boards, form.values.boardId]);
 
   return (
     <form
       ref={formRef}
       onSubmit={form.onSubmit(async (values) => {
-        const board = boards.find(board => board.id === values.boardId)
+        const board = boards.find((board) => board.id === values.boardId);
 
         if (board?.ref && values.file?.type) {
           start();
@@ -77,7 +79,8 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
               return uploadFile(
                 ref(
                   storage,
-                  `boards/${board.id}/documents/${document.id
+                  `boards/${board.id}/documents/${
+                    document.id
                   }/document.${getExtension(values.file?.type as Mime)}`
                 ),
                 arrayBuffer,
@@ -130,16 +133,20 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
             </Group>
           </Dropzone>
         </Input.Wrapper>
-        {boards.length > 1 && <BoardSelect
-          boards={boards}
-          loading={loading}
-          {...form.getInputProps("boardId")}
-        />}
-        {board?.tags?.length ? <TagSelect
-          board={board}
-          loading={loading}
-          {...form.getInputProps("tag")}
-        /> : undefined}
+        {boards.length > 1 && (
+          <BoardSelect
+            boards={boards}
+            loading={loading}
+            {...form.getInputProps("boardId")}
+          />
+        )}
+        {board?.tags?.length ? (
+          <TagSelect
+            board={board}
+            loading={loading}
+            {...form.getInputProps("tag")}
+          />
+        ) : undefined}
         <div className="flex ml-auto">
           <Group>
             <Button

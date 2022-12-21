@@ -12,10 +12,10 @@ import {
 } from "types/firebase/collections";
 
 export interface NewCreditCardModalProps {
-  board: BoardDocument;
+  boards: BoardDocument[];
 }
 
-const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
+const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
 
@@ -32,9 +32,15 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       expirationDate: "",
       securityCode: "",
       tag: "",
+      boardId: boards.length === 1 ? boards[0].id : undefined,
     },
 
     validate: {
+      boardId: (boardId?: string) => {
+        return boards.find((board) => board.id === boardId)
+          ? null
+          : "Ce champ ne doit pas être vide";
+      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -63,6 +69,8 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
+        const board = boards.find((board) => board.id === values.boardId);
+
         if (board?.ref) {
           const [expirationMonth, expirationYear] =
             values.expirationDate.split("/");
@@ -74,8 +82,8 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
               color: values.color,
               name: values.name.trim(),
               number: values.number.replace(/ +/g, ""),
-              expirationMonth: Number(expirationMonth),
-              expirationYear: Number(expirationYear) + 2000,
+              expirationMonth: expirationMonth,
+              expirationYear: expirationYear,
               cardholder: values.cardholder.trim(),
               securityCode: values.securityCode,
               tag: values.tag,
@@ -87,7 +95,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <CreditCardFormInputs loading={loading} form={form} board={board} />
+        <CreditCardFormInputs loading={loading} form={form} boards={boards} />
         <div className="flex ml-auto">
           <Group>
             <Button

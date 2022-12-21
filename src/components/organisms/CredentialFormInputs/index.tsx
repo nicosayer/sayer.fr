@@ -10,7 +10,7 @@ export interface CredentialForm {
   url: string;
   username: string;
   password: string;
-  boardId: string | undefined,
+  boardId: string | undefined;
   tag: string;
 }
 
@@ -29,8 +29,8 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
   boards,
 }) => {
   const board = useMemo(() => {
-    return boards.find(board => board.id === form.values.boardId)
-  }, [boards, form.values.boardId])
+    return boards.find((board) => board.id === form.values.boardId);
+  }, [boards, form.values.boardId]);
 
   return (
     <>
@@ -62,16 +62,20 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
         placeholder="https://acme.com"
         {...form.getInputProps("url")}
       />
-      {boards.length > 1 && <BoardSelect
-        boards={boards}
-        loading={loading}
-        {...form.getInputProps("boardId")}
-      />}
-      {board?.tags?.length ? <TagSelect
-        board={board}
-        loading={loading}
-        {...form.getInputProps("tag")}
-      /> : undefined}
+      {boards.length > 1 && (
+        <BoardSelect
+          boards={boards}
+          loading={loading}
+          {...form.getInputProps("boardId")}
+        />
+      )}
+      {board?.tags?.length ? (
+        <TagSelect
+          board={board}
+          loading={loading}
+          {...form.getInputProps("tag")}
+        />
+      ) : undefined}
     </>
   );
 };

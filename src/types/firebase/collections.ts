@@ -31,8 +31,8 @@ export interface CreditCardDocument {
   name?: string;
   cardholder?: string;
   number?: string;
-  expirationMonth?: number;
-  expirationYear?: number;
+  expirationMonth?: string;
+  expirationYear?: string;
   securityCode?: string;
   color?: string;
   tag?: string;

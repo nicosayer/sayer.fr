@@ -33,8 +33,10 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
   const is768Px = useMediaQuery("(min-width: 768px)");
 
   const board = useMemo(() => {
-    return boards?.find(board => board.id === credential.ref?.parent.parent?.id)
-  }, [boards, credential.ref?.parent.parent?.id])
+    return boards?.find(
+      (board) => board.id === credential.ref?.parent.parent?.id
+    );
+  }, [boards, credential.ref?.parent.parent?.id]);
 
   const openEditModal = useCallback(
     (credential: CredentialDocument) => {
@@ -44,7 +46,10 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
           zIndex: 1000,
           title: "Modifier le mot de passe",
           children: (
-            <EditCredentialModal credential={credential} boards={board ? [board] : []} />
+            <EditCredentialModal
+              credential={credential}
+              boards={board ? [board] : []}
+            />
           ),
         });
       }

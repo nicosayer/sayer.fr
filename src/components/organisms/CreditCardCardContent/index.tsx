@@ -18,7 +18,7 @@ import CreditCardExpirationDate from "components/organisms/CreditCardExpirationD
 import CreditCardNumber from "components/organisms/CreditCardNumber";
 import CreditCardSecurityCode from "components/organisms/CreditCardSecurityCode";
 import { deleteDoc } from "firebase/firestore";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
 import { ALL_BOARDS_SLUG } from "utils/boards";
@@ -32,9 +32,15 @@ export interface CreditCardCardContentProps {
 const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
   creditCard,
 }) => {
-  const { board } = useBoard();
+  const { boards } = useBoard();
   const theme = useMantineTheme();
   const is768Px = useMediaQuery("(min-width: 768px)");
+
+  const board = useMemo(() => {
+    return boards?.find(
+      (board) => board.id === creditCard.ref?.parent.parent?.id
+    );
+  }, [boards, creditCard.ref?.parent.parent?.id]);
 
   const openEditModal = useCallback(
     (creditCard: CreditCardDocument) => {
@@ -44,7 +50,10 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
           centered: true,
           title: "Modifier la carte de crédit",
           children: (
-            <EditCreditCardModal creditCard={creditCard} board={board} />
+            <EditCreditCardModal
+              creditCard={creditCard}
+              boards={board ? [board] : []}
+            />
           ),
         });
       }

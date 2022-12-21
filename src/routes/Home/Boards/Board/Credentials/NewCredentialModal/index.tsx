@@ -30,7 +30,9 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
 
     validate: {
       boardId: (boardId?: string) => {
-        return boards.find(board => board.id === boardId) ? null : "Ce champ ne doit pas être vide";
+        return boards.find((board) => board.id === boardId)
+          ? null
+          : "Ce champ ne doit pas être vide";
       },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
@@ -47,7 +49,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        const board = boards.find(board => board.id === values.boardId)
+        const board = boards.find((board) => board.id === values.boardId);
 
         if (board?.ref) {
           start();

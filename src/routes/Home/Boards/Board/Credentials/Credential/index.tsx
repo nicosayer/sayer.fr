@@ -2,6 +2,7 @@ import { Modal } from "@mantine/core";
 import CredentialCardContent from "components/organisms/CredentialCardContent";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ALL_BOARDS_SLUG } from "utils/boards";
 import { useBoard } from "../../Provider";
 
 const Credential: FC = () => {
@@ -20,7 +21,9 @@ const Credential: FC = () => {
   return (
     <Modal
       opened={Boolean(credentialId)}
-      onClose={() => navigate(`/boards/${board?.id}/credentials`)}
+      onClose={() =>
+        navigate(`/boards/${board?.id ?? ALL_BOARDS_SLUG}/credentials`)
+      }
       withCloseButton={false}
       centered
       trapFocus={false}

@@ -58,7 +58,7 @@ const Header: FC = () => {
               fw={500}
               className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              {board?.name ?? 'Tous les boards'}
+              {board?.name ?? "Tous les boards"}
             </Text>
           </Group>
         </div>

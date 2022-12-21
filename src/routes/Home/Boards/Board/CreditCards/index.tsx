@@ -15,7 +15,7 @@ import CreditCardsCards from "./CreditCardsCards";
 import NewCreditCardModal from "./NewCreditCardModal";
 
 const CreditCards: FC = () => {
-  const { board, loading, creditCards } = useBoard();
+  const { boards, loading, creditCards } = useBoard();
   const [search, setSearch] = useState("");
 
   if (!creditCards || loading) {
@@ -29,11 +29,11 @@ const CreditCards: FC = () => {
           size="lg"
           leftIcon={<IconPlus size={18} />}
           onClick={() => {
-            if (board) {
+            if (boards) {
               openModal({
                 centered: true,
                 title: "Nouvelle carte de crédit",
-                children: <NewCreditCardModal board={board} />,
+                children: <NewCreditCardModal boards={boards} />,
               });
             }
           }}
@@ -64,11 +64,11 @@ const CreditCards: FC = () => {
               variant="default"
               leftIcon={<IconPlus size={18} />}
               onClick={() => {
-                if (board) {
+                if (boards) {
                   openModal({
                     centered: true,
                     title: "Nouvelle carte de crédit",
-                    children: <NewCreditCardModal board={board} />,
+                    children: <NewCreditCardModal boards={boards} />,
                   });
                 }
               }}

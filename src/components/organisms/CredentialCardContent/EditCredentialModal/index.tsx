@@ -19,8 +19,10 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
   const [loading, start, stop] = useBooleanState();
 
   const board = useMemo(() => {
-    return boards.find(board => board.id === credential.ref?.parent.parent?.id)
-  }, [boards, credential.ref?.parent.parent?.id])
+    return boards.find(
+      (board) => board.id === credential.ref?.parent.parent?.id
+    );
+  }, [boards, credential.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {
@@ -34,7 +36,9 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
 
     validate: {
       boardId: (boardId?: string) => {
-        return boards.find(board => board.id === boardId) ? null : "Ce champ ne doit pas être vide";
+        return boards.find((board) => board.id === boardId)
+          ? null
+          : "Ce champ ne doit pas être vide";
       },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
@@ -66,7 +70,11 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
       })}
     >
       <Stack>
-        <CredentialFormInputs loading={loading} form={form} boards={board ? [board] : []} />
+        <CredentialFormInputs
+          loading={loading}
+          form={form}
+          boards={board ? [board] : []}
+        />
         <div className="flex ml-auto">
           <Group>
             <Button

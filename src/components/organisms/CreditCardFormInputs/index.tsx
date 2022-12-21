@@ -8,8 +8,9 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
+import BoardSelect from "components/molecules/Select/Board";
 import TagSelect from "components/molecules/Select/Tag";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import InputMask from "react-input-mask";
 import { BoardDocument } from "types/firebase/collections";
 
@@ -21,11 +22,12 @@ export interface CreditCardForm {
   expirationDate: string;
   securityCode: string;
   tag: string;
+  boardId: string | undefined;
 }
 
 export interface CreditCardFormInputsProps {
   loading: boolean;
-  board: BoardDocument;
+  boards: BoardDocument[];
   form: UseFormReturnType<
     CreditCardForm,
     (values: CreditCardForm) => CreditCardForm
@@ -34,10 +36,14 @@ export interface CreditCardFormInputsProps {
 
 const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
   form,
-  board,
+  boards,
   loading,
 }) => {
   const theme = useMantineTheme();
+
+  const board = useMemo(() => {
+    return boards.find((board) => board.id === form.values.boardId);
+  }, [boards, form.values.boardId]);
 
   return (
     <>
@@ -85,7 +91,11 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         label="Date d'expiration"
         withAsterisk
         component={InputMask}
-        mask="99/99"
+        mask="19/99"
+        formatChars={{
+          "1": "[0-1]",
+          "9": "[0-9]",
+        }}
         maskChar={null}
         placeholder="MM/AA"
         {...form.getInputProps("expirationDate")}
@@ -99,11 +109,20 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         placeholder="123"
         {...form.getInputProps("securityCode")}
       />
-      {board?.tags?.length ? <TagSelect
-        board={board}
-        loading={loading}
-        {...form.getInputProps("tag")}
-      /> : undefined}
+      {boards.length > 1 && (
+        <BoardSelect
+          boards={boards}
+          loading={loading}
+          {...form.getInputProps("boardId")}
+        />
+      )}
+      {board?.tags?.length ? (
+        <TagSelect
+          board={board}
+          loading={loading}
+          {...form.getInputProps("tag")}
+        />
+      ) : undefined}
     </>
   );
 };

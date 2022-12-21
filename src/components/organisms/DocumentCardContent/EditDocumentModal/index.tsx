@@ -12,13 +12,15 @@ export interface EditDocumentModalProps {
   document: DocumentDocument;
 }
 
-const EditDocumentModal: FC<EditDocumentModalProps> = ({ boards, document }) => {
+const EditDocumentModal: FC<EditDocumentModalProps> = ({
+  boards,
+  document,
+}) => {
   const [loading, start, stop] = useBooleanState();
 
   const board = useMemo(() => {
-    return boards.find(board => board.id === document.ref?.parent.parent?.id)
-  }, [boards, document.ref?.parent.parent?.id])
-
+    return boards.find((board) => board.id === document.ref?.parent.parent?.id);
+  }, [boards, document.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {
@@ -29,7 +31,9 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ boards, document }) => 
 
     validate: {
       boardId: (boardId?: string) => {
-        return boards.find(board => board.id === boardId) ? null : "Ce champ ne doit pas être vide";
+        return boards.find((board) => board.id === boardId)
+          ? null
+          : "Ce champ ne doit pas être vide";
       },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
@@ -60,11 +64,13 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ boards, document }) => 
           placeholder="Passeport"
           {...form.getInputProps("name")}
         />
-        {board?.tags?.length ? <TagSelect
-          board={board}
-          loading={loading}
-          {...form.getInputProps("tag")}
-        /> : undefined}
+        {board?.tags?.length ? (
+          <TagSelect
+            board={board}
+            loading={loading}
+            {...form.getInputProps("tag")}
+          />
+        ) : undefined}
         <div className="flex ml-auto">
           <Group>
             <Button

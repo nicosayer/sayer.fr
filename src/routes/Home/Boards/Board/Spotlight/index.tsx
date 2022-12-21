@@ -10,6 +10,7 @@ import { IconSearch } from "@tabler/icons";
 import classNames from "classnames";
 import { PropsWithChildren } from "react";
 import { useNavigate } from "react-router-dom";
+import { ALL_BOARDS_SLUG } from "utils/boards";
 import { getColorFromString } from "utils/color";
 import { searchString } from "utils/string";
 import { useBoard } from "../Provider";
@@ -77,7 +78,9 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                   group: "Mot de passe",
                   onTrigger: () => {
                     navigate(
-                      `/boards/${board?.id}/credentials/${credential.id}`
+                      `/boards/${board?.id ?? ALL_BOARDS_SLUG}/credentials/${
+                        credential.id
+                      }`
                     );
                   },
                 };
@@ -88,7 +91,11 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                   tag: document.tag,
                   group: "Document",
                   onTrigger: () => {
-                    navigate(`/boards/${board?.id}/documents/${document.id}`);
+                    navigate(
+                      `/boards/${board?.id ?? ALL_BOARDS_SLUG}/documents/${
+                        document.id
+                      }`
+                    );
                   },
                 };
               }),
@@ -100,7 +107,9 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                   group: "Carte de crédit",
                   onTrigger: () => {
                     navigate(
-                      `/boards/${board?.id}/credit-cards/${creditCard.id}`
+                      `/boards/${board?.id ?? ALL_BOARDS_SLUG}/credit-cards/${
+                        creditCard.id
+                      }`
                     );
                   },
                 };
