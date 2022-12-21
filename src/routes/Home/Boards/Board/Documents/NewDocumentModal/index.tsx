@@ -4,11 +4,12 @@ import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import { IconUpload } from "@tabler/icons";
 import classNames from "classnames";
+import BoardSelect from "components/molecules/Select/Board";
 import TagSelect from "components/molecules/Select/Tag";
 import { addDoc, collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useRef } from "react";
+import { FC, useMemo, useRef } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import {
   BoardDocument,
@@ -20,10 +21,10 @@ import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 
 export interface NewDocumentModalProps {
-  board: BoardDocument;
+  boards: BoardDocument[];
 }
 
-const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
+const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
   const formRef = useRef<HTMLFormElement>(null);
@@ -33,9 +34,13 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
       name: "",
       file: undefined as FileWithPath | undefined,
       tag: "",
+      boardId: boards.length === 1 ? boards[0].id : undefined,
     },
 
     validate: {
+      boardId: (boardId?: string) => {
+        return boards.find(board => board.id === boardId) ? null : "Ce champ ne doit pas être vide";
+      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -45,10 +50,16 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
     },
   });
 
+  const board = useMemo(() => {
+    return boards.find(board => board.id === form.values.boardId)
+  }, [boards, form.values.boardId])
+
   return (
     <form
       ref={formRef}
       onSubmit={form.onSubmit(async (values) => {
+        const board = boards.find(board => board.id === values.boardId)
+
         if (board?.ref && values.file?.type) {
           start();
 
@@ -66,8 +77,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
               return uploadFile(
                 ref(
                   storage,
-                  `boards/${board.id}/documents/${
-                    document.id
+                  `boards/${board.id}/documents/${document.id
                   }/document.${getExtension(values.file?.type as Mime)}`
                 ),
                 arrayBuffer,
@@ -120,11 +130,16 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             </Group>
           </Dropzone>
         </Input.Wrapper>
-        <TagSelect
+        {boards.length > 1 && <BoardSelect
+          boards={boards}
+          loading={loading}
+          {...form.getInputProps("boardId")}
+        />}
+        {board?.tags?.length ? <TagSelect
           board={board}
           loading={loading}
           {...form.getInputProps("tag")}
-        />
+        /> : undefined}
         <div className="flex ml-auto">
           <Group>
             <Button

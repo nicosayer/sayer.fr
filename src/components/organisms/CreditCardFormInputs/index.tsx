@@ -99,11 +99,11 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         placeholder="123"
         {...form.getInputProps("securityCode")}
       />
-      <TagSelect
+      {board?.tags?.length ? <TagSelect
         board={board}
         loading={loading}
         {...form.getInputProps("tag")}
-      />
+      /> : undefined}
     </>
   );
 };

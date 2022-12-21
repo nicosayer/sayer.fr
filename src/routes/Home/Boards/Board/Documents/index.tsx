@@ -15,7 +15,7 @@ import DocumentsCards from "./DocumentsCards";
 import NewDocumentModal from "./NewDocumentModal";
 
 const Documents: FC = () => {
-  const { board, loading, documents } = useBoard();
+  const { boards, loading, documents } = useBoard();
   const [search, setSearch] = useState("");
 
   if (!documents || loading) {
@@ -29,11 +29,11 @@ const Documents: FC = () => {
           size="lg"
           leftIcon={<IconPlus size={18} />}
           onClick={() => {
-            if (board) {
+            if (boards) {
               openModal({
                 centered: true,
                 title: "Nouveau document",
-                children: <NewDocumentModal board={board} />,
+                children: <NewDocumentModal boards={boards} />,
               });
             }
           }}
@@ -64,11 +64,11 @@ const Documents: FC = () => {
               variant="default"
               leftIcon={<IconPlus size={18} />}
               onClick={() => {
-                if (board) {
+                if (boards) {
                   openModal({
                     centered: true,
                     title: "Nouveau document",
-                    children: <NewDocumentModal board={board} />,
+                    children: <NewDocumentModal boards={boards} />,
                   });
                 }
               }}

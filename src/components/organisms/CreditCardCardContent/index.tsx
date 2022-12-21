@@ -21,6 +21,7 @@ import { deleteDoc } from "firebase/firestore";
 import { FC, useCallback } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
+import { ALL_BOARDS_SLUG } from "utils/boards";
 import { getColorFromString } from "utils/color";
 import EditCreditCardModal from "./EditCreditCardModal";
 
@@ -109,7 +110,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
       </div>
       <Group grow>
         <CopyButton
-          value={`${process.env.REACT_APP_URL}/boards/${board?.id}/credit-cards/${creditCard.id}`}
+          value={`${process.env.REACT_APP_URL}/boards/${ALL_BOARDS_SLUG}/credit-cards/${creditCard.id}`}
         >
           {({ copied, copy }) =>
             is768Px ? (

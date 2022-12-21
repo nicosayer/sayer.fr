@@ -12,6 +12,7 @@ const BoardSelect: FC<BoardSelectProps> = ({ loading, boards, ...rest }) => {
   return (
     <Select
       disabled={loading}
+      withAsterisk
       label="Board"
       data={(boards ?? []).map(board => {
         return { label: board.name, value: String(board.id) }

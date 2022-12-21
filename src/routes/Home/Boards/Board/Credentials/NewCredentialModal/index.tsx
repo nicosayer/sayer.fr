@@ -29,6 +29,9 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
     },
 
     validate: {
+      boardId: (boardId?: string) => {
+        return boards.find(board => board.id === boardId) ? null : "Ce champ ne doit pas être vide";
+      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -47,8 +50,6 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
         const board = boards.find(board => board.id === values.boardId)
 
         if (board?.ref) {
-          console.log(board);
-          
           start();
           addDoc<CredentialDocument>(
             collection(board.ref, Collection.credentials),

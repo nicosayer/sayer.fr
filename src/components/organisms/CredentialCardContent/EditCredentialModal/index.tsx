@@ -33,6 +33,9 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
     },
 
     validate: {
+      boardId: (boardId?: string) => {
+        return boards.find(board => board.id === boardId) ? null : "Ce champ ne doit pas être vide";
+      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },

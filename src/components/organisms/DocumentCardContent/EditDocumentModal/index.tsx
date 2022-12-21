@@ -4,24 +4,33 @@ import { closeAllModals } from "@mantine/modals";
 import TagSelect from "components/molecules/Select/Tag";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { BoardDocument, DocumentDocument } from "types/firebase/collections";
 
 export interface EditDocumentModalProps {
-  board: BoardDocument;
+  boards: BoardDocument[];
   document: DocumentDocument;
 }
 
-const EditDocumentModal: FC<EditDocumentModalProps> = ({ board, document }) => {
+const EditDocumentModal: FC<EditDocumentModalProps> = ({ boards, document }) => {
   const [loading, start, stop] = useBooleanState();
+
+  const board = useMemo(() => {
+    return boards.find(board => board.id === document.ref?.parent.parent?.id)
+  }, [boards, document.ref?.parent.parent?.id])
+
 
   const form = useForm({
     initialValues: {
       name: document.name ?? "",
       tag: document.tag ?? "",
+      boardId: board?.id,
     },
 
     validate: {
+      boardId: (boardId?: string) => {
+        return boards.find(board => board.id === boardId) ? null : "Ce champ ne doit pas être vide";
+      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -51,11 +60,11 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ board, document }) => {
           placeholder="Passeport"
           {...form.getInputProps("name")}
         />
-        <TagSelect
+        {board?.tags?.length ? <TagSelect
           board={board}
           loading={loading}
           {...form.getInputProps("tag")}
-        />
+        /> : undefined}
         <div className="flex ml-auto">
           <Group>
             <Button

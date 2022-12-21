@@ -28,6 +28,7 @@ import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, Mime } from "types/firebase/collections";
+import { ALL_BOARDS_SLUG } from "utils/boards";
 import { getColorFromString } from "utils/color";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
@@ -38,23 +39,23 @@ export interface DocumentCardsPropContent {
 }
 
 const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
-  const { board } = useBoard();
+  const { boards } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [previewDocument, loadingPreview] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
 
   const openEditModal = useCallback(
     (document: DocumentDocument) => {
-      if (board) {
+      if (boards) {
         openModal({
           centered: true,
           zIndex: 1000,
           title: "Modifier le document",
-          children: <EditDocumentModal document={document} board={board} />,
+          children: <EditDocumentModal document={document} boards={boards} />,
         });
       }
     },
-    [board]
+    [boards]
   );
 
   const openDeleteModal = useCallback((document: DocumentDocument) => {
@@ -143,7 +144,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
       </Group>
       <Group grow>
         <CopyButton
-          value={`${process.env.REACT_APP_URL}/boards/${board?.id}/documents/${document.id}`}
+          value={`${process.env.REACT_APP_URL}/boards/${ALL_BOARDS_SLUG}/documents/${document.ref?.path}`}
         >
           {({ copied, copy }) =>
             is768Px ? (
