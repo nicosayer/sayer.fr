@@ -30,7 +30,7 @@ const Settings: FC = () => {
           </Tabs.List>
 
           {boards?.map((board) => (
-            <Tabs.Panel value={String(board.id)} pt="xs">
+            <Tabs.Panel key={board.id} value={String(board.id)} pt="xs">
               <Stack>
                 <SettingsCard board={board} />
                 <DeleteCard board={board} />
