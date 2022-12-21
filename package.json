@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-sdk/util-base64": "^3.208.0",
     "@emotion/react": "^11.10.5",
     "@mantine/core": "^5.9.5",
     "@mantine/dates": "^5.9.5",
@@ -13,6 +14,8 @@
     "@mantine/spotlight": "^5.8.4",
     "@mantine/tiptap": "^5.9.5",
     "@tabler/icons": "^1.117.0",
+    "@tiptap/extension-collaboration": "^2.0.0-beta.209",
+    "@tiptap/extension-collaboration-cursor": "^2.0.0-beta.209",
     "@tiptap/extension-highlight": "^2.0.0-beta.209",
     "@tiptap/extension-link": "^2.0.0-beta.209",
     "@tiptap/extension-underline": "^2.0.0-beta.209",
@@ -30,7 +33,9 @@
     "react-scripts": "5.0.1",
     "react-use-downloader": "^1.2.1",
     "typescript": "^4.9.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "y-webrtc": "^10.2.3",
+    "yjs": "^13.5.43"
   },
   "resolutions": {
     "prosemirror-model": "1.18.1",
