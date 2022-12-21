@@ -60,30 +60,6 @@ const NoteModalContent: FC<NoteModalContentProps> = ({ note }) => {
   return (
     <RichTextEditor editor={editor} className="h-full overflow-auto">
       <RichTextEditor.Toolbar sticky>
-        {editor && (
-          <BubbleMenu editor={editor}>
-            <RichTextEditor.ControlsGroup>
-              <RichTextEditor.Bold />
-              <RichTextEditor.Italic />
-              <RichTextEditor.Underline />
-              <RichTextEditor.Strikethrough />
-              <RichTextEditor.Highlight />
-              <RichTextEditor.Code />
-              <RichTextEditor.ClearFormatting />
-            </RichTextEditor.ControlsGroup>
-          </BubbleMenu>
-        )}
-        {editor && (
-          <FloatingMenu editor={editor}>
-            <RichTextEditor.ControlsGroup>
-              <RichTextEditor.H1 />
-              <RichTextEditor.H2 />
-              <RichTextEditor.H3 />
-              <RichTextEditor.BulletList />
-              <RichTextEditor.OrderedList />
-            </RichTextEditor.ControlsGroup>
-          </FloatingMenu>
-        )}
         <RichTextEditor.ControlsGroup>
           <RichTextEditor.Bold />
           <RichTextEditor.Italic />
