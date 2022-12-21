@@ -4,7 +4,7 @@ import Collaboration from "@tiptap/extension-collaboration";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
-import { BubbleMenu, FloatingMenu, useEditor } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { updateDoc } from "firebase/firestore";
 import { FC, useEffect, useState } from "react";
