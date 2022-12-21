@@ -78,18 +78,21 @@ const Notes: FC = () => {
     return <LoadingOverlay visible />;
   }
 
-  if (!notes?.length) {
+  if (!notes.find((note) => note.content)) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <Button
-          loading={loadingNew}
-          size="lg"
-          leftIcon={<IconPlus size={18} />}
-          onClick={onClick}
-        >
-          Ajouter votre première note
-        </Button>
-      </div>
+      <>
+        <Note />
+        <div className="flex items-center justify-center h-full">
+          <Button
+            loading={loadingNew}
+            size="lg"
+            leftIcon={<IconPlus size={18} />}
+            onClick={onClick}
+          >
+            Ajouter votre première note
+          </Button>
+        </div>
+      </>
     );
   }
 

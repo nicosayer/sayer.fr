@@ -85,13 +85,13 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
         >
           Prévisualiser
         </Button>
-        <Button
+        {/* <Button
           variant="light"
           onClick={() => {}}
           leftIcon={<IconDownload size={18} />}
         >
           Télécharger
-        </Button>
+        </Button> */}
       </Group>
       <Group grow>
         <CopyButton
