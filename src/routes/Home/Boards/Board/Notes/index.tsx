@@ -6,14 +6,18 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { IconPlus, IconSearch } from "@tabler/icons";
+import { closeAllModals, openModal } from "@mantine/modals";
+import { IconArrowRight, IconPlus, IconSearch } from "@tabler/icons";
 import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Collection, NoteDocument } from "types/firebase/collections";
-import { ALL_BOARDS_SLUG } from "utils/boards";
+import { FC, useCallback, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  BoardDocument,
+  Collection,
+  NoteDocument,
+} from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { useBoard } from "../Provider";
 import Note from "./Note";
@@ -21,9 +25,54 @@ import NotesCards from "./NotesCards";
 
 const Notes: FC = () => {
   const { boards, loading, notes } = useBoard();
+  const { boardId } = useParams();
   const [search, setSearch] = useState("");
   const [loadingNew, start, stop] = useBooleanState();
   const navigate = useNavigate();
+
+  const createNoteAndOpen = useCallback(
+    (board: BoardDocument) => {
+      if (board.ref) {
+        start();
+        addDoc<NoteDocument>(collection(board.ref, Collection.notes), {
+          name: `Note du ${formatDate()}`,
+          content: "",
+          date: dayjs().format("YYYY-MM-DD"),
+        })
+          .then((note) => navigate(`/boards/${boardId}/notes/${note.id}`))
+          .finally(stop);
+      }
+    },
+    [boardId, navigate, start, stop]
+  );
+
+  const onClick = useCallback(() => {
+    if ((boards?.length ?? 0) > 1) {
+      openModal({
+        centered: true,
+        title: "Changer de board",
+        children: (
+          <Stack>
+            {boards?.map((board) => (
+              <Button
+                key={board.id}
+                variant="light"
+                rightIcon={<IconArrowRight size={18} />}
+                onClick={() => {
+                  closeAllModals();
+                  createNoteAndOpen(board);
+                }}
+              >
+                {board.name}
+              </Button>
+            ))}
+          </Stack>
+        ),
+      });
+    } else if (boards?.[0]) {
+      createNoteAndOpen(boards[0]);
+    }
+  }, [boards, createNoteAndOpen]);
 
   if (!notes || loading) {
     return <LoadingOverlay visible />;
@@ -36,28 +85,7 @@ const Notes: FC = () => {
           loading={loadingNew}
           size="lg"
           leftIcon={<IconPlus size={18} />}
-          onClick={() => {
-            if (boards?.[0].ref) {
-              start();
-              addDoc<NoteDocument>(
-                // TODO
-                collection(boards[0].ref, Collection.notes),
-                {
-                  name: `Note du ${formatDate()}`,
-                  content: "",
-                  date: dayjs().format("YYYY-MM-DD"),
-                }
-              )
-                .then((note) =>
-                  navigate(
-                    `/boards/${boards[0].id ?? ALL_BOARDS_SLUG}/notes/${
-                      note.id
-                    }`
-                  )
-                )
-                .finally(stop);
-            }
-          }}
+          onClick={onClick}
         >
           Ajouter votre première note
         </Button>
@@ -85,28 +113,7 @@ const Notes: FC = () => {
               loading={loadingNew}
               variant="default"
               leftIcon={<IconPlus size={18} />}
-              onClick={() => {
-                if (boards?.[0].ref) {
-                  start();
-                  addDoc<NoteDocument>(
-                    // TODO
-                    collection(boards[0].ref, Collection.notes),
-                    {
-                      name: `Note du ${formatDate()}`,
-                      content: "",
-                      date: dayjs().format("YYYY-MM-DD"),
-                    }
-                  )
-                    .then((note) =>
-                      navigate(
-                        `/boards/${boards[0].id ?? ALL_BOARDS_SLUG}/notes/${
-                          note.id
-                        }`
-                      )
-                    )
-                    .finally(stop);
-                }
-              }}
+              onClick={onClick}
             >
               Nouvelle note
             </Button>

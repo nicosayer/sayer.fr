@@ -9,8 +9,7 @@ import { SpotlightActionProps, SpotlightProvider } from "@mantine/spotlight";
 import { IconSearch } from "@tabler/icons";
 import classNames from "classnames";
 import { PropsWithChildren } from "react";
-import { useNavigate } from "react-router-dom";
-import { ALL_BOARDS_SLUG } from "utils/boards";
+import { useNavigate, useParams } from "react-router-dom";
 import { getColorFromString } from "utils/color";
 import { searchString } from "utils/string";
 import { useBoard } from "../Provider";
@@ -56,8 +55,9 @@ function CustomAction({
 }
 
 const Spotlight = ({ children }: PropsWithChildren) => {
-  const { board, credentials, creditCards, documents } = useBoard();
+  const { credentials, creditCards, documents } = useBoard();
   const navigate = useNavigate();
+  const { boardId } = useParams();
 
   return (
     <SpotlightProvider
@@ -77,11 +77,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                   tag: credential.tag,
                   group: "Mot de passe",
                   onTrigger: () => {
-                    navigate(
-                      `/boards/${board?.id ?? ALL_BOARDS_SLUG}/credentials/${
-                        credential.id
-                      }`
-                    );
+                    navigate(`/boards/${boardId}/credentials/${credential.id}`);
                   },
                 };
               }),
@@ -91,11 +87,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                   tag: document.tag,
                   group: "Document",
                   onTrigger: () => {
-                    navigate(
-                      `/boards/${board?.id ?? ALL_BOARDS_SLUG}/documents/${
-                        document.id
-                      }`
-                    );
+                    navigate(`/boards/${boardId}/documents/${document.id}`);
                   },
                 };
               }),
@@ -107,9 +99,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                   group: "Carte de crédit",
                   onTrigger: () => {
                     navigate(
-                      `/boards/${board?.id ?? ALL_BOARDS_SLUG}/credit-cards/${
-                        creditCard.id
-                      }`
+                      `/boards/${boardId}/credit-cards/${creditCard.id}`
                     );
                   },
                 };

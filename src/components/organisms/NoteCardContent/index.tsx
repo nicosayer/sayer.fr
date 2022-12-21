@@ -19,9 +19,8 @@ import {
   IconTrash,
 } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
-import { FC, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { FC, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { NoteDocument } from "types/firebase/collections";
 import { ALL_BOARDS_SLUG } from "utils/boards";
 import { getColorFromString } from "utils/color";
@@ -32,15 +31,9 @@ export interface NoteCardContentProps {
 }
 
 const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
-  const { boards } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
+  const { boardId } = useParams();
   const navigate = useNavigate();
-
-  const board = useMemo(() => {
-    return boards?.find((board) => board.id === note.ref?.parent.parent?.id);
-  }, [boards, note.ref?.parent.parent?.id]);
-
-  console.log(board);
 
   const openDeleteModal = useCallback((note: NoteDocument) => {
     openConfirmModal({
@@ -86,9 +79,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
         <Button
           variant="light"
           onClick={() => {
-            navigate(
-              `/boards/${boards?.[0].id ?? ALL_BOARDS_SLUG}/notes/${note.id}`
-            );
+            navigate(`/boards/${boardId}/notes/${note.id}`);
           }}
           leftIcon={<IconEye size={18} />}
         >
@@ -141,9 +132,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
             size="xs"
             variant="subtle"
             onClick={() => {
-              navigate(
-                `/boards/${boards?.[0].id ?? ALL_BOARDS_SLUG}/notes/${note.id}`
-              );
+              navigate(`/boards/${boardId}/notes/${note.id}`);
             }}
             leftIcon={<IconEdit size={18} />}
           >
@@ -155,11 +144,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
               size="xs"
               color="blue"
               onClick={() => {
-                navigate(
-                  `/boards/${boards?.[0].id ?? ALL_BOARDS_SLUG}/notes/${
-                    note.id
-                  }`
-                );
+                navigate(`/boards/${boardId}/notes/${note.id}`);
               }}
             >
               <IconEdit size={18} />
