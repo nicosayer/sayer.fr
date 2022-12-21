@@ -12,7 +12,6 @@ import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal } from "@mantine/modals";
 import {
   IconCheck,
-  IconDownload,
   IconEdit,
   IconEye,
   IconLink,

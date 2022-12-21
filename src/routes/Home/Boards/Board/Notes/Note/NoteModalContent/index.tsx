@@ -1,9 +1,8 @@
 import { RichTextEditor } from "@mantine/tiptap";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
-import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
-import { useEditor } from "@tiptap/react";
+import { BubbleMenu, FloatingMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { updateDoc } from "firebase/firestore";
 import { FC } from "react";
@@ -15,13 +14,7 @@ export interface NoteModalContentProps {
 
 const NoteModalContent: FC<NoteModalContentProps> = ({ note }) => {
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      Link,
-      Highlight,
-      Placeholder.configure({ placeholder: "Commenez à écrire votre note" }),
-    ],
+    extensions: [StarterKit, Underline, Link, Highlight],
     autofocus: "end",
     content: note?.content,
     onUpdate: ({ editor }) => {
@@ -36,12 +29,37 @@ const NoteModalContent: FC<NoteModalContentProps> = ({ note }) => {
   return (
     <RichTextEditor editor={editor} className="h-full overflow-auto">
       <RichTextEditor.Toolbar sticky>
+        {editor && (
+          <BubbleMenu editor={editor}>
+            <RichTextEditor.ControlsGroup>
+              <RichTextEditor.Bold />
+              <RichTextEditor.Italic />
+              <RichTextEditor.Underline />
+              <RichTextEditor.Strikethrough />
+              <RichTextEditor.Highlight />
+              <RichTextEditor.Code />
+              <RichTextEditor.ClearFormatting />
+            </RichTextEditor.ControlsGroup>
+          </BubbleMenu>
+        )}
+        {editor && (
+          <FloatingMenu editor={editor}>
+            <RichTextEditor.ControlsGroup>
+              <RichTextEditor.H1 />
+              <RichTextEditor.H2 />
+              <RichTextEditor.H3 />
+              <RichTextEditor.BulletList />
+              <RichTextEditor.OrderedList />
+            </RichTextEditor.ControlsGroup>
+          </FloatingMenu>
+        )}
         <RichTextEditor.ControlsGroup>
           <RichTextEditor.Bold />
           <RichTextEditor.Italic />
           <RichTextEditor.Underline />
           <RichTextEditor.Strikethrough />
           <RichTextEditor.Highlight />
+          <RichTextEditor.Code />
           <RichTextEditor.ClearFormatting />
         </RichTextEditor.ControlsGroup>
 
@@ -54,7 +72,7 @@ const NoteModalContent: FC<NoteModalContentProps> = ({ note }) => {
         <RichTextEditor.Hr />
 
         <RichTextEditor.ControlsGroup>
-          <RichTextEditor.Code />
+          <RichTextEditor.CodeBlock />
           <RichTextEditor.Blockquote />
         </RichTextEditor.ControlsGroup>
 
