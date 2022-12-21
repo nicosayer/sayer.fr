@@ -7,7 +7,7 @@ import Underline from "@tiptap/extension-underline";
 import { BubbleMenu, FloatingMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { updateDoc } from "firebase/firestore";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { NoteDocument } from "types/firebase/collections";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
@@ -16,24 +16,24 @@ export interface NoteModalContentProps {
   note: NoteDocument;
 }
 
-const ydoc = new Y.Doc();
-
 const NoteModalContent: FC<NoteModalContentProps> = ({ note }) => {
-  useEffect(() => {
+  const [yDoc] = useState(() => {
+    const yDoc = new Y.Doc();
     if (note.content) {
-      Y.applyUpdate(ydoc, fromBase64(note.content));
+      Y.applyUpdate(yDoc, fromBase64(note.content));
     }
+    return yDoc;
   });
 
   useEffect(() => {
     if (note.id) {
-      const provider = new WebrtcProvider(String(note.id), ydoc);
+      const provider = new WebrtcProvider(String(note.id), yDoc);
 
       return () => {
         provider.destroy();
       };
     }
-  }, [note.id]);
+  }, [note.id, yDoc]);
 
   const editor = useEditor({
     extensions: [
@@ -41,17 +41,17 @@ const NoteModalContent: FC<NoteModalContentProps> = ({ note }) => {
         history: false,
       }),
       Collaboration.configure({
-        document: ydoc,
+        document: yDoc,
       }),
       Underline,
       Link,
       Highlight,
     ],
     autofocus: "end",
-    onUpdate: ({ editor }) => {
+    onUpdate: () => {
       if (note?.ref) {
         updateDoc<NoteDocument>(note.ref, {
-          content: toBase64(Y.encodeStateAsUpdate(ydoc)),
+          content: toBase64(Y.encodeStateAsUpdate(yDoc)),
         });
       }
     },
