@@ -50,7 +50,7 @@ const Notes: FC = () => {
     if ((boards?.length ?? 0) > 1) {
       openModal({
         centered: true,
-        title: "Changer de board",
+        title: "Choisir un board",
         children: (
           <Stack>
             {boards?.map((board) => (
