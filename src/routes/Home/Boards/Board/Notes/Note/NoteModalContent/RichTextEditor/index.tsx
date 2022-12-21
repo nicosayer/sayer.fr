@@ -1,9 +1,12 @@
 import { toBase64 } from "@aws-sdk/util-base64";
+import { DEFAULT_THEME } from "@mantine/core";
 import { RichTextEditor as MantineRichTextEditor } from "@mantine/tiptap";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
+import { Color } from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
+import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -37,7 +40,8 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
         provider,
         user: {
           name: user?.email,
-          color: getColorFromString(String(user?.email)),
+          color:
+            DEFAULT_THEME.colors[getColorFromString(String(user?.email))][6],
         },
         render: (user) => {
           const cursor = document.createElement("span");
@@ -49,7 +53,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
           const label = document.createElement("div");
           label.setAttribute(
             "style",
-            `border-radius: 3px 3px 3px 0; color: #0d0d0d; font-size: 12px; font-style: normal; font-weight: 600; left: -1px; line-height: normal; padding: 0.1rem 0.3rem; position: absolute; top: -1.4em; -webkit-user-select: none; -moz-user-select: none; user-select: none; white-space: nowrap; background-color: ${user.color};`
+            `border-radius: 3px 3px 3px 0; color: white; font-size: 12px; font-style: normal; font-weight: 600; left: -1px; line-height: normal; padding: 0.1rem 0.3rem; position: absolute; top: -1.4em; -webkit-user-select: none; -moz-user-select: none; user-select: none; white-space: nowrap; background-color: ${user.color};`
           );
 
           label.insertBefore(document.createTextNode(user.name), null);
@@ -61,10 +65,12 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
       Underline,
       Link,
       Highlight,
+      TextStyle,
+      Color,
     ].filter(Boolean),
     autofocus: "end",
     onUpdate: ({ editor }) => {
-      if (note?.ref && editor.getText()) {
+      if (note?.ref) {
         updateDoc<NoteDocument>(note.ref, {
           content: toBase64(Y.encodeStateAsUpdate(yDoc)),
         });
@@ -75,6 +81,24 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
   return (
     <MantineRichTextEditor editor={editor} className="h-full overflow-auto">
       <MantineRichTextEditor.Toolbar sticky>
+        <MantineRichTextEditor.ColorPicker
+          colors={[
+            "#25262b",
+            "#868e96",
+            "#fa5252",
+            "#e64980",
+            "#be4bdb",
+            "#7950f2",
+            "#4c6ef5",
+            "#228be6",
+            "#15aabf",
+            "#12b886",
+            "#40c057",
+            "#82c91e",
+            "#fab005",
+            "#fd7e14",
+          ]}
+        />
         <MantineRichTextEditor.ControlsGroup>
           <MantineRichTextEditor.Bold />
           <MantineRichTextEditor.Italic />
