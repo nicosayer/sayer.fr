@@ -3,10 +3,6 @@ import { FC } from "react";
 import { BoardDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 
-export interface FormWithTag {
-  tag: string;
-}
-
 export interface TagSelectProps extends Omit<SelectProps, "data"> {
   loading: boolean;
   board: BoardDocument;

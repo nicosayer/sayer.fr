@@ -4,19 +4,23 @@ import { closeAllModals } from "@mantine/modals";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { BoardDocument, CredentialDocument } from "types/firebase/collections";
 
 export interface EditCredentialModalProps {
-  board: BoardDocument;
+  boards: BoardDocument[];
   credential: CredentialDocument;
 }
 
 const EditCredentialModal: FC<EditCredentialModalProps> = ({
-  board,
+  boards,
   credential,
 }) => {
   const [loading, start, stop] = useBooleanState();
+
+  const board = useMemo(() => {
+    return boards.find(board => board.id === credential.ref?.parent.parent?.id)
+  }, [boards, credential.ref?.parent.parent?.id])
 
   const form = useForm({
     initialValues: {
@@ -25,6 +29,7 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
       username: credential.username ?? "",
       password: credential.password ?? "",
       tag: credential.tag ?? "",
+      boardId: board?.id,
     },
 
     validate: {
@@ -58,7 +63,7 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
       })}
     >
       <Stack>
-        <CredentialFormInputs loading={loading} form={form} board={board} />
+        <CredentialFormInputs loading={loading} form={form} boards={board ? [board] : []} />
         <div className="flex ml-auto">
           <Group>
             <Button

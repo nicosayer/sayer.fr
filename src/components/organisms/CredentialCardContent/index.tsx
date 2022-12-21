@@ -15,7 +15,7 @@ import CredentialName from "components/organisms/CredentialName";
 import CredentialPassword from "components/organisms/CredentialPassword";
 import CredentialUsername from "components/organisms/CredentialUsername";
 import { deleteDoc } from "firebase/firestore";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CredentialDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
@@ -28,8 +28,12 @@ export interface CredentialCardContentProps {
 const CredentialCardContent: FC<CredentialCardContentProps> = ({
   credential,
 }) => {
-  const { board } = useBoard();
+  const { boards } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
+
+  const board = useMemo(() => {
+    return boards?.find(board => board.id === credential.ref?.parent.parent?.id)
+  }, [boards, credential.ref?.parent.parent?.id])
 
   const openEditModal = useCallback(
     (credential: CredentialDocument) => {
@@ -39,7 +43,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
           zIndex: 1000,
           title: "Modifier le mot de passe",
           children: (
-            <EditCredentialModal credential={credential} board={board} />
+            <EditCredentialModal credential={credential} boards={board ? [board] : []} />
           ),
         });
       }

@@ -12,10 +12,10 @@ import {
 } from "types/firebase/collections";
 
 export interface NewCredentialModalProps {
-  board: BoardDocument;
+  boards: BoardDocument[];
 }
 
-const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
+const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
 
   const form = useForm({
@@ -25,6 +25,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
       username: "",
       password: "",
       tag: "",
+      boardId: boards.length === 1 ? boards[0].id : undefined,
     },
 
     validate: {
@@ -43,6 +44,8 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
+        const board = boards.find(board => board.id === values.boardId)
+
         if (board?.ref) {
           start();
           addDoc<CredentialDocument>(
@@ -61,7 +64,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <CredentialFormInputs loading={loading} form={form} board={board} />
+        <CredentialFormInputs loading={loading} form={form} boards={boards} />
         <div className="flex ml-auto">
           <Group>
             <Button

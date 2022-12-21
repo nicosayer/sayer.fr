@@ -15,7 +15,7 @@ import CredentialsCards from "./CredentialsCards";
 import NewCredentialModal from "./NewCredentialModal";
 
 const Credentials: FC = () => {
-  const { board, credentials } = useBoard();
+  const { boards, credentials } = useBoard();
   const [search, setSearch] = useState("");
 
   if (!credentials) {
@@ -29,11 +29,11 @@ const Credentials: FC = () => {
           size="lg"
           leftIcon={<IconPlus size={18} />}
           onClick={() => {
-            if (board) {
+            if (boards) {
               openModal({
                 centered: true,
                 title: "Nouveau mot de passe",
-                children: <NewCredentialModal board={board} />,
+                children: <NewCredentialModal boards={boards} />,
               });
             }
           }}
@@ -64,11 +64,11 @@ const Credentials: FC = () => {
               variant="default"
               leftIcon={<IconPlus size={18} />}
               onClick={() => {
-                if (board) {
+                if (boards) {
                   openModal({
                     centered: true,
                     title: "Nouveau mot de passe",
-                    children: <NewCredentialModal board={board} />,
+                    children: <NewCredentialModal boards={boards} />,
                   });
                 }
               }}
