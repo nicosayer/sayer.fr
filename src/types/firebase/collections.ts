@@ -6,6 +6,7 @@ export enum Collection {
   creditCards = "creditCards",
   documents = "documents",
   notes = "notes",
+  tasks = "tasks",
 }
 
 export interface BoardDocument {
@@ -18,7 +19,7 @@ export interface BoardDocument {
 
 export interface CredentialDocument {
   id?: string;
-  ref?: DocumentReference<BoardDocument>;
+  ref?: DocumentReference<CredentialDocument>;
   name?: string;
   url?: string;
   username?: string;
@@ -28,7 +29,7 @@ export interface CredentialDocument {
 
 export interface CreditCardDocument {
   id?: string;
-  ref?: DocumentReference<BoardDocument>;
+  ref?: DocumentReference<CreditCardDocument>;
   name?: string;
   cardholder?: string;
   number?: string;
@@ -47,7 +48,7 @@ export enum Mime {
 
 export interface DocumentDocument {
   id?: string;
-  ref?: DocumentReference<BoardDocument>;
+  ref?: DocumentReference<DocumentDocument>;
   name?: string;
   mime?: Mime;
   tag?: string;
@@ -55,9 +56,18 @@ export interface DocumentDocument {
 
 export interface NoteDocument {
   id?: string;
-  ref?: DocumentReference<BoardDocument>;
+  ref?: DocumentReference<NoteDocument>;
   name?: string;
   content?: string;
   date?: string;
+  tag?: string;
+}
+
+export interface TaskDocument {
+  id?: string;
+  ref?: DocumentReference<TaskDocument>;
+  description?: string;
+  order?: number;
+  done?: boolean;
   tag?: string;
 }

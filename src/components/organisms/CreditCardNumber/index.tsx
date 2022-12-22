@@ -1,7 +1,7 @@
 import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconCheck, IconCopy, IconEye, IconEyeOff } from "@tabler/icons";
-import useBooleanState from "hooks/useBooleanState";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
 import { ONE_SECOND } from "utils/time";
 
@@ -10,17 +10,15 @@ interface CreditCardNumberProps {
 }
 
 const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
-  const [visible, , off, toggle] = useBooleanState();
-
-  useEffect(() => {
-    if (visible) {
+  const [visible, setVisible] = useDisclosure(false, {
+    onOpen: () => {
       setTimeout(() => {
         if (visible) {
-          off();
+          setVisible.close();
         }
       }, 10 * ONE_SECOND);
-    }
-  }, [visible, off]);
+    },
+  });
 
   return (
     <Group spacing="xs">
@@ -38,7 +36,7 @@ const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
         label={visible ? "Cacher le numéro" : "Voir le numéro"}
         withArrow
       >
-        <ActionIcon onClick={toggle}>
+        <ActionIcon onClick={setVisible.toggle}>
           {visible ? <IconEyeOff size={18} /> : <IconEye size={18} />}
         </ActionIcon>
       </Tooltip>

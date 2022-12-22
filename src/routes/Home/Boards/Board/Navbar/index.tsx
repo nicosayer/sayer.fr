@@ -1,5 +1,6 @@
 import { Navbar as MantineNavbar, Stack } from "@mantine/core";
 import {
+  IconChecklist,
   IconCreditCard,
   IconId,
   IconLockOpen,
@@ -34,6 +35,12 @@ const menu = [
     color: "orange",
     label: "Notes",
     to: "notes",
+  },
+  {
+    icon: <IconChecklist size={18} />,
+    color: "violet",
+    label: "Tâches",
+    to: "tasks",
   },
 ];
 

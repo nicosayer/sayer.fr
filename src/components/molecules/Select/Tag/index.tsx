@@ -21,6 +21,7 @@ const ItemComponent = forwardRef<HTMLDivElement, SelectItemProps>(
 const TagSelect: FC<TagSelectProps> = ({ loading, board, ...rest }) => {
   return (
     <Select
+      withinPortal
       disabled={loading}
       data={board?.tags ?? []}
       itemComponent={ItemComponent}

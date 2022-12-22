@@ -9,6 +9,7 @@ import {
   CreditCardDocument,
   DocumentDocument,
   NoteDocument,
+  TaskDocument,
 } from "types/firebase/collections";
 import { ALL_BOARDS_SLUG } from "utils/boards";
 
@@ -17,6 +18,7 @@ interface IBoardContext {
   boards?: BoardDocument[];
   credentials?: CredentialDocument[];
   notes?: NoteDocument[];
+  tasks?: TaskDocument[];
   creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
   loading: boolean;
@@ -27,6 +29,7 @@ const BoardContext = createContext<IBoardContext>({
   boards: undefined,
   credentials: undefined,
   notes: undefined,
+  tasks: undefined,
   creditCards: undefined,
   documents: undefined,
   loading: false,
@@ -77,14 +80,26 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     Collection.notes
   );
 
+  const [tasks, loadingTasks] = useBoardsCollectionsData<TaskDocument>(
+    currentBoards ?? [],
+    Collection.tasks
+  );
+
   const loading = useMemo(() => {
     return (
       loadingCredentials ||
       loadingCreditCards ||
       loadingDocuments ||
-      loadingNotes
+      loadingNotes ||
+      loadingTasks
     );
-  }, [loadingCredentials, loadingCreditCards, loadingDocuments, loadingNotes]);
+  }, [
+    loadingCredentials,
+    loadingCreditCards,
+    loadingDocuments,
+    loadingNotes,
+    loadingTasks,
+  ]);
 
   const context = useMemo(() => {
     return {
@@ -94,12 +109,14 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       creditCards,
       documents,
       notes,
+      tasks,
       loading,
     };
   }, [
     board,
     currentBoards,
     notes,
+    tasks,
     credentials,
     creditCards,
     documents,

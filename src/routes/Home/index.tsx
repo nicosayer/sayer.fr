@@ -12,6 +12,7 @@ import Credentials from "./Boards/Board/Credentials";
 import CreditCards from "./Boards/Board/CreditCards";
 import Documents from "./Boards/Board/Documents";
 import Notes from "./Boards/Board/Notes";
+import Tasks from "./Boards/Board/Tasks";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,8 @@ const router = createBrowserRouter([
               { path: "documents/:documentId", element: <Documents /> },
               { path: "notes", element: <Notes /> },
               { path: "notes/:noteId", element: <Notes /> },
+              { path: "tasks", element: <Tasks /> },
+              { path: "tasks/:taskId", element: <Tasks /> },
               { path: "settings", element: <Settings /> },
             ],
           },

@@ -1,6 +1,7 @@
 import { Group, Indicator, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
+import { IconChevronDown } from "@tabler/icons";
 import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
 import { updateDoc } from "firebase/firestore";
@@ -32,7 +33,7 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
         value={name}
         onChange={(event) => {
           setName(event.target.value);
-          if (note.ref) {
+          if (note.ref && event.target.value) {
             updateDoc<NoteDocument>(note.ref, {
               name: event.target.value,
             });
@@ -61,7 +62,9 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
                   <Indicator color={getColorFromString(note.tag)}>
                     <div />
                   </Indicator>
-                ) : undefined
+                ) : (
+                  <IconChevronDown size={18} />
+                )
               }
               placeholder="Étiquette"
               board={board}
