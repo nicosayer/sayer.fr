@@ -1,8 +1,9 @@
 import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
 import { IconCheck, IconCopy, IconEye, IconEyeOff } from "@tabler/icons";
 import useBooleanState from "hooks/useBooleanState";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
+import { ONE_SECOND } from "utils/time";
 
 interface CreditCardSecurityCodeProps {
   creditCard: CreditCardDocument;
@@ -11,7 +12,17 @@ interface CreditCardSecurityCodeProps {
 const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
   creditCard,
 }) => {
-  const [visible, , , toggle] = useBooleanState();
+  const [visible, , off, toggle] = useBooleanState();
+
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        if (visible) {
+          off()
+        }
+      }, 10 * ONE_SECOND);
+    }
+  }, [visible, off])
 
   return (
     <Group spacing="xs">
