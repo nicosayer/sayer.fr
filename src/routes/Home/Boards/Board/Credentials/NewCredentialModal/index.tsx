@@ -25,7 +25,10 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
       username: "",
       password: "",
       tag: "",
-      boardId: boards.length === 1 ? boards[0].id : undefined,
+      boardId:
+        boards.length === 1
+          ? boards[0].id
+          : localStorage.getItem("default-board-id") ?? undefined,
     },
 
     validate: {
@@ -51,8 +54,9 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
       onSubmit={form.onSubmit((values) => {
         const board = boards.find((board) => board.id === values.boardId);
 
-        if (board?.ref) {
+        if (board?.id && board.ref) {
           start();
+          localStorage.setItem("default-board-id", board.id);
           addDoc<CredentialDocument>(
             collection(board.ref, Collection.credentials),
             {

@@ -32,7 +32,10 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
       expirationDate: "",
       securityCode: "",
       tag: "",
-      boardId: boards.length === 1 ? boards[0].id : undefined,
+      boardId:
+        boards.length === 1
+          ? boards[0].id
+          : localStorage.getItem("default-board-id") ?? undefined,
     },
 
     validate: {
@@ -71,11 +74,11 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
       onSubmit={form.onSubmit((values) => {
         const board = boards.find((board) => board.id === values.boardId);
 
-        if (board?.ref) {
+        if (board?.id && board.ref) {
+          start();
           const [expirationMonth, expirationYear] =
             values.expirationDate.split("/");
-
-          start();
+          localStorage.setItem("default-board-id", board.id);
           addDoc<CreditCardDocument>(
             collection(board.ref, Collection.creditCards),
             {

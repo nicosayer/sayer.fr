@@ -34,7 +34,10 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
       name: "",
       file: undefined as FileWithPath | undefined,
       tag: "",
-      boardId: boards.length === 1 ? boards[0].id : undefined,
+      boardId:
+        boards.length === 1
+          ? boards[0].id
+          : localStorage.getItem("default-board-id") ?? undefined,
     },
 
     validate: {
@@ -62,8 +65,9 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
       onSubmit={form.onSubmit(async (values) => {
         const board = boards.find((board) => board.id === values.boardId);
 
-        if (board?.ref && values.file?.type) {
+        if (board?.id && board.ref && values.file?.type) {
           start();
+          localStorage.setItem("default-board-id", board.id);
 
           const arrayBuffer = await values.file?.arrayBuffer();
 
