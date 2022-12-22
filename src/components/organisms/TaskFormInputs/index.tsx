@@ -34,6 +34,7 @@ const TaskFormInputs: FC<TaskFormInputsProps> = ({ loading, form, boards }) => {
       />
       {boards.length > 1 && (
         <BoardSelect
+          label="Board"
           boards={boards}
           loading={loading}
           {...form.getInputProps("boardId")}

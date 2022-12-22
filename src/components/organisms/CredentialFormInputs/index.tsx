@@ -64,6 +64,7 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
       />
       {boards.length > 1 && (
         <BoardSelect
+          label="Board"
           boards={boards}
           loading={loading}
           {...form.getInputProps("boardId")}

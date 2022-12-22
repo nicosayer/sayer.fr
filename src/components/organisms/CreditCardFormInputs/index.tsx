@@ -111,6 +111,7 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
       />
       {boards.length > 1 && (
         <BoardSelect
+          label="Board"
           boards={boards}
           loading={loading}
           {...form.getInputProps("boardId")}

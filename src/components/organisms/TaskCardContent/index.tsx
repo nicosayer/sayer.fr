@@ -1,4 +1,4 @@
-import { Checkbox, Group, Indicator, Stack, TextInput } from "@mantine/core";
+import { Checkbox, Group, Indicator, TextInput } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons";
 import TagSelect from "components/molecules/Select/Tag";
@@ -30,67 +30,65 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
   }, [debouncedDescription]);
 
   return (
-    <Stack>
-      <Group position="apart" noWrap>
-        <div className="flex items-center w-full gap-2">
-          <Checkbox
-            checked={Boolean(task.done)}
-            className="flex"
-            classNames={{ input: "cursor-pointer" }}
-            onChange={(event) => {
-              if (task.ref) {
-                updateDoc<TaskDocument>(task.ref, {
-                  done: event.currentTarget.checked,
-                });
-              }
-            }}
-          />
-          <TextInput
-            className="w-full"
-            variant="unstyled"
-            value={description}
-            onChange={(event) => {
-              setDescription(event.target.value);
-              if (task.ref && event.target.value) {
-                updateDoc<TaskDocument>(task.ref, {
-                  description: event.target.value,
-                });
-              }
-            }}
-            onBlur={(event) => {
-              if (!event.target.value && task.ref) {
-                deleteDoc(task.ref);
-              }
-            }}
-          />
-        </div>
-        {board?.tags?.length ? (
-          <TagSelect
-            variant="unstyled"
-            rightSection={<div />}
-            icon={
-              task.tag ? (
-                <Indicator color={getColorFromString(task.tag)}>
-                  <div />
-                </Indicator>
-              ) : (
-                <IconChevronDown size={18} />
-              )
+    <Group position="apart" noWrap>
+      <div className="flex items-center w-full gap-2">
+        <Checkbox
+          checked={Boolean(task.done)}
+          className="flex"
+          classNames={{ input: "cursor-pointer" }}
+          onChange={(event) => {
+            if (task.ref) {
+              updateDoc<TaskDocument>(task.ref, {
+                done: event.currentTarget.checked,
+              });
             }
-            placeholder="Étiquette"
-            board={board}
-            value={task.tag}
-            onChange={(tag) => {
-              if (task.ref) {
-                updateDoc<TaskDocument>(task.ref, {
-                  tag: tag ?? "",
-                });
-              }
-            }}
-          />
-        ) : undefined}
-      </Group>
-    </Stack>
+          }}
+        />
+        <TextInput
+          className="w-full"
+          variant="unstyled"
+          value={description}
+          onChange={(event) => {
+            setDescription(event.target.value);
+            if (task.ref && event.target.value) {
+              updateDoc<TaskDocument>(task.ref, {
+                description: event.target.value,
+              });
+            }
+          }}
+          onBlur={(event) => {
+            if (!event.target.value && task.ref) {
+              deleteDoc(task.ref);
+            }
+          }}
+        />
+      </div>
+      {board?.tags?.length ? (
+        <TagSelect
+          variant="unstyled"
+          rightSection={<div />}
+          icon={
+            task.tag ? (
+              <Indicator color={getColorFromString(task.tag)}>
+                <div />
+              </Indicator>
+            ) : (
+              <IconChevronDown size={18} />
+            )
+          }
+          placeholder="Étiquette"
+          board={board}
+          value={task.tag}
+          onChange={(tag) => {
+            if (task.ref) {
+              updateDoc<TaskDocument>(task.ref, {
+                tag: tag ?? "",
+              });
+            }
+          }}
+        />
+      ) : undefined}
+    </Group>
   );
 };
 

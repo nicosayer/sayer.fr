@@ -139,6 +139,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
         </Input.Wrapper>
         {boards.length > 1 && (
           <BoardSelect
+            label="Board"
             boards={boards}
             loading={loading}
             {...form.getInputProps("boardId")}
