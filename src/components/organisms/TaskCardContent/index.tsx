@@ -35,7 +35,9 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
         <Checkbox
           checked={Boolean(task.done)}
           className="flex"
-          classNames={{ input: "cursor-pointer" }}
+          classNames={{
+            input: "cursor-pointer",
+          }}
           onChange={(event) => {
             if (task.ref) {
               updateDoc<TaskDocument>(task.ref, {

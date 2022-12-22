@@ -8,6 +8,7 @@ import {
   CredentialDocument,
   CreditCardDocument,
   DocumentDocument,
+  GroceryDocument,
   NoteDocument,
   TaskDocument,
 } from "types/firebase/collections";
@@ -19,6 +20,7 @@ interface IBoardContext {
   credentials?: CredentialDocument[];
   notes?: NoteDocument[];
   tasks?: TaskDocument[];
+  groceries?: GroceryDocument[];
   creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
   loading: boolean;
@@ -30,6 +32,7 @@ const BoardContext = createContext<IBoardContext>({
   credentials: undefined,
   notes: undefined,
   tasks: undefined,
+  groceries: undefined,
   creditCards: undefined,
   documents: undefined,
   loading: false,
@@ -75,6 +78,12 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       Collection.creditCards
     );
 
+  const [groceries, loadingGroceries] =
+    useBoardsCollectionsData<GroceryDocument>(
+      currentBoards ?? [],
+      Collection.groceries
+    );
+
   const [notes, loadingNotes] = useBoardsCollectionsData<NoteDocument>(
     currentBoards ?? [],
     Collection.notes
@@ -90,6 +99,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       loadingCredentials ||
       loadingCreditCards ||
       loadingDocuments ||
+      loadingGroceries ||
       loadingNotes ||
       loadingTasks
     );
@@ -97,6 +107,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     loadingCredentials,
     loadingCreditCards,
     loadingDocuments,
+    loadingGroceries,
     loadingNotes,
     loadingTasks,
   ]);
@@ -110,6 +121,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       documents,
       notes,
       tasks,
+      groceries,
       loading,
     };
   }, [
@@ -117,6 +129,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     currentBoards,
     notes,
     tasks,
+    groceries,
     credentials,
     creditCards,
     documents,

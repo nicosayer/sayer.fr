@@ -6,6 +6,7 @@ import {
   IconLockOpen,
   IconNotebook,
   IconSettings,
+  IconShoppingCart,
 } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
 import { FC } from "react";
@@ -41,6 +42,12 @@ const menu = [
     color: "violet",
     label: "Tâches",
     to: "tasks",
+  },
+  {
+    icon: <IconShoppingCart size={18} />,
+    color: "yellow",
+    label: "Courses",
+    to: "groceries",
   },
 ];
 

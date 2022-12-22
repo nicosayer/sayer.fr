@@ -2,24 +2,24 @@ import { Group, LoadingOverlay, Stack, Text, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
-import NewTaskCard from "./NewTaskCard";
-import Task from "./Task";
-import TasksCards from "./TasksCards";
+import GroceriesCards from "./GroceriesCards";
+import Grocery from "./Grocery";
+import NewGroceryCard from "./NewGroceryCard";
 
-const Tasks: FC = () => {
-  const { loading, tasks } = useBoard();
+const Groceries: FC = () => {
+  const { loading, groceries } = useBoard();
   const [search, setSearch] = useState("");
 
-  if (!tasks || loading) {
+  if (!groceries || loading) {
     return <LoadingOverlay visible />;
   }
 
   return (
     <>
-      <Task />
+      <Grocery />
       <Stack>
         <Group position="apart" className="sticky z-50">
-          <Text fw={500}>Tâches</Text>
+          <Text fw={500}>Courses</Text>
           <TextInput
             placeholder="Rechercher"
             variant="filled"
@@ -30,11 +30,11 @@ const Tasks: FC = () => {
             }}
           />
         </Group>
-        <NewTaskCard />
-        <TasksCards search={search} />
+        <NewGroceryCard />
+        <GroceriesCards search={search} />
       </Stack>
     </>
   );
 };
 
-export default Tasks;
+export default Groceries;

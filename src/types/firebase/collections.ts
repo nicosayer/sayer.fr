@@ -7,6 +7,7 @@ export enum Collection {
   documents = "documents",
   notes = "notes",
   tasks = "tasks",
+  groceries = "groceries",
 }
 
 export interface BoardDocument {
@@ -51,6 +52,16 @@ export interface DocumentDocument {
   ref?: DocumentReference<DocumentDocument>;
   name?: string;
   mime?: Mime;
+  tag?: string;
+}
+
+export interface GroceryDocument {
+  id?: string;
+  ref?: DocumentReference<GroceryDocument>;
+  name?: string;
+  openDate?: string;
+  closeDate?: string;
+  closedBy?: string;
   tag?: string;
 }
 
