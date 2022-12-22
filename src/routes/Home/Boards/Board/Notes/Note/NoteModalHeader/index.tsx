@@ -7,6 +7,7 @@ import { updateDoc } from "firebase/firestore";
 import { FC, useEffect, useState } from "react";
 import { BoardDocument, NoteDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
+import { formatDate } from "utils/dayjs";
 import { ONE_SECOND } from "utils/time";
 
 export interface NoteModalHeaderProps {
@@ -42,7 +43,7 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
           onChange={(date) => {
             if (note.ref) {
               updateDoc<NoteDocument>(note.ref, {
-                date: dayjs(date).format("YYYY-MM-DD"),
+                date: formatDate(date, "YYYY-MM-DD"),
               });
             }
           }}

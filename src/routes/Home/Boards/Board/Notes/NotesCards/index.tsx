@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { orderBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { formatDate } from "utils/dayjs";
 import { searchString } from "utils/string";
 
 export interface NotesCardsProps {
@@ -19,9 +20,7 @@ const NotesCards: FC<NotesCardsProps> = ({ search }) => {
         return (
           note.content &&
           searchString(
-            `${note.name}${note.tag}${dayjs(note.date)
-              .locale("fr")
-              .format("MMMM YYYY")}`,
+            `${note.name}${note.tag}${formatDate(note.date, "MMMM YYYY")}`,
             search
           )
         );
