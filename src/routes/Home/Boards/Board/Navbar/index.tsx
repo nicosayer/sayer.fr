@@ -15,25 +15,31 @@ import NavbarButton from "routes/Home/Boards/Board/Navbar/Button";
 const menu = [
   {
     icon: <IconLockOpen size={18} />,
-    color: "blue",
+    color: "red",
     label: "Mot de passes",
     to: "credentials",
   },
   {
-    icon: <IconId size={18} />,
-    color: "green",
-    label: "Documents",
-    to: "documents",
-  },
-  {
     icon: <IconCreditCard size={18} />,
-    color: "red",
+    color: "orange",
     label: "Cartes de crédit",
     to: "credit-cards",
   },
   {
+    icon: <IconId size={18} />,
+    color: "yellow",
+    label: "Documents",
+    to: "documents",
+  },
+  {
+    icon: <IconShoppingCart size={18} />,
+    color: "green",
+    label: "Courses",
+    to: "groceries",
+  },
+  {
     icon: <IconNotebook size={18} />,
-    color: "orange",
+    color: "blue",
     label: "Notes",
     to: "notes",
   },
@@ -42,12 +48,6 @@ const menu = [
     color: "violet",
     label: "Tâches",
     to: "tasks",
-  },
-  {
-    icon: <IconShoppingCart size={18} />,
-    color: "yellow",
-    label: "Courses",
-    to: "groceries",
   },
 ];
 
