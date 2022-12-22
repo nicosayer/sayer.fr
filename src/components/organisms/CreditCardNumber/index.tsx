@@ -16,11 +16,11 @@ const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
     if (visible) {
       setTimeout(() => {
         if (visible) {
-          off()
+          off();
         }
       }, 10 * ONE_SECOND);
     }
-  }, [visible, off])
+  }, [visible, off]);
 
   return (
     <Group spacing="xs">

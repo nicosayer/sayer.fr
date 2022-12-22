@@ -1,14 +1,12 @@
 import { Group, Indicator, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { useDebouncedValue } from "@mantine/hooks";
 import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
 import { updateDoc } from "firebase/firestore";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { BoardDocument, NoteDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
-import { ONE_SECOND } from "utils/time";
 
 export interface NoteModalHeaderProps {
   board: BoardDocument;
@@ -16,25 +14,18 @@ export interface NoteModalHeaderProps {
 }
 
 const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
-  const [name, setName] = useState(note.name);
-  const [debouncedName] = useDebouncedValue(name, ONE_SECOND);
-
-  useEffect(() => {
-    if (note.ref && debouncedName && note.name && debouncedName !== note.name) {
-      updateDoc<NoteDocument>(note.ref, {
-        name: debouncedName,
-      });
-    }
-  }, [debouncedName, note.name, note.ref]);
-
   return (
     <Group grow>
       <TextInput
         className="w-full"
         placeholder="Nom de la note"
-        value={name}
+        defaultValue={note?.name}
         onChange={(event) => {
-          setName(event.target.value);
+          if (note.ref) {
+            updateDoc<NoteDocument>(note.ref, {
+              name: event.target.value,
+            });
+          }
         }}
       />
       <Group grow>
