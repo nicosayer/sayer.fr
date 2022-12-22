@@ -71,54 +71,52 @@ const Spotlight = ({ children }: PropsWithChildren) => {
       actions={(query) =>
         query
           ? [
-            ...(credentials ?? []).map((credential) => {
-              return {
-                title: credential.name ?? "",
-                description: credential.username,
-                tag: credential.tag,
-                group: "Mot de passe",
-                onTrigger: () => {
-                  navigate(`/boards/${boardId}/credentials/${credential.id}`);
-                },
-              };
-            }),
-            ...(documents ?? []).map((document) => {
-              return {
-                title: document.name ?? "",
-                tag: document.tag,
-                group: "Document",
-                onTrigger: () => {
-                  navigate(`/boards/${boardId}/documents/${document.id}`);
-                },
-              };
-            }),
-            ...(creditCards ?? []).map((creditCard) => {
-              return {
-                title: creditCard.name ?? "",
-                description: creditCard.cardholder,
-                tag: creditCard.tag,
-                group: "Carte de crédit",
-                onTrigger: () => {
-                  navigate(
-                    `/boards/${boardId}/credit-cards/${creditCard.id}`
-                  );
-                },
-              };
-            }),
-            ...(notes ?? []).map((note) => {
-              return {
-                title: note.name ?? "",
-                description: formatDate(note.date, "DD MMMM YYYY"),
-                tag: note.tag,
-                group: "Note",
-                onTrigger: () => {
-                  navigate(
-                    `/boards/${boardId}/notes/${note.id}`
-                  );
-                },
-              };
-            }),
-          ]
+              ...(credentials ?? []).map((credential) => {
+                return {
+                  title: credential.name ?? "",
+                  description: credential.username,
+                  tag: credential.tag,
+                  group: "Mot de passe",
+                  onTrigger: () => {
+                    navigate(`/boards/${boardId}/credentials/${credential.id}`);
+                  },
+                };
+              }),
+              ...(documents ?? []).map((document) => {
+                return {
+                  title: document.name ?? "",
+                  tag: document.tag,
+                  group: "Document",
+                  onTrigger: () => {
+                    navigate(`/boards/${boardId}/documents/${document.id}`);
+                  },
+                };
+              }),
+              ...(creditCards ?? []).map((creditCard) => {
+                return {
+                  title: creditCard.name ?? "",
+                  description: creditCard.cardholder,
+                  tag: creditCard.tag,
+                  group: "Carte de crédit",
+                  onTrigger: () => {
+                    navigate(
+                      `/boards/${boardId}/credit-cards/${creditCard.id}`
+                    );
+                  },
+                };
+              }),
+              ...(notes ?? []).map((note) => {
+                return {
+                  title: note.name ?? "",
+                  description: formatDate(note.date, "DD MMMM YYYY"),
+                  tag: note.tag,
+                  group: "Note",
+                  onTrigger: () => {
+                    navigate(`/boards/${boardId}/notes/${note.id}`);
+                  },
+                };
+              }),
+            ]
           : []
       }
       filter={(query, actions) =>

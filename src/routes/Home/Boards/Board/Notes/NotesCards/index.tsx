@@ -1,6 +1,5 @@
 import { Card, Stack } from "@mantine/core";
 import NoteCardContent from "components/organisms/NoteCardContent";
-import dayjs from "dayjs";
 import { orderBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";

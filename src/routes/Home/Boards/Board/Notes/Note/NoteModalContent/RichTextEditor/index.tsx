@@ -79,7 +79,21 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
   });
 
   return (
-    <MantineRichTextEditor editor={editor} className="h-full overflow-auto">
+    <MantineRichTextEditor
+      editor={editor}
+      className="h-full overflow-auto max-w-[900px] m-auto"
+      classNames={{
+        typographyStylesProvider: "h-[calc(100%_-_47px)]",
+        content: "h-full",
+      }}
+      styles={{
+        content: {
+          "& .ProseMirror": {
+            height: "100%",
+          },
+        },
+      }}
+    >
       <MantineRichTextEditor.Toolbar sticky>
         <MantineRichTextEditor.ColorPicker
           colors={[

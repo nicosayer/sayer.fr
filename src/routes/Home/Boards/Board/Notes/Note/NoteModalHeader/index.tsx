@@ -31,6 +31,7 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
     <Group grow>
       <TextInput
         className="w-full"
+        placeholder="Nom de la note"
         value={name}
         onChange={(event) => {
           setName(event.target.value);
@@ -47,7 +48,6 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
               });
             }
           }}
-          placeholder="Pick date"
           clearable={false}
         />
         {board?.tags?.length ? (

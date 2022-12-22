@@ -28,7 +28,11 @@ const Note: FC = () => {
       onClose={() => navigate(`/boards/${boardId}/notes`)}
       trapFocus={false}
       fullScreen={true}
-      classNames={{ body: "h-[calc(100%_-_52px)]", title: "w-full" }}
+      classNames={{
+        body: "h-[calc(100%_-_52px)]",
+        title: "w-full",
+        modal: "bg-[#f8f9fa]",
+      }}
       title={<NoteModalHeader board={board} note={note} />}
     >
       <NoteModalContent note={note} />

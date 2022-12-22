@@ -10,7 +10,7 @@ export interface TagSelectProps extends Omit<SelectProps, "data"> {
 
 const ItemComponent = forwardRef<HTMLDivElement, SelectItemProps>(
   ({ value, ...rest }: SelectItemProps, ref) => (
-    <div ref={ref}{...rest}>
+    <div ref={ref} {...rest}>
       <Badge variant="dot" color={getColorFromString(String(value))}>
         {value}
       </Badge>
