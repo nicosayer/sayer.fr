@@ -1,6 +1,7 @@
 import { fromBase64 } from "@aws-sdk/util-base64";
 import { FC, useEffect, useState } from "react";
 import { NoteDocument } from "types/firebase/collections";
+import { IndexeddbPersistence } from "y-indexeddb";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 import RichTextEditor from "./RichTextEditor";
@@ -22,7 +23,13 @@ const NoteModalContent: FC<NoteModalContentProps> = ({ note }) => {
 
   useEffect(() => {
     if (note.id) {
-      const provider = new WebrtcProvider(String(note.id), yDoc);
+      new IndexeddbPersistence(note.id, yDoc);
+    }
+  }, [note.id, yDoc]);
+
+  useEffect(() => {
+    if (note.id) {
+      const provider = new WebrtcProvider(note.id, yDoc);
 
       setProviderRef(provider);
 
