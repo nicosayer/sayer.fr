@@ -4,7 +4,7 @@ import {
   IconCreditCard,
   IconId,
   IconLockOpen,
-  IconNotebook,
+  IconPencilPlus,
   IconSettings,
   IconShoppingCart,
 } from "@tabler/icons";
@@ -38,7 +38,7 @@ const menu = [
     to: "groceries",
   },
   {
-    icon: <IconNotebook size={18} />,
+    icon: <IconPencilPlus size={18} />,
     color: "blue",
     label: "Notes",
     to: "notes",
