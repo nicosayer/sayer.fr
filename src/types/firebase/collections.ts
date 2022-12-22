@@ -61,6 +61,7 @@ export interface GroceryDocument {
   name?: string;
   openDate?: string;
   closeDate?: string;
+  order?: number;
   closedBy?: string;
   tag?: string;
 }

@@ -69,6 +69,7 @@ const NewGroceryCard: FC = () => {
               collection(board.ref, Collection.groceries),
               {
                 name: values.name.trim(),
+                order: +dayjs(),
                 openDate: dayjs().format("YYYY-MM-DD"),
                 tag: values.tag,
               }
