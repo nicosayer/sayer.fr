@@ -29,7 +29,7 @@ const TaskFormInputs: FC<TaskFormInputsProps> = ({ loading, form, boards }) => {
         withAsterisk
         disabled={loading}
         label="Description de la tache"
-        placeholder="Acme"
+        placeholder="Payer la taxe d'habitation"
         {...form.getInputProps("description")}
       />
       {boards.length > 1 && (

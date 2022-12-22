@@ -46,7 +46,6 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
             }}
           />
           <TextInput
-            disabled={task.done}
             className="w-full"
             variant="unstyled"
             value={description}
@@ -90,13 +89,6 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
             }}
           />
         ) : undefined}
-        {/* {task.tag && (
-          <div>
-            <Badge variant="dot" color={getColorFromString(task.tag)}>
-              {task.tag}
-            </Badge>
-          </div>
-        )} */}
       </Group>
     </Stack>
   );

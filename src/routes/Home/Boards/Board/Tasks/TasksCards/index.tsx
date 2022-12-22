@@ -36,7 +36,7 @@ const TasksCards: FC<TasksCardsProps> = ({ search }) => {
       })}
       {(filteredTasks.true ?? []).map((task) => {
         return (
-          <Card key={task.id} withBorder className="opacity-75">
+          <Card key={task.id} withBorder className="opacity-50">
             <TaskCardContent task={task} />
           </Card>
         );
