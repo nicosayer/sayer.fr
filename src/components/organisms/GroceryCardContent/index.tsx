@@ -38,7 +38,7 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
         }}
       />
       <Group>
-        {grocery.tag && !grocery.closeDate && (
+        {grocery.tag && (
           <Badge variant="dot" color={getColorFromString(grocery.tag)}>
             {grocery.tag}
           </Badge>

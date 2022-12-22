@@ -1,95 +1,70 @@
-import { Checkbox, Group, Indicator, TextInput } from "@mantine/core";
-import { useDebouncedValue } from "@mantine/hooks";
-import { IconChevronDown } from "@tabler/icons";
-import TagSelect from "components/molecules/Select/Tag";
+import {
+  ActionIcon,
+  Badge,
+  Checkbox,
+  Group,
+  Text,
+  Tooltip,
+} from "@mantine/core";
+import { IconTrash } from "@tabler/icons";
 import { deleteDoc, updateDoc } from "firebase/firestore";
-import { FC, useEffect, useMemo, useState } from "react";
-import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { FC } from "react";
 import { TaskDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
-import { ONE_SECOND } from "utils/time";
+import { formatDate } from "utils/dayjs";
 
 export interface TaskCardContentProps {
   task: TaskDocument;
 }
 
 const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
-  const { boards } = useBoard();
-  const [description, setDescription] = useState(task?.description);
-  const [debouncedDescription] = useDebouncedValue(
-    task?.description,
-    10 * ONE_SECOND
-  );
-
-  const board = useMemo(() => {
-    return boards?.find((board) => board.id === task?.ref?.parent.parent?.id);
-  }, [boards, task?.ref?.parent.parent?.id]);
-
-  useEffect(() => {
-    setDescription(debouncedDescription);
-  }, [debouncedDescription]);
-
   return (
-    <Group position="apart" noWrap>
-      <div className="flex items-center w-full gap-2">
-        <Checkbox
-          checked={Boolean(task.done)}
-          className="flex"
-          classNames={{
-            input: "cursor-pointer",
-          }}
-          onChange={(event) => {
-            if (task.ref) {
-              updateDoc<TaskDocument>(task.ref, {
-                done: event.currentTarget.checked,
-              });
-            }
-          }}
-        />
-        <TextInput
-          className="w-full"
-          variant="unstyled"
-          value={description}
-          onChange={(event) => {
-            setDescription(event.target.value);
-            if (task.ref && event.target.value) {
-              updateDoc<TaskDocument>(task.ref, {
-                description: event.target.value,
-              });
-            }
-          }}
-          onBlur={(event) => {
-            if (!event.target.value && task.ref) {
-              deleteDoc(task.ref);
-            }
-          }}
-        />
-      </div>
-      {board?.tags?.length ? (
-        <TagSelect
-          variant="unstyled"
-          rightSection={<div />}
-          icon={
-            task.tag ? (
-              <Indicator color={getColorFromString(task.tag)}>
-                <div />
-              </Indicator>
-            ) : (
-              <IconChevronDown size={18} />
-            )
+    <Group position="apart" noWrap className="whitespace-nowrap">
+      <Checkbox
+        checked={Boolean(task.closeDate)}
+        className="flex overflow-hidden"
+        classNames={{
+          input: "cursor-pointer",
+          label: "cursor-pointer",
+        }}
+        label={task.description}
+        onChange={() => {
+          if (task.ref && task.closeDate) {
+            updateDoc<TaskDocument>(task.ref, {
+              closeDate: "",
+              closedBy: "",
+            });
           }
-          placeholder="Étiquette"
-          board={board}
-          value={task.tag}
-          onChange={(tag) => {
-            if (task.ref) {
-              updateDoc<TaskDocument>(task.ref, {
-                tag: tag ?? "",
-              });
-            }
-          }}
-        />
-      ) : undefined}
+        }}
+      />
+      <Group>
+        {task.tag && (
+          <Badge variant="dot" color={getColorFromString(task.tag)}>
+            {task.tag}
+          </Badge>
+        )}
+        <Text c="dimmed" fz="sm">
+          {task.closeDate
+            ? `fait par ${task.closedBy} le ${formatDate(task.closeDate)}`
+            : formatDate(task.openDate)}
+        </Text>
+        {task.closeDate && (
+          <Tooltip label="Supprimer" withinPortal>
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              size="sm"
+              onClick={() => {
+                if (task.ref) {
+                  deleteDoc(task.ref);
+                }
+              }}
+            >
+              <IconTrash size={18} />
+            </ActionIcon>
+          </Tooltip>
+        )}
+      </Group>
     </Group>
   );
 };
