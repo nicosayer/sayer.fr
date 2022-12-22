@@ -1,5 +1,6 @@
 import { toBase64 } from "@aws-sdk/util-base64";
 import { DEFAULT_THEME } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { RichTextEditor as MantineRichTextEditor } from "@mantine/tiptap";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
@@ -27,6 +28,7 @@ export interface RichTextEditorProps {
 
 const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
   const [user] = useAuthState(auth);
+  const is768Px = useMediaQuery("(min-width: 768px)");
 
   const editor = useEditor({
     extensions: [
@@ -94,53 +96,55 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
         },
       }}
     >
-      <MantineRichTextEditor.Toolbar sticky>
-        <MantineRichTextEditor.ColorPicker
-          colors={[
-            "#25262b",
-            "#868e96",
-            "#fa5252",
-            "#e64980",
-            "#be4bdb",
-            "#7950f2",
-            "#4c6ef5",
-            "#228be6",
-            "#15aabf",
-            "#12b886",
-            "#40c057",
-            "#82c91e",
-            "#fab005",
-            "#fd7e14",
-          ]}
-        />
-        <MantineRichTextEditor.ControlsGroup>
-          <MantineRichTextEditor.Bold />
-          <MantineRichTextEditor.Italic />
-          <MantineRichTextEditor.Underline />
-          <MantineRichTextEditor.Strikethrough />
-          <MantineRichTextEditor.Highlight />
-          <MantineRichTextEditor.Code />
-          <MantineRichTextEditor.ClearFormatting />
-        </MantineRichTextEditor.ControlsGroup>
+      {is768Px && (
+        <MantineRichTextEditor.Toolbar sticky>
+          <MantineRichTextEditor.ColorPicker
+            colors={[
+              "#25262b",
+              "#868e96",
+              "#fa5252",
+              "#e64980",
+              "#be4bdb",
+              "#7950f2",
+              "#4c6ef5",
+              "#228be6",
+              "#15aabf",
+              "#12b886",
+              "#40c057",
+              "#82c91e",
+              "#fab005",
+              "#fd7e14",
+            ]}
+          />
+          <MantineRichTextEditor.ControlsGroup>
+            <MantineRichTextEditor.Bold />
+            <MantineRichTextEditor.Italic />
+            <MantineRichTextEditor.Underline />
+            <MantineRichTextEditor.Strikethrough />
+            <MantineRichTextEditor.Highlight />
+            <MantineRichTextEditor.Code />
+            <MantineRichTextEditor.ClearFormatting />
+          </MantineRichTextEditor.ControlsGroup>
 
-        <MantineRichTextEditor.ControlsGroup>
-          <MantineRichTextEditor.H1 />
-          <MantineRichTextEditor.H2 />
-          <MantineRichTextEditor.H3 />
-        </MantineRichTextEditor.ControlsGroup>
+          <MantineRichTextEditor.ControlsGroup>
+            <MantineRichTextEditor.H1 />
+            <MantineRichTextEditor.H2 />
+            <MantineRichTextEditor.H3 />
+          </MantineRichTextEditor.ControlsGroup>
 
-        <MantineRichTextEditor.Hr />
+          <MantineRichTextEditor.Hr />
 
-        <MantineRichTextEditor.ControlsGroup>
-          <MantineRichTextEditor.CodeBlock />
-          <MantineRichTextEditor.Blockquote />
-        </MantineRichTextEditor.ControlsGroup>
+          <MantineRichTextEditor.ControlsGroup>
+            <MantineRichTextEditor.CodeBlock />
+            <MantineRichTextEditor.Blockquote />
+          </MantineRichTextEditor.ControlsGroup>
 
-        <MantineRichTextEditor.ControlsGroup>
-          <MantineRichTextEditor.BulletList />
-          <MantineRichTextEditor.OrderedList />
-        </MantineRichTextEditor.ControlsGroup>
-      </MantineRichTextEditor.Toolbar>
+          <MantineRichTextEditor.ControlsGroup>
+            <MantineRichTextEditor.BulletList />
+            <MantineRichTextEditor.OrderedList />
+          </MantineRichTextEditor.ControlsGroup>
+        </MantineRichTextEditor.Toolbar>
+      )}
 
       <MantineRichTextEditor.Content />
     </MantineRichTextEditor>

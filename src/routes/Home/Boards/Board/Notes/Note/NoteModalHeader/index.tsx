@@ -1,12 +1,14 @@
 import { Group, Indicator, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
+import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
 import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
 import { updateDoc } from "firebase/firestore";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { BoardDocument, NoteDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
+import { ONE_SECOND } from "utils/time";
 
 export interface NoteModalHeaderProps {
   board: BoardDocument;
@@ -14,13 +16,22 @@ export interface NoteModalHeaderProps {
 }
 
 const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
+  const is768Px = useMediaQuery("(min-width: 768px)");
+  const [name, setName] = useState(note?.name);
+  const [debouncedName] = useDebouncedValue(note?.name, 10 * ONE_SECOND);
+
+  useEffect(() => {
+    setName(debouncedName);
+  }, [debouncedName]);
+
   return (
     <Group grow>
       <TextInput
         className="w-full"
         placeholder="Nom de la note"
-        defaultValue={note?.name}
+        value={name}
         onChange={(event) => {
+          setName(event.target.value);
           if (note.ref) {
             updateDoc<NoteDocument>(note.ref, {
               name: event.target.value,
@@ -28,42 +39,44 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
           }
         }}
       />
-      <Group grow>
-        <DatePicker
-          locale="fr"
-          value={dayjs(note.date).toDate()}
-          onChange={(date) => {
-            if (note.ref) {
-              updateDoc<NoteDocument>(note.ref, {
-                date: formatDate(date, "YYYY-MM-DD"),
-              });
-            }
-          }}
-          clearable={false}
-        />
-        {board?.tags?.length ? (
-          <TagSelect
-            rightSection={<div />}
-            icon={
-              note.tag ? (
-                <Indicator color={getColorFromString(note.tag)}>
-                  <div />
-                </Indicator>
-              ) : undefined
-            }
-            placeholder="Étiquette"
-            board={board}
-            value={note.tag}
-            onChange={(tag) => {
+      {is768Px && (
+        <Group grow>
+          <DatePicker
+            locale="fr"
+            value={dayjs(note.date).toDate()}
+            onChange={(date) => {
               if (note.ref) {
                 updateDoc<NoteDocument>(note.ref, {
-                  tag: tag ?? "",
+                  date: formatDate(date, "YYYY-MM-DD"),
                 });
               }
             }}
+            clearable={false}
           />
-        ) : undefined}
-      </Group>
+          {board?.tags?.length ? (
+            <TagSelect
+              rightSection={<div />}
+              icon={
+                note.tag ? (
+                  <Indicator color={getColorFromString(note.tag)}>
+                    <div />
+                  </Indicator>
+                ) : undefined
+              }
+              placeholder="Étiquette"
+              board={board}
+              value={note.tag}
+              onChange={(tag) => {
+                if (note.ref) {
+                  updateDoc<NoteDocument>(note.ref, {
+                    tag: tag ?? "",
+                  });
+                }
+              }}
+            />
+          ) : undefined}
+        </Group>
+      )}
     </Group>
   );
 };
