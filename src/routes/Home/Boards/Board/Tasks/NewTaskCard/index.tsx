@@ -47,7 +47,11 @@ const NewTaskCard: FC = () => {
       ref.current?.dispatchEvent(
         new Event("submit", { cancelable: true, bubbles: true })
       );
-      form.reset();
+      form.setValues({
+        description: "",
+        tag: "",
+        boardId: form.values.boardId,
+      });
     }
   }, [form]);
 
