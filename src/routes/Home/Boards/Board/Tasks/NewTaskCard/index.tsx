@@ -68,7 +68,7 @@ const NewTaskCard: FC = () => {
             addDoc<TaskDocument>(collection(board.ref, Collection.tasks), {
               description: values.description.trim(),
               order: +dayjs(),
-              openDate: dayjs().format("YYYY-MM-DD"),
+              date: dayjs().format("YYYY-MM-DD"),
               tag: values.tag,
             })
               .then(() => closeAllModals())

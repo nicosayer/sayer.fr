@@ -48,7 +48,9 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
             ? `acheté par ${grocery.closedBy} le ${formatDate(
                 grocery.closeDate
               )}`
-            : formatDate(grocery.openDate)}
+            : `ajouté par ${grocery.openedBy} le ${formatDate(
+                grocery.openDate
+              )}`}
         </Text>
         {grocery.closeDate && (
           <Tooltip label="Supprimer" withinPortal>

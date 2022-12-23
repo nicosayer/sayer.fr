@@ -1,13 +1,10 @@
 import { Card, Stack } from "@mantine/core";
 import TaskCardContent from "components/organisms/TaskCardContent";
-import dayjs from "dayjs";
 import { updateDoc } from "firebase/firestore";
 import { groupBy, orderBy } from "lodash";
 import { FC, useMemo } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { TaskDocument } from "types/firebase/collections";
-import { auth } from "utils/firebase";
 import { searchString } from "utils/string";
 
 export interface TasksCardsProps {
@@ -16,7 +13,6 @@ export interface TasksCardsProps {
 
 const TasksCards: FC<TasksCardsProps> = ({ search }) => {
   const { tasks } = useBoard();
-  const [user] = useAuthState(auth);
 
   const filteredTasks = useMemo(() => {
     return groupBy(
@@ -27,7 +23,7 @@ const TasksCards: FC<TasksCardsProps> = ({ search }) => {
         "order",
         "desc"
       ),
-      (task) => Boolean(task.closeDate)
+      (task) => Boolean(task.done)
     );
   }, [tasks, search]);
 
@@ -42,8 +38,7 @@ const TasksCards: FC<TasksCardsProps> = ({ search }) => {
             onClick={() => {
               if (task.ref) {
                 updateDoc<TaskDocument>(task.ref, {
-                  closeDate: dayjs().format("YYYY-MM-DD"),
-                  closedBy: user?.email ?? undefined,
+                  done: true,
                 });
               }
             }}

@@ -9,11 +9,14 @@ import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useMemo, useRef } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Collection, GroceryDocument } from "types/firebase/collections";
+import { auth } from "utils/firebase";
 import { useBoard } from "../../Provider";
 
 const NewGroceryCard: FC = () => {
   const { boards } = useBoard();
+  const [user] = useAuthState(auth);
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [loading, start, stop] = useBooleanState();
   const ref = useRef<HTMLFormElement>(null);
@@ -70,6 +73,7 @@ const NewGroceryCard: FC = () => {
               {
                 name: values.name.trim(),
                 order: +dayjs(),
+                openedBy: user?.email ?? "",
                 openDate: dayjs().format("YYYY-MM-DD"),
                 tag: values.tag,
               }

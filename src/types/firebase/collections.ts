@@ -60,6 +60,7 @@ export interface GroceryDocument {
   ref?: DocumentReference<GroceryDocument>;
   name?: string;
   openDate?: string;
+  openedBy?: string;
   closeDate?: string;
   closedBy?: string;
   order?: number;
@@ -80,8 +81,7 @@ export interface TaskDocument {
   ref?: DocumentReference<TaskDocument>;
   description?: string;
   order?: number;
-  openDate?: string;
-  closeDate?: string;
-  closedBy?: string;
+  date?: string;
+  done?: boolean;
   tag?: string;
 }

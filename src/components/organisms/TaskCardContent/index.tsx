@@ -21,7 +21,7 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
       <Checkbox
-        checked={Boolean(task.closeDate)}
+        checked={Boolean(task.done)}
         className="flex overflow-hidden"
         classNames={{
           input: "cursor-pointer",
@@ -29,10 +29,9 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
         }}
         label={task.description}
         onChange={() => {
-          if (task.ref && task.closeDate) {
+          if (task.ref && task.done) {
             updateDoc<TaskDocument>(task.ref, {
-              closeDate: "",
-              closedBy: "",
+              done: false,
             });
           }
         }}
@@ -44,11 +43,9 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
           </Badge>
         )}
         <Text c="dimmed" fz="sm">
-          {task.closeDate
-            ? `fait par ${task.closedBy} le ${formatDate(task.closeDate)}`
-            : formatDate(task.openDate)}
+          {formatDate(task.date)}
         </Text>
-        {task.closeDate && (
+        {task.done && (
           <Tooltip label="Supprimer" withinPortal>
             <ActionIcon
               variant="subtle"
