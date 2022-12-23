@@ -58,11 +58,11 @@ const TasksCards: FC<TasksCardsProps> = ({ search }) => {
       {(filteredTasks.false ?? []).length +
         (filteredTasks.true ?? []).length ===
         0 && (
-          <div className="mt-10 text-center">
-            <IconLayoutList size={36} className="text-gray-500" />
-            <Text c="dimmed">Aucune tâche</Text>
-          </div>
-        )}
+        <div className="mt-10 text-center">
+          <IconLayoutList size={36} className="text-gray-500" />
+          <Text c="dimmed">Aucune tâche</Text>
+        </div>
+      )}
     </Stack>
   );
 };
