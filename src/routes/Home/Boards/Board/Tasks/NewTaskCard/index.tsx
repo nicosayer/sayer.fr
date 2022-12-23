@@ -1,7 +1,6 @@
 import { ActionIcon, Card, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
-import { closeAllModals } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons";
 import BoardSelect from "components/molecules/Select/Board";
 import TagSelect from "components/molecules/Select/Tag";
@@ -47,11 +46,6 @@ const NewTaskCard: FC = () => {
       formRef.current?.dispatchEvent(
         new Event("submit", { cancelable: true, bubbles: true })
       );
-      form.setValues({
-        description: "",
-        tag: "",
-        boardId: form.values.boardId,
-      });
     }
   }, [form]);
 
@@ -71,7 +65,13 @@ const NewTaskCard: FC = () => {
               date: dayjs().format("YYYY-MM-DD"),
               tag: values.tag,
             })
-              .then(() => closeAllModals())
+              .then(() => {
+                form.setValues({
+                  description: "",
+                  tag: "",
+                  boardId: board.id,
+                });
+              })
               .finally(stop);
           }
         })}

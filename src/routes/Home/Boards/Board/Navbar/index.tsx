@@ -17,7 +17,7 @@ const menu = [
   {
     icon: <IconLockOpen size={18} />,
     color: "red",
-    label: "Mot de passes",
+    label: "Mots de passe",
     to: "credentials",
   },
   {

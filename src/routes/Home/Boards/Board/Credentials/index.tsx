@@ -49,7 +49,7 @@ const Credentials: FC = () => {
       <Credential />
       <Stack>
         <Group position="apart" className="sticky z-50">
-          <Text fw={500}>Mot de passes</Text>
+          <Text fw={500}>Mots de passe</Text>
           <Group>
             <TextInput
               placeholder="Rechercher"
