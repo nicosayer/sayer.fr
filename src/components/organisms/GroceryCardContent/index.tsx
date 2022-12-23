@@ -6,6 +6,7 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconTrash } from "@tabler/icons";
 import { deleteDoc, updateDoc } from "firebase/firestore";
 import { FC } from "react";
@@ -18,6 +19,8 @@ export interface GroceryCardContentProps {
 }
 
 const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
+  const is768Px = useMediaQuery("(min-width: 768px)");
+
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
       <Checkbox
@@ -43,15 +46,17 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
             {grocery.tag}
           </Badge>
         )}
-        <Text c="dimmed" fz="sm">
-          {grocery.closeDate
-            ? `acheté par ${grocery.closedBy} le ${formatDate(
-                grocery.closeDate
-              )}`
-            : `ajouté par ${grocery.openedBy} le ${formatDate(
-                grocery.openDate
-              )}`}
-        </Text>
+        {is768Px && (
+          <Text c="dimmed" fz="sm">
+            {grocery.closeDate
+              ? `acheté par ${grocery.closedBy} le ${formatDate(
+                  grocery.closeDate
+                )}`
+              : `ajouté par ${grocery.openedBy} le ${formatDate(
+                  grocery.openDate
+                )}`}
+          </Text>
+        )}
         {grocery.closeDate && (
           <Tooltip label="Supprimer" withinPortal>
             <ActionIcon

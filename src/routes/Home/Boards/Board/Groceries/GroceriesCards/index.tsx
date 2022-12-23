@@ -1,4 +1,5 @@
-import { Card, Stack } from "@mantine/core";
+import { Card, Stack, Text } from "@mantine/core";
+import { IconLayoutList } from "@tabler/icons";
 import GroceryCardContent from "components/organisms/GroceryCardContent";
 import dayjs from "dayjs";
 import { updateDoc } from "firebase/firestore";
@@ -59,6 +60,14 @@ const GroceriesCards: FC<GroceriesCardsProps> = ({ search }) => {
           </Card>
         );
       })}
+      {(filteredGroceries.false ?? []).length +
+        (filteredGroceries.true ?? []).length ===
+        0 && (
+        <div className="mt-10 text-center">
+          <IconLayoutList size={36} className="text-gray-500" />
+          <Text c="dimmed">Aucune course</Text>
+        </div>
+      )}
     </Stack>
   );
 };

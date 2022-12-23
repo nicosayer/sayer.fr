@@ -6,6 +6,7 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconTrash } from "@tabler/icons";
 import { deleteDoc, updateDoc } from "firebase/firestore";
 import { FC } from "react";
@@ -18,6 +19,8 @@ export interface TaskCardContentProps {
 }
 
 const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
+  const is768Px = useMediaQuery("(min-width: 768px)");
+
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
       <Checkbox
@@ -42,9 +45,11 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
             {task.tag}
           </Badge>
         )}
-        <Text c="dimmed" fz="sm">
-          {formatDate(task.date)}
-        </Text>
+        {is768Px && (
+          <Text c="dimmed" fz="sm">
+            {formatDate(task.date)}
+          </Text>
+        )}
         {task.done && (
           <Tooltip label="Supprimer" withinPortal>
             <ActionIcon
