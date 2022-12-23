@@ -14,7 +14,7 @@ import {
 } from "types/firebase/collections";
 import { ALL_BOARDS_SLUG } from "utils/boards";
 
-interface IBoardContext {
+export interface IBoardContext {
   board?: BoardDocument;
   boards?: BoardDocument[];
   credentials?: CredentialDocument[];

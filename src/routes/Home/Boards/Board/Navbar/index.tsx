@@ -11,6 +11,7 @@ import {
 import { useAppShell } from "components/atoms/AppShell";
 import { FC } from "react";
 import NavbarButton from "routes/Home/Boards/Board/Navbar/Button";
+import { IBoardContext } from "../Provider";
 
 const menu = [
   {
@@ -36,6 +37,8 @@ const menu = [
     color: "green",
     label: "Courses",
     to: "groceries",
+    count: ({ groceries }: IBoardContext) =>
+      groceries?.filter((grocery) => !grocery.closeDate).length ?? 0,
   },
   {
     icon: <IconPencilPlus size={18} />,
@@ -48,6 +51,8 @@ const menu = [
     color: "violet",
     label: "Tâches",
     to: "tasks",
+    count: ({ tasks }: IBoardContext) =>
+      tasks?.filter((task) => !task.done).length ?? 0,
   },
 ];
 

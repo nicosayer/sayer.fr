@@ -16,7 +16,7 @@ const NewTaskCard: FC = () => {
   const { boards } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [loading, start, stop] = useBooleanState();
-  const ref = useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const form = useForm({
     initialValues: {
       description: "",
@@ -44,7 +44,7 @@ const NewTaskCard: FC = () => {
   const handleSubmit = useCallback(() => {
     const validate = form.validate();
     if (!validate.hasErrors) {
-      ref.current?.dispatchEvent(
+      formRef.current?.dispatchEvent(
         new Event("submit", { cancelable: true, bubbles: true })
       );
       form.setValues({
@@ -58,7 +58,7 @@ const NewTaskCard: FC = () => {
   return (
     <Card withBorder>
       <form
-        ref={ref}
+        ref={formRef}
         onSubmit={form.onSubmit((values) => {
           const board = boards?.find((board) => board.id === values.boardId);
 
@@ -91,7 +91,6 @@ const NewTaskCard: FC = () => {
               withAsterisk
               className="w-full"
               variant="unstyled"
-              disabled={loading}
               placeholder="Nouvelle tâche"
               onKeyDown={({ code }) => {
                 if (code === "Enter") {

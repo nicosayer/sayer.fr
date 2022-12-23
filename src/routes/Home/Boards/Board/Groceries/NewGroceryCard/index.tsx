@@ -19,7 +19,7 @@ const NewGroceryCard: FC = () => {
   const [user] = useAuthState(auth);
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [loading, start, stop] = useBooleanState();
-  const ref = useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const form = useForm({
     initialValues: {
       name: "",
@@ -47,7 +47,7 @@ const NewGroceryCard: FC = () => {
   const handleSubmit = useCallback(() => {
     const validate = form.validate();
     if (!validate.hasErrors) {
-      ref.current?.dispatchEvent(
+      formRef.current?.dispatchEvent(
         new Event("submit", { cancelable: true, bubbles: true })
       );
       form.setValues({
@@ -61,7 +61,7 @@ const NewGroceryCard: FC = () => {
   return (
     <Card withBorder>
       <form
-        ref={ref}
+        ref={formRef}
         onSubmit={form.onSubmit((values) => {
           const board = boards?.find((board) => board.id === values.boardId);
 
@@ -98,7 +98,6 @@ const NewGroceryCard: FC = () => {
               withAsterisk
               className="w-full"
               variant="unstyled"
-              disabled={loading}
               placeholder="Nouvelle course"
               onKeyDown={({ code }) => {
                 if (code === "Enter") {
