@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
 import { FC, useState } from "react";
@@ -17,6 +18,7 @@ import NewCredentialModal from "./NewCredentialModal";
 const Credentials: FC = () => {
   const { boards, loading, credentials } = useBoard();
   const [search, setSearch] = useState("");
+  const is768Px = useMediaQuery("(min-width: 768px)");
 
   if (!credentials || loading) {
     return <LoadingOverlay visible />;
@@ -38,7 +40,9 @@ const Credentials: FC = () => {
             }
           }}
         >
-          Ajouter votre premier mot de passe
+          {is768Px
+            ? "Ajouter votre premier mot de passe"
+            : "Nouveau mot de passe"}
         </Button>
       </div>
     );

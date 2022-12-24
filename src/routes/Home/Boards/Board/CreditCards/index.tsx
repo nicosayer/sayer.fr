@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
 import { FC, useState } from "react";
@@ -17,6 +18,7 @@ import NewCreditCardModal from "./NewCreditCardModal";
 const CreditCards: FC = () => {
   const { boards, loading, creditCards } = useBoard();
   const [search, setSearch] = useState("");
+  const is768Px = useMediaQuery("(min-width: 768px)");
 
   if (!creditCards || loading) {
     return <LoadingOverlay visible />;
@@ -26,6 +28,7 @@ const CreditCards: FC = () => {
     return (
       <div className="flex items-center justify-center h-full">
         <Button
+          className="mx-4"
           size="lg"
           leftIcon={<IconPlus size={18} />}
           onClick={() => {
@@ -38,7 +41,9 @@ const CreditCards: FC = () => {
             }
           }}
         >
-          Ajouter votre première carte de crédit
+          {is768Px
+            ? "Ajouter votre première carte de crédit"
+            : "Nouvelle carte de crédit"}
         </Button>
       </div>
     );

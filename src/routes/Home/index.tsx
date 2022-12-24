@@ -72,10 +72,14 @@ const Home = () => {
   const [signOut] = useSignOut(auth);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       signOut();
     }, 5 * ONE_MINUTE);
-  });
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [signOut]);
 
   return <RouterProvider router={router} />;
 };

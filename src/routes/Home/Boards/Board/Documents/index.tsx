@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
 import { FC, useState } from "react";
@@ -17,6 +18,7 @@ import NewDocumentModal from "./NewDocumentModal";
 const Documents: FC = () => {
   const { boards, loading, documents } = useBoard();
   const [search, setSearch] = useState("");
+  const is768Px = useMediaQuery("(min-width: 768px)");
 
   if (!documents || loading) {
     return <LoadingOverlay visible />;
@@ -38,7 +40,7 @@ const Documents: FC = () => {
             }
           }}
         >
-          Ajouter votre premier document
+          {is768Px ? "Ajouter votre premier document" : "Nouveau document"}
         </Button>
       </div>
     );

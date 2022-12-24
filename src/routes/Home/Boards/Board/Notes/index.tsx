@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { closeAllModals, openModal } from "@mantine/modals";
 import { IconArrowRight, IconPlus, IconSearch } from "@tabler/icons";
 import dayjs from "dayjs";
@@ -29,6 +30,7 @@ const Notes: FC = () => {
   const [search, setSearch] = useState("");
   const [loadingNew, start, stop] = useBooleanState();
   const navigate = useNavigate();
+  const is768Px = useMediaQuery("(min-width: 768px)");
 
   const createNoteAndOpen = useCallback(
     (board: BoardDocument) => {
@@ -89,7 +91,7 @@ const Notes: FC = () => {
             leftIcon={<IconPlus size={18} />}
             onClick={onClick}
           >
-            Ajouter votre première note
+            {is768Px ? "Ajouter votre première note" : "Nouvelle note"}
           </Button>
         </div>
       </>

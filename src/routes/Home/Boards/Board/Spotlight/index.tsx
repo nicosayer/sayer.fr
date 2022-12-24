@@ -62,6 +62,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
 
   return (
     <SpotlightProvider
+      className="mx-4"
       shortcut="mod + K"
       nothingFoundMessage="Aucun résultat"
       placeholder="Rechercher"
