@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useSignOut } from "react-firebase-hooks/auth";
 import {
   createBrowserRouter,
   Navigate,
@@ -8,6 +10,8 @@ import Board from "routes/Home/Boards/Board";
 import Settings from "routes/Home/Boards/Board/Settings";
 import BoardsProvider from "routes/Home/Boards/Provider";
 import Error from "routes/Home/Error";
+import { auth } from "utils/firebase";
+import { ONE_MINUTE } from "utils/time";
 import Credentials from "./Boards/Board/Credentials";
 import CreditCards from "./Boards/Board/CreditCards";
 import Documents from "./Boards/Board/Documents";
@@ -65,6 +69,14 @@ const router = createBrowserRouter([
 ]);
 
 const Home = () => {
+  const [signOut] = useSignOut(auth);
+
+  useEffect(() => {
+    setTimeout(() => {
+      signOut();
+    }, 5 * ONE_MINUTE);
+  });
+
   return <RouterProvider router={router} />;
 };
 
