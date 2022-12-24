@@ -7,7 +7,7 @@ import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useCallback, useMemo, useRef } from "react";
+import { FC, useMemo } from "react";
 import { Collection, TaskDocument } from "types/firebase/collections";
 import { useBoard } from "../../Provider";
 
@@ -15,7 +15,6 @@ const NewTaskCard: FC = () => {
   const { boards } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [loading, start, stop] = useBooleanState();
-  const formRef = useRef<HTMLFormElement>(null);
   const form = useForm({
     initialValues: {
       description: "",
@@ -40,19 +39,9 @@ const NewTaskCard: FC = () => {
     return boards?.find((board) => board.id === form.values.boardId);
   }, [boards, form.values.boardId]);
 
-  const handleSubmit = useCallback(() => {
-    const validate = form.validate();
-    if (!validate.hasErrors) {
-      formRef.current?.dispatchEvent(
-        new Event("submit", { cancelable: true, bubbles: true })
-      );
-    }
-  }, [form]);
-
   return (
     <Card withBorder>
       <form
-        ref={formRef}
         onSubmit={form.onSubmit((values) => {
           const board = boards?.find((board) => board.id === values.boardId);
 
@@ -80,8 +69,8 @@ const NewTaskCard: FC = () => {
           <div className="flex items-center w-full gap-2">
             <ActionIcon
               variant="light"
+              type="submit"
               color={form.values.description ? "blue" : undefined}
-              onClick={handleSubmit}
             >
               <IconPlus size={18} />
             </ActionIcon>
@@ -92,11 +81,6 @@ const NewTaskCard: FC = () => {
               className="w-full"
               variant="unstyled"
               placeholder="Nouvelle tâche"
-              onKeyDown={({ code }) => {
-                if (code === "Enter") {
-                  handleSubmit();
-                }
-              }}
               {...form.getInputProps("description")}
             />
           </div>
