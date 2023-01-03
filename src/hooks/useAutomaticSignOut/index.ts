@@ -10,11 +10,11 @@ const useAutomaticSigOut = () => {
 
   const [signOutTimestamp, setSignOutTimestamp] = useLocalStorage({
     key: "automatic-sign-out-timestamp",
-    defaultValue: +dayjs().add(5, "seconds"),
+    defaultValue: +dayjs().add(5, "minutes"),
   });
 
   const handleEvent = useCallback(() => {
-    setSignOutTimestamp(+dayjs().add(5, "seconds"));
+    setSignOutTimestamp(+dayjs().add(5, "minutes"));
   }, [setSignOutTimestamp]);
 
   useEffect(() => {
