@@ -4,6 +4,7 @@ import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
+import useDefaultBoardId from "hooks/useDefaultBoardId";
 import { FC, useMemo } from "react";
 import {
   BoardDocument,
@@ -18,6 +19,7 @@ export interface NewCreditCardModalProps {
 const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
+  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId()
 
   const colors = useMemo(() => {
     return Object.keys(theme.colors);
@@ -35,7 +37,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
       boardId:
         boards.length === 1
           ? boards[0].id
-          : localStorage.getItem("default-board-id") ?? undefined,
+          : defaultBoardId,
     },
 
     validate: {
@@ -78,7 +80,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
           start();
           const [expirationMonth, expirationYear] =
             values.expirationDate.split("/");
-          localStorage.setItem("default-board-id", board.id);
+          setDefaultBoardId(board.id);
           addDoc<CreditCardDocument>(
             collection(board.ref, Collection.creditCards),
             {

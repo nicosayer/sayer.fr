@@ -9,6 +9,7 @@ import TagSelect from "components/molecules/Select/Tag";
 import { addDoc, collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
+import useDefaultBoardId from "hooks/useDefaultBoardId";
 import { FC, useMemo, useRef } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import {
@@ -28,6 +29,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
   const formRef = useRef<HTMLFormElement>(null);
+  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId()
 
   const form = useForm({
     initialValues: {
@@ -37,7 +39,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
       boardId:
         boards.length === 1
           ? boards[0].id
-          : localStorage.getItem("default-board-id") ?? undefined,
+          : defaultBoardId,
     },
 
     validate: {
@@ -67,7 +69,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
 
         if (board?.id && board.ref && values.file?.type) {
           start();
-          localStorage.setItem("default-board-id", board.id);
+          setDefaultBoardId(board.id);
 
           const arrayBuffer = await values.file?.arrayBuffer();
 
@@ -83,8 +85,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
               return uploadFile(
                 ref(
                   storage,
-                  `boards/${board.id}/documents/${
-                    document.id
+                  `boards/${board.id}/documents/${document.id
                   }/document.${getExtension(values.file?.type as Mime)}`
                 ),
                 arrayBuffer,

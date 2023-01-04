@@ -14,6 +14,7 @@ import CreditCards from "./Boards/Board/CreditCards";
 import Documents from "./Boards/Board/Documents";
 import Groceries from "./Boards/Board/Groceries";
 import Notes from "./Boards/Board/Notes";
+import BaordRedirect from "./Boards/Board/Redirect";
 import Tasks from "./Boards/Board/Tasks";
 
 const router = createBrowserRouter([
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
             path: ":boardId",
             element: <Board />,
             children: [
-              { index: true, element: <Navigate to="credentials" /> },
+              { index: true, element: <BaordRedirect /> },
               {
                 path: "credentials",
                 element: <Credentials />,

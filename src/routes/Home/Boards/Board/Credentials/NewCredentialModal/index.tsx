@@ -4,6 +4,7 @@ import { closeAllModals } from "@mantine/modals";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
+import useDefaultBoardId from "hooks/useDefaultBoardId";
 import { FC } from "react";
 import {
   BoardDocument,
@@ -17,7 +18,7 @@ export interface NewCredentialModalProps {
 
 const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
-
+  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId()
   const form = useForm({
     initialValues: {
       name: "",
@@ -28,7 +29,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
       boardId:
         boards.length === 1
           ? boards[0].id
-          : localStorage.getItem("default-board-id") ?? undefined,
+          : defaultBoardId,
     },
 
     validate: {
@@ -56,7 +57,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
 
         if (board?.id && board.ref) {
           start();
-          localStorage.setItem("default-board-id", board.id);
+          setDefaultBoardId(board.id);
           addDoc<CredentialDocument>(
             collection(board.ref, Collection.credentials),
             {

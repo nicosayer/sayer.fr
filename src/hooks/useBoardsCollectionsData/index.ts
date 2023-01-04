@@ -43,7 +43,9 @@ const useBoardsCollectionsData = <T>(
     };
   }, [boardIds, boards, collection]);
 
-  return [flatMap(data), !boards.length || data === undefined] as const;
+  return useMemo(() => {
+    return [flatMap(data), !boards.length || data === undefined] as const;
+  }, [boards.length, data]);
 };
 
 export default useBoardsCollectionsData;

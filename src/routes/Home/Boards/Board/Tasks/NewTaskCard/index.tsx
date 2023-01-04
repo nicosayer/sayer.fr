@@ -7,6 +7,7 @@ import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
+import useDefaultBoardId from "hooks/useDefaultBoardId";
 import { FC, useMemo } from "react";
 import { Collection, TaskDocument } from "types/firebase/collections";
 import { useBoard } from "../../Provider";
@@ -15,6 +16,7 @@ const NewTaskCard: FC = () => {
   const { boards } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [loading, start, stop] = useBooleanState();
+  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId()
   const form = useForm({
     initialValues: {
       description: "",
@@ -22,7 +24,7 @@ const NewTaskCard: FC = () => {
       boardId:
         boards?.length === 1
           ? boards[0].id
-          : localStorage.getItem("default-board-id") ?? undefined,
+          : defaultBoardId,
     },
 
     validate: {
@@ -47,7 +49,7 @@ const NewTaskCard: FC = () => {
 
           if (board?.id && board.ref) {
             start();
-            localStorage.setItem("default-board-id", board.id);
+            setDefaultBoardId(board.id);
             addDoc<TaskDocument>(collection(board.ref, Collection.tasks), {
               description: values.description.trim(),
               order: +dayjs(),
