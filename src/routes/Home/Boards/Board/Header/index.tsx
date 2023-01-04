@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Burger,
   Button,
+  Code,
   Group,
   Header as HeaderComponent,
   Menu,
@@ -9,7 +10,7 @@ import {
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery, useOs } from "@mantine/hooks";
 import { useSpotlight } from "@mantine/spotlight";
 import { IconLayoutList, IconSearch, IconUser } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
@@ -32,6 +33,7 @@ const Header: FC = () => {
   const spotlight = useSpotlight();
   const is768px = useMediaQuery("(min-width: 768px)");
   const navigate = useNavigate();
+  const os = useOs();
 
   return (
     <HeaderComponent height={{ base: 50, md: 70 }} p="md">
@@ -71,6 +73,9 @@ const Header: FC = () => {
                 spotlight.openSpotlight();
                 event.target.blur();
               }}
+              rightSectionWidth={80}
+              rightSection={<Code>{os === "macos" ? "Cmd" : "Ctrl"} + K</Code>}
+              classNames={{ rightSection: "pointer-events-none" }}
             />
           ) : (
             <ActionIcon
