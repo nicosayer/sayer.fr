@@ -4,7 +4,7 @@ import {
   IconCreditCard,
   IconId,
   IconLockOpen,
-  IconPencilPlus,
+  IconPencil,
   IconSettings,
   IconShoppingCart,
 } from "@tabler/icons";
@@ -41,7 +41,7 @@ const menu = [
       groceries?.filter((grocery) => !grocery.closeDate).length ?? 0,
   },
   {
-    icon: <IconPencilPlus size={18} />,
+    icon: <IconPencil size={18} />,
     color: "blue",
     label: "Notes",
     to: "notes",

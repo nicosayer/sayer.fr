@@ -47,7 +47,7 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
         )}
         {is768Px && (
           <Text c="dimmed" fz="sm">
-            {formatDate(task.date)}
+            {formatDate(task.date, "D MMM")}
           </Text>
         )}
         {task.done && (

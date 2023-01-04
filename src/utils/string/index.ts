@@ -19,3 +19,7 @@ export const searchString = (string: string, query: string) => {
     return sanitize(string).indexOf(sanitize(q)) > -1;
   });
 };
+
+export const getEmailLocale = (email: string) => {
+  return email.split("@")[0];
+};

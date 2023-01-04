@@ -13,6 +13,7 @@ import { FC } from "react";
 import { GroceryDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
+import { getEmailLocale } from "utils/string";
 
 export interface GroceryCardContentProps {
   grocery: GroceryDocument;
@@ -49,12 +50,12 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
         {is768Px && (
           <Text c="dimmed" fz="sm">
             {grocery.closeDate
-              ? `acheté par ${grocery.closedBy} le ${formatDate(
-                  grocery.closeDate
-                )}`
-              : `ajouté par ${grocery.openedBy} le ${formatDate(
-                  grocery.openDate
-                )}`}
+              ? `acheté par ${getEmailLocale(
+                  grocery.closedBy ?? ""
+                )} le ${formatDate(grocery.closeDate, "D MMM")}`
+              : `ajouté par ${getEmailLocale(
+                  grocery.openedBy ?? ""
+                )} le ${formatDate(grocery.openDate, "D MMM")}`}
           </Text>
         )}
         {grocery.closeDate && (

@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useSpotlight } from "@mantine/spotlight";
-import { IconHome, IconSearch, IconUser } from "@tabler/icons";
+import { IconLayoutList, IconSearch, IconUser } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -53,7 +53,7 @@ const Header: FC = () => {
               navigate("/");
             }}
           >
-            {is768px ? <IconHome size={18} /> : null}
+            {is768px ? <IconLayoutList size={18} /> : null}
             <Text
               fw={500}
               className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
@@ -62,48 +62,50 @@ const Header: FC = () => {
             </Text>
           </Group>
         </div>
-        {is768px ? (
-          <TextInput
-            placeholder="Rechercher"
-            icon={<IconSearch size={18} />}
-            onFocus={(event) => {
-              spotlight.openSpotlight();
-              event.target.blur();
-            }}
-          />
-        ) : (
-          <ActionIcon
-            variant="light"
-            onClick={() => {
-              spotlight.openSpotlight();
-            }}
-          >
-            <IconSearch size={18} />
-          </ActionIcon>
-        )}
-        <Menu shadow="md" width={200}>
-          <Menu.Target>
-            <div>
-              {is768px ? (
-                <Button variant="light" leftIcon={<IconUser size={18} />}>
-                  {user?.email}
-                </Button>
-              ) : (
-                <ActionIcon variant="light" color="blue">
-                  <IconUser size={18} />
-                </ActionIcon>
-              )}
-            </div>
-          </Menu.Target>
+        <Group>
+          {is768px ? (
+            <TextInput
+              placeholder="Rechercher"
+              icon={<IconSearch size={18} />}
+              onFocus={(event) => {
+                spotlight.openSpotlight();
+                event.target.blur();
+              }}
+            />
+          ) : (
+            <ActionIcon
+              variant="light"
+              onClick={() => {
+                spotlight.openSpotlight();
+              }}
+            >
+              <IconSearch size={18} />
+            </ActionIcon>
+          )}
+          <Menu shadow="md" width={200}>
+            <Menu.Target>
+              <div>
+                {is768px ? (
+                  <Button variant="light" leftIcon={<IconUser size={18} />}>
+                    {user?.email}
+                  </Button>
+                ) : (
+                  <ActionIcon variant="light" color="blue">
+                    <IconUser size={18} />
+                  </ActionIcon>
+                )}
+              </div>
+            </Menu.Target>
 
-          <Menu.Dropdown>
-            <NewBoardMenuItem />
-            <SwitchBoardMenuItem />
-            <DarkModeMenuItem />
-            <SettingsMenuItem />
-            <SignOutMenuItem />
-          </Menu.Dropdown>
-        </Menu>
+            <Menu.Dropdown>
+              <NewBoardMenuItem />
+              <SwitchBoardMenuItem />
+              <DarkModeMenuItem />
+              <SettingsMenuItem />
+              <SignOutMenuItem />
+            </Menu.Dropdown>
+          </Menu>
+        </Group>
       </div>
     </HeaderComponent>
   );
