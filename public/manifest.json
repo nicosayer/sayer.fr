@@ -3,7 +3,7 @@
     "background_color": "#fff",
     "display": "fullscreen",
     "scope": "/",
-    "start_url": "/home.sayer.fr",
+    "start_url": "/",
     "name": "Home",
     "short_name": "Home",
     "icons": [
