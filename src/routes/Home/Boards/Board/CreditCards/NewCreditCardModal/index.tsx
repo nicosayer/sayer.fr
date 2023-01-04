@@ -19,7 +19,7 @@ export interface NewCreditCardModalProps {
 const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
-  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId()
+  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId();
 
   const colors = useMemo(() => {
     return Object.keys(theme.colors);
@@ -34,10 +34,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
       expirationDate: "",
       securityCode: "",
       tag: "",
-      boardId:
-        boards.length === 1
-          ? boards[0].id
-          : defaultBoardId,
+      boardId: boards.length === 1 ? boards[0].id : defaultBoardId,
     },
 
     validate: {

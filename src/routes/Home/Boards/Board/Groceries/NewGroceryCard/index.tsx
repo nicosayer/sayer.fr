@@ -20,15 +20,12 @@ const NewGroceryCard: FC = () => {
   const [user] = useAuthState(auth);
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [loading, start, stop] = useBooleanState();
-  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId()
+  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId();
   const form = useForm({
     initialValues: {
       name: "",
       tag: "",
-      boardId:
-        boards?.length === 1
-          ? boards[0].id
-          : defaultBoardId,
+      boardId: boards?.length === 1 ? boards[0].id : defaultBoardId,
     },
 
     validate: {
@@ -102,8 +99,8 @@ const NewGroceryCard: FC = () => {
               data={
                 form.values.name
                   ? (groceries ?? [])
-                    .filter((grocery) => grocery.closeDate)
-                    .map((grocery) => grocery.name)
+                      .filter((grocery) => grocery.closeDate)
+                      .map((grocery) => grocery.name)
                   : []
               }
               withAsterisk

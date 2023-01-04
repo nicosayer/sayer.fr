@@ -18,7 +18,7 @@ export interface NewCredentialModalProps {
 
 const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
-  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId()
+  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId();
   const form = useForm({
     initialValues: {
       name: "",
@@ -26,10 +26,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
       username: "",
       password: "",
       tag: "",
-      boardId:
-        boards.length === 1
-          ? boards[0].id
-          : defaultBoardId,
+      boardId: boards.length === 1 ? boards[0].id : defaultBoardId,
     },
 
     validate: {

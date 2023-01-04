@@ -29,17 +29,14 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
   const formRef = useRef<HTMLFormElement>(null);
-  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId()
+  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId();
 
   const form = useForm({
     initialValues: {
       name: "",
       file: undefined as FileWithPath | undefined,
       tag: "",
-      boardId:
-        boards.length === 1
-          ? boards[0].id
-          : defaultBoardId,
+      boardId: boards.length === 1 ? boards[0].id : defaultBoardId,
     },
 
     validate: {
@@ -85,7 +82,8 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
               return uploadFile(
                 ref(
                   storage,
-                  `boards/${board.id}/documents/${document.id
+                  `boards/${board.id}/documents/${
+                    document.id
                   }/document.${getExtension(values.file?.type as Mime)}`
                 ),
                 arrayBuffer,

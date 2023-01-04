@@ -16,15 +16,12 @@ const NewTaskCard: FC = () => {
   const { boards } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [loading, start, stop] = useBooleanState();
-  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId()
+  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId();
   const form = useForm({
     initialValues: {
       description: "",
       tag: "",
-      boardId:
-        boards?.length === 1
-          ? boards[0].id
-          : defaultBoardId,
+      boardId: boards?.length === 1 ? boards[0].id : defaultBoardId,
     },
 
     validate: {

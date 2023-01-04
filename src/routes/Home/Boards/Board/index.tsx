@@ -1,6 +1,5 @@
 import AppShell from "components/atoms/AppShell";
 import useDefaultBoardTab from "hooks/useDefaultBoardTab";
-import usePathname from "hooks/usePathname";
 import FullPageLoading from "providers/FullPageLoading/FullPage";
 import { Outlet, useParams } from "react-router-dom";
 import Header from "routes/Home/Boards/Board/Header";
@@ -11,7 +10,7 @@ import Spotlight from "./Spotlight";
 const Board = () => {
   const { boardId } = useParams();
 
-  useDefaultBoardTab()
+  useDefaultBoardTab();
 
   if (!boardId) {
     return <FullPageLoading />;
