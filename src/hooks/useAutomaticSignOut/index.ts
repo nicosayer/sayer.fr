@@ -5,16 +5,19 @@ import { useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
 import { ONE_SECOND } from "utils/time";
 
+const getDefaultSignOutTimestamp = () => +dayjs().add(5, "minutes");
+
 const useAutomaticSigOut = () => {
   const [signOut] = useSignOut(auth);
 
   const [signOutTimestamp, setSignOutTimestamp] = useLocalStorage({
     key: "automatic-sign-out-timestamp",
-    defaultValue: +dayjs().add(5, "minutes"),
+    defaultValue: getDefaultSignOutTimestamp(),
+    getInitialValueInEffect: false,
   });
 
   const handleEvent = useCallback(() => {
-    setSignOutTimestamp(+dayjs().add(5, "minutes"));
+    setSignOutTimestamp(getDefaultSignOutTimestamp());
   }, [setSignOutTimestamp]);
 
   useEffect(() => {
