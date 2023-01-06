@@ -101,12 +101,11 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
           <CredentialPassword credential={credential} />
         </Group>
       </div>
-      <Group grow>
+      <div className="grid grid-cols-3">
         <CopyButton value={`${window.location.host}/${credential.ref?.path}`}>
           {({ copied, copy }) =>
             is768Px ? (
               <Button
-                fullWidth
                 variant="subtle"
                 size="xs"
                 color={copied ? "teal" : "blue"}
@@ -124,7 +123,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
               >
                 <ActionIcon
                   color={copied ? "teal" : "blue"}
-                  size="xs"
+                  className="m-auto"
                   onClick={copy}
                 >
                   {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
@@ -148,7 +147,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
           <Tooltip label="Modifier" withArrow>
             <ActionIcon
               color="blue"
-              size="xs"
+              className="m-auto"
               onClick={() => {
                 openEditModal(credential);
               }}
@@ -172,8 +171,8 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
         ) : (
           <Tooltip label="Supprimer" withArrow>
             <ActionIcon
-              size="xs"
               color="red"
+              className="m-auto"
               onClick={() => {
                 openDeleteModal(credential);
               }}
@@ -182,7 +181,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
             </ActionIcon>
           </Tooltip>
         )}
-      </Group>
+      </div>
     </Stack>
   );
 };

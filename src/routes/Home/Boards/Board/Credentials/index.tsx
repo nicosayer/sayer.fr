@@ -16,7 +16,7 @@ import CredentialsCards from "./CredentialsCards";
 import NewCredentialModal from "./NewCredentialModal";
 
 const Credentials: FC = () => {
-  const { boards, loading, credentials } = useBoard();
+  const { board, loading, credentials } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)");
 
@@ -31,11 +31,11 @@ const Credentials: FC = () => {
           size="lg"
           leftIcon={<IconPlus size={18} />}
           onClick={() => {
-            if (boards) {
+            if (board) {
               openModal({
                 centered: true,
                 title: "Nouveau mot de passe",
-                children: <NewCredentialModal boards={boards} />,
+                children: <NewCredentialModal board={board} />,
               });
             }
           }}
@@ -68,11 +68,11 @@ const Credentials: FC = () => {
               variant="default"
               leftIcon={<IconPlus size={18} />}
               onClick={() => {
-                if (boards) {
+                if (board) {
                   openModal({
                     centered: true,
                     title: "Nouveau mot de passe",
-                    children: <NewCredentialModal boards={boards} />,
+                    children: <NewCredentialModal board={board} />,
                   });
                 }
               }}

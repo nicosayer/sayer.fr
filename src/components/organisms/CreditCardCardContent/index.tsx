@@ -116,12 +116,11 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
           <CreditCardSecurityCode creditCard={creditCard} />
         </Group>
       </div>
-      <Group grow>
+      <div className="grid grid-cols-3">
         <CopyButton value={`${window.location.host}/${creditCard.ref?.path}`}>
           {({ copied, copy }) =>
             is768Px ? (
               <Button
-                fullWidth
                 size="xs"
                 variant="subtle"
                 color={copied ? "teal" : "blue"}
@@ -138,7 +137,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
                 withArrow
               >
                 <ActionIcon
-                  size="xs"
+                  className="m-auto"
                   color={copied ? "teal" : "blue"}
                   onClick={copy}
                 >
@@ -163,7 +162,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
           <Tooltip label="Modifier" withArrow>
             <ActionIcon
               color="blue"
-              size="xs"
+              className="m-auto"
               onClick={() => {
                 openEditModal(creditCard);
               }}
@@ -188,7 +187,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
           <Tooltip label="Supprimer" withArrow>
             <ActionIcon
               color="red"
-              size="xs"
+              className="m-auto"
               onClick={() => {
                 openDeleteModal(creditCard);
               }}
@@ -197,7 +196,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
             </ActionIcon>
           </Tooltip>
         )}
-      </Group>
+      </div>
     </Stack>
   );
 };

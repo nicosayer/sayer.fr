@@ -84,12 +84,11 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
           Prévisualiser
         </Button>
       </Group>
-      <Group grow>
+      <div className="grid grid-cols-3">
         <CopyButton value={`${window.location.host}/${note.ref?.path}`}>
           {({ copied, copy }) =>
             is768Px ? (
               <Button
-                fullWidth
                 variant="subtle"
                 size="xs"
                 color={copied ? "teal" : "blue"}
@@ -109,6 +108,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
                   color={copied ? "teal" : "blue"}
                   size="xs"
                   onClick={copy}
+                  className="m-auto"
                 >
                   {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
                 </ActionIcon>
@@ -130,8 +130,8 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
         ) : (
           <Tooltip label="Modifier" withArrow>
             <ActionIcon
-              size="xs"
               color="blue"
+              className="m-auto"
               onClick={() => {
                 navigate(`/boards/${boardId}/notes/${note.id}`);
               }}
@@ -144,7 +144,6 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
           <Button
             color="red"
             variant="subtle"
-            size="xs"
             onClick={() => {
               openDeleteModal(note);
             }}
@@ -155,8 +154,8 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
         ) : (
           <Tooltip label="Supprimer" withArrow>
             <ActionIcon
-              size="xs"
               color="red"
+              className="m-auto"
               onClick={() => {
                 openDeleteModal(note);
               }}
@@ -165,7 +164,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
             </ActionIcon>
           </Tooltip>
         )}
-      </Group>
+      </div>
     </Stack>
   );
 };

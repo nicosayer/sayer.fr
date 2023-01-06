@@ -18,16 +18,14 @@ import {
 } from "types/firebase/collections";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
-import { useBoard } from "../../Provider";
 
 export interface NewDocumentModalProps {
-  boards: BoardDocument[];
+  board: BoardDocument;
 }
 
-const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
+const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
-  const { board } = useBoard();
   const formRef = useRef<HTMLFormElement>(null);
 
   const form = useForm({

@@ -10,15 +10,13 @@ import {
   Collection,
   CredentialDocument,
 } from "types/firebase/collections";
-import { useBoard } from "../../Provider";
 
 export interface NewCredentialModalProps {
-  boards: BoardDocument[];
+  board: BoardDocument;
 }
 
-const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
+const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState();
-  const { board } = useBoard();
   const form = useForm({
     initialValues: {
       name: "",

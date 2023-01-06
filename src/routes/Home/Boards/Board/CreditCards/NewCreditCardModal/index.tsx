@@ -10,16 +10,14 @@ import {
   Collection,
   CreditCardDocument,
 } from "types/firebase/collections";
-import { useBoard } from "../../Provider";
 
 export interface NewCreditCardModalProps {
-  boards: BoardDocument[];
+  board: BoardDocument;
 }
 
-const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
+const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
-  const { board } = useBoard();
 
   const colors = useMemo(() => {
     return Object.keys(theme.colors);

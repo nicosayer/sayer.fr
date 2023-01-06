@@ -141,7 +141,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
           Télécharger
         </Button>
       </Group>
-      <Group grow>
+      <div className="grid grid-cols-3">
         <CopyButton value={`${window.location.host}/${document.ref?.path}`}>
           {({ copied, copy }) =>
             is768Px ? (
@@ -162,7 +162,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
                 withArrow
               >
                 <ActionIcon
-                  size="xs"
+                  className="m-auto"
                   color={copied ? "teal" : "blue"}
                   onClick={copy}
                 >
@@ -186,7 +186,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
         ) : (
           <Tooltip label="Modifier" withArrow>
             <ActionIcon
-              size="xs"
+              className="m-auto"
               color="blue"
               onClick={() => {
                 openEditModal(document);
@@ -211,7 +211,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
         ) : (
           <Tooltip label="Supprimer" withArrow>
             <ActionIcon
-              size="xs"
+              className="m-auto"
               color="red"
               onClick={() => {
                 openDeleteModal(document);
@@ -221,7 +221,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
             </ActionIcon>
           </Tooltip>
         )}
-      </Group>
+      </div>
     </Stack>
   );
 };

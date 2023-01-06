@@ -123,6 +123,7 @@ const Header: FC = () => {
                             (currentBoard) => currentBoard.id === board.id
                           )
                         )}
+                        readOnly
                         classNames={{
                           input: "cursor-pointer",
                         }}

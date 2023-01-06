@@ -16,7 +16,7 @@ import DocumentsCards from "./DocumentsCards";
 import NewDocumentModal from "./NewDocumentModal";
 
 const Documents: FC = () => {
-  const { boards, loading, documents } = useBoard();
+  const { board, loading, documents } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)");
 
@@ -31,11 +31,11 @@ const Documents: FC = () => {
           size="lg"
           leftIcon={<IconPlus size={18} />}
           onClick={() => {
-            if (boards) {
+            if (board) {
               openModal({
                 centered: true,
                 title: "Nouveau document",
-                children: <NewDocumentModal boards={boards} />,
+                children: <NewDocumentModal board={board} />,
               });
             }
           }}
@@ -66,11 +66,11 @@ const Documents: FC = () => {
               variant="default"
               leftIcon={<IconPlus size={18} />}
               onClick={() => {
-                if (boards) {
+                if (board) {
                   openModal({
                     centered: true,
                     title: "Nouveau document",
-                    children: <NewDocumentModal boards={boards} />,
+                    children: <NewDocumentModal board={board} />,
                   });
                 }
               }}
