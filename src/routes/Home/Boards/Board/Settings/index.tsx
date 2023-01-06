@@ -1,10 +1,12 @@
 import { Stack, Tabs, Text } from "@mantine/core";
 import { FC } from "react";
+import { useParams } from "react-router-dom";
 import { useBoard } from "../Provider";
 import DeleteCard from "./Cards/Delete";
 import SettingsCard from "./Cards/Settings";
 
 const Settings: FC = () => {
+  const { boardId } = useParams();
   const { boards } = useBoard();
 
   return (
@@ -16,7 +18,7 @@ const Settings: FC = () => {
           <DeleteCard board={boards?.[0]} />
         </>
       ) : (
-        <Tabs defaultValue={boards?.[0].id}>
+        <Tabs defaultValue={boardId}>
           <Tabs.List>
             {boards?.map((board, index) => (
               <Tabs.Tab
