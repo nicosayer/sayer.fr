@@ -21,7 +21,6 @@ import { deleteDoc } from "firebase/firestore";
 import { FC, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NoteDocument } from "types/firebase/collections";
-import { ALL_BOARDS_SLUG } from "utils/boards";
 import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
 
@@ -84,18 +83,9 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
         >
           Prévisualiser
         </Button>
-        {/* <Button
-          variant="light"
-          onClick={() => {}}
-          leftIcon={<IconDownload size={18} />}
-        >
-          Télécharger
-        </Button> */}
       </Group>
       <Group grow>
-        <CopyButton
-          value={`${process.env.REACT_APP_URL}/boards/${ALL_BOARDS_SLUG}/notes/${note.id}`}
-        >
+        <CopyButton value={`${window.location.host}/${note.ref?.path}`}>
           {({ copied, copy }) =>
             is768Px ? (
               <Button

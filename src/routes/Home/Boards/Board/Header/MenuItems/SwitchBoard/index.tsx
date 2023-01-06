@@ -4,7 +4,6 @@ import { IconArrowRight, IconSwitchHorizontal } from "@tabler/icons";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
-import { ALL_BOARDS_SLUG } from "utils/boards";
 
 const SitchBoardMenuItem: FC = () => {
   const { boards } = useBoards();
@@ -23,17 +22,6 @@ const SitchBoardMenuItem: FC = () => {
           title: "Changer de board",
           children: (
             <Stack>
-              {(boards?.length ?? 0) > 1 && (
-                <Button
-                  rightIcon={<IconArrowRight size={18} />}
-                  onClick={() => {
-                    navigate(`../${ALL_BOARDS_SLUG}`);
-                    closeAllModals();
-                  }}
-                >
-                  Tous les boards
-                </Button>
-              )}
               {boards?.map((board) => (
                 <Button
                   key={board.id}

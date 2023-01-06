@@ -18,7 +18,6 @@ import { deleteDoc } from "firebase/firestore";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CredentialDocument } from "types/firebase/collections";
-import { ALL_BOARDS_SLUG } from "utils/boards";
 import { getColorFromString } from "utils/color";
 import EditCredentialModal from "./EditCredentialModal";
 
@@ -103,9 +102,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
         </Group>
       </div>
       <Group grow>
-        <CopyButton
-          value={`${process.env.REACT_APP_URL}/boards/${ALL_BOARDS_SLUG}/credentials/${credential.id}`}
-        >
+        <CopyButton value={`${window.location.host}/${credential.ref?.path}`}>
           {({ copied, copy }) =>
             is768Px ? (
               <Button

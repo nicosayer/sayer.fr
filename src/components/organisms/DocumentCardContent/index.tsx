@@ -28,7 +28,6 @@ import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, Mime } from "types/firebase/collections";
-import { ALL_BOARDS_SLUG } from "utils/boards";
 import { getColorFromString } from "utils/color";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
@@ -143,9 +142,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
         </Button>
       </Group>
       <Group grow>
-        <CopyButton
-          value={`${process.env.REACT_APP_URL}/boards/${ALL_BOARDS_SLUG}/documents/${document.ref?.path}`}
-        >
+        <CopyButton value={`${window.location.host}/${document.ref?.path}`}>
           {({ copied, copy }) =>
             is768Px ? (
               <Button

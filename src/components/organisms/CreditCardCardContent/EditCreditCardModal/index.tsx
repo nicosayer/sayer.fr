@@ -4,7 +4,7 @@ import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { BoardDocument, CreditCardDocument } from "types/firebase/collections";
 
 export interface EditCreditCardModalProps {
@@ -19,12 +19,6 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
 
-  const board = useMemo(() => {
-    return boards.find(
-      (board) => board.id === creditCard.ref?.parent.parent?.id
-    );
-  }, [boards, creditCard.ref?.parent.parent?.id]);
-
   const form = useForm({
     initialValues: {
       color: creditCard.color || "",
@@ -34,15 +28,9 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
       expirationDate: `${creditCard.expirationMonth}/${creditCard.expirationYear}`,
       securityCode: creditCard.securityCode || "",
       tag: creditCard.tag || "",
-      boardId: board?.id,
     },
 
     validate: {
-      boardId: (boardId?: string) => {
-        return boards.find((board) => board.id === boardId)
-          ? null
-          : "Ce champ ne doit pas être vide";
-      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -94,7 +82,7 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
       })}
     >
       <Stack>
-        <CreditCardFormInputs loading={loading} form={form} boards={boards} />
+        <CreditCardFormInputs loading={loading} form={form} />
         <div className="flex ml-auto">
           <Group>
             <Button

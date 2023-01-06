@@ -8,11 +8,10 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import BoardSelect from "components/molecules/Select/Board";
 import TagSelect from "components/molecules/Select/Tag";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import InputMask from "react-input-mask";
-import { BoardDocument } from "types/firebase/collections";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 export interface CreditCardForm {
   color: string;
@@ -22,12 +21,10 @@ export interface CreditCardForm {
   expirationDate: string;
   securityCode: string;
   tag: string;
-  boardId: string | undefined;
 }
 
 export interface CreditCardFormInputsProps {
   loading: boolean;
-  boards: BoardDocument[];
   form: UseFormReturnType<
     CreditCardForm,
     (values: CreditCardForm) => CreditCardForm
@@ -36,14 +33,10 @@ export interface CreditCardFormInputsProps {
 
 const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
   form,
-  boards,
   loading,
 }) => {
   const theme = useMantineTheme();
-
-  const board = useMemo(() => {
-    return boards.find((board) => board.id === form.values.boardId);
-  }, [boards, form.values.boardId]);
+  const { board } = useBoard();
 
   return (
     <>
@@ -109,14 +102,6 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         placeholder="123"
         {...form.getInputProps("securityCode")}
       />
-      {boards.length > 1 && (
-        <BoardSelect
-          label="Board"
-          boards={boards}
-          loading={loading}
-          {...form.getInputProps("boardId")}
-        />
-      )}
       {board?.tags?.length ? (
         <TagSelect
           label="Étiquette"

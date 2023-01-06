@@ -2,51 +2,36 @@ import { ActionIcon, Card, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons";
-import BoardSelect from "components/molecules/Select/Board";
 import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import useDefaultBoardId from "hooks/useDefaultBoardId";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { Collection, TaskDocument } from "types/firebase/collections";
 import { useBoard } from "../../Provider";
 
 const NewTaskCard: FC = () => {
-  const { boards } = useBoard();
+  const { board } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [loading, start, stop] = useBooleanState();
-  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId();
   const form = useForm({
     initialValues: {
       description: "",
       tag: "",
-      boardId: boards?.length === 1 ? boards[0].id : defaultBoardId,
     },
-
     validate: {
-      boardId: (boardId?: string) => {
-        return boards?.find((board) => board.id === boardId) ? null : true;
-      },
       description: (description) => {
         return description.length > 0 ? null : true;
       },
     },
   });
 
-  const board = useMemo(() => {
-    return boards?.find((board) => board.id === form.values.boardId);
-  }, [boards, form.values.boardId]);
-
   return (
     <Card withBorder>
       <form
         onSubmit={form.onSubmit((values) => {
-          const board = boards?.find((board) => board.id === values.boardId);
-
           if (board?.id && board.ref) {
             start();
-            setDefaultBoardId(board.id);
             addDoc<TaskDocument>(collection(board.ref, Collection.tasks), {
               description: values.description.trim(),
               order: +dayjs(),
@@ -57,7 +42,6 @@ const NewTaskCard: FC = () => {
                 form.setValues({
                   description: "",
                   tag: "",
-                  boardId: board.id,
                 });
               })
               .finally(stop);
@@ -83,14 +67,6 @@ const NewTaskCard: FC = () => {
               {...form.getInputProps("description")}
             />
           </div>
-          {(boards?.length ?? 0) > 1 && (
-            <BoardSelect
-              boards={boards}
-              loading={loading}
-              placeholder="Board"
-              {...form.getInputProps("boardId")}
-            />
-          )}
           {board?.tags?.length && is768Px ? (
             <TagSelect
               placeholder="Étiquette"

@@ -22,5 +22,3 @@ export const newBoard = ({
     name: `Board de ${username}${version ? ` ${version + 1}` : ""}`,
   });
 };
-
-export const ALL_BOARDS_SLUG = "a";

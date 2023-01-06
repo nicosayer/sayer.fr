@@ -4,13 +4,13 @@ import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import useDefaultBoardId from "hooks/useDefaultBoardId";
 import { FC, useMemo } from "react";
 import {
   BoardDocument,
   Collection,
   CreditCardDocument,
 } from "types/firebase/collections";
+import { useBoard } from "../../Provider";
 
 export interface NewCreditCardModalProps {
   boards: BoardDocument[];
@@ -19,7 +19,7 @@ export interface NewCreditCardModalProps {
 const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
-  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId();
+  const { board } = useBoard();
 
   const colors = useMemo(() => {
     return Object.keys(theme.colors);
@@ -34,15 +34,9 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
       expirationDate: "",
       securityCode: "",
       tag: "",
-      boardId: boards.length === 1 ? boards[0].id : defaultBoardId,
     },
 
     validate: {
-      boardId: (boardId?: string) => {
-        return boards.find((board) => board.id === boardId)
-          ? null
-          : "Ce champ ne doit pas être vide";
-      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -71,13 +65,10 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        const board = boards.find((board) => board.id === values.boardId);
-
         if (board?.id && board.ref) {
           start();
           const [expirationMonth, expirationYear] =
             values.expirationDate.split("/");
-          setDefaultBoardId(board.id);
           addDoc<CreditCardDocument>(
             collection(board.ref, Collection.creditCards),
             {
@@ -97,7 +88,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ boards }) => {
       })}
     >
       <Stack>
-        <CreditCardFormInputs loading={loading} form={form} boards={boards} />
+        <CreditCardFormInputs loading={loading} form={form} />
         <div className="flex ml-auto">
           <Group>
             <Button

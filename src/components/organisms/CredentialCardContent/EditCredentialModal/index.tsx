@@ -4,7 +4,7 @@ import { closeAllModals } from "@mantine/modals";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { BoardDocument, CredentialDocument } from "types/firebase/collections";
 
 export interface EditCredentialModalProps {
@@ -18,12 +18,6 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
 }) => {
   const [loading, start, stop] = useBooleanState();
 
-  const board = useMemo(() => {
-    return boards.find(
-      (board) => board.id === credential.ref?.parent.parent?.id
-    );
-  }, [boards, credential.ref?.parent.parent?.id]);
-
   const form = useForm({
     initialValues: {
       name: credential.name ?? "",
@@ -31,15 +25,9 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
       username: credential.username ?? "",
       password: credential.password ?? "",
       tag: credential.tag ?? "",
-      boardId: board?.id,
     },
 
     validate: {
-      boardId: (boardId?: string) => {
-        return boards.find((board) => board.id === boardId)
-          ? null
-          : "Ce champ ne doit pas être vide";
-      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -70,11 +58,7 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({
       })}
     >
       <Stack>
-        <CredentialFormInputs
-          loading={loading}
-          form={form}
-          boards={board ? [board] : []}
-        />
+        <CredentialFormInputs loading={loading} form={form} />
         <div className="flex ml-auto">
           <Group>
             <Button

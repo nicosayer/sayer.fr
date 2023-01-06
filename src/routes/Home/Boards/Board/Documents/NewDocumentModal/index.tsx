@@ -4,13 +4,11 @@ import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import { IconUpload } from "@tabler/icons";
 import classNames from "classnames";
-import BoardSelect from "components/molecules/Select/Board";
 import TagSelect from "components/molecules/Select/Tag";
 import { addDoc, collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
-import useDefaultBoardId from "hooks/useDefaultBoardId";
-import { FC, useMemo, useRef } from "react";
+import { FC, useRef } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import {
   BoardDocument,
@@ -20,6 +18,7 @@ import {
 } from "types/firebase/collections";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
+import { useBoard } from "../../Provider";
 
 export interface NewDocumentModalProps {
   boards: BoardDocument[];
@@ -28,23 +27,16 @@ export interface NewDocumentModalProps {
 const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
+  const { board } = useBoard();
   const formRef = useRef<HTMLFormElement>(null);
-  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId();
 
   const form = useForm({
     initialValues: {
       name: "",
       file: undefined as FileWithPath | undefined,
       tag: "",
-      boardId: boards.length === 1 ? boards[0].id : defaultBoardId,
     },
-
     validate: {
-      boardId: (boardId?: string) => {
-        return boards.find((board) => board.id === boardId)
-          ? null
-          : "Ce champ ne doit pas être vide";
-      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -54,19 +46,12 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
     },
   });
 
-  const board = useMemo(() => {
-    return boards.find((board) => board.id === form.values.boardId);
-  }, [boards, form.values.boardId]);
-
   return (
     <form
       ref={formRef}
       onSubmit={form.onSubmit(async (values) => {
-        const board = boards.find((board) => board.id === values.boardId);
-
         if (board?.id && board.ref && values.file?.type) {
           start();
-          setDefaultBoardId(board.id);
 
           const arrayBuffer = await values.file?.arrayBuffer();
 
@@ -136,14 +121,6 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ boards }) => {
             </Group>
           </Dropzone>
         </Input.Wrapper>
-        {boards.length > 1 && (
-          <BoardSelect
-            label="Board"
-            boards={boards}
-            loading={loading}
-            {...form.getInputProps("boardId")}
-          />
-        )}
         {board?.tags?.length ? (
           <TagSelect
             label="Étiquette"

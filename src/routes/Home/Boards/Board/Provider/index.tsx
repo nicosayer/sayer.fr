@@ -1,3 +1,4 @@
+import { useLocalStorage } from "@mantine/hooks";
 import useBoardsCollectionsData from "hooks/useBoardsCollectionsData";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
@@ -12,11 +13,13 @@ import {
   NoteDocument,
   TaskDocument,
 } from "types/firebase/collections";
-import { ALL_BOARDS_SLUG } from "utils/boards";
 
 export interface IBoardContext {
   board?: BoardDocument;
   boards?: BoardDocument[];
+  setExtraBoardIds: (
+    val: string[] | ((prevState: string[]) => string[])
+  ) => void;
   credentials?: CredentialDocument[];
   notes?: NoteDocument[];
   tasks?: TaskDocument[];
@@ -29,6 +32,7 @@ export interface IBoardContext {
 const BoardContext = createContext<IBoardContext>({
   board: undefined,
   boards: undefined,
+  setExtraBoardIds: () => {},
   credentials: undefined,
   notes: undefined,
   tasks: undefined,
@@ -50,15 +54,22 @@ interface BoardProviderProps {
 const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   const { boards } = useBoards();
 
-  const currentBoards = useMemo(() => {
-    return boards?.filter(
-      (board) => board.id === boardId || boardId === ALL_BOARDS_SLUG
-    );
-  }, [boards, boardId]);
+  const [extraBoardIds, setExtraBoardIds] = useLocalStorage<string[]>({
+    key: "extra-board-ids",
+    defaultValue: [],
+    getInitialValueInEffect: false,
+  });
 
   const board = useMemo(() => {
-    return currentBoards?.length === 1 ? currentBoards[0] : undefined;
-  }, [currentBoards]);
+    return boards?.find((board) => board.id === boardId);
+  }, [boards, boardId]);
+
+  const currentBoards = useMemo(() => {
+    return boards?.filter(
+      (board) =>
+        board.id === boardId || (board?.id && extraBoardIds.includes(board?.id))
+    );
+  }, [boardId, boards, extraBoardIds]);
 
   const [credentials, loadingCredentials] =
     useBoardsCollectionsData<CredentialDocument>(
@@ -116,6 +127,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     return {
       board,
       boards: currentBoards,
+      setExtraBoardIds,
       credentials,
       creditCards,
       documents,
@@ -126,6 +138,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     };
   }, [
     board,
+    setExtraBoardIds,
     currentBoards,
     notes,
     tasks,

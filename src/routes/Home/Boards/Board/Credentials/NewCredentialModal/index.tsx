@@ -4,13 +4,13 @@ import { closeAllModals } from "@mantine/modals";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import useDefaultBoardId from "hooks/useDefaultBoardId";
 import { FC } from "react";
 import {
   BoardDocument,
   Collection,
   CredentialDocument,
 } from "types/firebase/collections";
+import { useBoard } from "../../Provider";
 
 export interface NewCredentialModalProps {
   boards: BoardDocument[];
@@ -18,7 +18,7 @@ export interface NewCredentialModalProps {
 
 const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
   const [loading, start, stop] = useBooleanState();
-  const { defaultBoardId, setDefaultBoardId } = useDefaultBoardId();
+  const { board } = useBoard();
   const form = useForm({
     initialValues: {
       name: "",
@@ -26,15 +26,9 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
       username: "",
       password: "",
       tag: "",
-      boardId: boards.length === 1 ? boards[0].id : defaultBoardId,
     },
 
     validate: {
-      boardId: (boardId?: string) => {
-        return boards.find((board) => board.id === boardId)
-          ? null
-          : "Ce champ ne doit pas être vide";
-      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
@@ -50,11 +44,8 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        const board = boards.find((board) => board.id === values.boardId);
-
         if (board?.id && board.ref) {
           start();
-          setDefaultBoardId(board.id);
           addDoc<CredentialDocument>(
             collection(board.ref, Collection.credentials),
             {
@@ -71,7 +62,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ boards }) => {
       })}
     >
       <Stack>
-        <CredentialFormInputs loading={loading} form={form} boards={boards} />
+        <CredentialFormInputs loading={loading} form={form} />
         <div className="flex ml-auto">
           <Group>
             <Button
