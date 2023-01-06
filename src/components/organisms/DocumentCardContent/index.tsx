@@ -38,23 +38,23 @@ export interface DocumentCardsPropContent {
 }
 
 const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
-  const { boards } = useBoard();
+  const { board } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [previewDocument, loadingPreview] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
 
   const openEditModal = useCallback(
     (document: DocumentDocument) => {
-      if (boards) {
+      if (board) {
         openModal({
           centered: true,
           zIndex: 1000,
           title: "Modifier le document",
-          children: <EditDocumentModal document={document} boards={boards} />,
+          children: <EditDocumentModal document={document} board={board} />,
         });
       }
     },
-    [boards]
+    [board]
   );
 
   const openDeleteModal = useCallback((document: DocumentDocument) => {

@@ -86,7 +86,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <CreditCardFormInputs loading={loading} form={form} />
+        <CreditCardFormInputs loading={loading} form={form} board={board} />
         <div className="flex ml-auto">
           <Group>
             <Button

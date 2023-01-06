@@ -11,7 +11,7 @@ import { UseFormReturnType } from "@mantine/form";
 import TagSelect from "components/molecules/Select/Tag";
 import { FC } from "react";
 import InputMask from "react-input-mask";
-import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { BoardDocument } from "types/firebase/collections";
 
 export interface CreditCardForm {
   color: string;
@@ -25,6 +25,7 @@ export interface CreditCardForm {
 
 export interface CreditCardFormInputsProps {
   loading: boolean;
+  board: BoardDocument;
   form: UseFormReturnType<
     CreditCardForm,
     (values: CreditCardForm) => CreditCardForm
@@ -33,10 +34,10 @@ export interface CreditCardFormInputsProps {
 
 const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
   form,
+  board,
   loading,
 }) => {
   const theme = useMantineTheme();
-  const { board } = useBoard();
 
   return (
     <>

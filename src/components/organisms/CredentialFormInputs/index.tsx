@@ -2,7 +2,7 @@ import { PasswordInput, TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import TagSelect from "components/molecules/Select/Tag";
 import { FC } from "react";
-import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { BoardDocument } from "types/firebase/collections";
 
 export interface CredentialForm {
   name: string;
@@ -14,6 +14,7 @@ export interface CredentialForm {
 
 export interface CredentialFormInputsProps {
   loading: boolean;
+  board: BoardDocument;
   form: UseFormReturnType<
     CredentialForm,
     (values: CredentialForm) => CredentialForm
@@ -22,10 +23,9 @@ export interface CredentialFormInputsProps {
 
 const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
   loading,
+  board,
   form,
 }) => {
-  const { board } = useBoard();
-
   return (
     <>
       <TextInput

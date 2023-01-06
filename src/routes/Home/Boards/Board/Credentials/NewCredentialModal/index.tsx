@@ -60,7 +60,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <CredentialFormInputs loading={loading} form={form} />
+        <CredentialFormInputs loading={loading} form={form} board={board} />
         <div className="flex ml-auto">
           <Group>
             <Button

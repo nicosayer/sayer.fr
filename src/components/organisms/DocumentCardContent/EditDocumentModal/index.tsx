@@ -4,37 +4,24 @@ import { closeAllModals } from "@mantine/modals";
 import TagSelect from "components/molecules/Select/Tag";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { BoardDocument, DocumentDocument } from "types/firebase/collections";
 
 export interface EditDocumentModalProps {
-  boards: BoardDocument[];
+  board: BoardDocument;
   document: DocumentDocument;
 }
 
-const EditDocumentModal: FC<EditDocumentModalProps> = ({
-  boards,
-  document,
-}) => {
+const EditDocumentModal: FC<EditDocumentModalProps> = ({ document, board }) => {
   const [loading, start, stop] = useBooleanState();
-
-  const board = useMemo(() => {
-    return boards.find((board) => board.id === document.ref?.parent.parent?.id);
-  }, [boards, document.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {
       name: document.name ?? "",
       tag: document.tag ?? "",
-      boardId: board?.id,
     },
 
     validate: {
-      boardId: (boardId?: string) => {
-        return boards.find((board) => board.id === boardId)
-          ? null
-          : "Ce champ ne doit pas être vide";
-      },
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
