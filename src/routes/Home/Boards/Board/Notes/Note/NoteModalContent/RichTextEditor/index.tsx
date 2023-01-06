@@ -71,7 +71,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
       Color,
     ].filter(Boolean),
     autofocus: "end",
-    onUpdate: ({ editor }) => {
+    onUpdate: () => {
       if (note?.ref) {
         updateDoc<NoteDocument>(note.ref, {
           content: toBase64(Y.encodeStateAsUpdate(yDoc)),

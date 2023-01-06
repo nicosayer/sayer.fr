@@ -1,4 +1,5 @@
 import { Modal } from "@mantine/core";
+import { deleteDoc } from "firebase/firestore";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "../../Provider";
@@ -25,7 +26,13 @@ const Note: FC = () => {
   return (
     <Modal
       opened={Boolean(noteId)}
-      onClose={() => navigate(`/boards/${boardId}/notes`)}
+      onClose={() => {
+        if (note.content === "AAA=" && note.ref) {
+          deleteDoc(note.ref);
+        } else {
+          navigate(`/boards/${boardId}/notes`);
+        }
+      }}
       trapFocus={false}
       fullScreen={true}
       classNames={{

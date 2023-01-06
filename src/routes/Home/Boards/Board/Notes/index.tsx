@@ -7,74 +7,38 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { closeAllModals, openModal } from "@mantine/modals";
-import { IconArrowRight, IconPlus, IconSearch } from "@tabler/icons";
+import { IconPlus, IconSearch } from "@tabler/icons";
 import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  BoardDocument,
-  Collection,
-  NoteDocument,
-} from "types/firebase/collections";
+import { Collection, NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { useBoard } from "../Provider";
 import Note from "./Note";
 import NotesCards from "./NotesCards";
 
 const Notes: FC = () => {
-  const { boards, loading, notes } = useBoard();
+  const { board, loading, notes } = useBoard();
   const { boardId } = useParams();
   const [search, setSearch] = useState("");
   const [loadingNew, start, stop] = useBooleanState();
   const navigate = useNavigate();
   const is768Px = useMediaQuery("(min-width: 768px)");
 
-  const createNoteAndOpen = useCallback(
-    (board: BoardDocument) => {
-      if (board.ref) {
-        start();
-        addDoc<NoteDocument>(collection(board.ref, Collection.notes), {
-          name: `Note du ${formatDate()}`,
-          content: "",
-          date: dayjs().format("YYYY-MM-DD"),
-        })
-          .then((note) => navigate(`/boards/${boardId}/notes/${note.id}`))
-          .finally(stop);
-      }
-    },
-    [boardId, navigate, start, stop]
-  );
-
-  const onClick = useCallback(() => {
-    if ((boards?.length ?? 0) > 1) {
-      openModal({
-        centered: true,
-        title: "Choisir un board",
-        children: (
-          <Stack>
-            {boards?.map((board) => (
-              <Button
-                key={board.id}
-                variant="light"
-                rightIcon={<IconArrowRight size={18} />}
-                onClick={() => {
-                  closeAllModals();
-                  createNoteAndOpen(board);
-                }}
-              >
-                {board.name}
-              </Button>
-            ))}
-          </Stack>
-        ),
-      });
-    } else if (boards?.[0]) {
-      createNoteAndOpen(boards[0]);
+  const createNoteAndOpen = useCallback(() => {
+    if (board?.ref) {
+      start();
+      addDoc<NoteDocument>(collection(board.ref, Collection.notes), {
+        name: `Note du ${formatDate()}`,
+        content: "",
+        date: dayjs().format("YYYY-MM-DD"),
+      })
+        .then((note) => navigate(`/boards/${boardId}/notes/${note.id}`))
+        .finally(stop);
     }
-  }, [boards, createNoteAndOpen]);
+  }, [board?.ref, boardId, navigate, start, stop]);
 
   if (!notes || loading) {
     return <LoadingOverlay visible />;
@@ -89,7 +53,7 @@ const Notes: FC = () => {
             loading={loadingNew}
             size="lg"
             leftIcon={<IconPlus size={18} />}
-            onClick={onClick}
+            onClick={createNoteAndOpen}
           >
             {is768Px ? "Ajouter votre première note" : "Nouvelle note"}
           </Button>
@@ -118,7 +82,7 @@ const Notes: FC = () => {
               loading={loadingNew}
               variant="default"
               leftIcon={<IconPlus size={18} />}
-              onClick={onClick}
+              onClick={createNoteAndOpen}
             >
               Nouvelle note
             </Button>
