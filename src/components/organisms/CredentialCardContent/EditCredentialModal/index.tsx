@@ -5,17 +5,13 @@ import CredentialFormInputs from "components/organisms/CredentialFormInputs";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
-import { BoardDocument, CredentialDocument } from "types/firebase/collections";
+import { CredentialDocument } from "types/firebase/collections";
 
 export interface EditCredentialModalProps {
-  boards: BoardDocument[];
   credential: CredentialDocument;
 }
 
-const EditCredentialModal: FC<EditCredentialModalProps> = ({
-  boards,
-  credential,
-}) => {
+const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
   const [loading, start, stop] = useBooleanState();
 
   const form = useForm({

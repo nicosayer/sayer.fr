@@ -44,12 +44,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
           centered: true,
           zIndex: 1000,
           title: "Modifier le mot de passe",
-          children: (
-            <EditCredentialModal
-              credential={credential}
-              boards={board ? [board] : []}
-            />
-          ),
+          children: <EditCredentialModal credential={credential} />,
         });
       }
     },

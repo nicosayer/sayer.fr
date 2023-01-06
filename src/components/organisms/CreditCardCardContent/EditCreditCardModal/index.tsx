@@ -5,17 +5,13 @@ import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
 import { updateDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
-import { BoardDocument, CreditCardDocument } from "types/firebase/collections";
+import { CreditCardDocument } from "types/firebase/collections";
 
 export interface EditCreditCardModalProps {
-  boards: BoardDocument[];
   creditCard: CreditCardDocument;
 }
 
-const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
-  boards,
-  creditCard,
-}) => {
+const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
 

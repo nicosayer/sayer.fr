@@ -106,7 +106,6 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
               >
                 <ActionIcon
                   color={copied ? "teal" : "blue"}
-                  size="xs"
                   onClick={copy}
                   className="m-auto"
                 >
@@ -142,6 +141,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
         )}
         {is768Px ? (
           <Button
+            size="xs"
             color="red"
             variant="subtle"
             onClick={() => {

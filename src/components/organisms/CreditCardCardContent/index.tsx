@@ -48,12 +48,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
           zIndex: 1000,
           centered: true,
           title: "Modifier la carte de crédit",
-          children: (
-            <EditCreditCardModal
-              creditCard={creditCard}
-              boards={board ? [board] : []}
-            />
-          ),
+          children: <EditCreditCardModal creditCard={creditCard} />,
         });
       }
     },
