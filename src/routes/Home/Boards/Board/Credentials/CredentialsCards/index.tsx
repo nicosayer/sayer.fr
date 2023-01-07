@@ -1,5 +1,6 @@
 import { Card, Stack } from "@mantine/core";
 import CredentialCardContent from "components/organisms/CredentialCardContent";
+import NoResult from "components/organisms/NoResult";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -20,6 +21,10 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
       (credential) => sanitize(`${credential.name}${credential.tag}`)
     );
   }, [credentials, search]);
+
+  if (!filteredCredentials.length) {
+    return <NoResult />;
+  }
 
   return (
     <Stack>

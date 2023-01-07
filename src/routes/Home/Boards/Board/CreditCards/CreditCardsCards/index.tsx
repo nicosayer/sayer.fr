@@ -1,5 +1,6 @@
 import { Card, Stack } from "@mantine/core";
 import CreditCardCardContent from "components/organisms/CreditCardCardContent";
+import NoResult from "components/organisms/NoResult";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -20,6 +21,10 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
       (creditCard) => sanitize(`${creditCard.name}${creditCard.tag}`)
     );
   }, [creditCards, search]);
+
+  if (!filteredCreditCards.length) {
+    return <NoResult />;
+  }
 
   return (
     <Stack>

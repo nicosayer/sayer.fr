@@ -1,5 +1,6 @@
 import { Card, Stack } from "@mantine/core";
 import DocumentCardContent from "components/organisms/DocumentCardContent";
+import NoResult from "components/organisms/NoResult";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -20,6 +21,10 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
       (document) => sanitize(`${document.name}${document.tag}`)
     );
   }, [documents, search]);
+
+  if (!filteredDocuments.length) {
+    return <NoResult />;
+  }
 
   return (
     <Stack>

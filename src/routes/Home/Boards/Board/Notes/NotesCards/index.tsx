@@ -1,4 +1,5 @@
 import { Card, Stack } from "@mantine/core";
+import NoResult from "components/organisms/NoResult";
 import NoteCardContent from "components/organisms/NoteCardContent";
 import { orderBy } from "lodash";
 import { FC, useMemo } from "react";
@@ -28,6 +29,10 @@ const NotesCards: FC<NotesCardsProps> = ({ search }) => {
       "desc"
     );
   }, [notes, search]);
+
+  if (!filteredNotes.length) {
+    return <NoResult />;
+  }
 
   return (
     <Stack>

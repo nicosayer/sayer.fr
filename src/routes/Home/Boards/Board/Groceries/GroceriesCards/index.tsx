@@ -1,6 +1,7 @@
 import { Card, Stack, Text } from "@mantine/core";
 import { IconLayoutList } from "@tabler/icons";
 import GroceryCardContent from "components/organisms/GroceryCardContent";
+import NoResult from "components/organisms/NoResult";
 import dayjs from "dayjs";
 import { updateDoc } from "firebase/firestore";
 import { groupBy, orderBy } from "lodash";
@@ -32,6 +33,23 @@ const GroceriesCards: FC<GroceriesCardsProps> = ({ search }) => {
     );
   }, [groceries, search]);
 
+  if (!groceries?.length) {
+    return (
+      <div className="mt-10 text-center">
+        <IconLayoutList size={36} className="text-gray-500" />
+        <Text c="dimmed">Aucune course</Text>
+      </div>
+    );
+  }
+
+  if (
+    (filteredGroceries.false ?? []).length +
+      (filteredGroceries.true ?? []).length ===
+    0
+  ) {
+    return <NoResult />;
+  }
+
   return (
     <Stack>
       {(filteredGroceries.false ?? []).map((grocery) => {
@@ -60,14 +78,6 @@ const GroceriesCards: FC<GroceriesCardsProps> = ({ search }) => {
           </Card>
         );
       })}
-      {(filteredGroceries.false ?? []).length +
-        (filteredGroceries.true ?? []).length ===
-        0 && (
-        <div className="mt-10 text-center">
-          <IconLayoutList size={36} className="text-gray-500" />
-          <Text c="dimmed">Aucune course</Text>
-        </div>
-      )}
     </Stack>
   );
 };

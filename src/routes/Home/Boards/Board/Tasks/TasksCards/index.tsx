@@ -1,5 +1,6 @@
 import { Card, Stack, Text } from "@mantine/core";
 import { IconLayoutList } from "@tabler/icons";
+import NoResult from "components/organisms/NoResult";
 import TaskCardContent from "components/organisms/TaskCardContent";
 import { updateDoc } from "firebase/firestore";
 import { groupBy, orderBy } from "lodash";
@@ -28,6 +29,22 @@ const TasksCards: FC<TasksCardsProps> = ({ search }) => {
     );
   }, [tasks, search]);
 
+  if (!tasks?.length) {
+    return (
+      <div className="mt-10 text-center">
+        <IconLayoutList size={36} className="text-gray-500" />
+        <Text c="dimmed">Aucune tâche</Text>
+      </div>
+    );
+  }
+
+  if (
+    (filteredTasks.false ?? []).length + (filteredTasks.true ?? []).length ===
+    0
+  ) {
+    return <NoResult />;
+  }
+
   return (
     <Stack>
       {(filteredTasks.false ?? []).map((task) => {
@@ -55,14 +72,6 @@ const TasksCards: FC<TasksCardsProps> = ({ search }) => {
           </Card>
         );
       })}
-      {(filteredTasks.false ?? []).length +
-        (filteredTasks.true ?? []).length ===
-        0 && (
-        <div className="mt-10 text-center">
-          <IconLayoutList size={36} className="text-gray-500" />
-          <Text c="dimmed">Aucune tâche</Text>
-        </div>
-      )}
     </Stack>
   );
 };
