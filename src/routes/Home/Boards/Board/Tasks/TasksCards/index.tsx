@@ -31,7 +31,7 @@ const TasksCards: FC<TasksCardsProps> = ({ search }) => {
 
   if (!tasks?.length) {
     return (
-      <div className="mt-10 text-center">
+      <div className="my-10 text-center">
         <IconLayoutList size={36} className="text-gray-500" />
         <Text c="dimmed">Aucune tâche</Text>
       </div>

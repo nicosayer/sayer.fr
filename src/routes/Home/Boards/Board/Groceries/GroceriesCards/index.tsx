@@ -35,7 +35,7 @@ const GroceriesCards: FC<GroceriesCardsProps> = ({ search }) => {
 
   if (!groceries?.length) {
     return (
-      <div className="mt-10 text-center">
+      <div className="my-10 text-center">
         <IconLayoutList size={36} className="text-gray-500" />
         <Text c="dimmed">Aucune course</Text>
       </div>
