@@ -114,85 +114,91 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
         </Group>
       </div>
       <div className="grid grid-cols-3">
-        <CopyButton value={`${window.location.host}/${creditCard.ref?.path}`}>
-          {({ copied, copy }) =>
-            is768Px ? (
-              <Button
-                size="xs"
-                variant="subtle"
-                color={copied ? "teal" : "blue"}
-                onClick={copy}
-                leftIcon={
-                  copied ? <IconCheck size={18} /> : <IconLink size={18} />
-                }
-              >
-                {copied ? "Lien copié" : "Copier le lien"}
-              </Button>
-            ) : (
-              <Tooltip
-                label={copied ? "Lien copié" : "Copier le lien"}
-                withArrow
-              >
-                <ActionIcon
-                  className="m-auto"
+        <div className="m-auto">
+          <CopyButton value={`${window.location.host}/${creditCard.ref?.path}`}>
+            {({ copied, copy }) =>
+              is768Px ? (
+                <Button
+                  size="xs"
+                  variant="subtle"
                   color={copied ? "teal" : "blue"}
                   onClick={copy}
+                  leftIcon={
+                    copied ? <IconCheck size={18} /> : <IconLink size={18} />
+                  }
                 >
-                  {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
-                </ActionIcon>
-              </Tooltip>
-            )
-          }
-        </CopyButton>
-        {is768Px ? (
-          <Button
-            variant="subtle"
-            size="xs"
-            onClick={() => {
-              openEditModal(creditCard);
-            }}
-            leftIcon={<IconEdit size={18} />}
-          >
-            Modifier
-          </Button>
-        ) : (
-          <Tooltip label="Modifier" withArrow>
-            <ActionIcon
-              color="blue"
-              className="m-auto"
+                  {copied ? "Lien copié" : "Copier le lien"}
+                </Button>
+              ) : (
+                <Tooltip
+                  label={copied ? "Lien copié" : "Copier le lien"}
+                  withArrow
+                >
+                  <ActionIcon
+                    className="m-auto"
+                    color={copied ? "teal" : "blue"}
+                    onClick={copy}
+                  >
+                    {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
+                  </ActionIcon>
+                </Tooltip>
+              )
+            }
+          </CopyButton>
+        </div>
+        <div className="m-auto">
+          {is768Px ? (
+            <Button
+              variant="subtle"
+              size="xs"
               onClick={() => {
                 openEditModal(creditCard);
               }}
+              leftIcon={<IconEdit size={18} />}
             >
-              <IconEdit size={18} />
-            </ActionIcon>
-          </Tooltip>
-        )}
-        {is768Px ? (
-          <Button
-            color="red"
-            variant="subtle"
-            size="xs"
-            onClick={() => {
-              openDeleteModal(creditCard);
-            }}
-            leftIcon={<IconTrash size={18} />}
-          >
-            Supprimer
-          </Button>
-        ) : (
-          <Tooltip label="Supprimer" withArrow>
-            <ActionIcon
+              Modifier
+            </Button>
+          ) : (
+            <Tooltip label="Modifier" withArrow>
+              <ActionIcon
+                color="blue"
+                className="m-auto"
+                onClick={() => {
+                  openEditModal(creditCard);
+                }}
+              >
+                <IconEdit size={18} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </div>
+        <div className="m-auto">
+          {is768Px ? (
+            <Button
               color="red"
-              className="m-auto"
+              variant="subtle"
+              size="xs"
               onClick={() => {
                 openDeleteModal(creditCard);
               }}
+              leftIcon={<IconTrash size={18} />}
             >
-              <IconTrash size={18} />
-            </ActionIcon>
-          </Tooltip>
-        )}
+              Supprimer
+            </Button>
+          ) : (
+            <Tooltip label="Supprimer" withArrow>
+              <ActionIcon
+                color="red"
+                className="m-auto"
+                onClick={() => {
+                  openDeleteModal(creditCard);
+                }}
+              >
+                <IconTrash size={18} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </div>
       </div>
     </Stack>
   );

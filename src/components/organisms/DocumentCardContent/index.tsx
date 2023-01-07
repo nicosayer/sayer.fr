@@ -142,85 +142,91 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
         </Button>
       </Group>
       <div className="grid grid-cols-3">
-        <CopyButton value={`${window.location.host}/${document.ref?.path}`}>
-          {({ copied, copy }) =>
-            is768Px ? (
-              <Button
-                variant="subtle"
-                size="xs"
-                color={copied ? "teal" : "blue"}
-                onClick={copy}
-                leftIcon={
-                  copied ? <IconCheck size={18} /> : <IconLink size={18} />
-                }
-              >
-                {copied ? "Lien copié" : "Copier le lien"}
-              </Button>
-            ) : (
-              <Tooltip
-                label={copied ? "Lien copié" : "Copier le lien"}
-                withArrow
-              >
-                <ActionIcon
-                  className="m-auto"
+        <div className="m-auto">
+          <CopyButton value={`${window.location.host}/${document.ref?.path}`}>
+            {({ copied, copy }) =>
+              is768Px ? (
+                <Button
+                  variant="subtle"
+                  size="xs"
                   color={copied ? "teal" : "blue"}
                   onClick={copy}
+                  leftIcon={
+                    copied ? <IconCheck size={18} /> : <IconLink size={18} />
+                  }
                 >
-                  {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
-                </ActionIcon>
-              </Tooltip>
-            )
-          }
-        </CopyButton>
-        {is768Px ? (
-          <Button
-            size="xs"
-            variant="subtle"
-            onClick={() => {
-              openEditModal(document);
-            }}
-            leftIcon={<IconEdit size={18} />}
-          >
-            Modifier
-          </Button>
-        ) : (
-          <Tooltip label="Modifier" withArrow>
-            <ActionIcon
-              className="m-auto"
-              color="blue"
+                  {copied ? "Lien copié" : "Copier le lien"}
+                </Button>
+              ) : (
+                <Tooltip
+                  label={copied ? "Lien copié" : "Copier le lien"}
+                  withArrow
+                >
+                  <ActionIcon
+                    className="m-auto"
+                    color={copied ? "teal" : "blue"}
+                    onClick={copy}
+                  >
+                    {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
+                  </ActionIcon>
+                </Tooltip>
+              )
+            }
+          </CopyButton>
+        </div>
+        <div className="m-auto">
+          {is768Px ? (
+            <Button
+              size="xs"
+              variant="subtle"
               onClick={() => {
                 openEditModal(document);
               }}
+              leftIcon={<IconEdit size={18} />}
             >
-              <IconEdit size={18} />
-            </ActionIcon>
-          </Tooltip>
-        )}
-        {is768Px ? (
-          <Button
-            size="xs"
-            color="red"
-            variant="subtle"
-            onClick={() => {
-              openDeleteModal(document);
-            }}
-            leftIcon={<IconTrash size={18} />}
-          >
-            Supprimer
-          </Button>
-        ) : (
-          <Tooltip label="Supprimer" withArrow>
-            <ActionIcon
-              className="m-auto"
+              Modifier
+            </Button>
+          ) : (
+            <Tooltip label="Modifier" withArrow>
+              <ActionIcon
+                className="m-auto"
+                color="blue"
+                onClick={() => {
+                  openEditModal(document);
+                }}
+              >
+                <IconEdit size={18} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </div>
+        <div className="m-auto">
+          {is768Px ? (
+            <Button
+              size="xs"
               color="red"
+              variant="subtle"
               onClick={() => {
                 openDeleteModal(document);
               }}
+              leftIcon={<IconTrash size={18} />}
             >
-              <IconTrash size={18} />
-            </ActionIcon>
-          </Tooltip>
-        )}
+              Supprimer
+            </Button>
+          ) : (
+            <Tooltip label="Supprimer" withArrow>
+              <ActionIcon
+                className="m-auto"
+                color="red"
+                onClick={() => {
+                  openDeleteModal(document);
+                }}
+              >
+                <IconTrash size={18} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </div>
       </div>
     </Stack>
   );

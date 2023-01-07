@@ -85,85 +85,91 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
         </Button>
       </Group>
       <div className="grid grid-cols-3">
-        <CopyButton value={`${window.location.host}/${note.ref?.path}`}>
-          {({ copied, copy }) =>
-            is768Px ? (
-              <Button
-                variant="subtle"
-                size="xs"
-                color={copied ? "teal" : "blue"}
-                onClick={copy}
-                leftIcon={
-                  copied ? <IconCheck size={18} /> : <IconLink size={18} />
-                }
-              >
-                {copied ? "Lien copié" : "Copier le lien"}
-              </Button>
-            ) : (
-              <Tooltip
-                label={copied ? "Lien copié" : "Copier le lien"}
-                withArrow
-              >
-                <ActionIcon
+        <div className="m-auto">
+          <CopyButton value={`${window.location.host}/${note.ref?.path}`}>
+            {({ copied, copy }) =>
+              is768Px ? (
+                <Button
+                  variant="subtle"
+                  size="xs"
                   color={copied ? "teal" : "blue"}
                   onClick={copy}
-                  className="m-auto"
+                  leftIcon={
+                    copied ? <IconCheck size={18} /> : <IconLink size={18} />
+                  }
                 >
-                  {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
-                </ActionIcon>
-              </Tooltip>
-            )
-          }
-        </CopyButton>
-        {is768Px ? (
-          <Button
-            size="xs"
-            variant="subtle"
-            onClick={() => {
-              navigate(`/boards/${boardId}/notes/${note.id}`);
-            }}
-            leftIcon={<IconEdit size={18} />}
-          >
-            Modifier
-          </Button>
-        ) : (
-          <Tooltip label="Modifier" withArrow>
-            <ActionIcon
-              color="blue"
-              className="m-auto"
+                  {copied ? "Lien copié" : "Copier le lien"}
+                </Button>
+              ) : (
+                <Tooltip
+                  label={copied ? "Lien copié" : "Copier le lien"}
+                  withArrow
+                >
+                  <ActionIcon
+                    color={copied ? "teal" : "blue"}
+                    onClick={copy}
+                    className="m-auto"
+                  >
+                    {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
+                  </ActionIcon>
+                </Tooltip>
+              )
+            }
+          </CopyButton>
+        </div>
+        <div className="m-auto">
+          {is768Px ? (
+            <Button
+              size="xs"
+              variant="subtle"
               onClick={() => {
                 navigate(`/boards/${boardId}/notes/${note.id}`);
               }}
+              leftIcon={<IconEdit size={18} />}
             >
-              <IconEdit size={18} />
-            </ActionIcon>
-          </Tooltip>
-        )}
-        {is768Px ? (
-          <Button
-            size="xs"
-            color="red"
-            variant="subtle"
-            onClick={() => {
-              openDeleteModal(note);
-            }}
-            leftIcon={<IconTrash size={18} />}
-          >
-            Supprimer
-          </Button>
-        ) : (
-          <Tooltip label="Supprimer" withArrow>
-            <ActionIcon
+              Modifier
+            </Button>
+          ) : (
+            <Tooltip label="Modifier" withArrow>
+              <ActionIcon
+                color="blue"
+                className="m-auto"
+                onClick={() => {
+                  navigate(`/boards/${boardId}/notes/${note.id}`);
+                }}
+              >
+                <IconEdit size={18} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </div>
+        <div className="m-auto">
+          {is768Px ? (
+            <Button
+              size="xs"
               color="red"
-              className="m-auto"
+              variant="subtle"
               onClick={() => {
                 openDeleteModal(note);
               }}
+              leftIcon={<IconTrash size={18} />}
             >
-              <IconTrash size={18} />
-            </ActionIcon>
-          </Tooltip>
-        )}
+              Supprimer
+            </Button>
+          ) : (
+            <Tooltip label="Supprimer" withArrow>
+              <ActionIcon
+                color="red"
+                className="m-auto"
+                onClick={() => {
+                  openDeleteModal(note);
+                }}
+              >
+                <IconTrash size={18} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </div>
       </div>
     </Stack>
   );
