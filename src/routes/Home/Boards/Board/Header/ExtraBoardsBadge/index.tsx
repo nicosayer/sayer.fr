@@ -30,7 +30,7 @@ const ExtraBoardsBadge: FC = () => {
         <Badge>+{(currentBoards?.length ?? 1) - 1}</Badge>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>Afficher les boards</Menu.Label>
+        <Menu.Label>Afficher le contenu des boards</Menu.Label>
         {boards?.map((board) => (
           <Menu.Item
             key={board.id}
