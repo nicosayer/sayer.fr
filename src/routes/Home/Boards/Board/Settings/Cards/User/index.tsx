@@ -11,10 +11,6 @@ const UserCard: FC = () => {
   const [loading, start, stop] = useBooleanState();
   const [disabled, setDisabled] = useState(false);
 
-  user?.getIdTokenResult().then((idTokenResult) => {
-    console.log(idTokenResult);
-  });
-
   if (!user?.email) {
     return null;
   }

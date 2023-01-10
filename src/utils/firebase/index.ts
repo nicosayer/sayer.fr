@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, inMemoryPersistence, setPersistence } from "firebase/auth";
 import {
   DocumentSnapshot,
   FirestoreDataConverter,
@@ -22,6 +22,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
+
+setPersistence(auth, inMemoryPersistence);
 
 export { auth, db, storage };
 

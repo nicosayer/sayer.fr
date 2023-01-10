@@ -9,6 +9,8 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
+import SecureLogin from "components/organisms/SecureLogin";
+import useIsSecure from "hooks/useIsSecure";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import CreditCard from "./CreditCard";
@@ -16,9 +18,14 @@ import CreditCardsCards from "./CreditCardsCards";
 import NewCreditCardModal from "./NewCreditCardModal";
 
 const CreditCards: FC = () => {
+  const { isSecure } = useIsSecure();
   const { board, loading, creditCards } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)");
+
+  if (!isSecure) {
+    return <SecureLogin />;
+  }
 
   if (!creditCards || loading) {
     return <LoadingOverlay visible />;
