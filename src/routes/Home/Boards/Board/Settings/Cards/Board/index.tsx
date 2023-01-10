@@ -17,11 +17,11 @@ import { getColorFromString } from "utils/color";
 import { capitalizeFirsts, sanitize } from "utils/string";
 import { ONE_SECOND } from "utils/time";
 
-export interface SettingsCardProps {
+export interface BoardCardProps {
   board: BoardDocument;
 }
 
-const SettingsCard: FC<SettingsCardProps> = ({ board }) => {
+const BoardCard: FC<BoardCardProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState({ stopDelay: ONE_SECOND });
 
   const [users, setUsers] = useState(board?.users ?? []);
@@ -145,4 +145,4 @@ const SettingsCard: FC<SettingsCardProps> = ({ board }) => {
   );
 };
 
-export default SettingsCard;
+export default BoardCard;

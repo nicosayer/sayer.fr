@@ -34,6 +34,11 @@ const useBoardsCollectionsData = <T>(
               }),
             };
           });
+        },
+        () => {
+          setData((old) => {
+            return { ...old };
+          });
         }
       );
     });
