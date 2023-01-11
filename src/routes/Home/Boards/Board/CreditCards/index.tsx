@@ -24,7 +24,7 @@ const CreditCards: FC = () => {
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)");
 
-  if (!cannotBeSecure) {
+  if (cannotBeSecure) {
     return <CannotBeSecure />;
   }
 
