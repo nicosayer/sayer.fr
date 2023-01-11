@@ -8,7 +8,7 @@ import { auth } from "utils/firebase";
 
 const SecureLogin: FC = () => {
   const [user] = useAuthState(auth);
-  const [error, setError] = useState();
+  const [error, setError] = useState(false);
   const [loading, start, stop] = useBooleanState();
   const [password, setPassword] = useState("");
 
@@ -16,7 +16,9 @@ const SecureLogin: FC = () => {
     if (password && user?.email) {
       start();
       signInWithEmailAndPassword(auth, user.email, password)
-        .catch(setError)
+        .catch(() => {
+          setError(true);
+        })
         .finally(stop);
     }
   }, [password, start, stop, user?.email]);
@@ -42,7 +44,13 @@ const SecureLogin: FC = () => {
               }
             }}
           />
-          <ActionIcon variant="default" size={36} onClick={handleSubmit}>
+          <ActionIcon
+            variant={error ? "outline" : "default"}
+            color={error ? "red" : undefined}
+            size={36}
+            onClick={handleSubmit}
+            loading={loading}
+          >
             <IconArrowRight />
           </ActionIcon>
         </Group>
