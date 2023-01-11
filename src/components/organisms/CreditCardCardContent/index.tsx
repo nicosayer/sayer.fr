@@ -85,7 +85,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
           <ColorSwatch color={theme.colors[creditCard.color][6]} />
         )}
         <Text fw={600}>{creditCard.name}</Text>
-        {creditCard.tag && (
+        {creditCard.tag && is768Px && (
           <Badge
             variant="dot"
             color={getColorFromString(creditCard.tag)}

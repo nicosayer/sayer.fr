@@ -50,6 +50,7 @@ const Header: FC = () => {
         <Group>
           {is768px ? (
             <TextInput
+              readOnly
               placeholder="Rechercher"
               icon={<IconSearch size={18} />}
               onFocus={(event) => {

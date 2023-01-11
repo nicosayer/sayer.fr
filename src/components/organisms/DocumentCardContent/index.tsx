@@ -101,7 +101,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
     <Stack>
       <Text fw={600} className="text-center">
         {document.name}
-        {document.tag && (
+        {document.tag && is768Px && (
           <Badge
             variant="dot"
             color={getColorFromString(document.tag)}

@@ -78,7 +78,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
     <Stack>
       <Group position="center">
         <CredentialName credential={credential} fw={600} />
-        {credential.tag && (
+        {credential.tag && is768Px && (
           <Badge
             variant="dot"
             color={getColorFromString(credential.tag)}

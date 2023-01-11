@@ -58,7 +58,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
     <Stack>
       <Text fw={600} className="text-center">
         {note.name}
-        {note.tag && (
+        {note.tag && is768Px && (
           <Badge
             variant="dot"
             color={getColorFromString(note.tag)}
