@@ -1,4 +1,5 @@
-import { Button, Card, Input, Stack, TextInput } from "@mantine/core";
+import { Button, Card, Input, Stack, Text, TextInput } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { sendPasswordResetEmail } from "firebase/auth";
 import useBooleanState from "hooks/useBooleanState";
@@ -26,19 +27,30 @@ const UserCard: FC = () => {
               loading={loading}
               disabled={disabled}
               onClick={() => {
-                if (user?.email) {
-                  start();
-                  sendPasswordResetEmail(auth, user.email).then(() => {
-                    setDisabled(true);
-                    stop();
-                    showNotification({
-                      color: "green",
-                      title: "Email envoyé avec succès",
-                      message:
-                        "Vous allez recevoir les informations vous invitant à réinitialiser votre mot de passe par email",
-                    });
-                  });
-                }
+                openConfirmModal({
+                  title: "Réinitialiser le mot de passe",
+                  centered: true,
+                  children: (
+                    <Text size="sm">
+                      Voulez-vous recevoir un email afin de pouvoir
+                      réinitialiser votre mot de passe ?
+                    </Text>
+                  ),
+                  labels: { confirm: "Envoyer", cancel: "Annuler" },
+                  onConfirm: () => {
+                    if (user?.email) {
+                      start();
+                      sendPasswordResetEmail(auth, user.email).then(() => {
+                        setDisabled(true);
+                        stop();
+                        showNotification({
+                          color: "green",
+                          message: "Email envoyé",
+                        });
+                      });
+                    }
+                  },
+                });
               }}
             >
               Réinitialiser le mot de passe

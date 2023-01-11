@@ -4,11 +4,11 @@ import { deleteDoc } from "firebase/firestore";
 import { FC } from "react";
 import { BoardDocument } from "types/firebase/collections";
 
-export interface DeleteCardProps {
+export interface DeleteBoardCardProps {
   board: BoardDocument;
 }
 
-const DeleteCard: FC<DeleteCardProps> = ({ board }) => {
+const DeleteBoardCard: FC<DeleteBoardCardProps> = ({ board }) => {
   return (
     <Card withBorder>
       <Input.Wrapper
@@ -46,4 +46,4 @@ const DeleteCard: FC<DeleteCardProps> = ({ board }) => {
   );
 };
 
-export default DeleteCard;
+export default DeleteBoardCard;

@@ -3,7 +3,7 @@ import { FC } from "react";
 import { useParams } from "react-router-dom";
 import { useBoard } from "../Provider";
 import BoardCard from "./Cards/Board";
-import DeleteCard from "./Cards/Delete";
+import DeleteBoardCard from "./Cards/DeleteBoard";
 import UserCard from "./Cards/User";
 
 const Settings: FC = () => {
@@ -17,7 +17,7 @@ const Settings: FC = () => {
         <>
           <UserCard />
           <BoardCard board={boards?.[0]} />
-          <DeleteCard board={boards?.[0]} />
+          <DeleteBoardCard board={boards?.[0]} />
         </>
       ) : (
         <Tabs defaultValue={boardId}>
@@ -38,7 +38,7 @@ const Settings: FC = () => {
               <Stack>
                 <UserCard />
                 <BoardCard board={board} />
-                <DeleteCard board={board} />
+                <DeleteBoardCard board={board} />
               </Stack>
             </Tabs.Panel>
           ))}
