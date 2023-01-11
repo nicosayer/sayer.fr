@@ -3,6 +3,7 @@ import {
   DocumentReference,
   onSnapshot,
 } from "firebase/firestore";
+import useIsSecure from "hooks/useIsSecure";
 import { flatMap, pick } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { BoardDocument, Collection } from "types/firebase/collections";
@@ -13,12 +14,15 @@ const useBoardsCollectionsData = <T>(
   collection: Collection
 ) => {
   const [data, setData] = useState<Record<string, T[]>>();
+  const { isSecure } = useIsSecure();
 
   const boardIds = useMemo(() => {
     return boards.map((board) => board.id as string);
   }, [boards]);
 
   useEffect(() => {
+    console.log(isSecure);
+
     const unsubscribes = boards.map((board) => {
       return onSnapshot(
         firestoreCollection(
@@ -46,10 +50,13 @@ const useBoardsCollectionsData = <T>(
     return () => {
       unsubscribes.forEach((unsubscribe) => unsubscribe?.());
     };
-  }, [boardIds, boards, collection]);
+  }, [boardIds, boards, collection, isSecure]);
 
   return useMemo(() => {
-    return [flatMap(data), !boards.length || data === undefined] as const;
+    return [
+      flatMap(data),
+      data === undefined || Object.keys(data).length !== boards.length,
+    ] as const;
   }, [boards.length, data]);
 };
 
