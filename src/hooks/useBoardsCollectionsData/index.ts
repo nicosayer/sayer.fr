@@ -21,8 +21,6 @@ const useBoardsCollectionsData = <T>(
   }, [boards]);
 
   useEffect(() => {
-    console.log(10, isSecure);
-
     const unsubscribes = boards.map((board) => {
       return onSnapshot(
         firestoreCollection(
