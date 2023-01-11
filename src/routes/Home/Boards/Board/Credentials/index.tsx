@@ -9,6 +9,7 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
+import CannotBeSecure from "components/organisms/CannotBeSecure";
 import SecureLogin from "components/organisms/SecureLogin";
 import useIsSecure from "hooks/useIsSecure";
 import { FC, useState } from "react";
@@ -18,10 +19,14 @@ import CredentialsCards from "./CredentialsCards";
 import NewCredentialModal from "./NewCredentialModal";
 
 const Credentials: FC = () => {
-  const { isSecure } = useIsSecure();
+  const { isSecure, cannotBeSecure } = useIsSecure();
   const { board, loadingCredentials, credentials } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)");
+
+  if (!cannotBeSecure) {
+    return <CannotBeSecure />;
+  }
 
   if (!isSecure) {
     return <SecureLogin />;

@@ -46,7 +46,7 @@ const useBoardsCollectionsData = <T>(
     });
 
     return () => {
-      unsubscribes.forEach((unsubscribe) => unsubscribe?.());
+      unsubscribes.forEach((unsubscribe) => unsubscribe());
     };
   }, [boardIds, boards, collection, isSecure]);
 
