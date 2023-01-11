@@ -25,11 +25,19 @@ const CreditCards: FC = () => {
   const is768Px = useMediaQuery("(min-width: 768px)");
 
   if (cannotBeSecure) {
-    return <CannotBeSecure />;
+    return (
+      <div className="py-10">
+        <CannotBeSecure />
+      </div>
+    );
   }
 
   if (!isSecure) {
-    return <SecureLogin />;
+    return (
+      <div className="py-10">
+        <SecureLogin />
+      </div>
+    );
   }
 
   if (!creditCards || loadingCreditCards) {

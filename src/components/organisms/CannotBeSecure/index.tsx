@@ -8,7 +8,7 @@ const CannotBeSecure: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="my-10 mx-auto max-w-[256px] text-center">
+    <div className="mx-auto max-w-[256px] text-center">
       <IconLock size={36} className="text-gray-500" />
       <Input.Wrapper label="Veuillez définir un mot de passe pour accéder à cette fonctionnalité">
         <Button

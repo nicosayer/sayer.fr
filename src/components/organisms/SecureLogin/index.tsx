@@ -12,7 +12,7 @@ const SecureLogin: FC = () => {
   const [loading, start, stop] = useBooleanState();
 
   return (
-    <div className="my-10 mx-auto max-w-[256px] text-center">
+    <div className="mx-auto max-w-[256px] text-center">
       <IconShieldLock size={36} className="text-gray-500" />
       <PasswordInput
         disabled={loading}
