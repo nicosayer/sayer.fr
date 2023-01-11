@@ -16,11 +16,11 @@ import DocumentsCards from "./DocumentsCards";
 import NewDocumentModal from "./NewDocumentModal";
 
 const Documents: FC = () => {
-  const { board, loading, documents } = useBoard();
+  const { board, loadingDocuments, documents } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)");
 
-  if (!documents || loading) {
+  if (!documents || loadingDocuments) {
     return <LoadingOverlay visible />;
   }
 

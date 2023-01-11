@@ -7,10 +7,10 @@ import Task from "./Task";
 import TasksCards from "./TasksCards";
 
 const Tasks: FC = () => {
-  const { loading, tasks } = useBoard();
+  const { loadingTasks, tasks } = useBoard();
   const [search, setSearch] = useState("");
 
-  if (!tasks || loading) {
+  if (!tasks || loadingTasks) {
     return <LoadingOverlay visible />;
   }
 

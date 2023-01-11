@@ -19,7 +19,7 @@ import NewCredentialModal from "./NewCredentialModal";
 
 const Credentials: FC = () => {
   const { isSecure } = useIsSecure();
-  const { board, loading, credentials } = useBoard();
+  const { board, loadingCredentials, credentials } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)");
 
@@ -27,7 +27,7 @@ const Credentials: FC = () => {
     return <SecureLogin />;
   }
 
-  if (!credentials || loading) {
+  if (!credentials || loadingCredentials) {
     return <LoadingOverlay visible />;
   }
 

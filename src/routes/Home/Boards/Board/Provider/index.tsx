@@ -26,7 +26,12 @@ export interface IBoardContext {
   groceries?: GroceryDocument[];
   creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
-  loading: boolean;
+  loadingCredentials: boolean;
+  loadingCreditCards: boolean;
+  loadingDocuments: boolean;
+  loadingGroceries: boolean;
+  loadingNotes: boolean;
+  loadingTasks: boolean;
 }
 
 const BoardContext = createContext<IBoardContext>({
@@ -39,7 +44,12 @@ const BoardContext = createContext<IBoardContext>({
   groceries: undefined,
   creditCards: undefined,
   documents: undefined,
-  loading: false,
+  loadingCredentials: false,
+  loadingCreditCards: false,
+  loadingDocuments: false,
+  loadingGroceries: false,
+  loadingNotes: false,
+  loadingTasks: false,
 });
 
 BoardContext.displayName = "Board";
@@ -105,24 +115,6 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     Collection.tasks
   );
 
-  const loading = useMemo(() => {
-    return (
-      loadingCredentials ||
-      loadingCreditCards ||
-      loadingDocuments ||
-      loadingGroceries ||
-      loadingNotes ||
-      loadingTasks
-    );
-  }, [
-    loadingCredentials,
-    loadingCreditCards,
-    loadingDocuments,
-    loadingGroceries,
-    loadingNotes,
-    loadingTasks,
-  ]);
-
   const context = useMemo(() => {
     return {
       board,
@@ -134,7 +126,12 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       notes,
       tasks,
       groceries,
-      loading,
+      loadingCredentials,
+      loadingCreditCards,
+      loadingDocuments,
+      loadingGroceries,
+      loadingNotes,
+      loadingTasks,
     };
   }, [
     board,
@@ -146,7 +143,12 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     credentials,
     creditCards,
     documents,
-    loading,
+    loadingCredentials,
+    loadingCreditCards,
+    loadingDocuments,
+    loadingGroceries,
+    loadingNotes,
+    loadingTasks,
   ]);
 
   if (!currentBoards?.length) {

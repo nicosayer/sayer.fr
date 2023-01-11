@@ -7,10 +7,10 @@ import Grocery from "./Grocery";
 import NewGroceryCard from "./NewGroceryCard";
 
 const Groceries: FC = () => {
-  const { loading, groceries } = useBoard();
+  const { loadingGroceries, groceries } = useBoard();
   const [search, setSearch] = useState("");
 
-  if (!groceries || loading) {
+  if (!groceries || loadingGroceries) {
     return <LoadingOverlay visible />;
   }
 

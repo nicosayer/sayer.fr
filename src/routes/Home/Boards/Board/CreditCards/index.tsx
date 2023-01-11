@@ -19,7 +19,7 @@ import NewCreditCardModal from "./NewCreditCardModal";
 
 const CreditCards: FC = () => {
   const { isSecure } = useIsSecure();
-  const { board, loading, creditCards } = useBoard();
+  const { board, loadingCreditCards, creditCards } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)");
 
@@ -27,7 +27,7 @@ const CreditCards: FC = () => {
     return <SecureLogin />;
   }
 
-  if (!creditCards || loading) {
+  if (!creditCards || loadingCreditCards) {
     return <LoadingOverlay visible />;
   }
 

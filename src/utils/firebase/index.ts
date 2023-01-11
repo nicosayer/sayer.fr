@@ -9,6 +9,11 @@ import {
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
+if (window.location.hostname === "localhost") {
+  // @ts-ignore
+  window.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+
 const firebaseConfig = {
   apiKey: "AIzaSyDKUdxvqC_0Nb8KXitDLijpCLqhGTGiTcU",
   authDomain: "home-sayer-fr.firebaseapp.com",
@@ -19,7 +24,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);

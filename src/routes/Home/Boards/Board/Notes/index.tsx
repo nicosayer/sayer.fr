@@ -20,7 +20,7 @@ import Note from "./Note";
 import NotesCards from "./NotesCards";
 
 const Notes: FC = () => {
-  const { board, loading, notes } = useBoard();
+  const { board, loadingNotes, notes } = useBoard();
   const { boardId } = useParams();
   const [search, setSearch] = useState("");
   const [loadingNew, start, stop] = useBooleanState();
@@ -40,7 +40,7 @@ const Notes: FC = () => {
     }
   }, [board?.ref, boardId, navigate, start, stop]);
 
-  if (!notes || loading) {
+  if (!notes || loadingNotes) {
     return <LoadingOverlay visible />;
   }
 
