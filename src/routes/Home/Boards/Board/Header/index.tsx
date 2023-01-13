@@ -78,7 +78,7 @@ const Header: FC = () => {
                 <IconSearch size={18} />
               </ActionIcon>
             )}
-            <Menu shadow="md" width={200}>
+            <Menu shadow="md" width={200} withinPortal>
               <Menu.Target>
                 <div>
                   {is768px ? (
