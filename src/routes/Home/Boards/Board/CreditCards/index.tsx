@@ -11,7 +11,7 @@ import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
 import CannotBeSecure from "components/organisms/CannotBeSecure";
 import SecureLogin from "components/organisms/SecureLogin";
-import useIsSecure from "hooks/useIsSecure";
+import { useSecureLogin } from "providers/SecureLogin";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import CreditCard from "./CreditCard";
@@ -19,7 +19,7 @@ import CreditCardsCards from "./CreditCardsCards";
 import NewCreditCardModal from "./NewCreditCardModal";
 
 const CreditCards: FC = () => {
-  const { isSecure, cannotBeSecure } = useIsSecure();
+  const { isSecure, cannotBeSecure } = useSecureLogin();
   const { board, loadingCreditCards, creditCards } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)");

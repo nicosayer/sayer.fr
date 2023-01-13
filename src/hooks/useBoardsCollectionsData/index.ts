@@ -3,8 +3,8 @@ import {
   DocumentReference,
   onSnapshot,
 } from "firebase/firestore";
-import useIsSecure from "hooks/useIsSecure";
 import { flatMap, pick } from "lodash";
+import { useSecureLogin } from "providers/SecureLogin";
 import { useEffect, useMemo, useState } from "react";
 import { BoardDocument, Collection } from "types/firebase/collections";
 import { spreadSnapshot } from "utils/firebase";
@@ -14,7 +14,7 @@ const useBoardsCollectionsData = <T>(
   collection: Collection
 ) => {
   const [data, setData] = useState<Record<string, T[]>>();
-  const { isSecure } = useIsSecure();
+  const { isSecure } = useSecureLogin();
 
   const boardIds = useMemo(() => {
     return boards.map((board) => board.id as string);

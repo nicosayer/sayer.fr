@@ -1,19 +1,23 @@
 import { ActionIcon, Group, Input, PasswordInput } from "@mantine/core";
 import { IconArrowRight, IconShieldLock } from "@tabler/icons";
 import { FC, useCallback, useState } from "react";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+  useAuthState,
+  useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
 
 const SecureLogin: FC = () => {
   const [password, setPassword] = useState("");
-  const [signInWithEmailAndPassword, user, loading, error] =
+  const [user] = useAuthState(auth);
+  const [signInWithEmailAndPassword, , loading, error] =
     useSignInWithEmailAndPassword(auth);
 
   const handleSubmit = useCallback(() => {
-    if (password && user?.user?.email) {
-      signInWithEmailAndPassword(user?.user.email, password);
+    if (password && user?.email) {
+      signInWithEmailAndPassword(user.email, password);
     }
-  }, [signInWithEmailAndPassword, password, user?.user.email]);
+  }, [password, signInWithEmailAndPassword, user?.email]);
 
   return (
     <div className="mx-auto max-w-[256px] text-center">
