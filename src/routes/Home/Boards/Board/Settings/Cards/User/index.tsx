@@ -1,15 +1,16 @@
 import { Button, Card, Input, Stack, Text, TextInput } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { sendPasswordResetEmail } from "firebase/auth";
-import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import {
+  useAuthState,
+  useSendPasswordResetEmail,
+} from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
 
 const UserCard: FC = () => {
   const [user] = useAuthState(auth);
-  const [loading, start, stop] = useBooleanState();
+  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
   const [disabled, setDisabled] = useState(false);
 
   if (!user?.email) {
@@ -24,7 +25,7 @@ const UserCard: FC = () => {
           <div>
             <Button
               variant="default"
-              loading={loading}
+              loading={sending}
               disabled={disabled}
               onClick={() => {
                 openConfirmModal({
@@ -39,10 +40,8 @@ const UserCard: FC = () => {
                   labels: { confirm: "Envoyer", cancel: "Annuler" },
                   onConfirm: () => {
                     if (user?.email) {
-                      start();
-                      sendPasswordResetEmail(auth, user.email).then(() => {
+                      sendPasswordResetEmail(user.email).then(() => {
                         setDisabled(true);
-                        stop();
                         showNotification({
                           color: "green",
                           message: "Email envoyé",

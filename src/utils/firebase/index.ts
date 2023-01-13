@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
-import { getAuth, inMemoryPersistence, setPersistence } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import {
   DocumentSnapshot,
   FirestoreDataConverter,
@@ -31,8 +31,6 @@ const appCheck = initializeAppCheck(app, {
   provider: new ReCaptchaV3Provider("6Ld27OsjAAAAAC6T__xbD0Szvn1yogbKXcNqV-vN"),
   isTokenAutoRefreshEnabled: true,
 });
-
-setPersistence(auth, inMemoryPersistence);
 
 export { auth, db, storage, appCheck };
 

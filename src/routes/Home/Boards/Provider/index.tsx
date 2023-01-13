@@ -35,6 +35,8 @@ const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
     ).withConverter(firestoreConverter)
   );
 
+  console.log(boards);
+
   const [loading] = useDebouncedValue(loadingBoards, 200);
 
   const context = useMemo(() => {
