@@ -1,15 +1,19 @@
+import { useLocalStorage } from "@mantine/hooks";
+import dayjs from "dayjs";
 import { IdTokenResult } from "firebase/auth";
 import {
   createContext,
   FC,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
+import { ONE_SECOND } from "utils/time";
 
 interface ISecureLoginContext {
   isSecure: boolean;
@@ -29,9 +33,24 @@ interface SecureLoginProviderProps {
   children: ReactNode;
 }
 
+const getDefaultSignOutTimestamp = () => +dayjs().add(5, "minutes");
+
 const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
   const [user] = useAuthState(auth);
+  const [signOut] = useSignOut(auth);
   const [idTokenResult, setIdTokenResult] = useState<IdTokenResult>();
+  const isSecure = useMemo(() => {
+    return idTokenResult?.signInProvider === "password";
+  }, [idTokenResult?.signInProvider]);
+  const [signOutTimestamp, setSignOutTimestamp] = useLocalStorage({
+    key: "automatic-sign-out-timestamp",
+    defaultValue: getDefaultSignOutTimestamp(),
+    getInitialValueInEffect: false,
+  });
+
+  const handleEvent = useCallback(() => {
+    setSignOutTimestamp(getDefaultSignOutTimestamp());
+  }, [setSignOutTimestamp]);
 
   useEffect(() => {
     const unsubscribe = auth.onIdTokenChanged((user) => {
@@ -50,14 +69,38 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
     return unsubscribe;
   }, [user]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isSecure && +dayjs() >= signOutTimestamp) {
+        signOut();
+      }
+    }, ONE_SECOND);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isSecure, signOut, signOutTimestamp]);
+
+  useEffect(() => {
+    handleEvent();
+
+    window.addEventListener("click", handleEvent);
+    window.addEventListener("keydown", handleEvent);
+
+    return () => {
+      window.removeEventListener("keydown", handleEvent);
+      window.removeEventListener("click", handleEvent);
+    };
+  }, [handleEvent]);
+
   const context = useMemo(() => {
     return {
-      isSecure: idTokenResult?.signInProvider === "password",
+      isSecure,
       cannotBeSecure: !user?.providerData.find(
         (provider) => provider.providerId === "password"
       ),
     };
-  }, [idTokenResult?.signInProvider, user?.providerData]);
+  }, [isSecure, user?.providerData]);
 
   return (
     <SecureLoginContext.Provider value={context}>

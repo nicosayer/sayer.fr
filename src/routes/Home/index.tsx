@@ -1,4 +1,3 @@
-import useAutomaticSigOut from "hooks/useAutomaticSignOut";
 import {
   createBrowserRouter,
   Navigate,
@@ -67,8 +66,6 @@ const router = createBrowserRouter([
 ]);
 
 const Home = () => {
-  useAutomaticSigOut();
-
   return <RouterProvider router={router} />;
 };
 
