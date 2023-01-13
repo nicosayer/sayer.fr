@@ -36,7 +36,7 @@ const Header: FC = () => {
   return (
     <>
       <Helmet>
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff" data-react-helmet="true" />
       </Helmet>
       <HeaderComponent height={{ base: 50, md: 70 }} p="md">
         <div className="flex items-center justify-between h-full">
