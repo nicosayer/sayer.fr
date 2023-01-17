@@ -69,7 +69,6 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
       >
         <Stack>
           <TextInput
-            data-autofocus
             label="Nom du board"
             placeholder="Board de John"
             disabled={loading}

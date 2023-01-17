@@ -58,7 +58,6 @@ const NewTaskCard: FC = () => {
               <IconPlus size={18} />
             </ActionIcon>
             <TextInput
-              autoFocus
               data-autofocus
               withAsterisk
               className="w-full"

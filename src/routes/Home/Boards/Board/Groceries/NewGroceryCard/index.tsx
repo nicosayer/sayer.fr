@@ -78,9 +78,7 @@ const NewGroceryCard: FC = () => {
               <IconPlus size={18} />
             </ActionIcon>
             <Autocomplete
-              autoFocus
               withinPortal
-              data-autofocus
               data={
                 form.values.name
                   ? (groceries ?? [])

@@ -32,7 +32,6 @@ const SecureLogin: FC = () => {
             onChange={(event) => {
               setPassword(event.currentTarget.value);
             }}
-            autoFocus
             error={Boolean(error)}
             onKeyDown={({ key }) => {
               if (key === "Enter") {
