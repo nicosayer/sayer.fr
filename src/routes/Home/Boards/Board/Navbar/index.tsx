@@ -54,7 +54,7 @@ const menu = [
     label: "Tâches",
     to: "tasks",
     count: ({ tasks }: IBoardContext) =>
-      tasks?.filter((task) => !task.done).length ?? 0,
+      tasks?.filter((task) => !task.closeDate).length ?? 0,
   },
 ];
 

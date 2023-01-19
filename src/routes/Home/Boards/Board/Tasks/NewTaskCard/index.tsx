@@ -7,21 +7,24 @@ import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Collection, TaskDocument } from "types/firebase/collections";
+import { auth } from "utils/firebase";
 import { useBoard } from "../../Provider";
 
 const NewTaskCard: FC = () => {
   const { board } = useBoard();
+  const [user] = useAuthState(auth);
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [loading, start, stop] = useBooleanState();
   const form = useForm({
     initialValues: {
-      description: "",
+      name: "",
       tag: "",
     },
     validate: {
-      description: (description) => {
-        return description.length > 0 ? null : true;
+      name: (name) => {
+        return name.length > 0 ? null : true;
       },
     },
   });
@@ -33,14 +36,15 @@ const NewTaskCard: FC = () => {
           if (board?.id && board.ref) {
             start();
             addDoc<TaskDocument>(collection(board.ref, Collection.tasks), {
-              description: values.description.trim(),
+              name: values.name.trim(),
               order: +dayjs(),
-              date: dayjs().format("YYYY-MM-DD"),
+              openedBy: user?.email ?? "",
+              openDate: dayjs().format("YYYY-MM-DD"),
               tag: values.tag,
             })
               .then(() => {
                 form.setValues({
-                  description: "",
+                  name: "",
                   tag: "",
                 });
               })
@@ -53,7 +57,7 @@ const NewTaskCard: FC = () => {
             <ActionIcon
               variant="light"
               type="submit"
-              color={form.values.description ? "blue" : undefined}
+              color={form.values.name ? "blue" : undefined}
             >
               <IconPlus size={18} />
             </ActionIcon>
@@ -63,7 +67,7 @@ const NewTaskCard: FC = () => {
               className="w-full"
               variant="unstyled"
               placeholder="Nouvelle tâche"
-              {...form.getInputProps("description")}
+              {...form.getInputProps("name")}
             />
           </div>
           {board?.tags?.length && is768Px ? (

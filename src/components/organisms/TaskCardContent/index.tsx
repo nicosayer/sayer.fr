@@ -13,6 +13,7 @@ import { FC } from "react";
 import { TaskDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
+import { getEmailLocale } from "utils/string";
 
 export interface TaskCardContentProps {
   task: TaskDocument;
@@ -24,17 +25,18 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
       <Checkbox
-        checked={Boolean(task.done)}
+        checked={Boolean(task.closeDate)}
         className="flex overflow-hidden"
         classNames={{
           input: "cursor-pointer",
           label: "cursor-pointer",
         }}
-        label={task.description}
+        label={task.name}
         onChange={() => {
-          if (task.ref && task.done) {
+          if (task.ref && task.closeDate) {
             updateDoc<TaskDocument>(task.ref, {
-              done: false,
+              closeDate: "",
+              closedBy: "",
             });
           }
         }}
@@ -47,10 +49,16 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
         )}
         {is768Px && (
           <Text c="dimmed" fz="sm">
-            {formatDate(task.date, "D MMM")}
+            {task.closeDate
+              ? `fermé par ${getEmailLocale(
+                  task.closedBy ?? ""
+                )} le ${formatDate(task.closeDate, "D MMM")}`
+              : `ajouté par ${getEmailLocale(
+                  task.openedBy ?? ""
+                )} le ${formatDate(task.openDate, "D MMM")}`}
           </Text>
         )}
-        {task.done && (
+        {task.closeDate && (
           <Tooltip label="Supprimer" withinPortal>
             <ActionIcon
               variant="subtle"

@@ -79,9 +79,11 @@ export interface NoteDocument {
 export interface TaskDocument {
   id?: string;
   ref?: DocumentReference<TaskDocument>;
-  description?: string;
+  name?: string;
+  openDate?: string;
+  openedBy?: string;
+  closeDate?: string;
+  closedBy?: string;
   order?: number;
-  date?: string;
-  done?: boolean;
   tag?: string;
 }

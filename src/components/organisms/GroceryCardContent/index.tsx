@@ -50,7 +50,7 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
         {is768Px && (
           <Text c="dimmed" fz="sm">
             {grocery.closeDate
-              ? `acheté par ${getEmailLocale(
+              ? `fermé par ${getEmailLocale(
                   grocery.closedBy ?? ""
                 )} le ${formatDate(grocery.closeDate, "D MMM")}`
               : `ajouté par ${getEmailLocale(

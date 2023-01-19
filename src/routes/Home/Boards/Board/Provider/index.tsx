@@ -1,6 +1,15 @@
 import { useLocalStorage } from "@mantine/hooks";
+import dayjs from "dayjs";
+import { deleteDoc } from "firebase/firestore";
 import useBoardsCollectionsData from "hooks/useBoardsCollectionsData";
-import { createContext, FC, ReactNode, useContext, useMemo } from "react";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 import { Navigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
 import {
@@ -114,6 +123,30 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     currentBoards ?? [],
     Collection.tasks
   );
+
+  useEffect(() => {
+    groceries.forEach((grocery) => {
+      if (
+        grocery.closeDate &&
+        dayjs(grocery.closeDate).isBefore(dayjs().subtract(7, "days")) &&
+        grocery.ref
+      ) {
+        deleteDoc(grocery.ref);
+      }
+    });
+  }, [groceries]);
+
+  useEffect(() => {
+    tasks.forEach((task) => {
+      if (
+        task.closeDate &&
+        dayjs(task.closeDate).isBefore(dayjs().subtract(7, "days")) &&
+        task.ref
+      ) {
+        deleteDoc(task.ref);
+      }
+    });
+  }, [tasks]);
 
   const context = useMemo(() => {
     return {
