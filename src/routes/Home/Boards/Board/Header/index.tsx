@@ -13,6 +13,7 @@ import { useMediaQuery, useOs } from "@mantine/hooks";
 import { useSpotlight } from "@mantine/spotlight";
 import { IconSearch, IconUser } from "@tabler/icons";
 import { useAppShell } from "components/atoms/AppShell";
+import useColors from "hooks/useColors";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Helmet } from "react-helmet";
@@ -32,11 +33,16 @@ const Header: FC = () => {
   const spotlight = useSpotlight();
   const is768px = useMediaQuery("(min-width: 768px)");
   const os = useOs();
+  const { customColors } = useColors();
 
   return (
     <>
       <Helmet>
-        <meta name="theme-color" content="#ffffff" data-react-helmet="true" />
+        <meta
+          name="theme-color"
+          content={customColors.navbar}
+          data-react-helmet="true"
+        />
       </Helmet>
       <HeaderComponent height={{ base: 50, md: 70 }} p="md">
         <div className="flex items-center justify-between h-full">

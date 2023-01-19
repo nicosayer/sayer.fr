@@ -8,7 +8,9 @@ import {
   IconSettings,
   IconShoppingCart,
 } from "@tabler/icons";
+import classNames from "classnames";
 import { useAppShell } from "components/atoms/AppShell";
+import useColors from "hooks/useColors";
 import { FC } from "react";
 import NavbarButton from "routes/Home/Boards/Board/Navbar/Button";
 import { IBoardContext } from "../Provider";
@@ -58,6 +60,7 @@ const menu = [
 
 const Navbar: FC = () => {
   const { isNavbarOpened } = useAppShell();
+  const { darkMode } = useColors();
 
   return (
     <MantineNavbar
@@ -73,7 +76,12 @@ const Navbar: FC = () => {
           ))}
         </Stack>
       </MantineNavbar.Section>
-      <MantineNavbar.Section className="pt-4 mt-4 border-0 border-gray-200 border-solid border-t-[1px]">
+      <MantineNavbar.Section
+        className={classNames(
+          "pt-4 mt-4 border-0 border-solid border-t-[1px]",
+          darkMode ? "border-[#2C2E33]" : "border-[#e9ecef]"
+        )}
+      >
         <NavbarButton
           icon={<IconSettings size={18} />}
           color="gray"

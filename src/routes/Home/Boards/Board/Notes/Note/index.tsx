@@ -1,5 +1,6 @@
 import { Modal } from "@mantine/core";
 import { deleteDoc } from "firebase/firestore";
+import useColors from "hooks/useColors";
 import { FC, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,6 +12,7 @@ const Note: FC = () => {
   const { boards, notes } = useBoard();
   const { boardId, noteId } = useParams();
   const navigate = useNavigate();
+  const { darkMode, customColors } = useColors();
 
   const note = useMemo(() => {
     return notes?.find((note) => note.id === noteId);
@@ -27,7 +29,11 @@ const Note: FC = () => {
   return (
     <>
       <Helmet>
-        <meta name="theme-color" content="#f8f9fa" data-react-helmet="true" />
+        <meta
+          name="theme-color"
+          content={customColors.background}
+          data-react-helmet="true"
+        />
       </Helmet>
       <Modal
         opened={Boolean(noteId)}
@@ -43,7 +49,7 @@ const Note: FC = () => {
         classNames={{
           body: "h-[calc(100%_-_52px)]",
           title: "w-full",
-          modal: "bg-[#f8f9fa]",
+          modal: darkMode ? "bg-[#141517]" : "bg-[#f8f9fa]",
         }}
         title={<NoteModalHeader board={board} note={note} />}
       >

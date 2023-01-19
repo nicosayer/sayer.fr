@@ -83,7 +83,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
   return (
     <MantineRichTextEditor
       editor={editor}
-      className="max-h-full overflow-auto max-w-[900px] m-auto bg-white"
+      className="max-h-full overflow-auto max-w-[900px] m-auto"
       styles={{
         content: {
           "& .ProseMirror": {
