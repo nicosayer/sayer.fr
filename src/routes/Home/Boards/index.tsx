@@ -17,16 +17,16 @@ const Boards = () => {
     return boards?.find((board) => board.id === defaultBoardId);
   }, [defaultBoardId, boards]);
 
-  if (!boardId && isDefaultBoardAvailable) {
+  if (isBoardAvailable) {
+    return <Outlet />;
+  }
+
+  if (isDefaultBoardAvailable) {
     return <Navigate to={defaultBoardId} />;
   }
 
-  if (!boardId && boards?.[0]?.id) {
+  if (boards?.[0]?.id) {
     return <Navigate to={boards?.[0]?.id} />;
-  }
-
-  if (isBoardAvailable) {
-    return <Outlet />;
   }
 
   return <NoBoard />;
