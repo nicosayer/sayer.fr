@@ -1,13 +1,15 @@
-import { DocumentReference } from "firebase/firestore";
+import { DocumentReference, Timestamp } from "firebase/firestore";
 
 export enum Collection {
   boards = "boards",
   credentials = "credentials",
   creditCards = "creditCards",
   documents = "documents",
-  notes = "notes",
-  tasks = "tasks",
   groceries = "groceries",
+  notes = "notes",
+  souvenirs = "souvenirs",
+  souvenirPictures = "souvenirPictures",
+  tasks = "tasks",
 }
 
 export interface BoardDocument {
@@ -41,7 +43,7 @@ export interface CreditCardDocument {
   tag?: string;
 }
 
-export enum Mime {
+export enum DocumentMime {
   Png = "image/png",
   Jpeg = "image/jpeg",
   Pdf = "application/pdf",
@@ -51,7 +53,7 @@ export interface DocumentDocument {
   id?: string;
   ref?: DocumentReference<DocumentDocument>;
   name?: string;
-  mime?: Mime;
+  mime?: DocumentMime;
   tag?: string;
 }
 
@@ -74,6 +76,26 @@ export interface NoteDocument {
   content?: string;
   date?: string;
   tag?: string;
+}
+
+export interface SouvenirDocument {
+  id?: string;
+  ref?: DocumentReference<SouvenirDocument>;
+  description?: string;
+  date?: Timestamp;
+  time?: string;
+  tag?: string;
+}
+
+export enum SouvenirPictureMime {
+  Png = "image/png",
+  Jpeg = "image/jpeg",
+}
+
+export interface SouvenirPictureDocument {
+  id?: string;
+  ref?: DocumentReference<SouvenirPictureDocument>;
+  mime?: SouvenirPictureMime;
 }
 
 export interface TaskDocument {

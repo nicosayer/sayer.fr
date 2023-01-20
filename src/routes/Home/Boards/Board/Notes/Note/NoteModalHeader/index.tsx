@@ -44,6 +44,7 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
         <Group grow>
           <DatePicker
             locale="fr"
+            inputFormat="D MMMM YYYY"
             value={dayjs(note.date).toDate()}
             onChange={(date) => {
               if (note.ref) {

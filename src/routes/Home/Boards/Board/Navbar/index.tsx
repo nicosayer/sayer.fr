@@ -48,6 +48,12 @@ const menu = [
     label: "Notes",
     to: "notes",
   },
+  // {
+  //   icon: <IconPhoto size={18} />,
+  //   color: "violet",
+  //   label: "Souvenirs",
+  //   to: "souvenirs",
+  // },
   {
     icon: <IconChecklist size={18} />,
     color: "violet",

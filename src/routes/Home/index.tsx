@@ -14,6 +14,7 @@ import Documents from "./Boards/Board/Documents";
 import Groceries from "./Boards/Board/Groceries";
 import Notes from "./Boards/Board/Notes";
 import BaordRedirect from "./Boards/Board/Redirect";
+import Souvenirs from "./Boards/Board/Souvenirs";
 import Tasks from "./Boards/Board/Tasks";
 
 const router = createBrowserRouter([
@@ -56,6 +57,8 @@ const router = createBrowserRouter([
               { path: "notes/:noteId", element: <Notes /> },
               { path: "tasks", element: <Tasks /> },
               { path: "tasks/:taskId", element: <Tasks /> },
+              { path: "souvenirs", element: <Souvenirs /> },
+              { path: "souvenirs/:souvenirId", element: <Souvenirs /> },
               { path: "settings", element: <Settings /> },
             ],
           },

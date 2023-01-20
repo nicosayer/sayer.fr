@@ -14,7 +14,7 @@ import {
   BoardDocument,
   Collection,
   DocumentDocument,
-  Mime,
+  DocumentMime,
 } from "types/firebase/collections";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
@@ -58,7 +58,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             {
               name: values.name.trim(),
               tag: values.tag,
-              mime: values.file.type as Mime,
+              mime: values.file.type as DocumentMime,
             }
           )
             .then((document) => {
@@ -67,7 +67,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
                   storage,
                   `boards/${board.id}/documents/${
                     document.id
-                  }/document.${getExtension(values.file?.type as Mime)}`
+                  }/document.${getExtension(values.file?.type as DocumentMime)}`
                 ),
                 arrayBuffer,
                 {
@@ -96,7 +96,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             onDrop={([file]) => {
               form.getInputProps("file").onChange(file);
             }}
-            accept={[Mime.Jpeg, Mime.Png, Mime.Pdf]}
+            accept={[DocumentMime.Jpeg, DocumentMime.Png, DocumentMime.Pdf]}
             classNames={{
               root: classNames("px-[12px] border-[1px]", {
                 "border-red-400": form.errors.file,

@@ -20,6 +20,7 @@ import {
   DocumentDocument,
   GroceryDocument,
   NoteDocument,
+  SouvenirDocument,
   TaskDocument,
 } from "types/firebase/collections";
 
@@ -30,16 +31,18 @@ export interface IBoardContext {
     val: string[] | ((prevState: string[]) => string[])
   ) => void;
   credentials?: CredentialDocument[];
-  notes?: NoteDocument[];
-  tasks?: TaskDocument[];
-  groceries?: GroceryDocument[];
   creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
+  groceries?: GroceryDocument[];
+  notes?: NoteDocument[];
+  souvenirs?: SouvenirDocument[];
+  tasks?: TaskDocument[];
   loadingCredentials: boolean;
   loadingCreditCards: boolean;
   loadingDocuments: boolean;
   loadingGroceries: boolean;
   loadingNotes: boolean;
+  loadingSouvenirs: boolean;
   loadingTasks: boolean;
 }
 
@@ -48,16 +51,18 @@ const BoardContext = createContext<IBoardContext>({
   boards: undefined,
   setExtraBoardIds: () => {},
   credentials: undefined,
-  notes: undefined,
-  tasks: undefined,
-  groceries: undefined,
   creditCards: undefined,
   documents: undefined,
+  groceries: undefined,
+  notes: undefined,
+  souvenirs: undefined,
+  tasks: undefined,
   loadingCredentials: false,
   loadingCreditCards: false,
   loadingDocuments: false,
   loadingGroceries: false,
   loadingNotes: false,
+  loadingSouvenirs: false,
   loadingTasks: false,
 });
 
@@ -119,6 +124,12 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     Collection.notes
   );
 
+  const [souvenirs, loadingSouvenirs] =
+    useBoardsCollectionsData<SouvenirDocument>(
+      currentBoards ?? [],
+      Collection.souvenirs
+    );
+
   const [tasks, loadingTasks] = useBoardsCollectionsData<TaskDocument>(
     currentBoards ?? [],
     Collection.tasks
@@ -156,31 +167,35 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       credentials,
       creditCards,
       documents,
-      notes,
-      tasks,
       groceries,
+      notes,
+      souvenirs,
+      tasks,
       loadingCredentials,
       loadingCreditCards,
       loadingDocuments,
       loadingGroceries,
       loadingNotes,
+      loadingSouvenirs,
       loadingTasks,
     };
   }, [
     board,
     setExtraBoardIds,
     currentBoards,
-    notes,
-    tasks,
-    groceries,
     credentials,
     creditCards,
     documents,
+    groceries,
+    notes,
+    souvenirs,
+    tasks,
     loadingCredentials,
     loadingCreditCards,
     loadingDocuments,
     loadingGroceries,
     loadingNotes,
+    loadingSouvenirs,
     loadingTasks,
   ]);
 

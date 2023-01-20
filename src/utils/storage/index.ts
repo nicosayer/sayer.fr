@@ -1,12 +1,14 @@
-import { Mime } from "types/firebase/collections";
+import { DocumentMime, SouvenirPictureMime } from "types/firebase/collections";
 
-export const getExtension = (type: Mime) => {
+export const getExtension = (type: DocumentMime | SouvenirPictureMime) => {
   switch (type) {
-    case Mime.Png:
+    case SouvenirPictureMime.Png:
+    case DocumentMime.Png:
       return "png";
-    case Mime.Jpeg:
+    case SouvenirPictureMime.Jpeg:
+    case DocumentMime.Jpeg:
       return "jpg";
-    case Mime.Pdf:
+    case DocumentMime.Pdf:
       return "pdf";
   }
 };

@@ -2,7 +2,7 @@ import { openModal } from "@mantine/modals";
 import { getDownloadURL, ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { useMemo } from "react";
-import { DocumentDocument, Mime } from "types/firebase/collections";
+import { DocumentDocument, DocumentMime } from "types/firebase/collections";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 
@@ -20,7 +20,7 @@ const usePreviewDocument = (): [
           ref(
             storage,
             `${document?.ref?.path}/document.${getExtension(
-              document.mime as Mime
+              document.mime as DocumentMime
             )}`
           )
         )

@@ -27,7 +27,7 @@ import useDownloadDocument from "hooks/useDownloadDocument";
 import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { DocumentDocument, Mime } from "types/firebase/collections";
+import { DocumentDocument, DocumentMime } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
@@ -77,7 +77,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
             ref(
               storage,
               `${document.ref.path}/document.${getExtension(
-                document.mime as Mime
+                document.mime as DocumentMime
               )}`
             )
           );
@@ -88,10 +88,10 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
 
   const MimeIcon = useMemo(() => {
     switch (document?.mime) {
-      case Mime.Jpeg:
-      case Mime.Png:
+      case DocumentMime.Jpeg:
+      case DocumentMime.Png:
         return IconPhoto;
-      case Mime.Pdf:
+      case DocumentMime.Pdf:
       default:
         return IconFileText;
     }
@@ -116,7 +116,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
           <MimeIcon size={18} />
         </ThemeIcon>
         <Badge size="lg" radius="sm" color="gray">
-          {getExtension(document.mime as Mime)}
+          {getExtension(document.mime as DocumentMime)}
         </Badge>
       </Group>
       <Group grow>
