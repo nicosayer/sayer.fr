@@ -18,6 +18,8 @@ export interface BoardDocument {
   name?: string;
   users?: string[];
   tags?: string[];
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export interface CredentialDocument {
@@ -28,6 +30,8 @@ export interface CredentialDocument {
   username?: string;
   password?: string;
   tag?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export interface CreditCardDocument {
@@ -41,6 +45,8 @@ export interface CreditCardDocument {
   securityCode?: string;
   color?: string;
   tag?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export enum DocumentMime {
@@ -55,18 +61,21 @@ export interface DocumentDocument {
   name?: string;
   mime?: DocumentMime;
   tag?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export interface GroceryDocument {
   id?: string;
   ref?: DocumentReference<GroceryDocument>;
   name?: string;
-  openDate?: string;
+  openedAt?: Timestamp;
   openedBy?: string;
-  closeDate?: string;
+  closedAt?: Timestamp;
   closedBy?: string;
-  order?: number;
   tag?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export interface NoteDocument {
@@ -76,15 +85,18 @@ export interface NoteDocument {
   content?: string;
   date?: string;
   tag?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export interface SouvenirDocument {
   id?: string;
   ref?: DocumentReference<SouvenirDocument>;
   description?: string;
-  date?: Timestamp;
-  time?: string;
+  date?: string;
   tag?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export enum SouvenirPictureMime {
@@ -96,16 +108,19 @@ export interface SouvenirPictureDocument {
   id?: string;
   ref?: DocumentReference<SouvenirPictureDocument>;
   mime?: SouvenirPictureMime;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export interface TaskDocument {
   id?: string;
   ref?: DocumentReference<TaskDocument>;
   name?: string;
-  openDate?: string;
+  openedAt?: Timestamp;
   openedBy?: string;
-  closeDate?: string;
+  closedAt?: Timestamp;
   closedBy?: string;
-  order?: number;
   tag?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 }

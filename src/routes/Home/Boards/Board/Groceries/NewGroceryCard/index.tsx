@@ -3,13 +3,17 @@ import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons";
 import TagSelect from "components/molecules/Select/Tag";
-import dayjs from "dayjs";
-import { addDoc, collection, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  deleteField,
+  Timestamp,
+} from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Collection, GroceryDocument } from "types/firebase/collections";
-import { auth } from "utils/firebase";
+import { addDoc, auth } from "utils/firebase";
 import { sanitize } from "utils/string";
 import { useBoard } from "../../Provider";
 
@@ -24,10 +28,18 @@ const NewGroceryCard: FC = () => {
       name: "",
       tag: "",
     },
+
     validate: {
       name: (name) => {
         return name.length > 0 ? null : true;
       },
+    },
+
+    transformValues: (values) => {
+      return {
+        name: values.name.trim(),
+        tag: values.tag || deleteField(),
+      };
     },
   });
 
@@ -35,16 +47,14 @@ const NewGroceryCard: FC = () => {
     <Card withBorder>
       <form
         onSubmit={form.onSubmit((values) => {
-          if (board?.id && board.ref) {
+          if (board?.id && board.ref && user?.email) {
             start();
-            const name = values.name.trim();
             addDoc<GroceryDocument>(
               collection(board.ref, Collection.groceries),
               {
-                name,
-                order: +dayjs(),
-                openedBy: user?.email ?? "",
-                openDate: dayjs().format("YYYY-MM-DD"),
+                name: values.name,
+                openedBy: user.email,
+                openedAt: Timestamp.now(),
                 tag: values.tag,
               }
             )
@@ -56,7 +66,7 @@ const NewGroceryCard: FC = () => {
                 return groceries
                   ?.filter(
                     (grocery) =>
-                      sanitize(String(grocery.name)) === sanitize(name)
+                      sanitize(String(grocery.name)) === sanitize(values.name)
                   )
                   .forEach((grocery) => {
                     if (grocery.ref) {
@@ -82,7 +92,7 @@ const NewGroceryCard: FC = () => {
               data={
                 form.values.name
                   ? (groceries ?? [])
-                      .filter((grocery) => grocery.closeDate)
+                      .filter((grocery) => grocery.closedAt)
                       .map((grocery) => grocery.name)
                   : []
               }

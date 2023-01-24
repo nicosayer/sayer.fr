@@ -138,8 +138,10 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   useEffect(() => {
     groceries.forEach((grocery) => {
       if (
-        grocery.closeDate &&
-        dayjs(grocery.closeDate).isBefore(dayjs().subtract(7, "days")) &&
+        grocery.closedAt &&
+        dayjs(grocery.closedAt.toDate()).isBefore(
+          dayjs().subtract(7, "days")
+        ) &&
         grocery.ref
       ) {
         deleteDoc(grocery.ref);
@@ -150,8 +152,8 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   useEffect(() => {
     tasks.forEach((task) => {
       if (
-        task.closeDate &&
-        dayjs(task.closeDate).isBefore(dayjs().subtract(7, "days")) &&
+        task.closedAt &&
+        dayjs(task.closedAt.toDate()).isBefore(dayjs().subtract(7, "days")) &&
         task.ref
       ) {
         deleteDoc(task.ref);

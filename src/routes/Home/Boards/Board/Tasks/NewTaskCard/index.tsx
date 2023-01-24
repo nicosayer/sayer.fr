@@ -3,13 +3,12 @@ import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons";
 import TagSelect from "components/molecules/Select/Tag";
-import dayjs from "dayjs";
-import { addDoc, collection } from "firebase/firestore";
+import { collection, deleteField, Timestamp } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Collection, TaskDocument } from "types/firebase/collections";
-import { auth } from "utils/firebase";
+import { addDoc, auth } from "utils/firebase";
 import { useBoard } from "../../Provider";
 
 const NewTaskCard: FC = () => {
@@ -22,10 +21,18 @@ const NewTaskCard: FC = () => {
       name: "",
       tag: "",
     },
+
     validate: {
       name: (name) => {
         return name.length > 0 ? null : true;
       },
+    },
+
+    transformValues: (values) => {
+      return {
+        name: values.name.trim(),
+        tag: values.tag || deleteField(),
+      };
     },
   });
 
@@ -33,13 +40,12 @@ const NewTaskCard: FC = () => {
     <Card withBorder>
       <form
         onSubmit={form.onSubmit((values) => {
-          if (board?.id && board.ref) {
+          if (board?.id && board.ref && user?.email) {
             start();
             addDoc<TaskDocument>(collection(board.ref, Collection.tasks), {
-              name: values.name.trim(),
-              order: +dayjs(),
-              openedBy: user?.email ?? "",
-              openDate: dayjs().format("YYYY-MM-DD"),
+              name: values.name,
+              openedBy: user.email,
+              openedAt: Timestamp.now(),
               tag: values.tag,
             })
               .then(() => {

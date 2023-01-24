@@ -8,11 +8,12 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconTrash } from "@tabler/icons";
-import { deleteDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, deleteField } from "firebase/firestore";
 import { FC } from "react";
 import { GroceryDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
+import { updateDoc } from "utils/firebase";
 import { getEmailLocale } from "utils/string";
 
 export interface GroceryCardContentProps {
@@ -25,7 +26,7 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
       <Checkbox
-        checked={Boolean(grocery.closeDate)}
+        checked={Boolean(grocery.closedAt)}
         className="flex overflow-hidden"
         classNames={{
           input: "cursor-pointer",
@@ -33,10 +34,10 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
         }}
         label={grocery.name}
         onChange={() => {
-          if (grocery.ref && grocery.closeDate) {
+          if (grocery.ref && grocery.closedAt) {
             updateDoc<GroceryDocument>(grocery.ref, {
-              closeDate: "",
-              closedBy: "",
+              closedAt: deleteField(),
+              closedBy: deleteField(),
             });
           }
         }}
@@ -49,16 +50,16 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
         )}
         {is768Px && (
           <Text c="dimmed" fz="sm">
-            {grocery.closeDate
+            {grocery.closedAt
               ? `fermé par ${getEmailLocale(
                   grocery.closedBy ?? ""
-                )} le ${formatDate(grocery.closeDate, "D MMM")}`
+                )} le ${formatDate(grocery.closedAt.toDate(), "D MMM")}`
               : `ajouté par ${getEmailLocale(
                   grocery.openedBy ?? ""
-                )} le ${formatDate(grocery.openDate, "D MMM")}`}
+                )} le ${formatDate(grocery.openedAt?.toDate(), "D MMM")}`}
           </Text>
         )}
-        {grocery.closeDate && (
+        {grocery.closedAt && (
           <Tooltip label="Supprimer" withinPortal>
             <ActionIcon
               variant="subtle"

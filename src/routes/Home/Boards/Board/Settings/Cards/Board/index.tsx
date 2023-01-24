@@ -9,11 +9,12 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconX } from "@tabler/icons";
-import { updateDoc } from "firebase/firestore";
+import { deleteField } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
 import { BoardDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
+import { updateDoc } from "utils/firebase";
 import { capitalizeFirsts, sanitize } from "utils/string";
 import { ONE_SECOND } from "utils/time";
 
@@ -51,6 +52,14 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
           : "Ce champ ne doit pas être vide";
       },
     },
+
+    transformValues: (values) => {
+      return {
+        name: values.name.trim(),
+        users: values.users,
+        tags: values.tags || deleteField(),
+      };
+    },
   });
 
   return (
@@ -60,7 +69,7 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
           if (board?.ref) {
             start();
             updateDoc<BoardDocument>(board.ref, {
-              name: values.name.trim(),
+              name: values.name,
               users: values.users,
               tags: values.tags,
             }).finally(stop);

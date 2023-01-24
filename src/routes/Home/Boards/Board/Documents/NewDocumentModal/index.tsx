@@ -5,7 +5,7 @@ import { closeAllModals } from "@mantine/modals";
 import { IconUpload } from "@tabler/icons";
 import classNames from "classnames";
 import TagSelect from "components/molecules/Select/Tag";
-import { addDoc, collection } from "firebase/firestore";
+import { collection, deleteField } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useRef } from "react";
@@ -16,7 +16,7 @@ import {
   DocumentDocument,
   DocumentMime,
 } from "types/firebase/collections";
-import { storage } from "utils/firebase";
+import { addDoc, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 
 export interface NewDocumentModalProps {
@@ -34,6 +34,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
       file: undefined as FileWithPath | undefined,
       tag: "",
     },
+
     validate: {
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
@@ -42,23 +43,32 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
         return file ? null : "Ce champ ne doit pas être vide";
       },
     },
+
+    transformValues: (values) => {
+      return {
+        name: values.name.trim(),
+        file: values.file,
+        mime: values.file?.type as DocumentMime | undefined,
+        tag: values.tag || deleteField(),
+      };
+    },
   });
 
   return (
     <form
       ref={formRef}
       onSubmit={form.onSubmit(async (values) => {
-        if (board?.id && board.ref && values.file?.type) {
-          start();
+        const arrayBuffer = await values.file?.arrayBuffer();
 
-          const arrayBuffer = await values.file?.arrayBuffer();
+        if (board?.id && board.ref && values.mime && arrayBuffer) {
+          start();
 
           addDoc<DocumentDocument>(
             collection(board.ref, Collection.documents),
             {
-              name: values.name.trim(),
+              name: values.name,
               tag: values.tag,
-              mime: values.file.type as DocumentMime,
+              mime: values.mime,
             }
           )
             .then((document) => {

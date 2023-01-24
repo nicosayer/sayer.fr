@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import { BoardDocument, Collection } from "types/firebase/collections";
-import { db } from "utils/firebase";
+import { addDoc, db } from "utils/firebase";
 import { searchString } from "utils/string";
 
 export const newBoard = ({

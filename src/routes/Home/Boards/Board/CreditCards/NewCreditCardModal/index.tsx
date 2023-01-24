@@ -2,7 +2,7 @@ import { Button, Group, Stack, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
-import { addDoc, collection } from "firebase/firestore";
+import { collection, deleteField } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useMemo } from "react";
 import {
@@ -10,6 +10,7 @@ import {
   Collection,
   CreditCardDocument,
 } from "types/firebase/collections";
+import { addDoc } from "utils/firebase";
 
 export interface NewCreditCardModalProps {
   board: BoardDocument;
@@ -58,6 +59,22 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
           : "Ce champ ne doit pas être vide";
       },
     },
+
+    transformValues: (values) => {
+      const [expirationMonth, expirationYear] =
+        values.expirationDate.split("/");
+
+      return {
+        color: values.color,
+        name: values.name.trim(),
+        number: values.number.replace(/ +/g, ""),
+        cardholder: values.cardholder.trim(),
+        expirationMonth: expirationMonth,
+        expirationYear: expirationYear,
+        securityCode: values.securityCode,
+        tag: values.tag || deleteField(),
+      };
+    },
   });
 
   return (
@@ -65,17 +82,15 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       onSubmit={form.onSubmit((values) => {
         if (board?.id && board.ref) {
           start();
-          const [expirationMonth, expirationYear] =
-            values.expirationDate.split("/");
           addDoc<CreditCardDocument>(
             collection(board.ref, Collection.creditCards),
             {
               color: values.color,
-              name: values.name.trim(),
-              number: values.number.replace(/ +/g, ""),
-              expirationMonth: expirationMonth,
-              expirationYear: expirationYear,
-              cardholder: values.cardholder.trim(),
+              name: values.name,
+              number: values.number,
+              expirationMonth: values.expirationMonth,
+              expirationYear: values.expirationYear,
+              cardholder: values.cardholder,
               securityCode: values.securityCode,
               tag: values.tag,
             }

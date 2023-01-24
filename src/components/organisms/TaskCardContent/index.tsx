@@ -8,11 +8,12 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconTrash } from "@tabler/icons";
-import { deleteDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, deleteField } from "firebase/firestore";
 import { FC } from "react";
 import { TaskDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
+import { updateDoc } from "utils/firebase";
 import { getEmailLocale } from "utils/string";
 
 export interface TaskCardContentProps {
@@ -25,7 +26,7 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
       <Checkbox
-        checked={Boolean(task.closeDate)}
+        checked={Boolean(task.closedAt)}
         className="flex overflow-hidden"
         classNames={{
           input: "cursor-pointer",
@@ -33,10 +34,10 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
         }}
         label={task.name}
         onChange={() => {
-          if (task.ref && task.closeDate) {
+          if (task.ref && task.closedAt) {
             updateDoc<TaskDocument>(task.ref, {
-              closeDate: "",
-              closedBy: "",
+              closedAt: deleteField(),
+              closedBy: deleteField(),
             });
           }
         }}
@@ -49,16 +50,16 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
         )}
         {is768Px && (
           <Text c="dimmed" fz="sm">
-            {task.closeDate
+            {task.closedAt
               ? `fermé par ${getEmailLocale(
                   task.closedBy ?? ""
-                )} le ${formatDate(task.closeDate, "D MMM")}`
+                )} le ${formatDate(task.closedAt.toDate(), "D MMM")}`
               : `ajouté par ${getEmailLocale(
                   task.openedBy ?? ""
-                )} le ${formatDate(task.openDate, "D MMM")}`}
+                )} le ${formatDate(task.openedAt?.toDate(), "D MMM")}`}
           </Text>
         )}
-        {task.closeDate && (
+        {task.closedAt && (
           <Tooltip label="Supprimer" withinPortal>
             <ActionIcon
               variant="subtle"

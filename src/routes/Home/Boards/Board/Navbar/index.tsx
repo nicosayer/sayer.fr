@@ -5,6 +5,7 @@ import {
   IconId,
   IconLockOpen,
   IconPencil,
+  IconPhoto,
   IconSettings,
   IconShoppingCart,
 } from "@tabler/icons";
@@ -40,7 +41,7 @@ const menu = [
     label: "Courses",
     to: "groceries",
     count: ({ groceries }: IBoardContext) =>
-      groceries?.filter((grocery) => !grocery.closeDate).length ?? 0,
+      groceries?.filter((grocery) => !grocery.closedAt).length ?? 0,
   },
   {
     icon: <IconPencil size={18} />,
@@ -48,19 +49,19 @@ const menu = [
     label: "Notes",
     to: "notes",
   },
-  // {
-  //   icon: <IconPhoto size={18} />,
-  //   color: "violet",
-  //   label: "Souvenirs",
-  //   to: "souvenirs",
-  // },
+  {
+    icon: <IconPhoto size={18} />,
+    color: "violet",
+    label: "Souvenirs",
+    to: "souvenirs",
+  },
   {
     icon: <IconChecklist size={18} />,
-    color: "violet",
+    color: "pink",
     label: "Tâches",
     to: "tasks",
     count: ({ tasks }: IBoardContext) =>
-      tasks?.filter((task) => !task.closeDate).length ?? 0,
+      tasks?.filter((task) => !task.closedAt).length ?? 0,
   },
 ];
 

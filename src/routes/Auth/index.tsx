@@ -11,6 +11,7 @@ const Auth = () => {
     <div className="flex items-center justify-center h-full">
       <Button
         size="lg"
+        color="teal"
         rightIcon={<IconArrowRight size={18} />}
         onClick={() => signInWithGoogle()}
         loading={loadingSignInWithGoogle}

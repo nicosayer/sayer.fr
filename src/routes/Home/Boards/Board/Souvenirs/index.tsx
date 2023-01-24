@@ -74,7 +74,7 @@ const Souvenirs: FC = () => {
               const disabled = !souvenirs.some((souvenir) => {
                 return (
                   formatDate(date, "YYYY-MM-DD") ===
-                  formatDate(souvenir.date?.toDate(), "YYYY-MM-DD")
+                  formatDate(souvenir.date, "YYYY-MM-DD")
                 );
               });
 

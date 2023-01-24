@@ -11,7 +11,7 @@ import { DatePicker, TimeInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { collection, deleteField } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useRef } from "react";
@@ -24,7 +24,7 @@ import {
   SouvenirPictureMime,
 } from "types/firebase/collections";
 import { runInSeries } from "utils/async";
-import { storage } from "utils/firebase";
+import { addDoc, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 
 export interface NewSouvenirModalContentProps {
@@ -48,13 +48,21 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
     initialValues: {
       description: "",
       date: defaultDate,
-      time: new Date(),
       tag: "",
     },
+
     validate: {
       description: (description) => {
         return description.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
+    },
+
+    transformValues: (values) => {
+      return {
+        description: values.description.trim(),
+        date: dayjs(values.date).format("YYYY-MM-DD"),
+        tag: values.tag || deleteField(),
+      };
     },
   });
 
@@ -68,13 +76,8 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
           addDoc<SouvenirDocument>(
             collection(board.ref, Collection.souvenirs),
             {
-              description: values.description.trim(),
-              date: Timestamp.fromDate(
-                dayjs(values.date)
-                  .hour(values.time.getHours())
-                  .minute(values.time.getMinutes())
-                  .toDate()
-              ),
+              description: values.description,
+              date: values.date,
               tag: values.tag,
             }
           )
@@ -97,10 +100,8 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
                     return uploadFile(
                       ref(
                         storage,
-                        `${Collection.boards}/${board.id}/${
-                          Collection.souvenirs
-                        }/${souvenir.id}/${Collection.souvenirPictures}/${
-                          souvenirPicture.id
+                        `${Collection.boards}/${board.id}/${Collection.souvenirs
+                        }/${souvenir.id}/${Collection.souvenirPictures}/${souvenirPicture.id
                         }/document.${getExtension(
                           file?.type as SouvenirPictureMime
                         )}`
@@ -141,25 +142,15 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
           label="Description"
           {...form.getInputProps("description")}
         />
-        <Group>
-          <DatePicker
-            locale="fr"
-            inputFormat="D MMMM YYYY"
-            withAsterisk
-            disabled={loading}
-            label="Date"
-            clearable={false}
-            {...form.getInputProps("date")}
-          />
-          <TimeInput
-            className="flex-1"
-            withAsterisk
-            disabled={loading}
-            label="Heure"
-            clearable={false}
-            {...form.getInputProps("time")}
-          />
-        </Group>
+        <DatePicker
+          locale="fr"
+          inputFormat="D MMMM YYYY"
+          withAsterisk
+          disabled={loading}
+          label="Date"
+          clearable={false}
+          {...form.getInputProps("date")}
+        />
         {board?.tags?.length ? (
           <TagSelect
             label="Étiquette"

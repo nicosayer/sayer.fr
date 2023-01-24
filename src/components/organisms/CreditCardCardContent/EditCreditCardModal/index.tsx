@@ -2,10 +2,11 @@ import { Button, Group, Stack, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
-import { updateDoc } from "firebase/firestore";
+import { deleteField } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { BoardDocument, CreditCardDocument } from "types/firebase/collections";
+import { updateDoc } from "utils/firebase";
 
 export interface EditCreditCardModalProps {
   creditCard: CreditCardDocument;
@@ -56,23 +57,36 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
           : "Ce champ ne doit pas être vide";
       },
     },
+
+    transformValues: (values) => {
+      const [expirationMonth, expirationYear] =
+        values.expirationDate.split("/");
+
+      return {
+        color: values.color,
+        name: values.name.trim(),
+        number: values.number.replace(/ +/g, ""),
+        cardholder: values.cardholder.trim(),
+        expirationMonth: expirationMonth,
+        expirationYear: expirationYear,
+        securityCode: values.securityCode,
+        tag: values.tag || deleteField(),
+      };
+    },
   });
 
   return (
     <form
       onSubmit={form.onSubmit((values) => {
         if (creditCard?.ref) {
-          const [expirationMonth, expirationYear] =
-            values.expirationDate.split("/");
-
           start();
           updateDoc<CreditCardDocument>(creditCard.ref, {
             color: values.color,
-            name: values.name.trim(),
-            number: values.number.replace(/ +/g, ""),
-            cardholder: values.cardholder.trim(),
-            expirationMonth: expirationMonth,
-            expirationYear: expirationYear,
+            name: values.name,
+            number: values.number,
+            cardholder: values.cardholder,
+            expirationMonth: values.expirationMonth,
+            expirationYear: values.expirationYear,
             securityCode: values.securityCode,
             tag: values.tag,
           })

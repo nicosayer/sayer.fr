@@ -2,14 +2,13 @@ import { Card, Stack, Text } from "@mantine/core";
 import { IconLayoutList } from "@tabler/icons";
 import GroceryCardContent from "components/organisms/GroceryCardContent";
 import NoResult from "components/organisms/NoResult";
-import dayjs from "dayjs";
-import { updateDoc } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import { groupBy, orderBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { GroceryDocument } from "types/firebase/collections";
-import { auth } from "utils/firebase";
+import { auth, updateDoc } from "utils/firebase";
 import { searchString } from "utils/string";
 
 export interface GroceriesCardsProps {
@@ -29,7 +28,7 @@ const GroceriesCards: FC<GroceriesCardsProps> = ({ search }) => {
         "order",
         "desc"
       ),
-      (grocery) => Boolean(grocery.closeDate)
+      (grocery) => Boolean(grocery.closedAt)
     );
   }, [groceries, search]);
 
@@ -59,10 +58,10 @@ const GroceriesCards: FC<GroceriesCardsProps> = ({ search }) => {
             withBorder
             className="cursor-pointer"
             onClick={() => {
-              if (grocery.ref) {
+              if (grocery.ref && user?.email) {
                 updateDoc<GroceryDocument>(grocery.ref, {
-                  closeDate: dayjs().format("YYYY-MM-DD"),
-                  closedBy: user?.email ?? undefined,
+                  closedAt: Timestamp.now(),
+                  closedBy: user.email,
                 });
               }
             }}

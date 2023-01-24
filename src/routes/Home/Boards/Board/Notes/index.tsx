@@ -9,12 +9,13 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons";
 import dayjs from "dayjs";
-import { addDoc, collection } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Collection, NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
+import { addDoc } from "utils/firebase";
 import { useBoard } from "../Provider";
 import Note from "./Note";
 import NotesCards from "./NotesCards";

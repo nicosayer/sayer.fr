@@ -2,7 +2,7 @@ import { Button, Group, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
-import { addDoc, collection } from "firebase/firestore";
+import { collection, deleteField } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import {
@@ -10,6 +10,7 @@ import {
   Collection,
   CredentialDocument,
 } from "types/firebase/collections";
+import { addDoc } from "utils/firebase";
 
 export interface NewCredentialModalProps {
   board: BoardDocument;
@@ -37,6 +38,16 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
         return password.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
     },
+
+    transformValues: (values) => {
+      return {
+        name: values.name.trim(),
+        username: values.username.trim(),
+        password: values.password,
+        url: values.url.trim() || deleteField(),
+        tag: values.tag || deleteField(),
+      };
+    },
   });
 
   return (
@@ -47,10 +58,10 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
           addDoc<CredentialDocument>(
             collection(board.ref, Collection.credentials),
             {
-              name: values.name.trim(),
-              username: values.username.trim(),
+              name: values.name,
+              username: values.username,
               password: values.password,
-              url: values.url.trim(),
+              url: values.url,
               tag: values.tag,
             }
           )

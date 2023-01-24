@@ -2,10 +2,17 @@ import { initializeApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth } from "firebase/auth";
 import {
+  addDoc as firestoreAddDoc,
+  CollectionReference,
+  DocumentReference,
   DocumentSnapshot,
   FirestoreDataConverter,
   getFirestore,
   SnapshotOptions,
+  Timestamp,
+  UpdateData,
+  updateDoc as firestoreUpdateDoc,
+  WithFieldValue,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -49,4 +56,27 @@ export const spreadSnapshot = (
   options?: SnapshotOptions
 ) => {
   return { ...doc.data(options), id: doc.id, ref: doc.ref };
+};
+
+export const addDoc = <T>(
+  reference: CollectionReference<T>,
+  data: WithFieldValue<T>
+) => {
+  return firestoreAddDoc<T>(reference, {
+    // @ts-ignore
+    ...data,
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
+  });
+};
+
+export const updateDoc = <T>(
+  reference: DocumentReference<T>,
+  data: UpdateData<T>
+) => {
+  return firestoreUpdateDoc<T>(reference, {
+    // @ts-ignore
+    ...data,
+    updatedAt: Timestamp.now(),
+  });
 };

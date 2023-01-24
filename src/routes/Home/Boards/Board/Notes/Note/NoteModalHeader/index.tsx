@@ -4,11 +4,12 @@ import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons";
 import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
-import { updateDoc } from "firebase/firestore";
+import { deleteField } from "firebase/firestore";
 import { FC, useEffect, useState } from "react";
 import { BoardDocument, NoteDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
+import { updateDoc } from "utils/firebase";
 import { ONE_SECOND } from "utils/time";
 
 export interface NoteModalHeaderProps {
@@ -47,7 +48,7 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
             inputFormat="D MMMM YYYY"
             value={dayjs(note.date).toDate()}
             onChange={(date) => {
-              if (note.ref) {
+              if (note.ref && date) {
                 updateDoc<NoteDocument>(note.ref, {
                   date: formatDate(date, "YYYY-MM-DD"),
                 });
@@ -73,7 +74,7 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
               onChange={(tag) => {
                 if (note.ref) {
                   updateDoc<NoteDocument>(note.ref, {
-                    tag: tag ?? "",
+                    tag: tag || deleteField(),
                   });
                 }
               }}

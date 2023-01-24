@@ -9,11 +9,12 @@ import {
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import TagSelect from "components/molecules/Select/Tag";
+import { FieldValue } from "firebase/firestore";
 import { FC } from "react";
 import InputMask from "react-input-mask";
 import { BoardDocument } from "types/firebase/collections";
 
-export interface CreditCardForm {
+export interface CreditCardFormInput {
   color: string;
   name: string;
   cardholder: string;
@@ -23,12 +24,23 @@ export interface CreditCardForm {
   tag: string;
 }
 
+export interface CreditCardFormOutput {
+  color: string;
+  name: string;
+  cardholder: string;
+  number: string;
+  expirationMonth: string;
+  expirationYear: string;
+  securityCode: string;
+  tag: string | FieldValue;
+}
+
 export interface CreditCardFormInputsProps {
   loading: boolean;
   board: BoardDocument;
   form: UseFormReturnType<
-    CreditCardForm,
-    (values: CreditCardForm) => CreditCardForm
+    CreditCardFormInput,
+    (values: CreditCardFormInput) => CreditCardFormOutput
   >;
 }
 

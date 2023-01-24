@@ -11,12 +11,11 @@ import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { updateDoc } from "firebase/firestore";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { NoteDocument } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
-import { auth } from "utils/firebase";
+import { auth, updateDoc } from "utils/firebase";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 
@@ -71,7 +70,9 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
       Color,
     ].filter(Boolean),
     autofocus: "end",
-    onUpdate: () => {
+    onUpdate: ({editor}) => {
+      console.log(editor.getText());
+      
       if (note?.ref) {
         updateDoc<NoteDocument>(note.ref, {
           content: toBase64(Y.encodeStateAsUpdate(yDoc)),

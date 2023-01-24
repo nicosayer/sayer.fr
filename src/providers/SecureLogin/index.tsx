@@ -1,4 +1,4 @@
-import { useLocalStorage } from "@mantine/hooks";
+import { useIdle, useLocalStorage } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { IdTokenResult } from "firebase/auth";
 import {
@@ -13,7 +13,7 @@ import {
 } from "react";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
-import { ONE_SECOND } from "utils/time";
+import { ONE_MINUTE, ONE_SECOND } from "utils/time";
 
 interface ISecureLoginContext {
   isSecure: boolean;

@@ -2,10 +2,11 @@ import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import TagSelect from "components/molecules/Select/Tag";
-import { updateDoc } from "firebase/firestore";
+import { deleteField } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { BoardDocument, DocumentDocument } from "types/firebase/collections";
+import { updateDoc } from "utils/firebase";
 
 export interface EditDocumentModalProps {
   board: BoardDocument;
@@ -26,6 +27,13 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document, board }) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
       },
     },
+
+    transformValues: (values) => {
+      return {
+        name: values.name.trim(),
+        tag: values.tag || deleteField(),
+      };
+    },
   });
 
   return (
@@ -34,7 +42,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document, board }) => {
         if (document?.ref) {
           start();
           updateDoc<DocumentDocument>(document.ref, {
-            name: values.name.trim(),
+            name: values.name,
             tag: values.tag,
           })
             .then(() => closeAllModals())
