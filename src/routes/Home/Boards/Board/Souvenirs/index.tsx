@@ -14,7 +14,7 @@ import { IconPlus } from "@tabler/icons";
 import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import {
   Collection,
   SouvenirDocument,
@@ -41,12 +41,15 @@ const Souvenirs: FC = () => {
   const [date, setDate] = useState(new Date());
   const [files, setFiles] = useState<File[]>();
 
+  const currentSouvenirs = useMemo(() => {
+    return (souvenirs ?? []).filter((souvenir) => {
+      return souvenir.date === formatDate(date, "YYYY-MM-DD");
+    });
+  }, [date, souvenirs]);
+
   useEffect(() => {
     (async () => {
       start();
-      const currentSouvenirs = (souvenirs ?? []).filter((souvenir) => {
-        return souvenir.date === formatDate(date, "YYYY-MM-DD");
-      });
 
       const filteredSouvenirs = await mapAsync(
         currentSouvenirs,
@@ -60,9 +63,8 @@ const Souvenirs: FC = () => {
               souvenirPictures,
               (souvenirPicture) => {
                 if (souvenirPicture.mime) {
-                  const path = `${
-                    souvenirPicture.ref?.path
-                  }/document.${getExtension(souvenirPicture.mime)}`;
+                  const path = `${souvenirPicture.ref?.path
+                    }/document.${getExtension(souvenirPicture.mime)}`;
 
                   return getDownloadURL(ref(storage, path));
                 }
@@ -75,9 +77,10 @@ const Souvenirs: FC = () => {
       );
 
       setFilteredSouvenirs(cleanArray(filteredSouvenirs));
+
       stop();
     })();
-  }, [date, souvenirs, start, stop]);
+  }, [date, currentSouvenirs, start, stop]);
 
   if (!filteredSouvenirs || loadingSouvenirs) {
     return <LoadingOverlay visible />;
@@ -137,7 +140,11 @@ const Souvenirs: FC = () => {
             )}
           >
             {(props) => (
-              <Card withBorder className="cursor-pointer" {...props}>
+              <Card
+                withBorder
+                className="transition-shadow shadow-none cursor-pointer hover:shadow-lg"
+                {...props}
+              >
                 <Card.Section>
                   <Image
                     withPlaceholder
@@ -156,18 +163,24 @@ const Souvenirs: FC = () => {
               </Card>
             )}
           </FileButton>
-          {loading ? (
-            <Card withBorder>
-              <LoadingOverlay visible />
-              <Card.Section>
-                <Image withPlaceholder height={200} />
-              </Card.Section>
-              <Text mt="md" c="dimmed">
-                Chargement...
-              </Text>
-            </Card>
-          ) : (
-            filteredSouvenirs.map((souvenir) => {
+          {loading
+            ? currentSouvenirs.map((souvenir) => {
+              return (
+                <Card withBorder>
+                  <Card.Section>
+                    <Image
+                      withPlaceholder
+                      height={200}
+                      placeholder={<LoadingOverlay visible />}
+                    />
+                  </Card.Section>
+                  <Text mt="md" c="dimmed">
+                    {souvenir.description}
+                  </Text>
+                </Card>
+              );
+            })
+            : filteredSouvenirs.map((souvenir) => {
               return (
                 <Card withBorder>
                   <Card.Section>
@@ -184,8 +197,7 @@ const Souvenirs: FC = () => {
                   </Text>
                 </Card>
               );
-            })
-          )}
+            })}
         </SimpleGrid>
       </Stack>
     </>
