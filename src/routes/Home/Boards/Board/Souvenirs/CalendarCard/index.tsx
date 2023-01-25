@@ -1,6 +1,5 @@
 import { Card, Indicator } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
-import dayjs from "dayjs";
 import { FC } from "react";
 import { formatDate } from "utils/dayjs";
 import { useBoard } from "../../Provider";
@@ -27,10 +26,7 @@ const CalendarCard: FC<CalendarCardProps> = ({ date, setDate }) => {
         renderDay={(date) => {
           const day = date.getDate();
           const disabled = !souvenirs?.some((souvenir) => {
-            return (
-              formatDate(date, "YYYY-MM-DD") ===
-              formatDate(souvenir.date, "YYYY-MM-DD")
-            );
+            return formatDate(date) === formatDate(souvenir.date);
           });
 
           return (

@@ -50,7 +50,7 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
             onChange={(date) => {
               if (note.ref && date) {
                 updateDoc<NoteDocument>(note.ref, {
-                  date: formatDate(date, "YYYY-MM-DD"),
+                  date: formatDate(date),
                 });
               }
             }}

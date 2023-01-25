@@ -8,7 +8,6 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons";
-import dayjs from "dayjs";
 import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useState } from "react";
@@ -31,10 +30,12 @@ const Notes: FC = () => {
   const createNoteAndOpen = useCallback(() => {
     if (board?.ref) {
       start();
+      const now = new Date();
+
       addDoc<NoteDocument>(collection(board.ref, Collection.notes), {
-        name: `Note du ${formatDate()}`,
+        name: `Note du ${formatDate(now, "D MMM YYYY")}`,
         base64: "",
-        date: dayjs().format("YYYY-MM-DD"),
+        date: formatDate(now),
       })
         .then((note) => navigate(`/boards/${boardId}/notes/${note.id}`))
         .finally(stop);

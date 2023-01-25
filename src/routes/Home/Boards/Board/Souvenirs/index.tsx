@@ -43,7 +43,7 @@ const Souvenirs: FC = () => {
 
   const filteredSouvenirs = useMemo(() => {
     return (souvenirs ?? []).filter((souvenir) => {
-      return souvenir.date === formatDate(date, "YYYY-MM-DD");
+      return souvenir.date === formatDate(date);
     });
   }, [date, souvenirs]);
 
@@ -82,6 +82,14 @@ const Souvenirs: FC = () => {
       stop();
     })();
   }, [date, filteredSouvenirs, start, stop]);
+
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setVisible(true);
+    }, 500);
+  }, []);
 
   if (!souvenirsWithDownloadUrls || loadingSouvenirs) {
     return <LoadingOverlay visible />;
@@ -159,7 +167,7 @@ const Souvenirs: FC = () => {
                   />
                 </Card.Section>
                 <Text mt="md" c="dimmed">
-                  Cliquez pour ajouter un souvenir du {formatDate(date)}
+                  Ajouter un souvenir au {formatDate(date, "D MMMM")}
                 </Text>
               </Card>
             )}

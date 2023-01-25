@@ -70,7 +70,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
       </Text>
       <Group position="center" spacing="xs">
         <Badge size="lg" radius="sm" color="gray">
-          {formatDate(note.date)}
+          {formatDate(note.date, "D MMM YYYY")}
         </Badge>
       </Group>
       <Group grow>

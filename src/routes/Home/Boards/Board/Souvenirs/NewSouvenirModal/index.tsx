@@ -11,7 +11,6 @@ import {
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import TagSelect from "components/molecules/Select/Tag";
-import dayjs from "dayjs";
 import { collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
@@ -25,6 +24,7 @@ import {
   SouvenirPictureMime,
 } from "types/firebase/collections";
 import { runInSeries } from "utils/async";
+import { formatDate } from "utils/dayjs";
 import { addDoc, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 import { TRANSITION_DURATION } from "..";
@@ -64,7 +64,7 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
     transformValues: (values) => {
       return {
         description: values.description.trim(),
-        date: dayjs(values.date).format("YYYY-MM-DD"),
+        date: formatDate(values.date),
         tag: values.tag || undefined,
       };
     },

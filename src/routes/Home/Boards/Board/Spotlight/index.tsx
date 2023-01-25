@@ -110,7 +110,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
               ...(notes ?? []).map((note) => {
                 return {
                   title: note.name ?? "",
-                  description: formatDate(note.date, "DD MMMM YYYY"),
+                  description: formatDate(note.date, "D MMMM YYYY"),
                   search: note.text,
                   tag: note.tag,
                   group: "Note",
