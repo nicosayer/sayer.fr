@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons";
 import TagSelect from "components/molecules/Select/Tag";
-import { collection, deleteField, Timestamp } from "firebase/firestore";
+import { collection, Timestamp } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -31,7 +31,7 @@ const NewTaskCard: FC = () => {
     transformValues: (values) => {
       return {
         name: values.name.trim(),
-        tag: values.tag || deleteField(),
+        tag: values.tag || undefined,
       };
     },
   });

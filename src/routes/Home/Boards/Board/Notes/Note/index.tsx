@@ -38,7 +38,7 @@ const Note: FC = () => {
       <Modal
         opened={Boolean(noteId)}
         onClose={() => {
-          if (note.content === "AAA=" && note.ref) {
+          if (note.base64 === "AAA=" && note.ref) {
             deleteDoc(note.ref);
           } else {
             navigate(`/boards/${boardId}/notes`);

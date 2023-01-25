@@ -18,9 +18,12 @@ const NotesCards: FC<NotesCardsProps> = ({ search }) => {
     return orderBy(
       (notes ?? []).filter((note) => {
         return (
-          note.content &&
+          note.base64 &&
           searchString(
-            `${note.name}${note.tag}${formatDate(note.date, "MMMM YYYY")}`,
+            `${note.name}${note.text}${note.tag}${formatDate(
+              note.date,
+              "MMMM YYYY"
+            )}`,
             search
           )
         );

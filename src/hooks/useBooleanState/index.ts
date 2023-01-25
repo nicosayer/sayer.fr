@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { timer } from "utils/time";
 
 export interface useBooleanStateProps {
@@ -20,24 +20,22 @@ const useBooleanState = ({
 ] => {
   const [value, setValue] = useState(defaultValue);
 
-  return useMemo(() => {
-    return [
-      value,
-      async () => {
-        await timer(startDelay);
-        setValue(true);
-      },
-      async () => {
-        await timer(stopDelay);
-        setValue(false);
-      },
-      async () => {
-        await timer(value ? stopDelay : startDelay);
-        setValue((old) => !old);
-      },
-      setValue,
-    ];
+  const start = useCallback(async () => {
+    await timer(startDelay);
+    setValue(true);
+  }, [startDelay]);
+
+  const stop = useCallback(async () => {
+    await timer(stopDelay);
+    setValue(false);
+  }, [stopDelay]);
+
+  const toggle = useCallback(async () => {
+    await timer(value ? stopDelay : startDelay);
+    setValue((old) => !old);
   }, [startDelay, stopDelay, value]);
+
+  return [value, start, stop, toggle, setValue];
 };
 
 export default useBooleanState;

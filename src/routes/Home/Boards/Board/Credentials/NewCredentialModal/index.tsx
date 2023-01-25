@@ -2,7 +2,7 @@ import { Button, Group, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
-import { collection, deleteField } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import {
@@ -44,8 +44,8 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
         name: values.name.trim(),
         username: values.username.trim(),
         password: values.password,
-        url: values.url.trim() || deleteField(),
-        tag: values.tag || deleteField(),
+        url: values.url.trim() || undefined,
+        tag: values.tag || undefined,
       };
     },
   });

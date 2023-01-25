@@ -33,7 +33,7 @@ const Notes: FC = () => {
       start();
       addDoc<NoteDocument>(collection(board.ref, Collection.notes), {
         name: `Note du ${formatDate()}`,
-        content: "",
+        base64: "",
         date: dayjs().format("YYYY-MM-DD"),
       })
         .then((note) => navigate(`/boards/${boardId}/notes/${note.id}`))
@@ -45,7 +45,7 @@ const Notes: FC = () => {
     return <LoadingOverlay visible />;
   }
 
-  if (!notes.find((note) => note.content)) {
+  if (!notes.find((note) => note.base64)) {
     return (
       <>
         <Note />

@@ -1,7 +1,8 @@
+import { Carousel, Embla, useAnimationOffsetEffect } from "@mantine/carousel";
 import {
   Button,
   Group,
-  Input,
+  Image,
   Modal,
   ModalProps,
   Stack,
@@ -11,10 +12,10 @@ import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
-import { collection, deleteField } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useRef } from "react";
+import { FC, useRef, useState } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import {
   BoardDocument,
@@ -26,6 +27,7 @@ import {
 import { runInSeries } from "utils/async";
 import { addDoc, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
+import { TRANSITION_DURATION } from "..";
 
 export interface NewSouvenirModalContentProps {
   board: BoardDocument;
@@ -43,6 +45,8 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
   const formRef = useRef<HTMLFormElement>(null);
+  const [embla, setEmbla] = useState<Embla | null>(null);
+  useAnimationOffsetEffect(embla, TRANSITION_DURATION);
 
   const form = useForm({
     initialValues: {
@@ -61,7 +65,7 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
       return {
         description: values.description.trim(),
         date: dayjs(values.date).format("YYYY-MM-DD"),
-        tag: values.tag || deleteField(),
+        tag: values.tag || undefined,
       };
     },
   });
@@ -123,20 +127,18 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
       })}
     >
       <Stack>
-        <Input.Wrapper label={files.length > 1 ? "Photos" : "Photo"}>
-          <div className="text-center">
-            {files.map((file, index) => {
-              return (
-                <img
-                  key={index}
-                  src={URL.createObjectURL(file)}
-                  alt={`Souvenir ${index + 1}`}
-                  className="w-[100px] h-[100px] object-cover m-1 border border-solid border-gray-400 rounded-md"
-                />
-              );
-            })}
-          </div>
-        </Input.Wrapper>
+        <Carousel
+          withIndicators
+          loop
+          getEmblaApi={setEmbla}
+          className="overflow-hidden border border-gray-300 border-solid rounded-md"
+        >
+          {files.map((file, index) => (
+            <Carousel.Slide key={index}>
+              <Image src={URL.createObjectURL(file)} height={200} />
+            </Carousel.Slide>
+          ))}
+        </Carousel>
         <Textarea
           data-autofocus
           withAsterisk

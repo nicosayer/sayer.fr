@@ -5,7 +5,7 @@ import { closeAllModals } from "@mantine/modals";
 import { IconUpload } from "@tabler/icons";
 import classNames from "classnames";
 import TagSelect from "components/molecules/Select/Tag";
-import { collection, deleteField } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useRef } from "react";
@@ -49,7 +49,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
         name: values.name.trim(),
         file: values.file,
         mime: values.file?.type as DocumentMime | undefined,
-        tag: values.tag || deleteField(),
+        tag: values.tag || undefined,
       };
     },
   });

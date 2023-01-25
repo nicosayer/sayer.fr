@@ -71,11 +71,10 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
     ].filter(Boolean),
     autofocus: "end",
     onUpdate: ({ editor }) => {
-      console.log(editor.getText());
-
       if (note?.ref) {
         updateDoc<NoteDocument>(note.ref, {
-          content: toBase64(Y.encodeStateAsUpdate(yDoc)),
+          base64: toBase64(Y.encodeStateAsUpdate(yDoc)),
+          text: editor.getText().replace(/\s+/g, " "),
         });
       }
     },

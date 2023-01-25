@@ -83,16 +83,6 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                   },
                 };
               }),
-              ...(documents ?? []).map((document) => {
-                return {
-                  title: document.name ?? "",
-                  tag: document.tag,
-                  group: "Document",
-                  onTrigger: () => {
-                    navigate(`/boards/${boardId}/documents/${document.id}`);
-                  },
-                };
-              }),
               ...(creditCards ?? []).map((creditCard) => {
                 return {
                   title: creditCard.name ?? "",
@@ -106,10 +96,22 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                   },
                 };
               }),
+              ...(documents ?? []).map((document) => {
+                return {
+                  title: document.name ?? "",
+                  tag: document.tag,
+                  group: "Document",
+                  description: document.mime?.split("/")[1].toUpperCase(),
+                  onTrigger: () => {
+                    navigate(`/boards/${boardId}/documents/${document.id}`);
+                  },
+                };
+              }),
               ...(notes ?? []).map((note) => {
                 return {
                   title: note.name ?? "",
                   description: formatDate(note.date, "DD MMMM YYYY"),
+                  search: note.text,
                   tag: note.tag,
                   group: "Note",
                   onTrigger: () => {
@@ -123,7 +125,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
       filter={(query, actions) =>
         actions.filter((action) => {
           return searchString(
-            `${action.title}${action.description}${action.tag}`,
+            `${action.title}${action.description}${action.search}${action.tag}`,
             query
           );
         })

@@ -15,8 +15,8 @@ const NoteModalContent: FC<NoteModalContentProps> = ({ note }) => {
 
   const [yDoc] = useState(() => {
     const yDoc = new Y.Doc();
-    if (note.content) {
-      Y.applyUpdate(yDoc, fromBase64(note.content));
+    if (note.base64) {
+      Y.applyUpdate(yDoc, fromBase64(note.base64));
     }
     return yDoc;
   });

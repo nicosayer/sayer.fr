@@ -1,6 +1,7 @@
 import { ActionIcon, Group, Input, PasswordInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { IconArrowRight, IconShieldLock } from "@tabler/icons";
-import { FC, useCallback, useState } from "react";
+import { FC, useEffect } from "react";
 import {
   useAuthState,
   useSignInWithEmailAndPassword,
@@ -8,48 +9,58 @@ import {
 import { auth } from "utils/firebase";
 
 const SecureLogin: FC = () => {
-  const [password, setPassword] = useState("");
   const [user] = useAuthState(auth);
   const [signInWithEmailAndPassword, , loading, error] =
     useSignInWithEmailAndPassword(auth);
 
-  const handleSubmit = useCallback(() => {
-    if (password && user?.email) {
-      signInWithEmailAndPassword(user.email, password);
+  const form = useForm({
+    initialValues: {
+      password: "",
+    },
+
+    validate: {
+      password: (password) => {
+        return password.length > 0 ? null : "Ce champ ne doit pas être vide";
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (error) {
+      form.setFieldError("password", true);
     }
-  }, [password, signInWithEmailAndPassword, user?.email]);
+  }, [error, form]);
 
   return (
     <div className="mx-auto max-w-[256px] text-center">
       <IconShieldLock size={36} className="text-gray-500" />
-      <Input.Wrapper label="Entrer votre mot de passe">
-        <Group spacing="xs">
-          <PasswordInput
-            className="flex-1"
-            disabled={loading}
-            placeholder="••••••••••••"
-            value={password}
-            onChange={(event) => {
-              setPassword(event.currentTarget.value);
-            }}
-            error={Boolean(error)}
-            onKeyDown={({ key }) => {
-              if (key === "Enter") {
-                handleSubmit();
-              }
-            }}
-          />
-          <ActionIcon
-            variant={error ? "outline" : "default"}
-            color={error ? "red" : undefined}
-            size={36}
-            onClick={handleSubmit}
-            loading={loading}
-          >
-            <IconArrowRight />
-          </ActionIcon>
-        </Group>
-      </Input.Wrapper>
+      <form
+        onSubmit={form.onSubmit((values) => {
+          if (user?.email) {
+            signInWithEmailAndPassword(user.email, values.password);
+          }
+        })}
+      >
+        <Input.Wrapper label="Entrer votre mot de passe">
+          <Group spacing="xs">
+            <PasswordInput
+              className="flex-1"
+              disabled={loading}
+              placeholder="••••••••••••"
+              {...form.getInputProps("password")}
+            />
+            <ActionIcon
+              variant={error ? "outline" : "default"}
+              color={error ? "red" : undefined}
+              size={36}
+              type="submit"
+              loading={loading}
+            >
+              <IconArrowRight />
+            </ActionIcon>
+          </Group>
+        </Input.Wrapper>
+      </form>
     </div>
   );
 };

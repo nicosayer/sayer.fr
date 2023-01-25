@@ -7,7 +7,8 @@ import {
   DocumentReference,
   DocumentSnapshot,
   FirestoreDataConverter,
-  getFirestore,
+  initializeFirestore,
+  QuerySnapshot,
   SnapshotOptions,
   Timestamp,
   UpdateData,
@@ -32,7 +33,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = initializeFirestore(app, { ignoreUndefinedProperties: true });
 const storage = getStorage(app);
 const appCheck = initializeAppCheck(app, {
   provider: new ReCaptchaV3Provider("6Ld27OsjAAAAAC6T__xbD0Szvn1yogbKXcNqV-vN"),
@@ -56,6 +57,13 @@ export const spreadSnapshot = (
   options?: SnapshotOptions
 ) => {
   return { ...doc.data(options), id: doc.id, ref: doc.ref };
+};
+
+export const spreadQuerySnapshot = (
+  query: QuerySnapshot,
+  options?: SnapshotOptions
+) => {
+  return query.docs.map((doc) => spreadSnapshot(doc, options));
 };
 
 export const addDoc = <T>(

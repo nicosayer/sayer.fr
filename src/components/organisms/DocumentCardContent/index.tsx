@@ -38,10 +38,16 @@ export interface DocumentCardsPropContent {
 }
 
 const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
-  const { board } = useBoard();
   const is768Px = useMediaQuery("(min-width: 768px)");
   const [previewDocument, loadingPreview] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
+  const { boards } = useBoard();
+
+  const board = useMemo(() => {
+    return boards?.find(
+      (board) => board.id === document.ref?.parent.parent?.id
+    );
+  }, [boards, document.ref?.parent.parent?.id]);
 
   const openEditModal = useCallback(
     (document: DocumentDocument) => {

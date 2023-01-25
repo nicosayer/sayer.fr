@@ -1,28 +1,85 @@
+import { Carousel } from "@mantine/carousel";
 import {
   Button,
   Card,
   FileButton,
   Group,
-  Indicator,
+  Image,
   LoadingOverlay,
+  SimpleGrid,
   Stack,
   Text,
 } from "@mantine/core";
-import { Calendar } from "@mantine/dates";
 import { IconPlus } from "@tabler/icons";
-import dayjs from "dayjs";
-import { FC, useState } from "react";
-import { SouvenirPictureMime } from "types/firebase/collections";
+import { collection, getDocs } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
+import useBooleanState from "hooks/useBooleanState";
+import { FC, useEffect, useState } from "react";
+import {
+  Collection,
+  SouvenirDocument,
+  SouvenirPictureDocument,
+  SouvenirPictureMime,
+} from "types/firebase/collections";
+import { mapAsync } from "utils/async";
 import { formatDate } from "utils/dayjs";
+import { spreadQuerySnapshot, storage } from "utils/firebase";
+import { cleanArray } from "utils/lib";
+import { getExtension } from "utils/storage";
 import { useBoard } from "../Provider";
+import CalendarCard from "./CalendarCard";
 import NewSouvenirModal from "./NewSouvenirModal";
+
+export const TRANSITION_DURATION = 200;
 
 const Souvenirs: FC = () => {
   const { board, loadingSouvenirs, souvenirs } = useBoard();
-  const [date, setDate] = useState(dayjs().toDate());
+  const [loading, start, stop] = useBooleanState();
+  const [filteredSouvenirs, setFilteredSouvenirs] = useState<
+    (SouvenirDocument & { downloadUrls: string[] })[]
+  >([]);
+  const [date, setDate] = useState(new Date());
   const [files, setFiles] = useState<File[]>();
 
-  if (!souvenirs || loadingSouvenirs) {
+  useEffect(() => {
+    (async () => {
+      start();
+      const currentSouvenirs = (souvenirs ?? []).filter((souvenir) => {
+        return souvenir.date === formatDate(date, "YYYY-MM-DD");
+      });
+
+      const filteredSouvenirs = await mapAsync(
+        currentSouvenirs,
+        async (souvenir) => {
+          if (souvenir.ref) {
+            const souvenirPictures = (await getDocs(
+              collection(souvenir.ref, Collection.souvenirPictures)
+            ).then(spreadQuerySnapshot)) as SouvenirPictureDocument[];
+
+            const downloadUrls = await mapAsync(
+              souvenirPictures,
+              (souvenirPicture) => {
+                if (souvenirPicture.mime) {
+                  const path = `${
+                    souvenirPicture.ref?.path
+                  }/document.${getExtension(souvenirPicture.mime)}`;
+
+                  return getDownloadURL(ref(storage, path));
+                }
+              }
+            );
+
+            return { ...souvenir, downloadUrls: cleanArray(downloadUrls) };
+          }
+        }
+      );
+
+      setFilteredSouvenirs(cleanArray(filteredSouvenirs));
+      stop();
+    })();
+  }, [date, souvenirs, start, stop]);
+
+  if (!filteredSouvenirs || loadingSouvenirs) {
     return <LoadingOverlay visible />;
   }
 
@@ -35,6 +92,7 @@ const Souvenirs: FC = () => {
           onClose={() => {
             setFiles(undefined);
           }}
+          transitionDuration={TRANSITION_DURATION}
           defaultDate={date}
         />
       ) : null}
@@ -61,31 +119,74 @@ const Souvenirs: FC = () => {
             )}
           </FileButton>
         </Group>
-        <Card className="m-auto w-min">
-          <Calendar
-            value={date}
-            onChange={(date) => {
-              if (date) {
-                setDate(date);
-              }
+        <CalendarCard date={date} setDate={setDate} />
+        <SimpleGrid
+          cols={3}
+          breakpoints={[
+            { maxWidth: 1200, cols: 2 },
+            { maxWidth: 768, cols: 1 },
+          ]}
+        >
+          <FileButton
+            multiple
+            onChange={(files) => {
+              setFiles(files.slice(0, 6));
             }}
-            renderDay={(date) => {
-              const day = date.getDate();
-              const disabled = !souvenirs.some((souvenir) => {
-                return (
-                  formatDate(date, "YYYY-MM-DD") ===
-                  formatDate(souvenir.date, "YYYY-MM-DD")
-                );
-              });
-
+            accept={[SouvenirPictureMime.Jpeg, SouvenirPictureMime.Png].join(
+              ","
+            )}
+          >
+            {(props) => (
+              <Card withBorder className="cursor-pointer" {...props}>
+                <Card.Section>
+                  <Image
+                    withPlaceholder
+                    height={200}
+                    placeholder={
+                      <Group spacing="xs">
+                        <IconPlus />
+                        Nouveau souvenir
+                      </Group>
+                    }
+                  />
+                </Card.Section>
+                <Text mt="md" c="dimmed">
+                  Cliquez pour ajouter un souvenir du {formatDate(date)}
+                </Text>
+              </Card>
+            )}
+          </FileButton>
+          {loading ? (
+            <Card withBorder>
+              <LoadingOverlay visible />
+              <Card.Section>
+                <Image withPlaceholder height={200} />
+              </Card.Section>
+              <Text mt="md" c="dimmed">
+                Chargement...
+              </Text>
+            </Card>
+          ) : (
+            filteredSouvenirs.map((souvenir) => {
               return (
-                <Indicator size={6} color="red" offset={8} disabled={disabled}>
-                  <div>{day}</div>
-                </Indicator>
+                <Card withBorder>
+                  <Card.Section>
+                    <Carousel withIndicators loop>
+                      {souvenir.downloadUrls.map((downloadUrl, index) => (
+                        <Carousel.Slide key={index}>
+                          <Image src={downloadUrl} height={200} />
+                        </Carousel.Slide>
+                      ))}
+                    </Carousel>
+                  </Card.Section>
+                  <Text mt="md" c="dimmed">
+                    {souvenir.description}
+                  </Text>
+                </Card>
               );
-            }}
-          />
-        </Card>
+            })
+          )}
+        </SimpleGrid>
       </Stack>
     </>
   );

@@ -82,7 +82,8 @@ export interface NoteDocument {
   id?: string;
   ref?: DocumentReference<NoteDocument>;
   name?: string;
-  content?: string;
+  base64?: string;
+  text?: string;
   date?: string;
   tag?: string;
   createdAt?: Timestamp;
