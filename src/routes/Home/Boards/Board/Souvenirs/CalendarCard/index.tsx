@@ -23,7 +23,7 @@ const CalendarCard: FC<CalendarCardProps> = ({ date, setDate }) => {
             setDate(date);
           }
         }}
-        maxDate={dayjs().toDate()}
+        maxDate={new Date()}
         renderDay={(date) => {
           const day = date.getDate();
           const disabled = !souvenirs?.some((souvenir) => {

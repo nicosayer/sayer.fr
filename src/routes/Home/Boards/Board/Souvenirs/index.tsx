@@ -35,13 +35,13 @@ export const TRANSITION_DURATION = 200;
 const Souvenirs: FC = () => {
   const { board, loadingSouvenirs, souvenirs } = useBoard();
   const [loading, start, stop] = useBooleanState();
-  const [filteredSouvenirs, setFilteredSouvenirs] = useState<
+  const [souvenirsWithDownloadUrls, setSouvenirsWithDownloadUrls] = useState<
     (SouvenirDocument & { downloadUrls: string[] })[]
   >([]);
   const [date, setDate] = useState(new Date());
   const [files, setFiles] = useState<File[]>();
 
-  const currentSouvenirs = useMemo(() => {
+  const filteredSouvenirs = useMemo(() => {
     return (souvenirs ?? []).filter((souvenir) => {
       return souvenir.date === formatDate(date, "YYYY-MM-DD");
     });
@@ -51,8 +51,8 @@ const Souvenirs: FC = () => {
     (async () => {
       start();
 
-      const filteredSouvenirs = await mapAsync(
-        currentSouvenirs,
+      const souvenirsWithDownloadUrls = await mapAsync(
+        filteredSouvenirs,
         async (souvenir) => {
           if (souvenir.ref) {
             const souvenirPictures = (await getDocs(
@@ -63,8 +63,9 @@ const Souvenirs: FC = () => {
               souvenirPictures,
               (souvenirPicture) => {
                 if (souvenirPicture.mime) {
-                  const path = `${souvenirPicture.ref?.path
-                    }/document.${getExtension(souvenirPicture.mime)}`;
+                  const path = `${
+                    souvenirPicture.ref?.path
+                  }/document.${getExtension(souvenirPicture.mime)}`;
 
                   return getDownloadURL(ref(storage, path));
                 }
@@ -76,13 +77,13 @@ const Souvenirs: FC = () => {
         }
       );
 
-      setFilteredSouvenirs(cleanArray(filteredSouvenirs));
+      setSouvenirsWithDownloadUrls(cleanArray(souvenirsWithDownloadUrls));
 
       stop();
     })();
-  }, [date, currentSouvenirs, start, stop]);
+  }, [date, filteredSouvenirs, start, stop]);
 
-  if (!filteredSouvenirs || loadingSouvenirs) {
+  if (!souvenirsWithDownloadUrls || loadingSouvenirs) {
     return <LoadingOverlay visible />;
   }
 
@@ -164,40 +165,40 @@ const Souvenirs: FC = () => {
             )}
           </FileButton>
           {loading
-            ? currentSouvenirs.map((souvenir) => {
-              return (
-                <Card withBorder>
-                  <Card.Section>
-                    <Image
-                      withPlaceholder
-                      height={200}
-                      placeholder={<LoadingOverlay visible />}
-                    />
-                  </Card.Section>
-                  <Text mt="md" c="dimmed">
-                    {souvenir.description}
-                  </Text>
-                </Card>
-              );
-            })
-            : filteredSouvenirs.map((souvenir) => {
-              return (
-                <Card withBorder>
-                  <Card.Section>
-                    <Carousel withIndicators loop>
-                      {souvenir.downloadUrls.map((downloadUrl, index) => (
-                        <Carousel.Slide key={index}>
-                          <Image src={downloadUrl} height={200} />
-                        </Carousel.Slide>
-                      ))}
-                    </Carousel>
-                  </Card.Section>
-                  <Text mt="md" c="dimmed">
-                    {souvenir.description}
-                  </Text>
-                </Card>
-              );
-            })}
+            ? filteredSouvenirs.map((souvenir) => {
+                return (
+                  <Card withBorder>
+                    <Card.Section>
+                      <Image
+                        withPlaceholder
+                        height={200}
+                        placeholder={<LoadingOverlay visible />}
+                      />
+                    </Card.Section>
+                    <Text mt="md" c="dimmed">
+                      {souvenir.description}
+                    </Text>
+                  </Card>
+                );
+              })
+            : souvenirsWithDownloadUrls.map((souvenir) => {
+                return (
+                  <Card withBorder>
+                    <Card.Section>
+                      <Carousel withIndicators loop>
+                        {souvenir.downloadUrls.map((downloadUrl, index) => (
+                          <Carousel.Slide key={index}>
+                            <Image src={downloadUrl} height={200} />
+                          </Carousel.Slide>
+                        ))}
+                      </Carousel>
+                    </Card.Section>
+                    <Text mt="md" c="dimmed">
+                      {souvenir.description}
+                    </Text>
+                  </Card>
+                );
+              })}
         </SimpleGrid>
       </Stack>
     </>
