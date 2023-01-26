@@ -5,12 +5,12 @@ import {
   FileButton,
   Group,
   Image,
-  LoadingOverlay,
   SimpleGrid,
   Stack,
   Text,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
+import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";

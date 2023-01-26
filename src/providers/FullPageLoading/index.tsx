@@ -1,53 +1,55 @@
-import { LoadingOverlay } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
 import classNames from "classnames";
+import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 
-interface ILoadingContext {
+interface IFullPageLoadingContext {
   loading: boolean;
   start: () => void;
   stop: () => void;
 }
 
-const LoadingContext = createContext<ILoadingContext>({
+const FullPageLoadingContext = createContext<IFullPageLoadingContext>({
   loading: true,
   start: () => {},
   stop: () => {},
 });
 
-LoadingContext.displayName = "Loading";
+FullPageLoadingContext.displayName = "FullPageLoading";
 
-export const useLoading = () => useContext(LoadingContext);
+export const useFullPageLoading = () => useContext(FullPageLoadingContext);
 
-interface LoadingProviderProps {
+interface FullPageLoadingProviderProps {
   children: ReactNode;
 }
 
-const LoadingProvider: FC<LoadingProviderProps> = ({ children }) => {
-  const [loading, setLoading] = useDebouncedState(true, 200);
+const FullPageLoadingProvider: FC<FullPageLoadingProviderProps> = ({
+  children,
+}) => {
+  const [loading, setFullPageLoading] = useDebouncedState(true, 200);
 
   const context = useMemo(() => {
     return {
       loading,
       start: () => {
-        setLoading(true);
+        setFullPageLoading(true);
       },
       stop: () => {
-        setLoading(false);
+        setFullPageLoading(false);
       },
     };
-  }, [loading, setLoading]);
+  }, [loading, setFullPageLoading]);
 
   return (
-    <LoadingContext.Provider value={context}>
+    <FullPageLoadingContext.Provider value={context}>
       <LoadingOverlay visible={loading} />
       <div
         className={classNames("h-full", loading ? "opacity-0" : "opacity-1")}
       >
         {children}
       </div>
-    </LoadingContext.Provider>
+    </FullPageLoadingContext.Provider>
   );
 };
 
-export default LoadingProvider;
+export default FullPageLoadingProvider;

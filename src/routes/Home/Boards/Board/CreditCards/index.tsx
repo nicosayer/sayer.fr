@@ -1,14 +1,8 @@
-import {
-  Button,
-  Group,
-  LoadingOverlay,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons";
+import LoadingOverlay from "components/atoms/LoadingOverlay";
 import CannotBeSecure from "components/organisms/CannotBeSecure";
 import SecureLogin from "components/organisms/SecureLogin";
 import { useSecureLogin } from "providers/SecureLogin";

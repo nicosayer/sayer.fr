@@ -1,8 +1,8 @@
-import { useLoading } from "providers/FullPageLoading";
+import { useFullPageLoading } from "providers/FullPageLoading";
 import { FC, useEffect } from "react";
 
 const FullPageLoading: FC = () => {
-  const { start, stop } = useLoading();
+  const { start, stop } = useFullPageLoading();
 
   useEffect(() => {
     start();

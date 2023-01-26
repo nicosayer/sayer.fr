@@ -1,13 +1,7 @@
-import {
-  Button,
-  Group,
-  LoadingOverlay,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons";
+import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useState } from "react";

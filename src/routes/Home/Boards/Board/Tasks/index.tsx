@@ -1,5 +1,6 @@
-import { Group, LoadingOverlay, Stack, Text, TextInput } from "@mantine/core";
+import { Group, Stack, Text, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
+import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import NewTaskCard from "./NewTaskCard";
