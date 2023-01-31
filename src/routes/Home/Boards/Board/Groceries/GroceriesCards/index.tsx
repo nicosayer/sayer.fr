@@ -25,7 +25,7 @@ const GroceriesCards: FC<GroceriesCardsProps> = ({ search }) => {
         (groceries ?? []).filter((grocery) => {
           return searchString(`${grocery.name}${grocery.tag}`, search);
         }),
-        "order",
+        (grocery) => grocery.updatedAt?.seconds,
         "desc"
       ),
       (grocery) => Boolean(grocery.closedAt)

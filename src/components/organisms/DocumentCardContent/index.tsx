@@ -38,7 +38,7 @@ export interface DocumentCardsPropContent {
 }
 
 const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [previewDocument, loadingPreview] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
   const { boards } = useBoard();

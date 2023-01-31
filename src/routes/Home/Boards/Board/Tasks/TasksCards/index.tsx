@@ -25,7 +25,7 @@ const TasksCards: FC<TasksCardsProps> = ({ search }) => {
         (tasks ?? []).filter((task) => {
           return searchString(`${task.name}${task.tag}`, search);
         }),
-        "order",
+        (task) => task.updatedAt?.seconds,
         "desc"
       ),
       (task) => Boolean(task.closedAt)

@@ -12,7 +12,7 @@ import NewDocumentModal from "./NewDocumentModal";
 const Documents: FC = () => {
   const { board, loadingDocuments, documents } = useBoard();
   const [search, setSearch] = useState("");
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
 
   if (!documents || loadingDocuments) {
     return <LoadingOverlay visible />;

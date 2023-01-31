@@ -16,7 +16,7 @@ const CreditCards: FC = () => {
   const { isSecure, cannotBeSecure } = useSecureLogin();
   const { board, loadingCreditCards, creditCards } = useBoard();
   const [search, setSearch] = useState("");
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
 
   if (cannotBeSecure) {
     return (

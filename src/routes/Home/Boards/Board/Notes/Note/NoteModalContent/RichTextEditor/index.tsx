@@ -27,7 +27,7 @@ export interface RichTextEditorProps {
 
 const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
   const [user] = useAuthState(auth);
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
 
   const editor = useEditor({
     extensions: [

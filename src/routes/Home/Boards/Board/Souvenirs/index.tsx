@@ -1,4 +1,3 @@
-import { Carousel } from "@mantine/carousel";
 import {
   Button,
   Card,
@@ -9,12 +8,12 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import { useDebouncedState, useDidUpdate } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
-import useBooleanState from "hooks/useBooleanState";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import {
   Collection,
   SouvenirDocument,
@@ -26,20 +25,23 @@ import { formatDate } from "utils/dayjs";
 import { spreadQuerySnapshot, storage } from "utils/firebase";
 import { cleanArray } from "utils/lib";
 import { getExtension } from "utils/storage";
+import { ONE_SECOND } from "utils/time";
 import { useBoard } from "../Provider";
 import CalendarCard from "./CalendarCard";
+import LoadingSouvenirCard from "./LoadingSouvenirCard";
 import NewSouvenirModal from "./NewSouvenirModal";
+import SouvenirCard from "./SouvenirCard";
 
 export const TRANSITION_DURATION = 200;
 
 const Souvenirs: FC = () => {
   const { board, loadingSouvenirs, souvenirs } = useBoard();
-  const [loading, start, stop] = useBooleanState();
   const [souvenirsWithDownloadUrls, setSouvenirsWithDownloadUrls] = useState<
     (SouvenirDocument & { downloadUrls: string[] })[]
   >([]);
   const [date, setDate] = useState(new Date());
   const [files, setFiles] = useState<File[]>();
+  const [counter, setCounter] = useDebouncedState(0, 5 * ONE_SECOND);
 
   const filteredSouvenirs = useMemo(() => {
     return (souvenirs ?? []).filter((souvenir) => {
@@ -47,10 +49,8 @@ const Souvenirs: FC = () => {
     });
   }, [date, souvenirs]);
 
-  useEffect(() => {
+  useDidUpdate(() => {
     (async () => {
-      start();
-
       const souvenirsWithDownloadUrls = await mapAsync(
         filteredSouvenirs,
         async (souvenir) => {
@@ -78,18 +78,8 @@ const Souvenirs: FC = () => {
       );
 
       setSouvenirsWithDownloadUrls(cleanArray(souvenirsWithDownloadUrls));
-
-      stop();
     })();
-  }, [date, filteredSouvenirs, start, stop]);
-
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setVisible(true);
-    }, 500);
-  }, []);
+  }, [date, filteredSouvenirs, counter]);
 
   if (!souvenirsWithDownloadUrls || loadingSouvenirs) {
     return <LoadingOverlay visible />;
@@ -172,41 +162,31 @@ const Souvenirs: FC = () => {
               </Card>
             )}
           </FileButton>
-          {loading
-            ? filteredSouvenirs.map((souvenir) => {
+          {filteredSouvenirs.map((souvenir) => {
+            const souvenirsWithDownloadUrl = souvenirsWithDownloadUrls.find(
+              (souvenirsWithDownloadUrl) => {
                 return (
-                  <Card withBorder>
-                    <Card.Section>
-                      <Image
-                        withPlaceholder
-                        height={200}
-                        placeholder={<LoadingOverlay visible />}
-                      />
-                    </Card.Section>
-                    <Text mt="md" c="dimmed">
-                      {souvenir.description}
-                    </Text>
-                  </Card>
+                  souvenirsWithDownloadUrl.id === souvenir.id &&
+                  souvenirsWithDownloadUrl.downloadUrls.length
                 );
-              })
-            : souvenirsWithDownloadUrls.map((souvenir) => {
-                return (
-                  <Card withBorder>
-                    <Card.Section>
-                      <Carousel withIndicators loop>
-                        {souvenir.downloadUrls.map((downloadUrl, index) => (
-                          <Carousel.Slide key={index}>
-                            <Image src={downloadUrl} height={200} />
-                          </Carousel.Slide>
-                        ))}
-                      </Carousel>
-                    </Card.Section>
-                    <Text mt="md" c="dimmed">
-                      {souvenir.description}
-                    </Text>
-                  </Card>
-                );
-              })}
+              }
+            );
+
+            if (souvenirsWithDownloadUrl) {
+              return (
+                <SouvenirCard
+                  key={souvenir.id}
+                  souvenir={souvenirsWithDownloadUrl}
+                />
+              );
+            }
+
+            setCounter(Date.now());
+
+            return (
+              <LoadingSouvenirCard key={souvenir.id} souvenir={souvenir} />
+            );
+          })}
         </SimpleGrid>
       </Stack>
     </>

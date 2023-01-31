@@ -32,7 +32,7 @@ export interface CreditCardFormOutput {
   expirationMonth: string;
   expirationYear: string;
   securityCode: string;
-  tag: string | FieldValue;
+  tag?: string | FieldValue;
 }
 
 export interface CreditCardFormInputsProps {

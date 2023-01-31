@@ -16,11 +16,9 @@ const useBoardsCollectionsData = <T>(
   const [data, setData] = useState<Record<string, T[]>>();
   const { isSecure } = useSecureLogin();
 
-  const boardIds = useMemo(() => {
-    return boards.map((board) => board.id as string);
-  }, [boards]);
-
   useEffect(() => {
+    const boardIds = boards.map((board) => board.id as string);
+
     const unsubscribes = boards.map((board) => {
       return onSnapshot(
         firestoreCollection(
@@ -48,7 +46,7 @@ const useBoardsCollectionsData = <T>(
     return () => {
       unsubscribes.forEach((unsubscribe) => unsubscribe());
     };
-  }, [boardIds, boards, collection, isSecure]);
+  }, [boards, collection, isSecure]);
 
   return useMemo(() => {
     return [

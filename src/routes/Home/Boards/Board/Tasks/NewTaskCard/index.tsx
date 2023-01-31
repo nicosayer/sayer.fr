@@ -14,7 +14,7 @@ import { useBoard } from "../../Provider";
 const NewTaskCard: FC = () => {
   const { board } = useBoard();
   const [user] = useAuthState(auth);
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [loading, start, stop] = useBooleanState();
   const form = useForm({
     initialValues: {

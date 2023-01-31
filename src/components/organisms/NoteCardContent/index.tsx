@@ -29,7 +29,7 @@ export interface NoteCardContentProps {
 }
 
 const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
   const { boardId } = useParams();
   const navigate = useNavigate();
 

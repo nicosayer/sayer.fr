@@ -33,7 +33,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
 }) => {
   const { boards } = useBoard();
   const theme = useMantineTheme();
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
 
   const board = useMemo(() => {
     return boards?.find(

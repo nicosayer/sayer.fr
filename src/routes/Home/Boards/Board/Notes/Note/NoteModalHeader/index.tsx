@@ -18,7 +18,7 @@ export interface NoteModalHeaderProps {
 }
 
 const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [name, setName] = useState(note?.name);
   const [debouncedName] = useDebouncedValue(note?.name, 10 * ONE_SECOND);
 

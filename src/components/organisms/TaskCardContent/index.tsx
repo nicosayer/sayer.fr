@@ -21,7 +21,7 @@ export interface TaskCardContentProps {
 }
 
 const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
 
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">

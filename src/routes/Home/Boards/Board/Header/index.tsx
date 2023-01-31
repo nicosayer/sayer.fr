@@ -31,7 +31,7 @@ const Header: FC = () => {
   const theme = useMantineTheme();
   const [user] = useAuthState(auth);
   const spotlight = useSpotlight();
-  const is768px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
   const os = useOs();
   const { customColors } = useColors();
 
@@ -47,7 +47,7 @@ const Header: FC = () => {
       <HeaderComponent height={{ base: 50, md: 70 }} p="md">
         <div className="flex items-center justify-between h-full">
           <Group>
-            {is768px ? null : (
+            {is768Px ? null : (
               <Burger
                 opened={isNavbarOpened}
                 onClick={toggleNavbar}
@@ -59,7 +59,7 @@ const Header: FC = () => {
             <ExtraBoardsBadge />
           </Group>
           <Group>
-            {is768px ? (
+            {is768Px ? (
               <TextInput
                 readOnly
                 placeholder="Rechercher"
@@ -87,7 +87,7 @@ const Header: FC = () => {
             <Menu shadow="md" width={200} withinPortal>
               <Menu.Target>
                 <div>
-                  {is768px ? (
+                  {is768Px ? (
                     <Button variant="light" leftIcon={<IconUser size={18} />}>
                       {user?.email}
                     </Button>

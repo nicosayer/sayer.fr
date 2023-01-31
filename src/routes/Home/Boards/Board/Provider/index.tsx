@@ -1,15 +1,8 @@
-import { useLocalStorage } from "@mantine/hooks";
+import { useDidUpdate, useLocalStorage } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { deleteDoc } from "firebase/firestore";
 import useBoardsCollectionsData from "hooks/useBoardsCollectionsData";
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-} from "react";
+import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
 import {
@@ -135,7 +128,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     Collection.tasks
   );
 
-  useEffect(() => {
+  useDidUpdate(() => {
     groceries.forEach((grocery) => {
       if (
         grocery.closedAt &&
@@ -149,7 +142,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     });
   }, [groceries]);
 
-  useEffect(() => {
+  useDidUpdate(() => {
     tasks.forEach((task) => {
       if (
         task.closedAt &&

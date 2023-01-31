@@ -22,6 +22,7 @@ const LoadingOverlay: FC<LoadingOverlayProps> = ({ visible, ...rest }) => {
 
   return (
     <MantineLoadingOverlay
+      zIndex={0}
       visible={visible}
       loader={<Loader style={{ transform: `rotate(${deg}deg)` }} />}
       {...rest}

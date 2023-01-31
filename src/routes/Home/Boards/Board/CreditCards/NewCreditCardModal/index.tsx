@@ -2,7 +2,7 @@ import { Button, Group, Stack, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
-import { collection, deleteField } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useMemo } from "react";
 import {
@@ -72,7 +72,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
         expirationMonth: expirationMonth,
         expirationYear: expirationYear,
         securityCode: values.securityCode,
-        tag: values.tag || deleteField(),
+        tag: values.tag || undefined,
       };
     },
   });

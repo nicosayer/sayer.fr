@@ -19,7 +19,7 @@ const Notes: FC = () => {
   const [search, setSearch] = useState("");
   const [loadingNew, start, stop] = useBooleanState();
   const navigate = useNavigate();
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
 
   const createNoteAndOpen = useCallback(() => {
     if (board?.ref) {

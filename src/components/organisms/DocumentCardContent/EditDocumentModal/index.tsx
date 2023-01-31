@@ -41,6 +41,8 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document, board }) => {
       onSubmit={form.onSubmit((values) => {
         if (document?.ref) {
           start();
+          console.log(values);
+
           updateDoc<DocumentDocument>(document.ref, {
             name: values.name,
             tag: values.tag,

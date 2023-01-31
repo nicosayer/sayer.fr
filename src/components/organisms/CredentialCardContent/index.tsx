@@ -29,7 +29,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
   credential,
 }) => {
   const { boards } = useBoard();
-  const is768Px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
 
   const board = useMemo(() => {
     return boards?.find(

@@ -10,7 +10,7 @@ const Title: FC = () => {
   const { board } = useBoard();
   const { boards } = useBoards();
   const { boardId } = useParams();
-  const is768px = useMediaQuery("(min-width: 768px)");
+  const is768Px = useMediaQuery("(min-width: 768px)", true);
   const navigate = useNavigate();
 
   const otherBoards = useMemo(() => {
@@ -20,7 +20,7 @@ const Title: FC = () => {
   const title = useMemo(() => {
     return (
       <Group spacing="xs">
-        {is768px ? <IconLayoutList size={18} /> : null}
+        {is768Px ? <IconLayoutList size={18} /> : null}
         <Text
           fw={500}
           className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
@@ -29,7 +29,7 @@ const Title: FC = () => {
         </Text>
       </Group>
     );
-  }, [board?.name, is768px]);
+  }, [board?.name, is768Px]);
 
   if (!otherBoards.length) {
     return title;

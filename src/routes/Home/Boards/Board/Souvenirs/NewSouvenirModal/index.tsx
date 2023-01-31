@@ -85,7 +85,7 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
               tag: values.tag,
             }
           )
-            .then((souvenir) => {
+            .then(async (souvenir) => {
               return runInSeries(files, async (file) => {
                 if (board.ref) {
                   addDoc<SouvenirPictureDocument>(
@@ -127,18 +127,22 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
       })}
     >
       <Stack>
-        <Carousel
-          withIndicators
-          loop
-          getEmblaApi={setEmbla}
-          className="overflow-hidden border border-gray-300 border-solid rounded-md"
-        >
-          {files.map((file, index) => (
-            <Carousel.Slide key={index}>
-              <Image src={URL.createObjectURL(file)} height={200} />
-            </Carousel.Slide>
-          ))}
-        </Carousel>
+        {files.length > 1 ? (
+          <Carousel
+            withIndicators
+            loop
+            getEmblaApi={setEmbla}
+            className="overflow-hidden border border-gray-300 border-solid rounded-md"
+          >
+            {files.map((file, index) => (
+              <Carousel.Slide key={index}>
+                <Image src={URL.createObjectURL(file)} height={200} />
+              </Carousel.Slide>
+            ))}
+          </Carousel>
+        ) : (
+          <Image src={URL.createObjectURL(files[0])} height={200} />
+        )}
         <Textarea
           data-autofocus
           withAsterisk
