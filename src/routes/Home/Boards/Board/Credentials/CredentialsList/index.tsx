@@ -1,16 +1,16 @@
-import { Card, Stack } from "@mantine/core";
-import CredentialCardContent from "components/organisms/CredentialCardContent";
+import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize, searchString } from "utils/string";
+import CredentialCard from "./CredentialCard";
 
-export interface CredentialsCardsProps {
+export interface CredentialsListProps {
   search: string;
 }
 
-const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
+const CredentialsList: FC<CredentialsListProps> = ({ search }) => {
   const { credentials } = useBoard();
 
   const filteredCredentials = useMemo(() => {
@@ -29,14 +29,10 @@ const CredentialsCards: FC<CredentialsCardsProps> = ({ search }) => {
   return (
     <Stack>
       {filteredCredentials.map((credential) => {
-        return (
-          <Card key={credential.id} withBorder>
-            <CredentialCardContent credential={credential} />
-          </Card>
-        );
+        return <CredentialCard key={credential.id} credential={credential} />;
       })}
     </Stack>
   );
 };
 
-export default CredentialsCards;
+export default CredentialsList;

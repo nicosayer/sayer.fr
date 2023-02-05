@@ -11,7 +11,7 @@ import { formatDate } from "utils/dayjs";
 import { addDoc } from "utils/firebase";
 import { useBoard } from "../Provider";
 import Note from "./Note";
-import NotesCards from "./NotesCards";
+import NotesList from "./NotesList";
 
 const Notes: FC = () => {
   const { board, loadingNotes, notes } = useBoard();
@@ -84,7 +84,7 @@ const Notes: FC = () => {
             </Button>
           </Group>
         </Group>
-        <NotesCards search={search} />
+        <NotesList search={search} />
       </Stack>
     </>
   );

@@ -40,7 +40,9 @@ const UserCard: FC = () => {
                   labels: { confirm: "Envoyer", cancel: "Annuler" },
                   onConfirm: () => {
                     if (user?.email) {
-                      sendPasswordResetEmail(user.email).then(() => {
+                      sendPasswordResetEmail(user.email, {
+                        url: window.location.origin,
+                      }).then(() => {
                         setDisabled(true);
                         showNotification({
                           color: "green",

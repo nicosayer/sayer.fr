@@ -13,7 +13,7 @@ import CreditCards from "./Boards/Board/CreditCards";
 import Documents from "./Boards/Board/Documents";
 import Groceries from "./Boards/Board/Groceries";
 import Notes from "./Boards/Board/Notes";
-import BaordRedirect from "./Boards/Board/Redirect";
+import BoardRedirect from "./Boards/Board/Redirect";
 import Souvenirs from "./Boards/Board/Souvenirs";
 import Tasks from "./Boards/Board/Tasks";
 
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
             path: ":boardId",
             element: <Board />,
             children: [
-              { index: true, element: <BaordRedirect /> },
+              { index: true, element: <BoardRedirect /> },
               {
                 path: "credentials",
                 element: <Credentials />,

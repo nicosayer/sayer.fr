@@ -1,17 +1,17 @@
-import { Card, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
-import NoteCardContent from "components/organisms/NoteCardContent";
 import { orderBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { formatDate } from "utils/dayjs";
 import { searchString } from "utils/string";
+import NoteCard from "./NoteCard";
 
-export interface NotesCardsProps {
+export interface NotesListProps {
   search: string;
 }
 
-const NotesCards: FC<NotesCardsProps> = ({ search }) => {
+const NotesList: FC<NotesListProps> = ({ search }) => {
   const { notes } = useBoard();
 
   const filteredNotes = useMemo(() => {
@@ -40,14 +40,10 @@ const NotesCards: FC<NotesCardsProps> = ({ search }) => {
   return (
     <Stack>
       {filteredNotes.map((note) => {
-        return (
-          <Card key={note.id} withBorder>
-            <NoteCardContent note={note} />
-          </Card>
-        );
+        return <NoteCard key={note.id} note={note} />;
       })}
     </Stack>
   );
 };
 
-export default NotesCards;
+export default NotesList;

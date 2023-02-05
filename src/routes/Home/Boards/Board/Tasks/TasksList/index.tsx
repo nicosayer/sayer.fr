@@ -1,23 +1,19 @@
-import { Card, Stack, Text } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import { IconLayoutList } from "@tabler/icons";
 import NoResult from "components/organisms/NoResult";
-import TaskCardContent from "components/organisms/TaskCardContent";
-import { Timestamp } from "firebase/firestore";
 import { groupBy, orderBy } from "lodash";
 import { FC, useMemo } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { TaskDocument } from "types/firebase/collections";
-import { auth, updateDoc } from "utils/firebase";
 import { searchString } from "utils/string";
+import ClosedTaskCard from "./ClosedTaskCard";
+import OpenedTaskCard from "./OpenedTaskCard";
 
-export interface TasksCardsProps {
+export interface TasksListProps {
   search: string;
 }
 
-const TasksCards: FC<TasksCardsProps> = ({ search }) => {
+const TasksList: FC<TasksListProps> = ({ search }) => {
   const { tasks } = useBoard();
-  const [user] = useAuthState(auth);
 
   const filteredTasks = useMemo(() => {
     return groupBy(
@@ -51,33 +47,13 @@ const TasksCards: FC<TasksCardsProps> = ({ search }) => {
   return (
     <Stack>
       {(filteredTasks.false ?? []).map((task) => {
-        return (
-          <Card
-            key={task.id}
-            withBorder
-            className="cursor-pointer"
-            onClick={() => {
-              if (task.ref && user?.email) {
-                updateDoc<TaskDocument>(task.ref, {
-                  closedAt: Timestamp.now(),
-                  closedBy: user.email,
-                });
-              }
-            }}
-          >
-            <TaskCardContent task={task} />
-          </Card>
-        );
+        return <OpenedTaskCard key={task.id} task={task} />;
       })}
       {(filteredTasks.true ?? []).map((task) => {
-        return (
-          <Card key={task.id} withBorder className="opacity-50">
-            <TaskCardContent task={task} />
-          </Card>
-        );
+        return <ClosedTaskCard key={task.id} task={task} />;
       })}
     </Stack>
   );
 };
 
-export default TasksCards;
+export default TasksList;

@@ -1,16 +1,16 @@
-import { Card, Stack } from "@mantine/core";
-import DocumentCardContent from "components/organisms/DocumentCardContent";
+import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize, searchString } from "utils/string";
+import DocumentCard from "./DocumentCard";
 
-export interface DocumentsCardsProps {
+export interface DocumentsListProps {
   search: string;
 }
 
-const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
+const DocumentsList: FC<DocumentsListProps> = ({ search }) => {
   const { documents } = useBoard();
 
   const filteredDocuments = useMemo(() => {
@@ -29,14 +29,10 @@ const DocumentsCards: FC<DocumentsCardsProps> = ({ search }) => {
   return (
     <Stack>
       {filteredDocuments.map((document) => {
-        return (
-          <Card key={document.id} withBorder>
-            <DocumentCardContent document={document} />
-          </Card>
-        );
+        return <DocumentCard key={document.id} document={document} />;
       })}
     </Stack>
   );
 };
 
-export default DocumentsCards;
+export default DocumentsList;

@@ -1,16 +1,16 @@
-import { Card, Stack } from "@mantine/core";
-import CreditCardCardContent from "components/organisms/CreditCardCardContent";
+import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize, searchString } from "utils/string";
+import CreditCardCard from "./CreditCardCard";
 
-export interface CreditCardsCardsProps {
+export interface CreditCardsListProps {
   search: string;
 }
 
-const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
+const CreditCardsList: FC<CreditCardsListProps> = ({ search }) => {
   const { creditCards } = useBoard();
 
   const filteredCreditCards = useMemo(() => {
@@ -29,14 +29,10 @@ const CreditCardsCards: FC<CreditCardsCardsProps> = ({ search }) => {
   return (
     <Stack>
       {filteredCreditCards.map((creditCard) => {
-        return (
-          <Card key={creditCard.id} withBorder>
-            <CreditCardCardContent creditCard={creditCard} />
-          </Card>
-        );
+        return <CreditCardCard key={creditCard.id} creditCard={creditCard} />;
       })}
     </Stack>
   );
 };
 
-export default CreditCardsCards;
+export default CreditCardsList;

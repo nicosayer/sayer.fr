@@ -4,7 +4,7 @@ import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import NewTaskCard from "./NewTaskCard";
-import TasksCards from "./TasksCards";
+import TasksList from "./TasksList";
 
 const Tasks: FC = () => {
   const { loadingTasks, tasks } = useBoard();
@@ -29,7 +29,7 @@ const Tasks: FC = () => {
         />
       </Group>
       <NewTaskCard />
-      <TasksCards search={search} />
+      <TasksList search={search} />
     </Stack>
   );
 };

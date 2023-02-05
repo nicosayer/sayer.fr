@@ -9,7 +9,7 @@ import { useSecureLogin } from "providers/SecureLogin";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import Credential from "./Credential";
-import CredentialsCards from "./CredentialsCards";
+import CredentialsList from "./CredentialsList";
 import NewCredentialModal from "./NewCredentialModal";
 
 const Credentials: FC = () => {
@@ -95,7 +95,7 @@ const Credentials: FC = () => {
             </Button>
           </Group>
         </Group>
-        <CredentialsCards search={search} />
+        <CredentialsList search={search} />
       </Stack>
     </>
   );

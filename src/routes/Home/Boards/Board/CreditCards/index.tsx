@@ -9,7 +9,7 @@ import { useSecureLogin } from "providers/SecureLogin";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import CreditCard from "./CreditCard";
-import CreditCardsCards from "./CreditCardsCards";
+import CreditCardsList from "./CreditCardsList";
 import NewCreditCardModal from "./NewCreditCardModal";
 
 const CreditCards: FC = () => {
@@ -96,7 +96,7 @@ const CreditCards: FC = () => {
             </Button>
           </Group>
         </Group>
-        <CreditCardsCards search={search} />
+        <CreditCardsList search={search} />
       </Stack>
     </>
   );

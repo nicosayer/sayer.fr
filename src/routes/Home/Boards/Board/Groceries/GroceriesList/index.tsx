@@ -1,23 +1,19 @@
-import { Card, Stack, Text } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import { IconLayoutList } from "@tabler/icons";
-import GroceryCardContent from "components/organisms/GroceryCardContent";
 import NoResult from "components/organisms/NoResult";
-import { Timestamp } from "firebase/firestore";
 import { groupBy, orderBy } from "lodash";
 import { FC, useMemo } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { GroceryDocument } from "types/firebase/collections";
-import { auth, updateDoc } from "utils/firebase";
 import { searchString } from "utils/string";
+import ClosedGroceryCard from "./ClosedGroceryCard";
+import OpenedGroceryCard from "./OpenedGroceryCard";
 
-export interface GroceriesCardsProps {
+export interface GroceriesListProps {
   search: string;
 }
 
-const GroceriesCards: FC<GroceriesCardsProps> = ({ search }) => {
+const GroceriesList: FC<GroceriesListProps> = ({ search }) => {
   const { groceries } = useBoard();
-  const [user] = useAuthState(auth);
 
   const filteredGroceries = useMemo(() => {
     return groupBy(
@@ -52,33 +48,13 @@ const GroceriesCards: FC<GroceriesCardsProps> = ({ search }) => {
   return (
     <Stack>
       {(filteredGroceries.false ?? []).map((grocery) => {
-        return (
-          <Card
-            key={grocery.id}
-            withBorder
-            className="cursor-pointer"
-            onClick={() => {
-              if (grocery.ref && user?.email) {
-                updateDoc<GroceryDocument>(grocery.ref, {
-                  closedAt: Timestamp.now(),
-                  closedBy: user.email,
-                });
-              }
-            }}
-          >
-            <GroceryCardContent grocery={grocery} />
-          </Card>
-        );
+        return <OpenedGroceryCard key={grocery.id} grocery={grocery} />;
       })}
       {(filteredGroceries.true ?? []).map((grocery) => {
-        return (
-          <Card key={grocery.id} withBorder className="opacity-50">
-            <GroceryCardContent grocery={grocery} />
-          </Card>
-        );
+        return <ClosedGroceryCard key={grocery.id} grocery={grocery} />;
       })}
     </Stack>
   );
 };
 
-export default GroceriesCards;
+export default GroceriesList;

@@ -3,7 +3,7 @@ import { IconSearch } from "@tabler/icons";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
-import GroceriesCards from "./GroceriesCards";
+import GroceriesList from "./GroceriesList";
 import NewGroceryCard from "./NewGroceryCard";
 
 const Groceries: FC = () => {
@@ -29,7 +29,7 @@ const Groceries: FC = () => {
         />
       </Group>
       <NewGroceryCard />
-      <GroceriesCards search={search} />
+      <GroceriesList search={search} />
     </Stack>
   );
 };

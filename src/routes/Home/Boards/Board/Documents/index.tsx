@@ -6,7 +6,7 @@ import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import Document from "./Document";
-import DocumentsCards from "./DocumentsCards";
+import DocumentsList from "./DocumentsList";
 import NewDocumentModal from "./NewDocumentModal";
 
 const Documents: FC = () => {
@@ -73,7 +73,7 @@ const Documents: FC = () => {
             </Button>
           </Group>
         </Group>
-        <DocumentsCards search={search} />
+        <DocumentsList search={search} />
       </Stack>
     </>
   );
