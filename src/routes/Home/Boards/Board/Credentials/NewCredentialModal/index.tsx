@@ -2,21 +2,15 @@ import { Button, Group, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
-import { collection } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
-import {
-  BoardDocument,
-  Collection,
-  CredentialDocument,
-} from "types/firebase/collections";
-import { addDoc } from "utils/firebase";
+import { Collection, CredentialDocument } from "types/firebase/collections";
+import { addDoc, db } from "utils/firebase";
+import { useBoard } from "../../Provider";
 
-export interface NewCredentialModalProps {
-  board: BoardDocument;
-}
-
-const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
+const NewCredentialModal: FC = () => {
+  const { board, tags } = useBoard();
   const [loading, start, stop] = useBooleanState();
   const form = useForm({
     initialValues: {
@@ -24,7 +18,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
       url: "",
       username: "",
       password: "",
-      tag: "",
+      tags: [] as string[],
     },
 
     validate: {
@@ -45,7 +39,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
         username: values.username.trim(),
         password: values.password,
         url: values.url.trim() || undefined,
-        tag: values.tag || undefined,
+        tags: values.tags,
       };
     },
   });
@@ -62,7 +56,9 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
               username: values.username,
               password: values.password,
               url: values.url,
-              tag: values.tag,
+              tags: values.tags.map((tag) => {
+                return doc(db, tag);
+              }),
             }
           )
             .then(() => closeAllModals())
@@ -71,7 +67,7 @@ const NewCredentialModal: FC<NewCredentialModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <CredentialFormInputs loading={loading} form={form} board={board} />
+        <CredentialFormInputs loading={loading} form={form} tags={tags} />
         <div className="flex ml-auto">
           <Group>
             <Button

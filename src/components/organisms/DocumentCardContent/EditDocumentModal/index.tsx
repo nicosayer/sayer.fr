@@ -1,25 +1,30 @@
 import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
-import TagSelect from "components/molecules/Select/Tag";
-import { deleteField } from "firebase/firestore";
+import TagsSelect from "components/molecules/Select/Tags";
+import { doc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC } from "react";
-import { BoardDocument, DocumentDocument } from "types/firebase/collections";
-import { updateDoc } from "utils/firebase";
+import { FC, useMemo } from "react";
+import { useBoards } from "routes/Home/Boards/Provider";
+import { DocumentDocument } from "types/firebase/collections";
+import { db, updateDoc } from "utils/firebase";
 
 export interface EditDocumentModalProps {
-  board: BoardDocument;
   document: DocumentDocument;
 }
 
-const EditDocumentModal: FC<EditDocumentModalProps> = ({ document, board }) => {
+const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
   const [loading, start, stop] = useBooleanState();
+  const { boardTags } = useBoards();
+
+  const tags = useMemo(() => {
+    return boardTags[String(document.ref?.parent.parent?.id)] ?? [];
+  }, [boardTags, document.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {
       name: document.name ?? "",
-      tag: document.tag ?? "",
+      tags: (document.tags ?? []).map((tag) => tag.path),
     },
 
     validate: {
@@ -31,7 +36,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document, board }) => {
     transformValues: (values) => {
       return {
         name: values.name.trim(),
-        tag: values.tag || deleteField(),
+        tags: values.tags,
       };
     },
   });
@@ -41,11 +46,11 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document, board }) => {
       onSubmit={form.onSubmit((values) => {
         if (document?.ref) {
           start();
-          console.log(values);
-
           updateDoc<DocumentDocument>(document.ref, {
             name: values.name,
-            tag: values.tag,
+            tags: values.tags.map((tag) => {
+              return doc(db, tag);
+            }),
           })
             .then(() => closeAllModals())
             .finally(stop);
@@ -61,13 +66,13 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document, board }) => {
           placeholder="Passeport"
           {...form.getInputProps("name")}
         />
-        {board?.tags?.length ? (
-          <TagSelect
+        {tags?.length ? (
+          <TagsSelect
             label="Étiquette"
             placeholder="John Doe"
-            board={board}
+            tags={tags}
             loading={loading}
-            {...form.getInputProps("tag")}
+            {...form.getInputProps("tags")}
           />
         ) : undefined}
         <div className="flex ml-auto">

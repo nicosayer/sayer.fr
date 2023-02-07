@@ -49,7 +49,7 @@ const Credentials: FC = () => {
               openModal({
                 centered: true,
                 title: "Nouveau mot de passe",
-                children: <NewCredentialModal board={board} />,
+                children: <NewCredentialModal />,
               });
             }
           }}
@@ -86,7 +86,7 @@ const Credentials: FC = () => {
                   openModal({
                     centered: true,
                     title: "Nouveau mot de passe",
-                    children: <NewCredentialModal board={board} />,
+                    children: <NewCredentialModal />,
                   });
                 }
               }}

@@ -4,26 +4,23 @@ import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import { IconUpload } from "@tabler/icons";
 import classNames from "classnames";
-import TagSelect from "components/molecules/Select/Tag";
-import { collection } from "firebase/firestore";
+import TagsSelect from "components/molecules/Select/Tags";
+import { collection, doc } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useRef } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import {
-  BoardDocument,
   Collection,
   DocumentDocument,
   DocumentMime,
 } from "types/firebase/collections";
-import { addDoc, storage } from "utils/firebase";
+import { addDoc, db, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
+import { useBoard } from "../../Provider";
 
-export interface NewDocumentModalProps {
-  board: BoardDocument;
-}
-
-const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
+const NewDocumentModal: FC = () => {
+  const { board, tags } = useBoard();
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
   const formRef = useRef<HTMLFormElement>(null);
@@ -32,7 +29,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
     initialValues: {
       name: "",
       file: undefined as FileWithPath | undefined,
-      tag: "",
+      tags: [] as string[],
     },
 
     validate: {
@@ -49,7 +46,7 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
         name: values.name.trim(),
         file: values.file,
         mime: values.file?.type as DocumentMime | undefined,
-        tag: values.tag || undefined,
+        tags: values.tags,
       };
     },
   });
@@ -67,8 +64,10 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             collection(board.ref, Collection.documents),
             {
               name: values.name,
-              tag: values.tag,
               mime: values.mime,
+              tags: values.tags.map((tag) => {
+                return doc(db, tag);
+              }),
             }
           )
             .then((document) => {
@@ -129,13 +128,13 @@ const NewDocumentModal: FC<NewDocumentModalProps> = ({ board }) => {
             </Group>
           </Dropzone>
         </Input.Wrapper>
-        {board?.tags?.length ? (
-          <TagSelect
+        {tags?.length ? (
+          <TagsSelect
             label="Étiquette"
             placeholder="John Doe"
-            board={board}
+            tags={tags}
             loading={loading}
-            {...form.getInputProps("tag")}
+            {...form.getInputProps("tags")}
           />
         ) : undefined}
         <div className="flex ml-auto">

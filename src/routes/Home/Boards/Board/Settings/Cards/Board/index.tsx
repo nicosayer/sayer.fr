@@ -3,46 +3,40 @@ import {
   Badge,
   Button,
   Card,
+  Group,
+  Input,
   MultiSelect,
   Stack,
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconX } from "@tabler/icons";
-import { deleteField } from "firebase/firestore";
+import { deleteDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
-import { BoardDocument } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
+import { BoardDocument, TagDocument } from "types/firebase/collections";
 import { updateDoc } from "utils/firebase";
-import { capitalizeFirsts, sanitize } from "utils/string";
 import { ONE_SECOND } from "utils/time";
+import NewTagBadge from "./NewTagBadge";
 
 export interface BoardCardProps {
   board: BoardDocument;
+  tags: TagDocument[];
 }
 
-const BoardCard: FC<BoardCardProps> = ({ board }) => {
+const BoardCard: FC<BoardCardProps> = ({ board, tags }) => {
   const [loading, start, stop] = useBooleanState({ stopDelay: ONE_SECOND });
-
   const [users, setUsers] = useState(board?.users ?? []);
-  const [tags, setTags] = useState(board?.tags ?? []);
 
   const form = useForm({
     initialValues: {
       name: board?.name ?? "",
-      tags: board?.tags ?? [],
       users: board?.users ?? [],
     },
 
     validate: {
       name: (name) => {
         return name.length > 0 ? null : "Ce champ ne doit pas être vide";
-      },
-      tags: (tags) => {
-        return Array.isArray(tags) && tags.every((tag) => tag.length > 0)
-          ? null
-          : "Ce champ ne doit pas être vide";
       },
       users: (users) => {
         return users.every(
@@ -57,7 +51,6 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
       return {
         name: values.name.trim(),
         users: values.users,
-        tags: values.tags || deleteField(),
       };
     },
   });
@@ -71,7 +64,6 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
             updateDoc<BoardDocument>(board.ref, {
               name: values.name,
               users: values.users,
-              tags: values.tags,
             }).finally(stop);
           }
         })}
@@ -83,47 +75,63 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
             disabled={loading}
             {...form.getInputProps("name")}
           />
-          <MultiSelect
-            label="Étiquettes"
-            data={tags}
-            placeholder="John Doe"
-            searchable
-            creatable
-            getCreateLabel={(query) => `+ Ajouter ${query}`}
-            onCreate={(query) => {
-              const tag = capitalizeFirsts(query.trim());
-              setTags((old) => [...old, tag]);
-              return tag;
-            }}
-            shouldCreate={(query) => {
-              return (
-                query.length > 2 &&
-                !tags.map(sanitize).includes(sanitize(query))
-              );
-            }}
-            valueComponent={({ value, onRemove, ...p }) => {
-              return (
-                <Badge
-                  color={getColorFromString(value)}
-                  variant="dot"
-                  className="mr-2"
-                  rightSection={
-                    <ActionIcon
-                      size="xs"
-                      variant="transparent"
-                      onClick={onRemove}
-                      className="-mr-[6px]"
+          <Input.Wrapper label="Etiquettes">
+            <Group>
+              {tags.map((tag) => {
+                return (
+                  <Badge
+                    key={tag.id}
+                    color={tag.color}
+                    variant="dot"
+                    rightSection={
+                      <ActionIcon
+                        size="xs"
+                        variant="transparent"
+                        className="-mr-[6px]"
+                        onClick={() => {
+                          if (tag.ref) {
+                            deleteDoc(tag.ref);
+                          }
+                        }}
+                      >
+                        <IconX size={10} />
+                      </ActionIcon>
+                    }
+                  >
+                    <div
+                      className="outline-none"
+                      contentEditable
+                      onBlur={(event) => {
+                        const value =
+                          event.currentTarget.textContent
+                            ?.trim()
+                            .toLowerCase() ?? "";
+
+                        if (
+                          value &&
+                          !tags.some((tag) => tag.name === value) &&
+                          tag?.ref
+                        ) {
+                          event.currentTarget.blur();
+                          updateDoc<TagDocument>(tag.ref, { name: value });
+                        } else {
+                          event.currentTarget.textContent = String(tag.name);
+                        }
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          event.currentTarget.blur();
+                        }
+                      }}
                     >
-                      <IconX size={10} />
-                    </ActionIcon>
-                  }
-                >
-                  {value}
-                </Badge>
-              );
-            }}
-            {...form.getInputProps("tags")}
-          />
+                      {tag.name}
+                    </div>
+                  </Badge>
+                );
+              })}
+              <NewTagBadge board={board} tags={tags} />
+            </Group>
+          </Input.Wrapper>
           <MultiSelect
             label="Utilisateurs"
             description="Les utilisateurs peuvent visualiser, modifier et supprimer tous les élèments du board"
@@ -143,6 +151,12 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
             {...form.getInputProps("users")}
           />
           <div>
+            <button
+              type="submit"
+              disabled
+              className="hidden"
+              aria-hidden="true"
+            />
             <Button loading={loading} type="submit">
               Sauvegarder
             </Button>

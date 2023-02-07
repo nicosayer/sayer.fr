@@ -51,7 +51,7 @@ const Note: FC = () => {
           title: "w-full",
           modal: darkMode ? "bg-[#141517]" : "bg-[#f8f9fa]",
         }}
-        title={<NoteModalHeader board={board} note={note} />}
+        title={<NoteModalHeader note={note} />}
       >
         <NoteModalContent note={note} />
       </Modal>

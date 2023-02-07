@@ -9,6 +9,7 @@ export enum Collection {
   notes = "notes",
   souvenirs = "souvenirs",
   souvenirPictures = "souvenirPictures",
+  tags = "tags",
   tasks = "tasks",
 }
 
@@ -17,7 +18,6 @@ export interface BoardDocument {
   ref?: DocumentReference<BoardDocument>;
   name?: string;
   users?: string[];
-  tags?: string[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -29,7 +29,7 @@ export interface CredentialDocument {
   url?: string;
   username?: string;
   password?: string;
-  tag?: string;
+  tags?: DocumentReference<TagDocument>[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -44,7 +44,7 @@ export interface CreditCardDocument {
   expirationYear?: string;
   securityCode?: string;
   color?: string;
-  tag?: string;
+  tags?: DocumentReference<TagDocument>[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -60,7 +60,7 @@ export interface DocumentDocument {
   ref?: DocumentReference<DocumentDocument>;
   name?: string;
   mime?: DocumentMime;
-  tag?: string;
+  tags?: DocumentReference<TagDocument>[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -73,7 +73,6 @@ export interface GroceryDocument {
   openedBy?: string;
   closedAt?: Timestamp;
   closedBy?: string;
-  tag?: string;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -85,7 +84,7 @@ export interface NoteDocument {
   base64?: string;
   text?: string;
   date?: string;
-  tag?: string;
+  tags?: DocumentReference<TagDocument>[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -95,7 +94,7 @@ export interface SouvenirDocument {
   ref?: DocumentReference<SouvenirDocument>;
   description?: string;
   date?: string;
-  tag?: string;
+  tags?: DocumentReference<TagDocument>[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -113,6 +112,15 @@ export interface SouvenirPictureDocument {
   updatedAt?: Timestamp;
 }
 
+export interface TagDocument {
+  id?: string;
+  ref?: DocumentReference<TaskDocument>;
+  name?: string;
+  color?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
+}
+
 export interface TaskDocument {
   id?: string;
   ref?: DocumentReference<TaskDocument>;
@@ -121,7 +129,6 @@ export interface TaskDocument {
   openedBy?: string;
   closedAt?: Timestamp;
   closedBy?: string;
-  tag?: string;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }

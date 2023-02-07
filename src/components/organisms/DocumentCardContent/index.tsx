@@ -28,7 +28,6 @@ import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, DocumentMime } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 import EditDocumentModal from "./EditDocumentModal";
@@ -56,7 +55,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
           centered: true,
           zIndex: 1000,
           title: "Modifier le document",
-          children: <EditDocumentModal document={document} board={board} />,
+          children: <EditDocumentModal document={document} />,
         });
       }
     },
@@ -107,15 +106,6 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
     <Stack>
       <Text fw={600} className="text-center">
         {document.name}
-        {document.tag && is768Px && (
-          <Badge
-            variant="dot"
-            color={getColorFromString(document.tag)}
-            className="absolute right-[16px]"
-          >
-            {document.tag}
-          </Badge>
-        )}
       </Text>
       <Group position="center" spacing="xs">
         <ThemeIcon variant="light" color="gray">

@@ -10,14 +10,12 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import TagSelect from "components/molecules/Select/Tag";
 import { collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useRef, useState } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import {
-  BoardDocument,
   Collection,
   SouvenirDocument,
   SouvenirPictureDocument,
@@ -28,20 +26,20 @@ import { formatDate } from "utils/dayjs";
 import { addDoc, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 import { TRANSITION_DURATION } from "..";
+import { useBoard } from "../../Provider";
 
 export interface NewSouvenirModalContentProps {
-  board: BoardDocument;
   files: File[];
   onClose: () => void;
   defaultDate?: Date;
 }
 
 const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
-  board,
   files,
   onClose,
   defaultDate = new Date(),
 }) => {
+  const { board } = useBoard();
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
   const formRef = useRef<HTMLFormElement>(null);
@@ -74,7 +72,7 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
     <form
       ref={formRef}
       onSubmit={form.onSubmit(async (values) => {
-        if (board.ref) {
+        if (board?.ref) {
           start();
 
           addDoc<SouvenirDocument>(
@@ -82,7 +80,6 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
             {
               description: values.description,
               date: values.date,
-              tag: values.tag,
             }
           )
             .then(async (souvenir) => {
@@ -159,15 +156,6 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
           clearable={false}
           {...form.getInputProps("date")}
         />
-        {board?.tags?.length ? (
-          <TagSelect
-            label="Étiquette"
-            placeholder="John Doe"
-            board={board}
-            loading={loading}
-            {...form.getInputProps("tag")}
-          />
-        ) : undefined}
         <div className="flex ml-auto">
           <Group>
             <Button variant="default" disabled={loading} onClick={onClose}>
@@ -184,13 +172,11 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
 };
 
 export interface NewSouvenirModalProps extends Omit<ModalProps, "opened"> {
-  board: BoardDocument;
   files?: File[];
   defaultDate?: Date;
 }
 
 const NewSouvenirModal: FC<NewSouvenirModalProps> = ({
-  board,
   files,
   onClose,
   defaultDate,
@@ -206,7 +192,6 @@ const NewSouvenirModal: FC<NewSouvenirModalProps> = ({
     >
       {files?.length && (
         <NewSouvenirModalContent
-          board={board}
           files={files}
           onClose={onClose}
           defaultDate={defaultDate}

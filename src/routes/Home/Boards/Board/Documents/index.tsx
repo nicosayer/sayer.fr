@@ -29,7 +29,7 @@ const Documents: FC = () => {
               openModal({
                 centered: true,
                 title: "Nouveau document",
-                children: <NewDocumentModal board={board} />,
+                children: <NewDocumentModal />,
               });
             }
           }}
@@ -64,7 +64,7 @@ const Documents: FC = () => {
                   openModal({
                     centered: true,
                     title: "Nouveau document",
-                    children: <NewDocumentModal board={board} />,
+                    children: <NewDocumentModal />,
                   });
                 }
               }}

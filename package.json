@@ -31,6 +31,7 @@
     "firebase": "^9.13.0",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
+    "nanoid": "^4.0.1",
     "npm": "^9.2.0",
     "prosemirror-commands": "^1.5.0",
     "prosemirror-dropcursor": "^1.5.0",

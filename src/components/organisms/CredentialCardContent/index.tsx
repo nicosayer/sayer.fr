@@ -1,6 +1,5 @@
 import {
   ActionIcon,
-  Badge,
   Button,
   CopyButton,
   Group,
@@ -18,7 +17,6 @@ import { deleteDoc } from "firebase/firestore";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CredentialDocument } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
 import EditCredentialModal from "./EditCredentialModal";
 
 export interface CredentialCardContentProps {
@@ -44,9 +42,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
           centered: true,
           zIndex: 1000,
           title: "Modifier le mot de passe",
-          children: (
-            <EditCredentialModal credential={credential} board={board} />
-          ),
+          children: <EditCredentialModal credential={credential} />,
         });
       }
     },
@@ -78,15 +74,6 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
     <Stack>
       <Group position="center">
         <CredentialName credential={credential} fw={600} />
-        {credential.tag && is768Px && (
-          <Badge
-            variant="dot"
-            color={getColorFromString(credential.tag)}
-            className="absolute right-[16px]"
-          >
-            {credential.tag}
-          </Badge>
-        )}
       </Group>
       <div className="grid gap-2">
         <Group position="center" spacing="xs">

@@ -21,7 +21,6 @@ import { deleteDoc } from "firebase/firestore";
 import { FC, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NoteDocument } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
 
 export interface NoteCardContentProps {
@@ -58,15 +57,6 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
     <Stack>
       <Text fw={600} className="text-center">
         {note.name}
-        {note.tag && is768Px && (
-          <Badge
-            variant="dot"
-            color={getColorFromString(note.tag)}
-            className="absolute right-[16px]"
-          >
-            {note.tag}
-          </Badge>
-        )}
       </Text>
       <Group position="center" spacing="xs">
         <Badge size="lg" radius="sm" color="gray">

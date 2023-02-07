@@ -1,5 +1,4 @@
 import {
-  Badge,
   Group,
   Text,
   UnstyledButton,
@@ -8,9 +7,11 @@ import {
 import { SpotlightActionProps, SpotlightProvider } from "@mantine/spotlight";
 import { IconSearch } from "@tabler/icons";
 import classNames from "classnames";
+import TagBadge from "components/molecules/Badge/Tag";
+import useGetTags from "hooks/useGetTags";
 import { PropsWithChildren } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getColorFromString } from "utils/color";
+import { TagDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { searchString } from "utils/string";
 import { useBoard } from "../Provider";
@@ -45,11 +46,9 @@ function CustomAction({
             </Text>
           )}
         </div>
-        {action.tag && (
-          <Badge color={getColorFromString(action.tag)} variant="dot">
-            {action.tag}
-          </Badge>
-        )}
+        {action.tags?.map((tag: TagDocument) => {
+          return <TagBadge key={tag.id} tagId={tag.id} />;
+        })}
       </Group>
     </UnstyledButton>
   );
@@ -59,6 +58,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
   const { credentials, creditCards, documents, notes } = useBoard();
   const navigate = useNavigate();
   const { boardId } = useParams();
+  const getTags = useGetTags();
 
   return (
     <SpotlightProvider
@@ -73,10 +73,12 @@ const Spotlight = ({ children }: PropsWithChildren) => {
         query
           ? [
               ...(credentials ?? []).map((credential) => {
+                const tags = getTags(credential.tags);
+
                 return {
                   title: credential.name ?? "",
                   description: credential.username,
-                  tag: credential.tag,
+                  tags,
                   group: "Mot de passe",
                   onTrigger: () => {
                     navigate(`/boards/${boardId}/credentials/${credential.id}`);
@@ -84,10 +86,12 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                 };
               }),
               ...(creditCards ?? []).map((creditCard) => {
+                const tags = getTags(creditCard.tags);
+
                 return {
                   title: creditCard.name ?? "",
                   description: creditCard.cardholder,
-                  tag: creditCard.tag,
+                  tags,
                   group: "Carte de crédit",
                   onTrigger: () => {
                     navigate(
@@ -97,9 +101,11 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                 };
               }),
               ...(documents ?? []).map((document) => {
+                const tags = getTags(document.tags);
+
                 return {
                   title: document.name ?? "",
-                  tag: document.tag,
+                  tags,
                   group: "Document",
                   description: document.mime?.split("/")[1].toUpperCase(),
                   onTrigger: () => {
@@ -108,11 +114,13 @@ const Spotlight = ({ children }: PropsWithChildren) => {
                 };
               }),
               ...(notes ?? []).map((note) => {
+                const tags = getTags(note.tags);
+
                 return {
                   title: note.name ?? "",
                   description: formatDate(note.date, "D MMMM YYYY"),
                   search: note.text,
-                  tag: note.tag,
+                  tags,
                   group: "Note",
                   onTrigger: () => {
                     navigate(`/boards/${boardId}/notes/${note.id}`);
@@ -125,7 +133,9 @@ const Spotlight = ({ children }: PropsWithChildren) => {
       filter={(query, actions) =>
         actions.filter((action) => {
           return searchString(
-            `${action.title}${action.description}${action.search}${action.tag}`,
+            `${action.title}${action.description}${
+              action.search
+            }${action.tags.map((tag: TagDocument) => tag.name)}`,
             query
           );
         })

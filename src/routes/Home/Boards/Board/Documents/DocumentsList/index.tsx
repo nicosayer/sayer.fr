@@ -1,5 +1,6 @@
 import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
+import useGetTags from "hooks/useGetTags";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -12,15 +13,20 @@ export interface DocumentsListProps {
 
 const DocumentsList: FC<DocumentsListProps> = ({ search }) => {
   const { documents } = useBoard();
+  const getTags = useGetTags();
 
   const filteredDocuments = useMemo(() => {
     return sortBy(
       (documents ?? []).filter((document) => {
-        return searchString(`${document.name}${document.tag}`, search);
+        const tags = getTags(document.tags);
+        return searchString(
+          `${document.name}${tags.map((tag) => tag.name)}`,
+          search
+        );
       }),
-      (document) => sanitize(`${document.name}${document.tag}`)
+      (document) => sanitize(String(document.name))
     );
-  }, [documents, search]);
+  }, [documents, search, getTags]);
 
   if (!filteredDocuments.length) {
     return <NoResult />;

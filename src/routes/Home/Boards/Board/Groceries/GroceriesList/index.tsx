@@ -19,7 +19,7 @@ const GroceriesList: FC<GroceriesListProps> = ({ search }) => {
     return groupBy(
       orderBy(
         (groceries ?? []).filter((grocery) => {
-          return searchString(`${grocery.name}${grocery.tag}`, search);
+          return searchString(`${grocery.name}`, search);
         }),
         (grocery) => grocery.updatedAt?.seconds,
         "desc"

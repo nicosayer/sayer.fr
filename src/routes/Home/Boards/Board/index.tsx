@@ -1,3 +1,4 @@
+import { ModalsProvider } from "@mantine/modals";
 import AppShell from "components/atoms/AppShell";
 import useDefaultBoardId from "hooks/useDefaultBoardId";
 import useDefaultBoardTab from "hooks/useDefaultBoardTab";
@@ -20,11 +21,13 @@ const Board = () => {
 
   return (
     <BoardProvider boardId={boardId}>
-      <Spotlight>
-        <AppShell header={<Header />} navbar={<Navbar />}>
-          <Outlet />
-        </AppShell>
-      </Spotlight>
+      <ModalsProvider>
+        <Spotlight>
+          <AppShell header={<Header />} navbar={<Navbar />}>
+            <Outlet />
+          </AppShell>
+        </Spotlight>
+      </ModalsProvider>
     </BoardProvider>
   );
 };

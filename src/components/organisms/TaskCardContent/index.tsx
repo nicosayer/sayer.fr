@@ -1,17 +1,9 @@
-import {
-  ActionIcon,
-  Badge,
-  Checkbox,
-  Group,
-  Text,
-  Tooltip,
-} from "@mantine/core";
+import { ActionIcon, Checkbox, Group, Text, Tooltip } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconTrash } from "@tabler/icons";
 import { deleteDoc, deleteField } from "firebase/firestore";
 import { FC } from "react";
 import { TaskDocument } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
 import { formatDate } from "utils/dayjs";
 import { updateDoc } from "utils/firebase";
 import { getEmailLocale } from "utils/string";
@@ -43,11 +35,6 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
         }}
       />
       <Group>
-        {task.tag && (
-          <Badge variant="dot" color={getColorFromString(task.tag)}>
-            {task.tag}
-          </Badge>
-        )}
         {is768Px && (
           <Text c="dimmed" fz="sm">
             {task.closedAt

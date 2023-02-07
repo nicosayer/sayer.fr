@@ -2,23 +2,25 @@ import { Button, Group, Stack, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
-import { deleteField } from "firebase/firestore";
+import { doc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC } from "react";
-import { BoardDocument, CreditCardDocument } from "types/firebase/collections";
-import { updateDoc } from "utils/firebase";
+import { FC, useMemo } from "react";
+import { useBoards } from "routes/Home/Boards/Provider";
+import { CreditCardDocument } from "types/firebase/collections";
+import { db, updateDoc } from "utils/firebase";
 
 export interface EditCreditCardModalProps {
   creditCard: CreditCardDocument;
-  board: BoardDocument;
 }
 
-const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
-  creditCard,
-  board,
-}) => {
+const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
   const [loading, start, stop] = useBooleanState();
+  const { boardTags } = useBoards();
   const theme = useMantineTheme();
+
+  const tags = useMemo(() => {
+    return boardTags[String(creditCard.ref?.parent.parent?.id)] ?? [];
+  }, [boardTags, creditCard.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {
@@ -28,7 +30,7 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
       number: creditCard.number || "",
       expirationDate: `${creditCard.expirationMonth}/${creditCard.expirationYear}`,
       securityCode: creditCard.securityCode || "",
-      tag: creditCard.tag || "",
+      tags: (creditCard.tags ?? []).map((tag) => tag.path),
     },
 
     validate: {
@@ -70,7 +72,7 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
         expirationMonth: expirationMonth,
         expirationYear: expirationYear,
         securityCode: values.securityCode,
-        tag: values.tag || deleteField(),
+        tags: values.tags,
       };
     },
   });
@@ -88,7 +90,9 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
             expirationMonth: values.expirationMonth,
             expirationYear: values.expirationYear,
             securityCode: values.securityCode,
-            tag: values.tag,
+            tags: values.tags.map((tag) => {
+              return doc(db, tag);
+            }),
           })
             .then(() => closeAllModals())
             .finally(stop);
@@ -96,7 +100,7 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({
       })}
     >
       <Stack>
-        <CreditCardFormInputs loading={loading} form={form} board={board} />
+        <CreditCardFormInputs loading={loading} form={form} tags={tags} />
         <div className="flex ml-auto">
           <Group>
             <Button

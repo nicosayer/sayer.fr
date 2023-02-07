@@ -1,8 +1,6 @@
 import { ActionIcon, Card, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons";
-import TagSelect from "components/molecules/Select/Tag";
 import { collection, Timestamp } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
@@ -14,12 +12,10 @@ import { useBoard } from "../../Provider";
 const NewTaskCard: FC = () => {
   const { board } = useBoard();
   const [user] = useAuthState(auth);
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [loading, start, stop] = useBooleanState();
   const form = useForm({
     initialValues: {
       name: "",
-      tag: "",
     },
 
     validate: {
@@ -31,7 +27,6 @@ const NewTaskCard: FC = () => {
     transformValues: (values) => {
       return {
         name: values.name.trim(),
-        tag: values.tag || undefined,
       };
     },
   });
@@ -46,12 +41,10 @@ const NewTaskCard: FC = () => {
               name: values.name,
               openedBy: user.email,
               openedAt: Timestamp.now(),
-              tag: values.tag,
             })
               .then(() => {
                 form.setValues({
                   name: "",
-                  tag: "",
                 });
               })
               .finally(stop);
@@ -68,6 +61,7 @@ const NewTaskCard: FC = () => {
               <IconPlus size={18} />
             </ActionIcon>
             <TextInput
+              disabled={loading}
               data-autofocus
               withAsterisk
               className="w-full"
@@ -76,14 +70,6 @@ const NewTaskCard: FC = () => {
               {...form.getInputProps("name")}
             />
           </div>
-          {board?.tags?.length && is768Px ? (
-            <TagSelect
-              placeholder="Étiquette"
-              board={board}
-              loading={loading}
-              {...form.getInputProps("tag")}
-            />
-          ) : undefined}
         </Group>
       </form>
     </Card>

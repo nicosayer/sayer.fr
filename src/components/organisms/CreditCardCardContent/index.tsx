@@ -1,6 +1,5 @@
 import {
   ActionIcon,
-  Badge,
   Button,
   ColorSwatch,
   CopyButton,
@@ -13,6 +12,7 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
 import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
+import BadgeTag from "components/molecules/Badge/Tag";
 import CreditCardCardholder from "components/organisms/CreditCardCardholder";
 import CreditCardExpirationDate from "components/organisms/CreditCardExpirationDate";
 import CreditCardNumber from "components/organisms/CreditCardNumber";
@@ -21,7 +21,6 @@ import { deleteDoc } from "firebase/firestore";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
 import EditCreditCardModal from "./EditCreditCardModal";
 
 export interface CreditCardCardContentProps {
@@ -48,9 +47,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
           zIndex: 1000,
           centered: true,
           title: "Modifier la carte de crédit",
-          children: (
-            <EditCreditCardModal creditCard={creditCard} board={board} />
-          ),
+          children: <EditCreditCardModal creditCard={creditCard} />,
         });
       }
     },
@@ -85,15 +82,10 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
           <ColorSwatch color={theme.colors[creditCard.color][6]} />
         )}
         <Text fw={600}>{creditCard.name}</Text>
-        {creditCard.tag && is768Px && (
-          <Badge
-            variant="dot"
-            color={getColorFromString(creditCard.tag)}
-            className="absolute right-[16px]"
-          >
-            {creditCard.tag}
-          </Badge>
-        )}
+        {is768Px &&
+          creditCard.tags?.map((tag) => {
+            return <BadgeTag key={tag.id} tagId={tag.id} />;
+          })}
       </Group>
       <div className="grid gap-2">
         <Group position="center" spacing="xs">

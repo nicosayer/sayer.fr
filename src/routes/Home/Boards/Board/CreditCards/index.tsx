@@ -50,7 +50,7 @@ const CreditCards: FC = () => {
               openModal({
                 centered: true,
                 title: "Nouvelle carte de crédit",
-                children: <NewCreditCardModal board={board} />,
+                children: <NewCreditCardModal />,
               });
             }
           }}
@@ -87,7 +87,7 @@ const CreditCards: FC = () => {
                   openModal({
                     centered: true,
                     title: "Nouvelle carte de crédit",
-                    children: <NewCreditCardModal board={board} />,
+                    children: <NewCreditCardModal />,
                   });
                 }
               }}

@@ -1,7 +1,6 @@
 import { Carousel } from "@mantine/carousel";
 import {
   ActionIcon,
-  Badge,
   Card,
   CopyButton,
   Image,
@@ -13,7 +12,6 @@ import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
 import { FC, useCallback } from "react";
 import { SouvenirDocument } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
 
 export interface SouvenirCardProps {
   souvenir: SouvenirDocument & { downloadUrls: string[] };
@@ -55,15 +53,6 @@ const SouvenirCard: FC<SouvenirCardProps> = ({ souvenir }) => {
         ) : (
           <Image src={souvenir.downloadUrls[0]} height={200} />
         )}
-        {souvenir.tag ? (
-          <Badge
-            className="absolute bg-white right-3 top-3"
-            variant="dot"
-            color={getColorFromString(souvenir.tag)}
-          >
-            {souvenir.tag}
-          </Badge>
-        ) : undefined}
       </Card.Section>
       <Card.Section p="sm" withBorder>
         <div className="text-center">{souvenir.description}</div>

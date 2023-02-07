@@ -1,5 +1,6 @@
 import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
+import useGetTags from "hooks/useGetTags";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -12,15 +13,21 @@ export interface CreditCardsListProps {
 
 const CreditCardsList: FC<CreditCardsListProps> = ({ search }) => {
   const { creditCards } = useBoard();
+  const getTags = useGetTags();
 
   const filteredCreditCards = useMemo(() => {
     return sortBy(
       (creditCards ?? []).filter((creditCard) => {
-        return searchString(`${creditCard.name}${creditCard.tag}`, search);
+        const tags = getTags(creditCard.tags);
+
+        return searchString(
+          `${creditCard.name}${tags.map((tag) => tag.name)}`,
+          search
+        );
       }),
-      (creditCard) => sanitize(`${creditCard.name}${creditCard.tag}`)
+      (creditCard) => sanitize(String(creditCard.name))
     );
-  }, [creditCards, search]);
+  }, [creditCards, search, getTags]);
 
   if (!filteredCreditCards.length) {
     return <NoResult />;

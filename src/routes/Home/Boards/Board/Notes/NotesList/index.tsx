@@ -1,5 +1,6 @@
 import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
+import useGetTags from "hooks/useGetTags";
 import { orderBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -13,14 +14,17 @@ export interface NotesListProps {
 
 const NotesList: FC<NotesListProps> = ({ search }) => {
   const { notes } = useBoard();
+  const getTags = useGetTags();
 
   const filteredNotes = useMemo(() => {
     return orderBy(
       (notes ?? []).filter((note) => {
+        const tags = getTags(note.tags);
+
         return (
           note.base64 &&
           searchString(
-            `${note.name}${note.text}${note.tag}${formatDate(
+            `${note.name}${note.text}${tags.map((tag) => tag.name)}${formatDate(
               note.date,
               "MMMM YYYY"
             )}`,
@@ -31,7 +35,7 @@ const NotesList: FC<NotesListProps> = ({ search }) => {
       "date",
       "desc"
     );
-  }, [notes, search]);
+  }, [notes, search, getTags]);
 
   if (!filteredNotes.length) {
     return <NoResult />;

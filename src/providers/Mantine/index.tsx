@@ -6,7 +6,6 @@ import {
   MantineProvider as MantineProviderComponent,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
 
 const MantineProvider = ({ children }: PropsWithChildren) => {
@@ -57,9 +56,7 @@ const MantineProvider = ({ children }: PropsWithChildren) => {
         withGlobalStyles
         withNormalizeCSS
       >
-        <ModalsProvider>
-          <NotificationsProvider>{children}</NotificationsProvider>
-        </ModalsProvider>
+        <NotificationsProvider>{children}</NotificationsProvider>
       </MantineProviderComponent>
     </ColorSchemeProvider>
   );

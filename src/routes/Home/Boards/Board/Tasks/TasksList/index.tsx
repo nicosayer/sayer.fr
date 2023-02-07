@@ -19,7 +19,7 @@ const TasksList: FC<TasksListProps> = ({ search }) => {
     return groupBy(
       orderBy(
         (tasks ?? []).filter((task) => {
-          return searchString(`${task.name}${task.tag}`, search);
+          return searchString(`${task.name}`, search);
         }),
         (task) => task.updatedAt?.seconds,
         "desc"

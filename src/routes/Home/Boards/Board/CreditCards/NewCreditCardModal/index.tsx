@@ -2,21 +2,15 @@ import { Button, Group, Stack, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
-import { collection } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useMemo } from "react";
-import {
-  BoardDocument,
-  Collection,
-  CreditCardDocument,
-} from "types/firebase/collections";
-import { addDoc } from "utils/firebase";
+import { Collection, CreditCardDocument } from "types/firebase/collections";
+import { addDoc, db } from "utils/firebase";
+import { useBoard } from "../../Provider";
 
-export interface NewCreditCardModalProps {
-  board: BoardDocument;
-}
-
-const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
+const NewCreditCardModal: FC = () => {
+  const { board, tags } = useBoard();
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
 
@@ -32,7 +26,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       number: "",
       expirationDate: "",
       securityCode: "",
-      tag: "",
+      tags: [] as string[],
     },
 
     validate: {
@@ -72,7 +66,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
         expirationMonth: expirationMonth,
         expirationYear: expirationYear,
         securityCode: values.securityCode,
-        tag: values.tag || undefined,
+        tags: values.tags,
       };
     },
   });
@@ -92,7 +86,9 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
               expirationYear: values.expirationYear,
               cardholder: values.cardholder,
               securityCode: values.securityCode,
-              tag: values.tag,
+              tags: values.tags.map((tag) => {
+                return doc(db, tag);
+              }),
             }
           )
             .then(() => closeAllModals())
@@ -101,7 +97,7 @@ const NewCreditCardModal: FC<NewCreditCardModalProps> = ({ board }) => {
       })}
     >
       <Stack>
-        <CreditCardFormInputs loading={loading} form={form} board={board} />
+        <CreditCardFormInputs loading={loading} form={form} tags={tags} />
         <div className="flex ml-auto">
           <Group>
             <Button

@@ -2,7 +2,6 @@ import { ActionIcon, Autocomplete, Card, Group } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons";
-import TagSelect from "components/molecules/Select/Tag";
 import { collection, deleteDoc, Timestamp } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
@@ -21,7 +20,6 @@ const NewGroceryCard: FC = () => {
   const form = useForm({
     initialValues: {
       name: "",
-      tag: "",
     },
 
     validate: {
@@ -33,7 +31,6 @@ const NewGroceryCard: FC = () => {
     transformValues: (values) => {
       return {
         name: values.name.trim(),
-        tag: values.tag || undefined,
       };
     },
   });
@@ -50,13 +47,11 @@ const NewGroceryCard: FC = () => {
                 name: values.name,
                 openedBy: user.email,
                 openedAt: Timestamp.now(),
-                tag: values.tag,
               }
             )
               .then(() => {
                 form.setValues({
                   name: "",
-                  tag: "",
                 });
                 return groceries
                   ?.filter(
@@ -91,6 +86,7 @@ const NewGroceryCard: FC = () => {
                       .map((grocery) => grocery.name)
                   : []
               }
+              disabled={loading}
               withAsterisk
               className="w-full"
               variant="unstyled"
@@ -98,14 +94,6 @@ const NewGroceryCard: FC = () => {
               {...form.getInputProps("name")}
             />
           </div>
-          {board?.tags?.length && is768Px ? (
-            <TagSelect
-              placeholder="Étiquette"
-              board={board}
-              loading={loading}
-              {...form.getInputProps("tag")}
-            />
-          ) : undefined}
         </Group>
       </form>
     </Card>

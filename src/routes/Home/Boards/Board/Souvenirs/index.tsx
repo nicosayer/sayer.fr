@@ -89,7 +89,6 @@ const Souvenirs: FC = () => {
     <>
       {board ? (
         <NewSouvenirModal
-          board={board}
           files={files}
           onClose={() => {
             setFiles(undefined);

@@ -1,6 +1,7 @@
 import { Stack, Tabs, Text } from "@mantine/core";
 import { FC } from "react";
 import { useParams } from "react-router-dom";
+import { useBoards } from "../../Provider";
 import { useBoard } from "../Provider";
 import BoardCard from "./Cards/Board";
 import DeleteBoardCard from "./Cards/DeleteBoard";
@@ -8,7 +9,8 @@ import UserCard from "./Cards/User";
 
 const Settings: FC = () => {
   const { boardId } = useParams();
-  const { boards } = useBoard();
+  const { boards, tags } = useBoard();
+  const { boardTags } = useBoards();
 
   return (
     <Stack>
@@ -16,7 +18,7 @@ const Settings: FC = () => {
       {boards?.length === 1 ? (
         <>
           <UserCard />
-          <BoardCard board={boards?.[0]} />
+          <BoardCard board={boards?.[0]} tags={tags} />
           <DeleteBoardCard board={boards?.[0]} />
         </>
       ) : (
@@ -37,7 +39,10 @@ const Settings: FC = () => {
             <Tabs.Panel key={board.id} value={String(board.id)} pt="xs">
               <Stack>
                 <UserCard />
-                <BoardCard board={board} />
+                <BoardCard
+                  board={board}
+                  tags={boardTags[String(board.id)] ?? []}
+                />
                 <DeleteBoardCard board={board} />
               </Stack>
             </Tabs.Panel>

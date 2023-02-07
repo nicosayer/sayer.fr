@@ -1,26 +1,27 @@
-import { Group, Indicator, TextInput } from "@mantine/core";
+import { Group, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
-import { IconChevronDown } from "@tabler/icons";
-import TagSelect from "components/molecules/Select/Tag";
 import dayjs from "dayjs";
-import { deleteField } from "firebase/firestore";
-import { FC, useEffect, useState } from "react";
-import { BoardDocument, NoteDocument } from "types/firebase/collections";
-import { getColorFromString } from "utils/color";
+import { FC, useEffect, useMemo, useState } from "react";
+import { useBoards } from "routes/Home/Boards/Provider";
+import { NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { updateDoc } from "utils/firebase";
 import { ONE_SECOND } from "utils/time";
 
 export interface NoteModalHeaderProps {
-  board: BoardDocument;
   note: NoteDocument;
 }
 
-const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
+const NoteModalHeader: FC<NoteModalHeaderProps> = ({ note }) => {
+  const { boardTags } = useBoards();
   const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [name, setName] = useState(note?.name);
   const [debouncedName] = useDebouncedValue(note?.name, 10 * ONE_SECOND);
+
+  const tags = useMemo(() => {
+    return boardTags[String(note.ref?.parent.parent?.id)] ?? [];
+  }, [boardTags, note.ref?.parent.parent?.id]);
 
   useEffect(() => {
     setName(debouncedName);
@@ -56,30 +57,6 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ board, note }) => {
             }}
             clearable={false}
           />
-          {board?.tags?.length ? (
-            <TagSelect
-              rightSection={<div />}
-              icon={
-                note.tag ? (
-                  <Indicator color={getColorFromString(note.tag)}>
-                    <div />
-                  </Indicator>
-                ) : (
-                  <IconChevronDown size={18} />
-                )
-              }
-              placeholder="Étiquette"
-              board={board}
-              value={note.tag}
-              onChange={(tag) => {
-                if (note.ref) {
-                  updateDoc<NoteDocument>(note.ref, {
-                    tag: tag || deleteField(),
-                  });
-                }
-              }}
-            />
-          ) : undefined}
         </Group>
       )}
     </Group>

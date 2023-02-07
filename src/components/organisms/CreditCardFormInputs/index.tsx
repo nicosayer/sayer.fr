@@ -8,11 +8,10 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import TagSelect from "components/molecules/Select/Tag";
-import { FieldValue } from "firebase/firestore";
+import TagsSelect from "components/molecules/Select/Tags";
 import { FC } from "react";
 import InputMask from "react-input-mask";
-import { BoardDocument } from "types/firebase/collections";
+import { TagDocument } from "types/firebase/collections";
 
 export interface CreditCardFormInput {
   color: string;
@@ -21,7 +20,7 @@ export interface CreditCardFormInput {
   number: string;
   expirationDate: string;
   securityCode: string;
-  tag: string;
+  tags: string[];
 }
 
 export interface CreditCardFormOutput {
@@ -32,12 +31,12 @@ export interface CreditCardFormOutput {
   expirationMonth: string;
   expirationYear: string;
   securityCode: string;
-  tag?: string | FieldValue;
+  tags: string[];
 }
 
 export interface CreditCardFormInputsProps {
   loading: boolean;
-  board: BoardDocument;
+  tags: TagDocument[];
   form: UseFormReturnType<
     CreditCardFormInput,
     (values: CreditCardFormInput) => CreditCardFormOutput
@@ -46,7 +45,7 @@ export interface CreditCardFormInputsProps {
 
 const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
   form,
-  board,
+  tags,
   loading,
 }) => {
   const theme = useMantineTheme();
@@ -115,13 +114,13 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         placeholder="123"
         {...form.getInputProps("securityCode")}
       />
-      {board?.tags?.length ? (
-        <TagSelect
+      {tags?.length ? (
+        <TagsSelect
           label="Étiquette"
           placeholder="John Doe"
-          board={board}
+          tags={tags}
           loading={loading}
-          {...form.getInputProps("tag")}
+          {...form.getInputProps("tags")}
         />
       ) : undefined}
     </>
