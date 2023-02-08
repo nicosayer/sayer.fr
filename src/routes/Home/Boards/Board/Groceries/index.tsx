@@ -17,7 +17,7 @@ const Groceries: FC = () => {
   return (
     <Stack>
       <Group position="apart" className="sticky z-50">
-        <Text fw={500}>Courses</Text>
+        <Text weight={500}>Courses</Text>
         <TextInput
           placeholder="Rechercher"
           variant="filled"

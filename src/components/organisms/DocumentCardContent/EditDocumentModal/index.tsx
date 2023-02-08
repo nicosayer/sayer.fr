@@ -8,6 +8,7 @@ import { FC, useMemo } from "react";
 import { useBoards } from "routes/Home/Boards/Provider";
 import { DocumentDocument } from "types/firebase/collections";
 import { db, updateDoc } from "utils/firebase";
+import { cleanString } from "utils/string";
 
 export interface EditDocumentModalProps {
   document: DocumentDocument;
@@ -35,7 +36,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
 
     transformValues: (values) => {
       return {
-        name: values.name.trim(),
+        name: cleanString(values.name),
         tags: values.tags,
       };
     },

@@ -3,36 +3,47 @@ import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import {
   IconDotsVertical,
+  IconEdit,
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons";
 import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { GroceryDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { auth, updateDoc } from "utils/firebase";
 import { getEmailLocale } from "utils/string";
+import EditGroceryModal from "./EditGroceryModal";
 import MoveGroceryModal from "./MoveGroceryModal";
 
 export interface GroceryCardContentProps {
   grocery: GroceryDocument;
 }
 
+const openMoveModal = (grocery: GroceryDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Déplacer la course",
+    children: <MoveGroceryModal grocery={grocery} />,
+  });
+};
+
+const openEditModal = (grocery: GroceryDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Modifer la course",
+    children: <EditGroceryModal grocery={grocery} />,
+  });
+};
+
 const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
   const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [user] = useAuthState(auth);
   const { boards } = useBoard();
-
-  const openMoveModal = useCallback((grocery: GroceryDocument) => {
-    return openModal({
-      centered: true,
-      zIndex: 1000,
-      title: "Déplacer la course",
-      children: <MoveGroceryModal grocery={grocery} />,
-    });
-  }, []);
 
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
@@ -90,6 +101,14 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
                 Déplacer
               </Menu.Item>
             ) : undefined}
+            <Menu.Item
+              onClick={() => {
+                openEditModal(grocery);
+              }}
+              icon={<IconEdit size={18} />}
+            >
+              Modifier
+            </Menu.Item>
             <Menu.Item
               color="red"
               onClick={() => {

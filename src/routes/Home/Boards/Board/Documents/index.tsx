@@ -9,8 +9,16 @@ import Document from "./Document";
 import DocumentsList from "./DocumentsList";
 import NewDocumentModal from "./NewDocumentModal";
 
+const openNewModal = () => {
+  openModal({
+    centered: true,
+    title: "Nouveau document",
+    children: <NewDocumentModal />,
+  });
+};
+
 const Documents: FC = () => {
-  const { board, loadingDocuments, documents } = useBoard();
+  const { loadingDocuments, documents } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)", true);
 
@@ -24,15 +32,7 @@ const Documents: FC = () => {
         <Button
           size="lg"
           leftIcon={<IconPlus size={18} />}
-          onClick={() => {
-            if (board) {
-              openModal({
-                centered: true,
-                title: "Nouveau document",
-                children: <NewDocumentModal />,
-              });
-            }
-          }}
+          onClick={openNewModal}
         >
           {is768Px ? "Ajouter votre premier document" : "Nouveau document"}
         </Button>
@@ -45,7 +45,7 @@ const Documents: FC = () => {
       <Document />
       <Stack>
         <Group position="apart">
-          <Text fw={500}>Documents</Text>
+          <Text weight={500}>Documents</Text>
           <Group>
             <TextInput
               placeholder="Rechercher"
@@ -59,15 +59,7 @@ const Documents: FC = () => {
             <Button
               variant="default"
               leftIcon={<IconPlus size={18} />}
-              onClick={() => {
-                if (board) {
-                  openModal({
-                    centered: true,
-                    title: "Nouveau document",
-                    children: <NewDocumentModal />,
-                  });
-                }
-              }}
+              onClick={openNewModal}
             >
               Nouveau document
             </Button>

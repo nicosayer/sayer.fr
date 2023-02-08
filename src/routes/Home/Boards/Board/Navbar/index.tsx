@@ -2,9 +2,9 @@ import { Navbar as MantineNavbar, Stack } from "@mantine/core";
 import {
   IconChecklist,
   IconCreditCard,
+  IconEdit,
   IconId,
   IconLockOpen,
-  IconPencil,
   IconSettings,
   IconShoppingCart,
 } from "@tabler/icons";
@@ -43,7 +43,7 @@ const menu = [
       groceries?.filter((grocery) => !grocery.closedAt).length ?? 0,
   },
   {
-    icon: <IconPencil size={18} />,
+    icon: <IconEdit size={18} />,
     color: "blue",
     label: "Notes",
     to: "notes",

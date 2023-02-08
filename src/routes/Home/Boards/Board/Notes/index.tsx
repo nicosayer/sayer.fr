@@ -63,7 +63,7 @@ const Notes: FC = () => {
       <Note />
       <Stack>
         <Group position="apart" className="sticky z-50">
-          <Text fw={500}>Notes</Text>
+          <Text weight={500}>Notes</Text>
           <Group>
             <TextInput
               placeholder="Rechercher"

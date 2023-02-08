@@ -12,9 +12,17 @@ import Credential from "./Credential";
 import CredentialsList from "./CredentialsList";
 import NewCredentialModal from "./NewCredentialModal";
 
+const openNewModal = () => {
+  openModal({
+    centered: true,
+    title: "Nouveau mot de passe",
+    children: <NewCredentialModal />,
+  });
+};
+
 const Credentials: FC = () => {
   const { isSecure, cannotBeSecure } = useSecureLogin();
-  const { board, loadingCredentials, credentials } = useBoard();
+  const { loadingCredentials, credentials } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)", true);
 
@@ -44,15 +52,7 @@ const Credentials: FC = () => {
         <Button
           size="lg"
           leftIcon={<IconPlus size={18} />}
-          onClick={() => {
-            if (board) {
-              openModal({
-                centered: true,
-                title: "Nouveau mot de passe",
-                children: <NewCredentialModal />,
-              });
-            }
-          }}
+          onClick={openNewModal}
         >
           {is768Px
             ? "Ajouter votre premier mot de passe"
@@ -67,7 +67,7 @@ const Credentials: FC = () => {
       <Credential />
       <Stack>
         <Group position="apart" className="sticky z-50">
-          <Text fw={500}>Mots de passe</Text>
+          <Text weight={500}>Mots de passe</Text>
           <Group>
             <TextInput
               placeholder="Rechercher"
@@ -81,15 +81,7 @@ const Credentials: FC = () => {
             <Button
               variant="default"
               leftIcon={<IconPlus size={18} />}
-              onClick={() => {
-                if (board) {
-                  openModal({
-                    centered: true,
-                    title: "Nouveau mot de passe",
-                    children: <NewCredentialModal />,
-                  });
-                }
-              }}
+              onClick={openNewModal}
             >
               Nouveau mot de passe
             </Button>

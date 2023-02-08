@@ -19,7 +19,7 @@ import {
 } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
 import useGetTags from "hooks/useGetTags";
-import { FC, useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { NoteDocument } from "types/firebase/collections";
@@ -30,6 +30,36 @@ export interface NoteCardContentProps {
   note: NoteDocument;
 }
 
+const openMoveModal = (note: NoteDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Déplacer la note",
+    children: <MoveNoteModal note={note} />,
+  });
+};
+
+const openDeleteModal = (note: NoteDocument) => {
+  openConfirmModal({
+    title: "Supprimer la note",
+    centered: true,
+    zIndex: 1000,
+    children: (
+      <Text size="sm">
+        Voulez-vous vraiment supprimer la note ? Cette action est définitive et
+        irréversible.
+      </Text>
+    ),
+    labels: { confirm: "Supprimer", cancel: "Annuler" },
+    confirmProps: { color: "red" },
+    onConfirm: () => {
+      if (note.ref) {
+        deleteDoc(note.ref);
+      }
+    },
+  });
+};
+
 const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
   const { boardId } = useParams();
   const navigate = useNavigate();
@@ -39,36 +69,6 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
   const tags = useMemo(() => {
     return getTags(note.tags);
   }, [note.tags, getTags]);
-
-  const openMoveModal = useCallback((note: NoteDocument) => {
-    return openModal({
-      centered: true,
-      zIndex: 1000,
-      title: "Déplacer la note",
-      children: <MoveNoteModal note={note} />,
-    });
-  }, []);
-
-  const openDeleteModal = useCallback((note: NoteDocument) => {
-    openConfirmModal({
-      title: "Supprimer la note",
-      centered: true,
-      zIndex: 1000,
-      children: (
-        <Text size="sm">
-          Voulez-vous vraiment supprimer la note ? Cette action est définitive
-          et irréversible.
-        </Text>
-      ),
-      labels: { confirm: "Supprimer", cancel: "Annuler" },
-      confirmProps: { color: "red" },
-      onConfirm: () => {
-        if (note.ref) {
-          deleteDoc(note.ref);
-        }
-      },
-    });
-  }, []);
 
   return (
     <Stack align="center">

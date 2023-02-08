@@ -17,6 +17,7 @@ import {
 } from "types/firebase/collections";
 import { addDoc, db, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
+import { cleanString } from "utils/string";
 import { useBoard } from "../../Provider";
 
 const NewDocumentModal: FC = () => {
@@ -43,7 +44,7 @@ const NewDocumentModal: FC = () => {
 
     transformValues: (values) => {
       return {
-        name: values.name.trim(),
+        name: cleanString(values.name),
         file: values.file,
         mime: values.file?.type as DocumentMime | undefined,
         tags: values.tags,

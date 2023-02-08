@@ -10,6 +10,7 @@ import {
 } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
 import { addDoc } from "utils/firebase";
+import { cleanString } from "utils/string";
 
 export interface NewTagBadgeProps {
   board: BoardDocument;
@@ -40,7 +41,7 @@ const NewTagBadge: FC<NewTagBadgeProps> = ({ board, tags }) => {
         variant="unstyled"
         placeholder="Nouvelle étiquette"
         onBlur={() => {
-          const formattedValue = value.trim().toLowerCase();
+          const formattedValue = cleanString(value).toLowerCase();
 
           if (
             formattedValue &&

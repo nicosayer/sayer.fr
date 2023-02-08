@@ -99,7 +99,7 @@ const Souvenirs: FC = () => {
       ) : null}
       <Stack>
         <Group position="apart" className="sticky z-50">
-          <Text fw={500}>Souvenirs</Text>
+          <Text weight={500}>Souvenirs</Text>
           <FileButton
             multiple
             onChange={(files) => {

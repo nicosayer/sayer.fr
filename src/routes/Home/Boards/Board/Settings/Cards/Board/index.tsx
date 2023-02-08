@@ -16,6 +16,7 @@ import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
 import { BoardDocument, TagDocument } from "types/firebase/collections";
 import { updateDoc } from "utils/firebase";
+import { cleanString } from "utils/string";
 import { ONE_SECOND } from "utils/time";
 import NewTagBadge from "./NewTagBadge";
 
@@ -49,7 +50,7 @@ const BoardCard: FC<BoardCardProps> = ({ board, tags }) => {
 
     transformValues: (values) => {
       return {
-        name: values.name.trim(),
+        name: cleanString(values.name),
         users: values.users,
       };
     },
@@ -102,10 +103,9 @@ const BoardCard: FC<BoardCardProps> = ({ board, tags }) => {
                       className="outline-none"
                       contentEditable
                       onBlur={(event) => {
-                        const value =
-                          event.currentTarget.textContent
-                            ?.trim()
-                            .toLowerCase() ?? "";
+                        const value = cleanString(
+                          event.currentTarget.textContent ?? ""
+                        );
 
                         if (
                           value &&

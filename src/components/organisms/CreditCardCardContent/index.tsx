@@ -25,7 +25,7 @@ import CreditCardNumber from "components/organisms/CreditCardNumber";
 import CreditCardSecurityCode from "components/organisms/CreditCardSecurityCode";
 import { deleteDoc } from "firebase/firestore";
 import useGetTags from "hooks/useGetTags";
-import { FC, useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
 import EditCreditCardModal from "./EditCreditCardModal";
@@ -34,6 +34,45 @@ import MoveCreditCardModal from "./MoveCreditCardModal";
 export interface CreditCardCardContentProps {
   creditCard: CreditCardDocument;
 }
+
+const openEditModal = (creditCard: CreditCardDocument) => {
+  openModal({
+    zIndex: 1000,
+    centered: true,
+    title: "Modifier la carte de crédit",
+    children: <EditCreditCardModal creditCard={creditCard} />,
+  });
+};
+
+const openMoveModal = (creditCard: CreditCardDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Déplacer la carte de crédit",
+    children: <MoveCreditCardModal creditCard={creditCard} />,
+  });
+};
+
+const openDeleteModal = (creditCard: CreditCardDocument) => {
+  openConfirmModal({
+    title: "Supprimer la carte de crédit",
+    centered: true,
+    zIndex: 1000,
+    children: (
+      <Text size="sm">
+        Voulez-vous vraiment supprimer la carte de crédit ? Cette action est
+        définitive et irréversible.
+      </Text>
+    ),
+    labels: { confirm: "Supprimer", cancel: "Annuler" },
+    confirmProps: { color: "red" },
+    onConfirm: () => {
+      if (creditCard.ref) {
+        deleteDoc(creditCard.ref);
+      }
+    },
+  });
+};
 
 const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
   creditCard,
@@ -45,45 +84,6 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
   const tags = useMemo(() => {
     return getTags(creditCard.tags);
   }, [creditCard.tags, getTags]);
-
-  const openEditModal = useCallback((creditCard: CreditCardDocument) => {
-    return openModal({
-      zIndex: 1000,
-      centered: true,
-      title: "Modifier la carte de crédit",
-      children: <EditCreditCardModal creditCard={creditCard} />,
-    });
-  }, []);
-
-  const openMoveModal = useCallback((creditCard: CreditCardDocument) => {
-    return openModal({
-      centered: true,
-      zIndex: 1000,
-      title: "Déplacer la carte de crédit",
-      children: <MoveCreditCardModal creditCard={creditCard} />,
-    });
-  }, []);
-
-  const openDeleteModal = useCallback((creditCard: CreditCardDocument) => {
-    openConfirmModal({
-      title: "Supprimer la carte de crédit",
-      centered: true,
-      zIndex: 1000,
-      children: (
-        <Text size="sm">
-          Voulez-vous vraiment supprimer la carte de crédit ? Cette action est
-          définitive et irréversible.
-        </Text>
-      ),
-      labels: { confirm: "Supprimer", cancel: "Annuler" },
-      confirmProps: { color: "red" },
-      onConfirm: () => {
-        if (creditCard.ref) {
-          deleteDoc(creditCard.ref);
-        }
-      },
-    });
-  }, []);
 
   return (
     <Stack align="center">

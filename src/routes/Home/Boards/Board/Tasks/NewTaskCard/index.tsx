@@ -1,9 +1,8 @@
 import { ActionIcon, Card, Group, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import { IconPlus } from "@tabler/icons";
 import { collection, Timestamp } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Collection, TaskDocument } from "types/firebase/collections";
 import { addDoc, auth } from "utils/firebase";
@@ -13,65 +12,59 @@ const NewTaskCard: FC = () => {
   const { board } = useBoard();
   const [user] = useAuthState(auth);
   const [loading, start, stop] = useBooleanState();
-  const form = useForm({
-    initialValues: {
-      name: "",
-    },
+  const [value, setValue] = useState("");
 
-    validate: {
-      name: (name) => {
-        return name.length > 0 ? null : true;
-      },
-    },
+  const formattedValue = useMemo(() => {
+    return value.trim().replace(/ +/g, " ");
+  }, [value]);
 
-    transformValues: (values) => {
-      return {
-        name: values.name.trim(),
-      };
-    },
-  });
+  const handleSubmit = useCallback(() => {
+    if (board?.id && board.ref && user?.email && formattedValue) {
+      start();
+      addDoc<TaskDocument>(collection(board.ref, Collection.tasks), {
+        name: formattedValue,
+        openedBy: user.email,
+        openedAt: Timestamp.now(),
+      })
+        .then(() => {
+          setValue("");
+        })
+        .finally(stop);
+    }
+  }, [board?.id, board?.ref, start, stop, user?.email, formattedValue]);
 
   return (
     <Card withBorder>
-      <form
-        onSubmit={form.onSubmit((values) => {
-          if (board?.id && board.ref && user?.email) {
-            start();
-            addDoc<TaskDocument>(collection(board.ref, Collection.tasks), {
-              name: values.name,
-              openedBy: user.email,
-              openedAt: Timestamp.now(),
-            })
-              .then(() => {
-                form.setValues({
-                  name: "",
-                });
-              })
-              .finally(stop);
-          }
-        })}
-      >
-        <Group position="apart" noWrap>
-          <div className="flex items-center w-full gap-2">
-            <ActionIcon
-              variant="light"
-              type="submit"
-              color={form.values.name ? "blue" : undefined}
-            >
-              <IconPlus size={18} />
-            </ActionIcon>
-            <TextInput
-              disabled={loading}
-              data-autofocus
-              withAsterisk
-              className="w-full"
-              variant="unstyled"
-              placeholder="Nouvelle tâche"
-              {...form.getInputProps("name")}
-            />
-          </div>
-        </Group>
-      </form>
+      <Group position="apart" noWrap>
+        <div className="flex items-center w-full gap-2">
+          <ActionIcon
+            variant="light"
+            type="submit"
+            loading={loading}
+            color={formattedValue ? "blue" : undefined}
+            onClick={handleSubmit}
+          >
+            <IconPlus size={18} />
+          </ActionIcon>
+          <TextInput
+            disabled={loading}
+            data-autofocus
+            withAsterisk
+            className="w-full"
+            variant="unstyled"
+            placeholder="Nouvelle tâche"
+            value={value}
+            onChange={(event) => {
+              setValue(event.target.value);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                handleSubmit();
+              }
+            }}
+          />
+        </div>
+      </Group>
     </Card>
   );
 };

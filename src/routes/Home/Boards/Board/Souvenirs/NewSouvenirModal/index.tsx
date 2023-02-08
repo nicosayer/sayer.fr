@@ -25,6 +25,7 @@ import { runInSeries } from "utils/async";
 import { formatDate } from "utils/dayjs";
 import { addDoc, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
+import { cleanString } from "utils/string";
 import { TRANSITION_DURATION } from "..";
 import { useBoard } from "../../Provider";
 
@@ -50,7 +51,6 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
     initialValues: {
       description: "",
       date: defaultDate,
-      tag: "",
     },
 
     validate: {
@@ -61,9 +61,8 @@ const NewSouvenirModalContent: FC<NewSouvenirModalContentProps> = ({
 
     transformValues: (values) => {
       return {
-        description: values.description.trim(),
+        description: cleanString(values.description),
         date: formatDate(values.date),
-        tag: values.tag || undefined,
       };
     },
   });

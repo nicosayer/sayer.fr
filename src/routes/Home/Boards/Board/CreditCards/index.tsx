@@ -12,9 +12,17 @@ import CreditCard from "./CreditCard";
 import CreditCardsList from "./CreditCardsList";
 import NewCreditCardModal from "./NewCreditCardModal";
 
+const openNewModal = () => {
+  openModal({
+    centered: true,
+    title: "Nouvelle carte de crédit",
+    children: <NewCreditCardModal />,
+  });
+};
+
 const CreditCards: FC = () => {
   const { isSecure, cannotBeSecure } = useSecureLogin();
-  const { board, loadingCreditCards, creditCards } = useBoard();
+  const { loadingCreditCards, creditCards } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)", true);
 
@@ -45,15 +53,7 @@ const CreditCards: FC = () => {
           className="mx-4"
           size="lg"
           leftIcon={<IconPlus size={18} />}
-          onClick={() => {
-            if (board) {
-              openModal({
-                centered: true,
-                title: "Nouvelle carte de crédit",
-                children: <NewCreditCardModal />,
-              });
-            }
-          }}
+          onClick={openNewModal}
         >
           {is768Px
             ? "Ajouter votre première carte de crédit"
@@ -68,7 +68,7 @@ const CreditCards: FC = () => {
       <CreditCard />
       <Stack>
         <Group position="apart">
-          <Text fw={500}>Cartes de crédit</Text>
+          <Text weight={500}>Cartes de crédit</Text>
           <Group>
             <TextInput
               placeholder="Rechercher"
@@ -82,15 +82,7 @@ const CreditCards: FC = () => {
             <Button
               variant="default"
               leftIcon={<IconPlus size={18} />}
-              onClick={() => {
-                if (board) {
-                  openModal({
-                    centered: true,
-                    title: "Nouvelle carte de crédit",
-                    children: <NewCreditCardModal />,
-                  });
-                }
-              }}
+              onClick={openNewModal}
             >
               Nouvelle carte de crédit
             </Button>

@@ -14,7 +14,7 @@ const Settings: FC = () => {
 
   return (
     <Stack>
-      <Text fw={500}>Paramètres</Text>
+      <Text weight={500}>Paramètres</Text>
       {boards?.length === 1 ? (
         <>
           <UserCard />

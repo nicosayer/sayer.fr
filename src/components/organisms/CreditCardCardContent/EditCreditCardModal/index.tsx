@@ -8,6 +8,7 @@ import { FC, useMemo } from "react";
 import { useBoards } from "routes/Home/Boards/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
 import { db, updateDoc } from "utils/firebase";
+import { cleanString } from "utils/string";
 
 export interface EditCreditCardModalProps {
   creditCard: CreditCardDocument;
@@ -66,9 +67,9 @@ const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
 
       return {
         color: values.color,
-        name: values.name.trim(),
+        name: cleanString(values.name),
         number: values.number.replace(/ +/g, ""),
-        cardholder: values.cardholder.trim(),
+        cardholder: cleanString(values.cardholder),
         expirationMonth: expirationMonth,
         expirationYear: expirationYear,
         securityCode: values.securityCode,

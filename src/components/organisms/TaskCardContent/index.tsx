@@ -3,36 +3,47 @@ import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import {
   IconDotsVertical,
+  IconEdit,
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons";
 import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { TaskDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { auth, updateDoc } from "utils/firebase";
 import { getEmailLocale } from "utils/string";
+import EditTaskModal from "./EditTaskModal";
 import MoveTaskModal from "./MoveTaskModal";
 
 export interface TaskCardContentProps {
   task: TaskDocument;
 }
 
+const openMoveModal = (task: TaskDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Déplacer la tâche",
+    children: <MoveTaskModal task={task} />,
+  });
+};
+
+const openEditModal = (task: TaskDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Modifier la tâche",
+    children: <EditTaskModal task={task} />,
+  });
+};
+
 const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
   const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [user] = useAuthState(auth);
   const { boards } = useBoard();
-
-  const openMoveModal = useCallback((task: TaskDocument) => {
-    return openModal({
-      centered: true,
-      zIndex: 1000,
-      title: "Déplacer la tâche",
-      children: <MoveTaskModal task={task} />,
-    });
-  }, []);
 
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
@@ -90,6 +101,14 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
                 Déplacer
               </Menu.Item>
             ) : undefined}
+            <Menu.Item
+              onClick={() => {
+                openEditModal(task);
+              }}
+              icon={<IconEdit size={18} />}
+            >
+              Modifier
+            </Menu.Item>
             <Menu.Item
               color="red"
               onClick={() => {

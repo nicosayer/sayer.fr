@@ -7,6 +7,7 @@ import useBooleanState from "hooks/useBooleanState";
 import { FC, useMemo } from "react";
 import { Collection, CreditCardDocument } from "types/firebase/collections";
 import { addDoc, db } from "utils/firebase";
+import { cleanString } from "utils/string";
 import { useBoard } from "../../Provider";
 
 const NewCreditCardModal: FC = () => {
@@ -60,9 +61,9 @@ const NewCreditCardModal: FC = () => {
 
       return {
         color: values.color,
-        name: values.name.trim(),
+        name: cleanString(values.name),
         number: values.number.replace(/ +/g, ""),
-        cardholder: values.cardholder.trim(),
+        cardholder: cleanString(values.cardholder),
         expirationMonth: expirationMonth,
         expirationYear: expirationYear,
         securityCode: values.securityCode,

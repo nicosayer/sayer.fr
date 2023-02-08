@@ -17,7 +17,7 @@ const Tasks: FC = () => {
   return (
     <Stack>
       <Group position="apart" className="sticky z-50">
-        <Text fw={500}>Tâches</Text>
+        <Text weight={500}>Tâches</Text>
         <TextInput
           placeholder="Rechercher"
           variant="filled"

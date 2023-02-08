@@ -7,6 +7,7 @@ import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
 import { Collection, CredentialDocument } from "types/firebase/collections";
 import { addDoc, db } from "utils/firebase";
+import { cleanString } from "utils/string";
 import { useBoard } from "../../Provider";
 
 const NewCredentialModal: FC = () => {
@@ -35,7 +36,7 @@ const NewCredentialModal: FC = () => {
 
     transformValues: (values) => {
       return {
-        name: values.name.trim(),
+        name: cleanString(values.name),
         username: values.username.trim(),
         password: values.password,
         url: values.url.trim() || undefined,

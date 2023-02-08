@@ -15,3 +15,7 @@ export const searchString = (string: string, query: string) => {
 export const getEmailLocale = (email: string) => {
   return email.split("@")[0];
 };
+
+export const cleanString = (string: string) => {
+  return string.trim().replace(/ +/g, " ");
+};

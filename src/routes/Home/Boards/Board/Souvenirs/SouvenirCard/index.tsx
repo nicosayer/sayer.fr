@@ -10,35 +10,35 @@ import {
 import { openConfirmModal } from "@mantine/modals";
 import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { SouvenirDocument } from "types/firebase/collections";
 
 export interface SouvenirCardProps {
   souvenir: SouvenirDocument & { downloadUrls: string[] };
 }
 
-const SouvenirCard: FC<SouvenirCardProps> = ({ souvenir }) => {
-  const openDeleteModal = useCallback((souvenir: SouvenirDocument) => {
-    openConfirmModal({
-      title: "Supprimer la carte de crédit",
-      centered: true,
-      zIndex: 1000,
-      children: (
-        <Text size="sm">
-          Voulez-vous vraiment supprimer la carte de crédit ? Cette action est
-          définitive et irréversible.
-        </Text>
-      ),
-      labels: { confirm: "Supprimer", cancel: "Annuler" },
-      confirmProps: { color: "red" },
-      onConfirm: () => {
-        if (souvenir.ref) {
-          deleteDoc(souvenir.ref);
-        }
-      },
-    });
-  }, []);
+const openDeleteModal = (souvenir: SouvenirDocument) => {
+  openConfirmModal({
+    title: "Supprimer la carte de crédit",
+    centered: true,
+    zIndex: 1000,
+    children: (
+      <Text size="sm">
+        Voulez-vous vraiment supprimer la carte de crédit ? Cette action est
+        définitive et irréversible.
+      </Text>
+    ),
+    labels: { confirm: "Supprimer", cancel: "Annuler" },
+    confirmProps: { color: "red" },
+    onConfirm: () => {
+      if (souvenir.ref) {
+        deleteDoc(souvenir.ref);
+      }
+    },
+  });
+};
 
+const SouvenirCard: FC<SouvenirCardProps> = ({ souvenir }) => {
   return (
     <Card withBorder>
       <Card.Section className="relative">

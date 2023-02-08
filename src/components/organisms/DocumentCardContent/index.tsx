@@ -22,7 +22,7 @@ import { deleteObject, ref } from "firebase/storage";
 import useDownloadDocument from "hooks/useDownloadDocument";
 import useGetTags from "hooks/useGetTags";
 import usePreviewDocument from "hooks/usePreviewDocument";
-import { FC, useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, DocumentMime } from "types/firebase/collections";
 import { storage } from "utils/firebase";
@@ -34,6 +34,53 @@ export interface DocumentCardsPropContent {
   document: DocumentDocument;
 }
 
+const openEditModal = (document: DocumentDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Modifier le document",
+    children: <EditDocumentModal document={document} />,
+  });
+};
+
+const openMoveModal = (document: DocumentDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Déplacer le document",
+    children: <MoveDocumentModal document={document} />,
+  });
+};
+
+const openDeleteModal = (document: DocumentDocument) => {
+  openConfirmModal({
+    title: "Supprimer le document",
+    centered: true,
+    zIndex: 1000,
+    children: (
+      <Text size="sm">
+        Voulez-vous vraiment supprimer le document ? Cette action est définitive
+        et irréversible.
+      </Text>
+    ),
+    labels: { confirm: "Supprimer", cancel: "Annuler" },
+    confirmProps: { color: "red" },
+    onConfirm: () => {
+      if (document.ref) {
+        deleteDoc(document.ref);
+        deleteObject(
+          ref(
+            storage,
+            `${document.ref.path}/document.${getExtension(
+              document.mime as DocumentMime
+            )}`
+          )
+        );
+      }
+    },
+  });
+};
+
 const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
   const [previewDocument, loadingPreview] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
@@ -43,53 +90,6 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
   const tags = useMemo(() => {
     return getTags(document.tags);
   }, [document.tags, getTags]);
-
-  const openEditModal = useCallback((document: DocumentDocument) => {
-    openModal({
-      centered: true,
-      zIndex: 1000,
-      title: "Modifier le document",
-      children: <EditDocumentModal document={document} />,
-    });
-  }, []);
-
-  const openMoveModal = useCallback((document: DocumentDocument) => {
-    return openModal({
-      centered: true,
-      zIndex: 1000,
-      title: "Déplacer le document",
-      children: <MoveDocumentModal document={document} />,
-    });
-  }, []);
-
-  const openDeleteModal = useCallback((document: DocumentDocument) => {
-    openConfirmModal({
-      title: "Supprimer le document",
-      centered: true,
-      zIndex: 1000,
-      children: (
-        <Text size="sm">
-          Voulez-vous vraiment supprimer le document ? Cette action est
-          définitive et irréversible.
-        </Text>
-      ),
-      labels: { confirm: "Supprimer", cancel: "Annuler" },
-      confirmProps: { color: "red" },
-      onConfirm: () => {
-        if (document.ref) {
-          deleteDoc(document.ref);
-          deleteObject(
-            ref(
-              storage,
-              `${document.ref.path}/document.${getExtension(
-                document.mime as DocumentMime
-              )}`
-            )
-          );
-        }
-      },
-    });
-  }, []);
 
   return (
     <Stack align="center">

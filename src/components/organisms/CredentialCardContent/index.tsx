@@ -19,7 +19,7 @@ import {
 } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
 import useGetTags from "hooks/useGetTags";
-import { FC, useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CredentialDocument } from "types/firebase/collections";
 import CredentialPassword from "../CredentialPassword";
@@ -31,6 +31,45 @@ export interface CredentialCardContentProps {
   credential: CredentialDocument;
 }
 
+const openEditModal = (credential: CredentialDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Modifier le mot de passe",
+    children: <EditCredentialModal credential={credential} />,
+  });
+};
+
+const openMoveModal = (credential: CredentialDocument) => {
+  openModal({
+    centered: true,
+    zIndex: 1000,
+    title: "Déplacer le mot de passe",
+    children: <MoveCredentialModal credential={credential} />,
+  });
+};
+
+const openDeleteModal = (credential: CredentialDocument) => {
+  openConfirmModal({
+    title: "Supprimer le mot de passe",
+    centered: true,
+    zIndex: 1000,
+    children: (
+      <Text size="sm">
+        Voulez-vous vraiment supprimer le mot de passe ? Cette action est
+        définitive et irréversible.
+      </Text>
+    ),
+    labels: { confirm: "Supprimer", cancel: "Annuler" },
+    confirmProps: { color: "red" },
+    onConfirm: () => {
+      if (credential.ref) {
+        deleteDoc(credential.ref);
+      }
+    },
+  });
+};
+
 const CredentialCardContent: FC<CredentialCardContentProps> = ({
   credential,
 }) => {
@@ -40,45 +79,6 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
   const tags = useMemo(() => {
     return getTags(credential.tags);
   }, [credential.tags, getTags]);
-
-  const openEditModal = useCallback((credential: CredentialDocument) => {
-    return openModal({
-      centered: true,
-      zIndex: 1000,
-      title: "Modifier le mot de passe",
-      children: <EditCredentialModal credential={credential} />,
-    });
-  }, []);
-
-  const openMoveModal = useCallback((credential: CredentialDocument) => {
-    return openModal({
-      centered: true,
-      zIndex: 1000,
-      title: "Déplacer le mot de passe",
-      children: <MoveCredentialModal credential={credential} />,
-    });
-  }, []);
-
-  const openDeleteModal = useCallback((credential: CredentialDocument) => {
-    openConfirmModal({
-      title: "Supprimer le mot de passe",
-      centered: true,
-      zIndex: 1000,
-      children: (
-        <Text size="sm">
-          Voulez-vous vraiment supprimer le mot de passe ? Cette action est
-          définitive et irréversible.
-        </Text>
-      ),
-      labels: { confirm: "Supprimer", cancel: "Annuler" },
-      confirmProps: { color: "red" },
-      onConfirm: () => {
-        if (credential.ref) {
-          deleteDoc(credential.ref);
-        }
-      },
-    });
-  }, []);
 
   return (
     <Stack align="center">

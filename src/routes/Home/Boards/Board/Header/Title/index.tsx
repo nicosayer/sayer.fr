@@ -22,10 +22,10 @@ const Title: FC = () => {
       <Group spacing="xs">
         {is768Px ? <IconLayoutList size={18} /> : null}
         <Text
-          fw={500}
+          weight={500}
           className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
         >
-          {board?.name ?? "Tous les boards"}
+          {board?.name}
         </Text>
       </Group>
     );

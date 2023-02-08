@@ -8,6 +8,7 @@ import { FC, useMemo } from "react";
 import { useBoards } from "routes/Home/Boards/Provider";
 import { CredentialDocument } from "types/firebase/collections";
 import { db, updateDoc } from "utils/firebase";
+import { cleanString } from "utils/string";
 
 export interface EditCredentialModalProps {
   credential: CredentialDocument;
@@ -44,7 +45,7 @@ const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
 
     transformValues: (values) => {
       return {
-        name: values.name.trim(),
+        name: cleanString(values.name),
         username: values.username.trim(),
         password: values.password,
         url: values.url.trim() || deleteField(),
