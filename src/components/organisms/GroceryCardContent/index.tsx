@@ -1,7 +1,11 @@
 import { ActionIcon, Checkbox, Group, Menu, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
-import { IconDotsVertical, IconSwitchHorizontal, IconTrash } from "@tabler/icons";
+import {
+  IconDotsVertical,
+  IconSwitchHorizontal,
+  IconTrash,
+} from "@tabler/icons";
 import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
 import { FC, useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -61,16 +65,16 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
           <Text c="dimmed" fz="sm">
             {grocery.closedAt
               ? `fermé par ${getEmailLocale(
-                grocery.closedBy ?? ""
-              )} le ${formatDate(grocery.closedAt.toDate(), "D MMM")}`
+                  grocery.closedBy ?? ""
+                )} le ${formatDate(grocery.closedAt.toDate(), "D MMM")}`
               : `ajouté par ${getEmailLocale(
-                grocery.openedBy ?? ""
-              )} le ${formatDate(grocery.openedAt?.toDate(), "D MMM")}`}
+                  grocery.openedBy ?? ""
+                )} le ${formatDate(grocery.openedAt?.toDate(), "D MMM")}`}
           </Text>
         )}
         <Menu shadow="md" width={200} withinPortal>
           <Menu.Target>
-            <ActionIcon variant="subtle" size="sm">
+            <ActionIcon variant="light">
               <IconDotsVertical size={18} />
             </ActionIcon>
           </Menu.Target>

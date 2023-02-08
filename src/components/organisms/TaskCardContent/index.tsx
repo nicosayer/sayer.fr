@@ -65,16 +65,16 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
           <Text c="dimmed" fz="sm">
             {task.closedAt
               ? `fermé par ${getEmailLocale(
-                task.closedBy ?? ""
-              )} le ${formatDate(task.closedAt.toDate(), "D MMM")}`
+                  task.closedBy ?? ""
+                )} le ${formatDate(task.closedAt.toDate(), "D MMM")}`
               : `ajouté par ${getEmailLocale(
-                task.openedBy ?? ""
-              )} le ${formatDate(task.openedAt?.toDate(), "D MMM")}`}
+                  task.openedBy ?? ""
+                )} le ${formatDate(task.openedAt?.toDate(), "D MMM")}`}
           </Text>
         )}
         <Menu shadow="md" width={200} withinPortal>
           <Menu.Target>
-            <ActionIcon variant="subtle" size="sm">
+            <ActionIcon variant="light">
               <IconDotsVertical size={18} />
             </ActionIcon>
           </Menu.Target>

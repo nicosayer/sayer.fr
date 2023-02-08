@@ -39,7 +39,7 @@ const NewTagBadge: FC<NewTagBadgeProps> = ({ board, tags }) => {
         disabled={loading}
         variant="unstyled"
         placeholder="Nouvelle étiquette"
-        onBlur={(event) => {
+        onBlur={() => {
           const formattedValue = value.trim().toLowerCase();
 
           if (

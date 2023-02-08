@@ -1,4 +1,5 @@
 import {
+  Badge,
   Group,
   Text,
   UnstyledButton,
@@ -7,9 +8,8 @@ import {
 import { SpotlightActionProps, SpotlightProvider } from "@mantine/spotlight";
 import { IconSearch } from "@tabler/icons";
 import classNames from "classnames";
-import TagBadge from "components/molecules/Badge/Tag";
 import useGetTags from "hooks/useGetTags";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TagDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
@@ -24,6 +24,11 @@ function CustomAction({
   ...others
 }: SpotlightActionProps) {
   const theme = useMantineColorScheme();
+  const getTags = useGetTags();
+
+  const tags = useMemo(() => {
+    return getTags(action.tags);
+  }, [action.tags, getTags]);
 
   return (
     <UnstyledButton
@@ -46,9 +51,11 @@ function CustomAction({
             </Text>
           )}
         </div>
-        {action.tags?.map((tag: TagDocument) => {
-          return <TagBadge key={tag.id} tagId={tag.id} />;
-        })}
+        {tags.map((tag) => (
+          <Badge variant="dot" color={tag.color} size="sm">
+            {tag.name}
+          </Badge>
+        ))}
       </Group>
     </UnstyledButton>
   );
