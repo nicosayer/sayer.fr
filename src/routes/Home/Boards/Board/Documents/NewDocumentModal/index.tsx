@@ -4,7 +4,7 @@ import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import { IconUpload } from "@tabler/icons";
 import classNames from "classnames";
-import TagsSelect from "components/molecules/Select/Tags";
+import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import { collection, doc } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
@@ -129,7 +129,7 @@ const NewDocumentModal: FC = () => {
           </Dropzone>
         </Input.Wrapper>
         {tags?.length ? (
-          <TagsSelect
+          <TagsMultiSelect
             label="Étiquette"
             placeholder="John Doe"
             tags={tags}

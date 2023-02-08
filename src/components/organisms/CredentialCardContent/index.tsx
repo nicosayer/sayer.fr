@@ -1,23 +1,31 @@
 import {
   ActionIcon,
+  Badge,
   Button,
   CopyButton,
   Group,
+  Menu,
   Stack,
   Text,
-  Tooltip,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
-import CredentialName from "components/organisms/CredentialName";
-import CredentialPassword from "components/organisms/CredentialPassword";
-import CredentialUsername from "components/organisms/CredentialUsername";
+import {
+  IconCheck,
+  IconDotsVertical,
+  IconEdit,
+  IconLink,
+  IconSwitchHorizontal,
+  IconTrash,
+} from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
+import useGetTags from "hooks/useGetTags";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CredentialDocument } from "types/firebase/collections";
+import CredentialPassword from "../CredentialPassword";
+import CredentialUsername from "../CredentialUsername";
 import EditCredentialModal from "./EditCredentialModal";
+import MoveCredentialModal from "./MoveCredentialModal";
 
 export interface CredentialCardContentProps {
   credential: CredentialDocument;
@@ -27,27 +35,29 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
   credential,
 }) => {
   const { boards } = useBoard();
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const getTags = useGetTags();
 
-  const board = useMemo(() => {
-    return boards?.find(
-      (board) => board.id === credential.ref?.parent.parent?.id
-    );
-  }, [boards, credential.ref?.parent.parent?.id]);
+  const tags = useMemo(() => {
+    return getTags(credential.tags);
+  }, [credential.tags, getTags]);
 
-  const openEditModal = useCallback(
-    (credential: CredentialDocument) => {
-      if (board) {
-        return openModal({
-          centered: true,
-          zIndex: 1000,
-          title: "Modifier le mot de passe",
-          children: <EditCredentialModal credential={credential} />,
-        });
-      }
-    },
-    [board]
-  );
+  const openEditModal = useCallback((credential: CredentialDocument) => {
+    return openModal({
+      centered: true,
+      zIndex: 1000,
+      title: "Modifier le mot de passe",
+      children: <EditCredentialModal credential={credential} />,
+    });
+  }, []);
+
+  const openMoveModal = useCallback((credential: CredentialDocument) => {
+    return openModal({
+      centered: true,
+      zIndex: 1000,
+      title: "Déplacer le mot de passe",
+      children: <MoveCredentialModal credential={credential} />,
+    });
+  }, []);
 
   const openDeleteModal = useCallback((credential: CredentialDocument) => {
     openConfirmModal({
@@ -71,107 +81,98 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
   }, []);
 
   return (
-    <Stack>
-      <Group position="center">
-        <CredentialName credential={credential} fw={600} />
-      </Group>
-      <div className="grid gap-2">
+    <Stack align="center">
+      <Text weight={500}>{credential.name}</Text>
+      {tags.length ? (
+        <Group>
+          {tags.map((tag) => (
+            <Badge variant="dot" color={tag.color} size="sm">
+              {tag.name}
+            </Badge>
+          ))}
+        </Group>
+      ) : undefined}
+      <Stack spacing="xs">
         <Group position="center" spacing="xs">
-          <div>Nom d'utilisateur :</div>
+          <Text size="sm">Nom d'utilisateur :</Text>
           <CredentialUsername credential={credential} />
         </Group>
         <Group position="center" spacing="xs">
-          <div>Mot de passe :</div>
+          <Text size="sm">Mot de passe :</Text>
           <CredentialPassword credential={credential} />
         </Group>
-      </div>
-      <div className="grid grid-cols-3">
-        <div className="m-auto">
-          <CopyButton value={`${window.location.host}/${credential.ref?.path}`}>
-            {({ copied, copy }) =>
-              is768Px ? (
-                <Button
-                  variant="subtle"
-                  size="xs"
-                  color={copied ? "teal" : "blue"}
-                  onClick={copy}
-                  leftIcon={
-                    copied ? <IconCheck size={18} /> : <IconLink size={18} />
-                  }
+      </Stack>
+      <Group className="w-full">
+        <Button
+          variant="light"
+          className="flex-1"
+          component="a"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            credential?.url
+              ? credential?.url.startsWith("https://")
+                ? credential?.url
+                : `https://${credential?.url}`
+              : `https://www.google.com/search?q=${credential.name}`
+          }
+        >
+          Aller sur le site
+        </Button>
+        <CopyButton value={`${window.location.host}/${credential.ref?.path}`}>
+          {({ copied, copy }) => (
+            <Menu shadow="md" width={200} withinPortal>
+              <Menu.Target>
+                <ActionIcon
+                  variant="light"
+                  radius="md"
+                  size={36}
+                  color={copied ? "teal" : undefined}
                 >
-                  {copied ? "Lien copié" : "Copier le lien"}
-                </Button>
-              ) : (
-                <Tooltip
-                  label={copied ? "Lien copié" : "Copier le lien"}
-                  withArrow
-                >
-                  <ActionIcon
-                    color={copied ? "teal" : "blue"}
-                    className="m-auto"
-                    onClick={copy}
+                  {copied ? (
+                    <IconCheck size={18} />
+                  ) : (
+                    <IconDotsVertical size={18} />
+                  )}
+                </ActionIcon>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Item icon={<IconLink size={18} />} onClick={copy}>
+                  Copier le lien
+                </Menu.Item>
+                {(boards?.length ?? 0) > 1 ? (
+                  <Menu.Item
+                    onClick={() => {
+                      openMoveModal(credential);
+                    }}
+                    icon={<IconSwitchHorizontal size={18} />}
                   >
-                    {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
-                  </ActionIcon>
-                </Tooltip>
-              )
-            }
-          </CopyButton>
-        </div>
-        <div className="m-auto">
-          {is768Px ? (
-            <Button
-              variant="subtle"
-              size="xs"
-              onClick={() => {
-                openEditModal(credential);
-              }}
-              leftIcon={<IconEdit size={18} />}
-            >
-              Modifier
-            </Button>
-          ) : (
-            <Tooltip label="Modifier" withArrow>
-              <ActionIcon
-                color="blue"
-                className="m-auto"
-                onClick={() => {
-                  openEditModal(credential);
-                }}
-              >
-                <IconEdit size={18} />
-              </ActionIcon>
-            </Tooltip>
+                    Déplacer
+                  </Menu.Item>
+                ) : undefined}
+                <Menu.Item
+                  onClick={() => {
+                    openEditModal(credential);
+                  }}
+                  icon={<IconEdit size={18} />}
+                >
+                  Modifier
+                </Menu.Item>
+                <Menu.Item
+                  color="red"
+                  onClick={() => {
+                    openDeleteModal(credential);
+                  }}
+                  icon={<IconTrash size={18} />}
+                >
+                  Supprimer
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           )}
-        </div>
-        <div className="m-auto">
-          {is768Px ? (
-            <Button
-              color="red"
-              variant="subtle"
-              size="xs"
-              onClick={() => {
-                openDeleteModal(credential);
-              }}
-              leftIcon={<IconTrash size={18} />}
-            >
-              Supprimer
-            </Button>
-          ) : (
-            <Tooltip label="Supprimer" withArrow>
-              <ActionIcon
-                color="red"
-                className="m-auto"
-                onClick={() => {
-                  openDeleteModal(credential);
-                }}
-              >
-                <IconTrash size={18} />
-              </ActionIcon>
-            </Tooltip>
-          )}
-        </div>
-      </div>
+        </CopyButton>
+      </Group>
     </Stack>
   );
 };

@@ -1,12 +1,11 @@
-import { Stack, Text } from "@mantine/core";
+import { Card, Stack, Text } from "@mantine/core";
 import { IconLayoutList } from "@tabler/icons";
 import NoResult from "components/organisms/NoResult";
+import TaskCardContent from "components/organisms/TaskCardContent";
 import { groupBy, orderBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { searchString } from "utils/string";
-import ClosedTaskCard from "./ClosedTaskCard";
-import OpenedTaskCard from "./OpenedTaskCard";
 
 export interface TasksListProps {
   search: string;
@@ -47,10 +46,18 @@ const TasksList: FC<TasksListProps> = ({ search }) => {
   return (
     <Stack>
       {(filteredTasks.false ?? []).map((task) => {
-        return <OpenedTaskCard key={task.id} task={task} />;
+        return (
+          <Card key={task.id} withBorder>
+            <TaskCardContent task={task} />
+          </Card>
+        );
       })}
       {(filteredTasks.true ?? []).map((task) => {
-        return <ClosedTaskCard key={task.id} task={task} />;
+        return (
+          <Card key={task.id} withBorder className="opacity-50">
+            <TaskCardContent task={task} />
+          </Card>
+        );
       })}
     </Stack>
   );

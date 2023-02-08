@@ -3,20 +3,15 @@ import { FC } from "react";
 import { BoardDocument } from "types/firebase/collections";
 
 export interface BoardSelectProps extends Omit<SelectProps, "data"> {
-  loading: boolean;
   boards: BoardDocument[];
 }
 
-const BoardSelect: FC<BoardSelectProps> = ({ loading, boards, ...rest }) => {
+const BoardSelect: FC<BoardSelectProps> = ({ boards, ...rest }) => {
   return (
     <Select
-      withinPortal
-      disabled={loading}
-      withAsterisk
       data={(boards ?? []).map((board) => {
         return { label: board.name, value: String(board.id) };
       })}
-      placeholder="Board de John Doe"
       {...rest}
     />
   );

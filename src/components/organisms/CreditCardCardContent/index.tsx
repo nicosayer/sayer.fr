@@ -1,27 +1,35 @@
 import {
   ActionIcon,
+  Badge,
   Button,
   ColorSwatch,
   CopyButton,
   Group,
+  Menu,
   Stack,
   Text,
-  Tooltip,
   useMantineTheme,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
-import { IconCheck, IconEdit, IconLink, IconTrash } from "@tabler/icons";
-import BadgeTag from "components/molecules/Badge/Tag";
+import {
+  IconCheck,
+  IconDotsVertical,
+  IconEdit,
+  IconLink,
+  IconSwitchHorizontal,
+  IconTrash,
+} from "@tabler/icons";
 import CreditCardCardholder from "components/organisms/CreditCardCardholder";
 import CreditCardExpirationDate from "components/organisms/CreditCardExpirationDate";
 import CreditCardNumber from "components/organisms/CreditCardNumber";
 import CreditCardSecurityCode from "components/organisms/CreditCardSecurityCode";
 import { deleteDoc } from "firebase/firestore";
+import useGetTags from "hooks/useGetTags";
 import { FC, useCallback, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
 import EditCreditCardModal from "./EditCreditCardModal";
+import MoveCreditCardModal from "./MoveCreditCardModal";
 
 export interface CreditCardCardContentProps {
   creditCard: CreditCardDocument;
@@ -32,27 +40,29 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
 }) => {
   const { boards } = useBoard();
   const theme = useMantineTheme();
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const getTags = useGetTags();
 
-  const board = useMemo(() => {
-    return boards?.find(
-      (board) => board.id === creditCard.ref?.parent.parent?.id
-    );
-  }, [boards, creditCard.ref?.parent.parent?.id]);
+  const tags = useMemo(() => {
+    return getTags(creditCard.tags);
+  }, [creditCard.tags, getTags]);
 
-  const openEditModal = useCallback(
-    (creditCard: CreditCardDocument) => {
-      if (board) {
-        return openModal({
-          zIndex: 1000,
-          centered: true,
-          title: "Modifier la carte de crédit",
-          children: <EditCreditCardModal creditCard={creditCard} />,
-        });
-      }
-    },
-    [board]
-  );
+  const openEditModal = useCallback((creditCard: CreditCardDocument) => {
+    return openModal({
+      zIndex: 1000,
+      centered: true,
+      title: "Modifier la carte de crédit",
+      children: <EditCreditCardModal creditCard={creditCard} />,
+    });
+  }, []);
+
+  const openMoveModal = useCallback((creditCard: CreditCardDocument) => {
+    return openModal({
+      centered: true,
+      zIndex: 1000,
+      title: "Déplacer la carte de crédit",
+      children: <MoveCreditCardModal creditCard={creditCard} />,
+    });
+  }, []);
 
   const openDeleteModal = useCallback((creditCard: CreditCardDocument) => {
     openConfirmModal({
@@ -76,122 +86,114 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
   }, []);
 
   return (
-    <Stack>
+    <Stack align="center">
       <Group position="center" spacing="xs">
         {creditCard.color && (
           <ColorSwatch color={theme.colors[creditCard.color][6]} />
         )}
-        <Text fw={600}>{creditCard.name}</Text>
-        {is768Px &&
-          creditCard.tags?.map((tag) => {
-            return <BadgeTag key={tag.id} tagId={tag.id} />;
-          })}
+        <Text weight={500}>{creditCard.name}</Text>
       </Group>
-      <div className="grid gap-2">
+      {tags.length ? (
+        <Group>
+          {tags.map((tag) => (
+            <Badge variant="dot" color={tag.color} size="sm">
+              {tag.name}
+            </Badge>
+          ))}
+        </Group>
+      ) : undefined}
+      <Stack spacing="xs">
         <Group position="center" spacing="xs">
-          <div>Titulaire :</div>
+          <Text size="sm">Titulaire :</Text>
           <CreditCardCardholder creditCard={creditCard} />
         </Group>
         <Group position="center" spacing="xs">
-          <div>Numéro :</div>
+          <Text size="sm">Numéro :</Text>
           <CreditCardNumber creditCard={creditCard} />
         </Group>
         <Group position="center" spacing="xs">
-          <div>Date d'expiration :</div>
+          <Text size="sm">Date d'expiration :</Text>
           <CreditCardExpirationDate creditCard={creditCard} />
         </Group>
         <Group position="center" spacing="xs">
-          <div>Code de sécurité :</div>
+          <Text size="sm">Code de sécurité :</Text>
           <CreditCardSecurityCode creditCard={creditCard} />
         </Group>
-      </div>
-      <div className="grid grid-cols-3">
-        <div className="m-auto">
-          <CopyButton value={`${window.location.host}/${creditCard.ref?.path}`}>
-            {({ copied, copy }) =>
-              is768Px ? (
-                <Button
-                  size="xs"
-                  variant="subtle"
-                  color={copied ? "teal" : "blue"}
-                  onClick={copy}
-                  leftIcon={
-                    copied ? <IconCheck size={18} /> : <IconLink size={18} />
-                  }
+      </Stack>
+      <Group className="w-full">
+        <CopyButton
+          value={`${creditCard.cardholder} ${creditCard.number} ${creditCard.expirationMonth}/${creditCard.expirationYear} ${creditCard.securityCode}`}
+        >
+          {({ copied, copy }) => (
+            <Button
+              variant="light"
+              className="flex-1"
+              color={copied ? "teal" : undefined}
+              onClick={copy}
+            >
+              {copied ? "Informations copiés" : "Copier les informations"}
+            </Button>
+          )}
+        </CopyButton>
+        <CopyButton
+          value={`${window.location.host}/${creditCard.ref?.path.replace(
+            "creditCards",
+            "credit-cards"
+          )}`}
+        >
+          {({ copied, copy }) => (
+            <Menu shadow="md" width={200} withinPortal>
+              <Menu.Target>
+                <ActionIcon
+                  variant="light"
+                  radius="md"
+                  size={36}
+                  color={copied ? "teal" : undefined}
                 >
-                  {copied ? "Lien copié" : "Copier le lien"}
-                </Button>
-              ) : (
-                <Tooltip
-                  label={copied ? "Lien copié" : "Copier le lien"}
-                  withArrow
-                >
-                  <ActionIcon
-                    className="m-auto"
-                    color={copied ? "teal" : "blue"}
-                    onClick={copy}
+                  {copied ? (
+                    <IconCheck size={18} />
+                  ) : (
+                    <IconDotsVertical size={18} />
+                  )}
+                </ActionIcon>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Item icon={<IconLink size={18} />} onClick={copy}>
+                  Copier le lien
+                </Menu.Item>
+                {(boards?.length ?? 0) > 1 ? (
+                  <Menu.Item
+                    onClick={() => {
+                      openMoveModal(creditCard);
+                    }}
+                    icon={<IconSwitchHorizontal size={18} />}
                   >
-                    {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
-                  </ActionIcon>
-                </Tooltip>
-              )
-            }
-          </CopyButton>
-        </div>
-        <div className="m-auto">
-          {is768Px ? (
-            <Button
-              variant="subtle"
-              size="xs"
-              onClick={() => {
-                openEditModal(creditCard);
-              }}
-              leftIcon={<IconEdit size={18} />}
-            >
-              Modifier
-            </Button>
-          ) : (
-            <Tooltip label="Modifier" withArrow>
-              <ActionIcon
-                color="blue"
-                className="m-auto"
-                onClick={() => {
-                  openEditModal(creditCard);
-                }}
-              >
-                <IconEdit size={18} />
-              </ActionIcon>
-            </Tooltip>
+                    Déplacer
+                  </Menu.Item>
+                ) : undefined}
+                <Menu.Item
+                  onClick={() => {
+                    openEditModal(creditCard);
+                  }}
+                  icon={<IconEdit size={18} />}
+                >
+                  Modifier
+                </Menu.Item>
+                <Menu.Item
+                  color="red"
+                  onClick={() => {
+                    openDeleteModal(creditCard);
+                  }}
+                  icon={<IconTrash size={18} />}
+                >
+                  Supprimer
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           )}
-        </div>
-        <div className="m-auto">
-          {is768Px ? (
-            <Button
-              color="red"
-              variant="subtle"
-              size="xs"
-              onClick={() => {
-                openDeleteModal(creditCard);
-              }}
-              leftIcon={<IconTrash size={18} />}
-            >
-              Supprimer
-            </Button>
-          ) : (
-            <Tooltip label="Supprimer" withArrow>
-              <ActionIcon
-                color="red"
-                className="m-auto"
-                onClick={() => {
-                  openDeleteModal(creditCard);
-                }}
-              >
-                <IconTrash size={18} />
-              </ActionIcon>
-            </Tooltip>
-          )}
-        </div>
-      </div>
+        </CopyButton>
+      </Group>
     </Stack>
   );
 };

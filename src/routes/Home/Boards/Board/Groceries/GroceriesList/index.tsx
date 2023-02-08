@@ -1,12 +1,11 @@
-import { Stack, Text } from "@mantine/core";
+import { Card, Stack, Text } from "@mantine/core";
 import { IconLayoutList } from "@tabler/icons";
+import GroceryCardContent from "components/organisms/GroceryCardContent";
 import NoResult from "components/organisms/NoResult";
 import { groupBy, orderBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { searchString } from "utils/string";
-import ClosedGroceryCard from "./ClosedGroceryCard";
-import OpenedGroceryCard from "./OpenedGroceryCard";
 
 export interface GroceriesListProps {
   search: string;
@@ -48,10 +47,18 @@ const GroceriesList: FC<GroceriesListProps> = ({ search }) => {
   return (
     <Stack>
       {(filteredGroceries.false ?? []).map((grocery) => {
-        return <OpenedGroceryCard key={grocery.id} grocery={grocery} />;
+        return (
+          <Card key={grocery.id} withBorder>
+            <GroceryCardContent grocery={grocery} />
+          </Card>
+        );
       })}
       {(filteredGroceries.true ?? []).map((grocery) => {
-        return <ClosedGroceryCard key={grocery.id} grocery={grocery} />;
+        return (
+          <Card key={grocery.id} withBorder className="opacity-50">
+            <GroceryCardContent grocery={grocery} />
+          </Card>
+        );
       })}
     </Stack>
   );

@@ -8,7 +8,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import TagsSelect from "components/molecules/Select/Tags";
+import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import { FC } from "react";
 import InputMask from "react-input-mask";
 import { TagDocument } from "types/firebase/collections";
@@ -115,7 +115,7 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         {...form.getInputProps("securityCode")}
       />
       {tags?.length ? (
-        <TagsSelect
+        <TagsMultiSelect
           label="Étiquette"
           placeholder="John Doe"
           tags={tags}

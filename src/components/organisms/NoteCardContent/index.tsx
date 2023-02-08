@@ -4,33 +4,50 @@ import {
   Button,
   CopyButton,
   Group,
+  Menu,
   Stack,
   Text,
-  Tooltip,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import { openConfirmModal } from "@mantine/modals";
+import { openConfirmModal, openModal } from "@mantine/modals";
 import {
   IconCheck,
+  IconDotsVertical,
   IconEdit,
-  IconEye,
   IconLink,
+  IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
-import { FC, useCallback } from "react";
+import useGetTags from "hooks/useGetTags";
+import { FC, useCallback, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
+import MoveNoteModal from "./MoveNoteModal";
 
 export interface NoteCardContentProps {
   note: NoteDocument;
 }
 
 const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
   const { boardId } = useParams();
   const navigate = useNavigate();
+  const getTags = useGetTags();
+  const { boards } = useBoard();
+
+  const tags = useMemo(() => {
+    return getTags(note.tags);
+  }, [note.tags, getTags]);
+
+  const openMoveModal = useCallback((note: NoteDocument) => {
+    return openModal({
+      centered: true,
+      zIndex: 1000,
+      title: "Déplacer la note",
+      children: <MoveNoteModal note={note} />,
+    });
+  }, []);
 
   const openDeleteModal = useCallback((note: NoteDocument) => {
     openConfirmModal({
@@ -54,113 +71,87 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
   }, []);
 
   return (
-    <Stack>
-      <Text fw={600} className="text-center">
-        {note.name}
-      </Text>
-      <Group position="center" spacing="xs">
-        <Badge size="lg" radius="sm" color="gray">
+    <Stack align="center">
+      <Group spacing="xs">
+        <Text weight={500}>{note.name}</Text>
+        <Badge radius="sm" color="gray">
           {formatDate(note.date, "D MMM YYYY")}
         </Badge>
       </Group>
-      <Group grow>
+      {tags.length ? (
+        <Group>
+          {tags.map((tag) => (
+            <Badge variant="dot" color={tag.color} size="sm">
+              {tag.name}
+            </Badge>
+          ))}
+        </Group>
+      ) : undefined}
+
+      <Group className="w-full">
         <Button
           variant="light"
+          className="flex-1"
           onClick={() => {
             navigate(`/boards/${boardId}/notes/${note.id}`);
           }}
-          leftIcon={<IconEye size={18} />}
         >
           Prévisualiser
         </Button>
-      </Group>
-      <div className="grid grid-cols-3">
-        <div className="m-auto">
-          <CopyButton value={`${window.location.host}/${note.ref?.path}`}>
-            {({ copied, copy }) =>
-              is768Px ? (
-                <Button
-                  variant="subtle"
-                  size="xs"
-                  color={copied ? "teal" : "blue"}
-                  onClick={copy}
-                  leftIcon={
-                    copied ? <IconCheck size={18} /> : <IconLink size={18} />
-                  }
+        <CopyButton value={`${window.location.host}/${note.ref?.path}`}>
+          {({ copied, copy }) => (
+            <Menu shadow="md" width={200} withinPortal>
+              <Menu.Target>
+                <ActionIcon
+                  variant="light"
+                  radius="md"
+                  size={36}
+                  color={copied ? "teal" : undefined}
                 >
-                  {copied ? "Lien copié" : "Copier le lien"}
-                </Button>
-              ) : (
-                <Tooltip
-                  label={copied ? "Lien copié" : "Copier le lien"}
-                  withArrow
-                >
-                  <ActionIcon
-                    color={copied ? "teal" : "blue"}
-                    onClick={copy}
-                    className="m-auto"
+                  {copied ? (
+                    <IconCheck size={18} />
+                  ) : (
+                    <IconDotsVertical size={18} />
+                  )}
+                </ActionIcon>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Item icon={<IconLink size={18} />} onClick={copy}>
+                  Copier le lien
+                </Menu.Item>
+                {(boards?.length ?? 0) > 1 ? (
+                  <Menu.Item
+                    onClick={() => {
+                      openMoveModal(note);
+                    }}
+                    icon={<IconSwitchHorizontal size={18} />}
                   >
-                    {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
-                  </ActionIcon>
-                </Tooltip>
-              )
-            }
-          </CopyButton>
-        </div>
-        <div className="m-auto">
-          {is768Px ? (
-            <Button
-              size="xs"
-              variant="subtle"
-              onClick={() => {
-                navigate(`/boards/${boardId}/notes/${note.id}`);
-              }}
-              leftIcon={<IconEdit size={18} />}
-            >
-              Modifier
-            </Button>
-          ) : (
-            <Tooltip label="Modifier" withArrow>
-              <ActionIcon
-                color="blue"
-                className="m-auto"
-                onClick={() => {
-                  navigate(`/boards/${boardId}/notes/${note.id}`);
-                }}
-              >
-                <IconEdit size={18} />
-              </ActionIcon>
-            </Tooltip>
+                    Déplacer
+                  </Menu.Item>
+                ) : undefined}
+                <Menu.Item
+                  onClick={() => {
+                    navigate(`/boards/${boardId}/notes/${note.id}`);
+                  }}
+                  icon={<IconEdit size={18} />}
+                >
+                  Modifier
+                </Menu.Item>
+                <Menu.Item
+                  color="red"
+                  onClick={() => {
+                    openDeleteModal(note);
+                  }}
+                  icon={<IconTrash size={18} />}
+                >
+                  Supprimer
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           )}
-        </div>
-        <div className="m-auto">
-          {is768Px ? (
-            <Button
-              size="xs"
-              color="red"
-              variant="subtle"
-              onClick={() => {
-                openDeleteModal(note);
-              }}
-              leftIcon={<IconTrash size={18} />}
-            >
-              Supprimer
-            </Button>
-          ) : (
-            <Tooltip label="Supprimer" withArrow>
-              <ActionIcon
-                color="red"
-                className="m-auto"
-                onClick={() => {
-                  openDeleteModal(note);
-                }}
-              >
-                <IconTrash size={18} />
-              </ActionIcon>
-            </Tooltip>
-          )}
-        </div>
-      </div>
+        </CopyButton>
+      </Group>
     </Stack>
   );
 };

@@ -1,6 +1,6 @@
 import { ActionIcon, Badge, TextInput } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
-import { addDoc, collection } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
 import {
@@ -9,6 +9,7 @@ import {
   TagDocument,
 } from "types/firebase/collections";
 import { getColorFromString } from "utils/color";
+import { addDoc } from "utils/firebase";
 
 export interface NewTagBadgeProps {
   board: BoardDocument;

@@ -5,7 +5,6 @@ import {
   IconId,
   IconLockOpen,
   IconPencil,
-  IconPhoto,
   IconSettings,
   IconShoppingCart,
 } from "@tabler/icons";
@@ -49,15 +48,15 @@ const menu = [
     label: "Notes",
     to: "notes",
   },
-  {
-    icon: <IconPhoto size={18} />,
-    color: "violet",
-    label: "Souvenirs",
-    to: "souvenirs",
-  },
+  // {
+  //   icon: <IconPhoto size={18} />,
+  //   color: "violet",
+  //   label: "Souvenirs",
+  //   to: "souvenirs",
+  // },
   {
     icon: <IconChecklist size={18} />,
-    color: "pink",
+    color: "violet",
     label: "Tâches",
     to: "tasks",
     count: ({ tasks }: IBoardContext) =>

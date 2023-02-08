@@ -1,6 +1,6 @@
 import { PasswordInput, TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import TagsSelect from "components/molecules/Select/Tags";
+import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import { FC } from "react";
 import { TagDocument } from "types/firebase/collections";
 
@@ -57,7 +57,7 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
         {...form.getInputProps("url")}
       />
       {tags?.length ? (
-        <TagsSelect
+        <TagsMultiSelect
           label="Étiquette"
           placeholder="John Doe"
           tags={tags}

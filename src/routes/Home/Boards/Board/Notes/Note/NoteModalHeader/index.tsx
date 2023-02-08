@@ -1,12 +1,14 @@
 import { Group, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
+import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import dayjs from "dayjs";
+import { doc } from "firebase/firestore";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useBoards } from "routes/Home/Boards/Provider";
 import { NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
-import { updateDoc } from "utils/firebase";
+import { db, updateDoc } from "utils/firebase";
 import { ONE_SECOND } from "utils/time";
 
 export interface NoteModalHeaderProps {
@@ -59,6 +61,22 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ note }) => {
           />
         </Group>
       )}
+      {tags?.length ? (
+        <TagsMultiSelect
+          placeholder="Étiquettes"
+          tags={tags}
+          value={(note.tags ?? []).map((tag) => tag.path)}
+          onChange={(tags) => {
+            if (note.ref) {
+              updateDoc<NoteDocument>(note.ref, {
+                tags: tags.map((tag) => {
+                  return doc(db, tag);
+                }),
+              });
+            }
+          }}
+        />
+      ) : undefined}
     </Group>
   );
 };

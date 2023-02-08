@@ -1,7 +1,7 @@
 import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
-import TagsSelect from "components/molecules/Select/Tags";
+import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import { doc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useMemo } from "react";
@@ -67,7 +67,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
           {...form.getInputProps("name")}
         />
         {tags?.length ? (
-          <TagsSelect
+          <TagsMultiSelect
             label="Étiquette"
             placeholder="John Doe"
             tags={tags}

@@ -10,8 +10,7 @@ import { IconX } from "@tabler/icons";
 import { FC, forwardRef } from "react";
 import { TagDocument } from "types/firebase/collections";
 
-export interface TagsSelectProps extends Omit<MultiSelectProps, "data"> {
-  loading?: boolean;
+export interface TagsMultiSelectProps extends Omit<MultiSelectProps, "data"> {
   tags: TagDocument[];
 }
 
@@ -60,10 +59,9 @@ const ValueComponent = forwardRef<
   )
 );
 
-const TagsSelect: FC<TagsSelectProps> = ({ loading, tags, ...rest }) => {
+const TagsMultiSelect: FC<TagsMultiSelectProps> = ({ tags, ...rest }) => {
   return (
     <MultiSelect
-      disabled={loading}
       data={tags.map((tag) => {
         return {
           label: String(tag.name),
@@ -79,4 +77,4 @@ const TagsSelect: FC<TagsSelectProps> = ({ loading, tags, ...rest }) => {
   );
 };
 
-export default TagsSelect;
+export default TagsMultiSelect;
