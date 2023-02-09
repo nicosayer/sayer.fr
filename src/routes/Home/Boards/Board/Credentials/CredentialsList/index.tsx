@@ -1,9 +1,9 @@
 import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
-import useGetTags from "hooks/useGetTags";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { useBoards } from "routes/Home/Boards/Provider";
 import { sanitize, searchString } from "utils/string";
 import CredentialCard from "./CredentialCard";
 
@@ -13,7 +13,7 @@ export interface CredentialsListProps {
 
 const CredentialsList: FC<CredentialsListProps> = ({ search }) => {
   const { credentials } = useBoard();
-  const getTags = useGetTags();
+  const { getTags } = useBoards();
 
   const filteredCredentials = useMemo(() => {
     return sortBy(

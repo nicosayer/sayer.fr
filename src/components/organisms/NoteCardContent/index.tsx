@@ -18,10 +18,10 @@ import {
   IconTrash,
 } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
-import useGetTags from "hooks/useGetTags";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { useBoards } from "routes/Home/Boards/Provider";
 import { NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import MoveNoteModal from "./MoveNoteModal";
@@ -46,8 +46,8 @@ const openDeleteModal = (note: NoteDocument) => {
     zIndex: 1000,
     children: (
       <Text size="sm">
-        Voulez-vous vraiment supprimer la note ? Cette action est définitive et
-        irréversible.
+        Voulez-vous vraiment supprimer cette note ? Cette action est définitive
+        et irréversible.
       </Text>
     ),
     labels: { confirm: "Supprimer", cancel: "Annuler" },
@@ -63,7 +63,7 @@ const openDeleteModal = (note: NoteDocument) => {
 const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const getTags = useGetTags();
+  const { getTags } = useBoards();
   const { boards } = useBoard();
 
   const tags = useMemo(() => {

@@ -1,5 +1,10 @@
 import { useDebouncedValue } from "@mantine/hooks";
-import { collection, query, where } from "firebase/firestore";
+import {
+  collection,
+  DocumentReference,
+  query,
+  where,
+} from "firebase/firestore";
 import useBoardsCollectionsData from "hooks/useBoardsCollectionsData";
 import { Dictionary, groupBy, orderBy } from "lodash";
 import FullPageLoading from "providers/FullPageLoading/FullPage";
@@ -16,15 +21,15 @@ import { sanitize } from "utils/string";
 
 interface IBoardsContext {
   boards?: BoardDocument[];
-  tags?: TagDocument[];
-  boardTags: Dictionary<TagDocument[]>;
+  tags: Dictionary<TagDocument[]>;
+  getTags: (tagRefs?: DocumentReference<TagDocument>[]) => TagDocument[];
   loading: boolean;
 }
 
 const BoardsContext = createContext<IBoardsContext>({
   boards: undefined,
-  tags: undefined,
-  boardTags: {},
+  tags: {},
+  getTags: () => [],
   loading: false,
 });
 
@@ -53,22 +58,22 @@ const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
 
   const [loading] = useDebouncedValue(loadingBoards || loadingTags, 200);
 
-  const orderedTags = useMemo(() => {
-    return orderBy(tags, (tag) => sanitize(String(tag.name)));
-  }, [tags]);
-
-  const boardTags = useMemo(() => {
-    return groupBy(orderedTags, (tag) => tag.ref?.parent.parent?.id);
-  }, [orderedTags]);
-
   const context = useMemo(() => {
+    const orderedTags = orderBy(tags, (tag) => sanitize(String(tag.name)));
+
     return {
       boards,
-      tags: orderedTags,
-      boardTags,
+      tags: groupBy(orderedTags, (tag) => tag.ref?.parent.parent?.id),
+      getTags: (tags?: DocumentReference<TagDocument>[]) => {
+        const tagIds = (tags ?? []).map((tagRef) => tagRef.id);
+
+        return orderedTags.filter((tag) => {
+          return tagIds.includes(String(tag.id));
+        });
+      },
       loading,
     };
-  }, [boards, orderedTags, boardTags, loading]);
+  }, [boards, tags, loading]);
 
   if (loading) {
     return <FullPageLoading />;

@@ -19,13 +19,13 @@ export interface SouvenirCardProps {
 
 const openDeleteModal = (souvenir: SouvenirDocument) => {
   openConfirmModal({
-    title: "Supprimer la carte de crédit",
+    title: "Supprimer le souvenir",
     centered: true,
     zIndex: 1000,
     children: (
       <Text size="sm">
-        Voulez-vous vraiment supprimer la carte de crédit ? Cette action est
-        définitive et irréversible.
+        Voulez-vous vraiment supprimer ce souvenir? Cette action est définitive
+        et irréversible.
       </Text>
     ),
     labels: { confirm: "Supprimer", cancel: "Annuler" },

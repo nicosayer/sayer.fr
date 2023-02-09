@@ -21,12 +21,12 @@ const openNewModal = () => {
 };
 
 const CreditCards: FC = () => {
-  const { isSecure, cannotBeSecure } = useSecureLogin();
+  const { isSecure, canBeSecure } = useSecureLogin();
   const { loadingCreditCards, creditCards } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)", true);
 
-  if (cannotBeSecure) {
+  if (!canBeSecure) {
     return (
       <div className="py-10">
         <CannotBeSecure />

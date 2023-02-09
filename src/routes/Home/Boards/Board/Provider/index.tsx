@@ -72,7 +72,7 @@ interface BoardProviderProps {
 }
 
 const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
-  const { boards, boardTags } = useBoards();
+  const { boards, tags: boardsTags } = useBoards();
 
   const [extraBoardIds, setExtraBoardIds] = useLocalStorage<string[]>({
     key: "extra-board-ids",
@@ -161,7 +161,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     return {
       board,
       boards: currentBoards,
-      tags: boardTags?.[boardId] ?? [],
+      tags: boardsTags?.[boardId] ?? [],
       setExtraBoardIds,
       credentials,
       creditCards,
@@ -181,7 +181,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   }, [
     board,
     boardId,
-    boardTags,
+    boardsTags,
     credentials,
     creditCards,
     currentBoards,

@@ -18,9 +18,9 @@ import {
   IconTrash,
 } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
-import useGetTags from "hooks/useGetTags";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { useBoards } from "routes/Home/Boards/Provider";
 import { CredentialDocument } from "types/firebase/collections";
 import CredentialPassword from "../CredentialPassword";
 import CredentialUsername from "../CredentialUsername";
@@ -56,7 +56,7 @@ const openDeleteModal = (credential: CredentialDocument) => {
     zIndex: 1000,
     children: (
       <Text size="sm">
-        Voulez-vous vraiment supprimer le mot de passe ? Cette action est
+        Voulez-vous vraiment supprimer ce mot de passe ? Cette action est
         définitive et irréversible.
       </Text>
     ),
@@ -74,7 +74,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
   credential,
 }) => {
   const { boards } = useBoard();
-  const getTags = useGetTags();
+  const { getTags } = useBoards();
 
   const tags = useMemo(() => {
     return getTags(credential.tags);
@@ -94,7 +94,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
       ) : undefined}
       <Stack spacing="xs">
         <Group position="center" spacing="xs">
-          <Text size="sm">Nom d'utilisateur :</Text>
+          <Text size="sm">Identifiant :</Text>
           <CredentialUsername credential={credential} />
         </Group>
         <Group position="center" spacing="xs">

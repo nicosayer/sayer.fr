@@ -20,10 +20,10 @@ import {
 import { deleteDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import useDownloadDocument from "hooks/useDownloadDocument";
-import useGetTags from "hooks/useGetTags";
 import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { useBoards } from "routes/Home/Boards/Provider";
 import { DocumentDocument, DocumentMime } from "types/firebase/collections";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
@@ -59,7 +59,7 @@ const openDeleteModal = (document: DocumentDocument) => {
     zIndex: 1000,
     children: (
       <Text size="sm">
-        Voulez-vous vraiment supprimer le document ? Cette action est définitive
+        Voulez-vous vraiment supprimer ce document ? Cette action est définitive
         et irréversible.
       </Text>
     ),
@@ -85,7 +85,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
   const [previewDocument, loadingPreview] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
   const { boards } = useBoard();
-  const getTags = useGetTags();
+  const { getTags } = useBoards();
 
   const tags = useMemo(() => {
     return getTags(document.tags);

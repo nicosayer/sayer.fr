@@ -16,11 +16,11 @@ export interface EditDocumentModalProps {
 
 const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
   const [loading, start, stop] = useBooleanState();
-  const { boardTags } = useBoards();
+  const { tags: boardsTags } = useBoards();
 
   const tags = useMemo(() => {
-    return boardTags[String(document.ref?.parent.parent?.id)] ?? [];
-  }, [boardTags, document.ref?.parent.parent?.id]);
+    return boardsTags[String(document.ref?.parent.parent?.id)] ?? [];
+  }, [boardsTags, document.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {

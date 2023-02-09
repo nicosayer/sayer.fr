@@ -8,12 +8,12 @@ import {
 import { SpotlightActionProps, SpotlightProvider } from "@mantine/spotlight";
 import { IconSearch } from "@tabler/icons";
 import classNames from "classnames";
-import useGetTags from "hooks/useGetTags";
 import { PropsWithChildren, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TagDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { searchString } from "utils/string";
+import { useBoards } from "../../Provider";
 import { useBoard } from "../Provider";
 
 function CustomAction({
@@ -24,7 +24,7 @@ function CustomAction({
   ...others
 }: SpotlightActionProps) {
   const theme = useMantineColorScheme();
-  const getTags = useGetTags();
+  const { getTags } = useBoards();
 
   const tags = useMemo(() => {
     return getTags(action.tags);
@@ -65,7 +65,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
   const { credentials, creditCards, documents, notes } = useBoard();
   const navigate = useNavigate();
   const { boardId } = useParams();
-  const getTags = useGetTags();
+  const { getTags } = useBoards();
 
   return (
     <SpotlightProvider

@@ -8,6 +8,27 @@ export interface DeleteBoardCardProps {
   board: BoardDocument;
 }
 
+const openDeleteModal = (board: BoardDocument) => {
+  openConfirmModal({
+    title: "Supprimer le board",
+    centered: true,
+    children: (
+      <Text size="sm">
+        Voulez-vous vraiment supprimer ce board ? Cette action est définitive et
+        irréversible.
+      </Text>
+    ),
+    labels: { confirm: "Supprimer", cancel: "Annuler" },
+    confirmProps: { color: "red" },
+    onConfirm: () => {
+      if (board?.ref) {
+        // TODO Delete subcollections
+        return deleteDoc(board.ref);
+      }
+    },
+  });
+};
+
 const DeleteBoardCard: FC<DeleteBoardCardProps> = ({ board }) => {
   return (
     <Card withBorder>
@@ -19,24 +40,7 @@ const DeleteBoardCard: FC<DeleteBoardCardProps> = ({ board }) => {
           color="red"
           className="mt-1"
           onClick={() => {
-            openConfirmModal({
-              title: "Supprimer le board",
-              centered: true,
-              children: (
-                <Text size="sm">
-                  Voulez-vous vraiment supprimer ce board ? Cette action est
-                  définitive et irréversible.
-                </Text>
-              ),
-              labels: { confirm: "Supprimer", cancel: "Annuler" },
-              confirmProps: { color: "red" },
-              onConfirm: () => {
-                if (board?.ref) {
-                  // TODO Delete subcollections
-                  return deleteDoc(board.ref);
-                }
-              },
-            });
+            openDeleteModal(board);
           }}
         >
           Supprimer

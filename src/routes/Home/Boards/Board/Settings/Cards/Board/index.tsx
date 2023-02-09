@@ -7,9 +7,11 @@ import {
   Input,
   MultiSelect,
   Stack,
+  Text,
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { openConfirmModal } from "@mantine/modals";
 import { IconX } from "@tabler/icons";
 import { deleteDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
@@ -24,6 +26,27 @@ export interface BoardCardProps {
   board: BoardDocument;
   tags: TagDocument[];
 }
+
+const openDeleteModal = (tag: TagDocument) => {
+  openConfirmModal({
+    title: "Supprimer l'étiquette",
+    centered: true,
+    zIndex: 1000,
+    children: (
+      <Text size="sm">
+        Voulez-vous vraiment supprimer cette étiquette ? Cette action est
+        définitive et irréversible.
+      </Text>
+    ),
+    labels: { confirm: "Supprimer", cancel: "Annuler" },
+    confirmProps: { color: "red" },
+    onConfirm: () => {
+      if (tag.ref) {
+        deleteDoc(tag.ref);
+      }
+    },
+  });
+};
 
 const BoardCard: FC<BoardCardProps> = ({ board, tags }) => {
   const [loading, start, stop] = useBooleanState({ stopDelay: ONE_SECOND });
@@ -90,9 +113,7 @@ const BoardCard: FC<BoardCardProps> = ({ board, tags }) => {
                         variant="transparent"
                         className="-mr-[6px]"
                         onClick={() => {
-                          if (tag.ref) {
-                            deleteDoc(tag.ref);
-                          }
+                          openDeleteModal(tag);
                         }}
                       >
                         <IconX size={10} />

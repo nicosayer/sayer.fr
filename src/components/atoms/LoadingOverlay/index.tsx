@@ -6,13 +6,14 @@ import {
 import { useDidUpdate } from "@mantine/hooks";
 import { FC, useState } from "react";
 
-interface LoadingOverlayProps extends MantineLoadingOverlayProps {}
+interface LoadingOverlayProps extends MantineLoadingOverlayProps { }
 
 const getDefaultDeg = () =>
-  Math.round((new Date().getMilliseconds() / 999) * 359);
+  Math.round((new Date().getMilliseconds() / 1000) * 360);
 
 const LoadingOverlay: FC<LoadingOverlayProps> = ({ visible, ...rest }) => {
   const [deg, setDeg] = useState(getDefaultDeg());
+  console.log(deg);
 
   useDidUpdate(() => {
     if (visible) {

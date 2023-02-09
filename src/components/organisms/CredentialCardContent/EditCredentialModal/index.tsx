@@ -16,11 +16,11 @@ export interface EditCredentialModalProps {
 
 const EditCredentialModal: FC<EditCredentialModalProps> = ({ credential }) => {
   const [loading, start, stop] = useBooleanState();
-  const { boardTags } = useBoards();
+  const { tags: boardsTags } = useBoards();
 
   const tags = useMemo(() => {
-    return boardTags[String(credential.ref?.parent.parent?.id)] ?? [];
-  }, [boardTags, credential.ref?.parent.parent?.id]);
+    return boardsTags[String(credential.ref?.parent.parent?.id)] ?? [];
+  }, [boardsTags, credential.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {

@@ -16,12 +16,12 @@ export interface EditCreditCardModalProps {
 
 const EditCreditCardModal: FC<EditCreditCardModalProps> = ({ creditCard }) => {
   const [loading, start, stop] = useBooleanState();
-  const { boardTags } = useBoards();
+  const { tags: boardsTags } = useBoards();
   const theme = useMantineTheme();
 
   const tags = useMemo(() => {
-    return boardTags[String(creditCard.ref?.parent.parent?.id)] ?? [];
-  }, [boardTags, creditCard.ref?.parent.parent?.id]);
+    return boardsTags[String(creditCard.ref?.parent.parent?.id)] ?? [];
+  }, [boardsTags, creditCard.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {

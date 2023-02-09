@@ -71,7 +71,7 @@ const TaskCardContent: FC<TaskCardContentProps> = ({ task }) => {
           }
         }}
       />
-      <Group>
+      <Group noWrap className="whitespace-nowrap">
         {is768Px && (
           <Text c="dimmed" fz="sm">
             {task.closedAt

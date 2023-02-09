@@ -13,16 +13,15 @@ import {
 } from "react";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
-import { ONE_SECOND } from "utils/time";
 
 interface ISecureLoginContext {
   isSecure: boolean;
-  cannotBeSecure?: boolean;
+  canBeSecure: boolean;
 }
 
 const SecureLoginContext = createContext<ISecureLoginContext>({
   isSecure: false,
-  cannotBeSecure: undefined,
+  canBeSecure: false,
 });
 
 SecureLoginContext.displayName = "SecureLogin";
@@ -39,18 +38,24 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
   const [user] = useAuthState(auth);
   const [signOut] = useSignOut(auth);
   const [idTokenResult, setIdTokenResult] = useState<IdTokenResult>();
-  const isSecure = useMemo(() => {
-    return idTokenResult?.signInProvider === "password";
-  }, [idTokenResult?.signInProvider]);
-  const [signOutTimestamp, setSignOutTimestamp] = useLocalStorage({
+  const [, setSignOutTimestamp] = useLocalStorage({
     key: "automatic-sign-out-timestamp",
     defaultValue: getDefaultSignOutTimestamp(),
     getInitialValueInEffect: false,
   });
+  const isSecure = useMemo(() => {
+    return idTokenResult?.signInProvider === "password";
+  }, [idTokenResult?.signInProvider]);
 
   const handleEvent = useCallback(() => {
-    setSignOutTimestamp(getDefaultSignOutTimestamp());
-  }, [setSignOutTimestamp]);
+    setSignOutTimestamp((signOutTimestamp) => {
+      if (isSecure && +dayjs() >= signOutTimestamp) {
+        signOut();
+      }
+
+      return getDefaultSignOutTimestamp();
+    });
+  }, [isSecure, setSignOutTimestamp, signOut]);
 
   useEffect(() => {
     const unsubscribe = auth.onIdTokenChanged((user) => {
@@ -70,18 +75,6 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (isSecure && +dayjs() >= signOutTimestamp) {
-        signOut();
-      }
-    }, ONE_SECOND);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [isSecure, signOut, signOutTimestamp]);
-
-  useEffect(() => {
     handleEvent();
 
     window.addEventListener("click", handleEvent);
@@ -96,9 +89,10 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
   const context = useMemo(() => {
     return {
       isSecure,
-      cannotBeSecure: !user?.providerData.find(
-        (provider) => provider.providerId === "password"
-      ),
+      canBeSecure:
+        user?.providerData.some(
+          (provider) => provider.providerId === "password"
+        ) ?? false,
     };
   }, [isSecure, user?.providerData]);
 

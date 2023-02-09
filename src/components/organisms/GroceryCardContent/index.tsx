@@ -71,7 +71,7 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
           }
         }}
       />
-      <Group>
+      <Group noWrap className="whitespace-nowrap">
         {is768Px && (
           <Text c="dimmed" fz="sm">
             {grocery.closedAt

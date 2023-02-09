@@ -24,9 +24,9 @@ import CreditCardExpirationDate from "components/organisms/CreditCardExpirationD
 import CreditCardNumber from "components/organisms/CreditCardNumber";
 import CreditCardSecurityCode from "components/organisms/CreditCardSecurityCode";
 import { deleteDoc } from "firebase/firestore";
-import useGetTags from "hooks/useGetTags";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { useBoards } from "routes/Home/Boards/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
 import EditCreditCardModal from "./EditCreditCardModal";
 import MoveCreditCardModal from "./MoveCreditCardModal";
@@ -60,7 +60,7 @@ const openDeleteModal = (creditCard: CreditCardDocument) => {
     zIndex: 1000,
     children: (
       <Text size="sm">
-        Voulez-vous vraiment supprimer la carte de crédit ? Cette action est
+        Voulez-vous vraiment supprimer cette carte de crédit ? Cette action est
         définitive et irréversible.
       </Text>
     ),
@@ -79,7 +79,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
 }) => {
   const { boards } = useBoard();
   const theme = useMantineTheme();
-  const getTags = useGetTags();
+  const { getTags } = useBoards();
 
   const tags = useMemo(() => {
     return getTags(creditCard.tags);

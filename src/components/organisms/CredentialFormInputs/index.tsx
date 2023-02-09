@@ -39,7 +39,7 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
       <TextInput
         disabled={loading}
         withAsterisk
-        label="Nom d'utilisateur"
+        label="Identifiant"
         placeholder="john.doe@acme.com"
         {...form.getInputProps("username")}
       />

@@ -10,7 +10,7 @@ import UserCard from "./Cards/User";
 const Settings: FC = () => {
   const { boardId } = useParams();
   const { boards, tags } = useBoard();
-  const { boardTags } = useBoards();
+  const { tags: boardsTags } = useBoards();
 
   return (
     <Stack>
@@ -41,7 +41,7 @@ const Settings: FC = () => {
                 <UserCard />
                 <BoardCard
                   board={board}
-                  tags={boardTags[String(board.id)] ?? []}
+                  tags={boardsTags[String(board.id)] ?? []}
                 />
                 <DeleteBoardCard board={board} />
               </Stack>

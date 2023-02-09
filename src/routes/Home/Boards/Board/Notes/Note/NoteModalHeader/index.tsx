@@ -16,14 +16,14 @@ export interface NoteModalHeaderProps {
 }
 
 const NoteModalHeader: FC<NoteModalHeaderProps> = ({ note }) => {
-  const { boardTags } = useBoards();
+  const { tags: boardsTags } = useBoards();
   const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [name, setName] = useState(note?.name);
   const [debouncedName] = useDebouncedValue(note?.name, 10 * ONE_SECOND);
 
   const tags = useMemo(() => {
-    return boardTags[String(note.ref?.parent.parent?.id)] ?? [];
-  }, [boardTags, note.ref?.parent.parent?.id]);
+    return boardsTags[String(note.ref?.parent.parent?.id)] ?? [];
+  }, [boardsTags, note.ref?.parent.parent?.id]);
 
   useEffect(() => {
     setName(debouncedName);

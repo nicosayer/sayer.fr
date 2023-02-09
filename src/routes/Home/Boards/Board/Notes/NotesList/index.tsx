@@ -1,9 +1,9 @@
 import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
-import useGetTags from "hooks/useGetTags";
 import { orderBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import { useBoards } from "routes/Home/Boards/Provider";
 import { formatDate } from "utils/dayjs";
 import { searchString } from "utils/string";
 import NoteCard from "./NoteCard";
@@ -14,7 +14,7 @@ export interface NotesListProps {
 
 const NotesList: FC<NotesListProps> = ({ search }) => {
   const { notes } = useBoard();
-  const getTags = useGetTags();
+  const { getTags } = useBoards();
 
   const filteredNotes = useMemo(() => {
     return orderBy(
