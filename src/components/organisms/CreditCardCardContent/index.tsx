@@ -10,6 +10,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
+import { useClipboard } from "@mantine/hooks";
 import { openConfirmModal, openModal } from "@mantine/modals";
 import {
   IconCheck,
@@ -24,6 +25,7 @@ import CreditCardExpirationDate from "components/organisms/CreditCardExpirationD
 import CreditCardNumber from "components/organisms/CreditCardNumber";
 import CreditCardSecurityCode from "components/organisms/CreditCardSecurityCode";
 import { deleteDoc } from "firebase/firestore";
+import { useDecrypt } from "hooks/useCrypto";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { useBoards } from "routes/Home/Boards/Provider";
@@ -77,6 +79,8 @@ const openDeleteModal = (creditCard: CreditCardDocument) => {
 const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
   creditCard,
 }) => {
+  const { decrypt, loading } = useDecrypt();
+  const clipboard = useClipboard();
   const { boards } = useBoard();
   const theme = useMantineTheme();
   const { getTags } = useBoards();
@@ -96,7 +100,7 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
       {tags.length ? (
         <Group>
           {tags.map((tag) => (
-            <Badge variant="dot" color={tag.color} size="sm">
+            <Badge key={tag.id} variant="dot" color={tag.color} size="sm">
               {tag.name}
             </Badge>
           ))}
@@ -121,20 +125,24 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
         </Group>
       </Stack>
       <Group className="w-full">
-        <CopyButton
-          value={`${creditCard.cardholder} ${creditCard.number} ${creditCard.expirationMonth}/${creditCard.expirationYear} ${creditCard.securityCode}`}
+        <Button
+          loading={loading}
+          variant="light"
+          className="flex-1"
+          color={clipboard.copied ? "teal" : undefined}
+          onClick={async () => {
+            const [number, securityCode] = await Promise.all([
+              decrypt(creditCard.number),
+              decrypt(creditCard.securityCode),
+            ])
+
+            clipboard.copy(
+              number && securityCode ? `${creditCard.cardholder} ${number.data} ${creditCard.expirationMonth}/${creditCard.expirationYear} ${securityCode.data}` : ''
+            );
+          }}
         >
-          {({ copied, copy }) => (
-            <Button
-              variant="light"
-              className="flex-1"
-              color={copied ? "teal" : undefined}
-              onClick={copy}
-            >
-              {copied ? "Informations copiés" : "Copier les informations"}
-            </Button>
-          )}
-        </CopyButton>
+          {clipboard.copied ? "Informations copiés" : "Copier les informations"}
+        </Button>
         <CopyButton
           value={`${window.location.host}/${creditCard.ref?.path.replace(
             "creditCards",

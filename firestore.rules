@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	function isAuth() {
+      return request.auth != null && request.auth.token.email_verified
+    }
+    
+    function isUser(resource) {
+      return "users" in resource.data && request.auth.token.email in resource.data.users
+    }
+    
+    function isProvider(provider) {
+      return request.auth.token.firebase.sign_in_provider == provider;
+    }
+    
+		function getBoard(boardId) {
+    	return get(/databases/$(database)/documents/boards/$(boardId))
+    }
+    
+    match /boards/{boardId} {
+      allow create: if isAuth();
+      allow read, write: if isAuth() && isUser(resource);
+        
+      match /credentials/{credentialId} {
+    		allow read, write: if isAuth() && isProvider("password") && isUser(getBoard(boardId));
+      }
+      
+      match /creditCards/{creditCardId} {
+    		allow read, write: if isAuth() && isProvider("password") && isUser(getBoard(boardId));
+      }
+      
+      match /documents/{documentId} {
+    		allow read, write: if isAuth() && isUser(getBoard(boardId));
+      }
+      
+      match /groceries/{groceryId} {
+    		allow read, write: if isAuth() && isUser(getBoard(boardId));
+      }
+      
+      match /notes/{noteId} {
+    		allow read, write: if isAuth() && isUser(getBoard(boardId));
+      }
+      
+      match /souvenirs/{souvenirId} {
+    		allow read, write: if isAuth() && isUser(getBoard(boardId));
+      }
+      
+      match /souvenirs/{souvenirId}/souvenirPictures/{souvenirPictureId} {
+    		allow read, write: if isAuth() && isUser(getBoard(boardId));
+      }
+      
+       match /tags/{tagId} {
+    		allow read, write: if isAuth() && isUser(getBoard(boardId));
+      }
+      
+      match /tasks/{taskId} {
+    		allow read, write: if isAuth() && isUser(getBoard(boardId));
+      }
+    }
+  }
+}

@@ -1,58 +1,97 @@
-import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconCheck, IconCopy, IconEye, IconEyeOff } from "@tabler/icons";
-import { FC } from "react";
+import { ActionIcon, Code, Group, Tooltip } from "@mantine/core";
+import { useClipboard, useDisclosure } from "@mantine/hooks";
+import { IconCheck, IconCopy, IconEye, IconEyeOff, IconX } from "@tabler/icons";
+import { useDecrypt } from "hooks/useCrypto";
+import { FC, useEffect, useState } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
-import { ONE_SECOND } from "utils/time";
 
 interface CreditCardSecurityCodeProps {
   creditCard: CreditCardDocument;
 }
 
+const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
+  creditCard,
+}) => {
+  const { decrypt, loading, error } = useDecrypt();
+  const clipboard = useClipboard();
+
+  return (
+    <Tooltip
+      disabled={(loading)}
+      label={
+        clipboard.copied
+          ? (error ? 'Erreur' : "Code de sécurité copié")
+          : "Copier le code de sécurité"
+      }
+      withArrow
+    >
+      <ActionIcon
+        loading={loading}
+        color={
+          clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
+        }
+        onClick={async () => {
+          const securityCode = await decrypt(creditCard.securityCode)
+
+          clipboard.copy(securityCode?.data ?? "");
+        }}
+      >
+        {clipboard.copied ? (
+          error ? (
+            <IconX size={18} />
+          ) : (
+            <IconCheck size={18} />
+          )
+        ) : (
+          <IconCopy size={18} />
+        )}
+      </ActionIcon>
+    </Tooltip>
+  );
+};
+
 const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
   creditCard,
 }) => {
+  const { decrypt, loading, error } = useDecrypt();
+  const [securityCode, setSecurityCode] = useState<string>();
+
   const [visible, setVisible] = useDisclosure(false, {
     onOpen: () => {
-      setTimeout(() => {
-        if (visible) {
-          setVisible.close();
-        }
-      }, 10 * ONE_SECOND);
+      if (!securityCode) {
+        decrypt(creditCard.securityCode).then((securityCode) => {
+          setSecurityCode(securityCode?.data);
+        });
+      }
     },
   });
+
+  useEffect(() => {
+    if (error) {
+      setVisible.close()
+    }
+  }, [error, setVisible])
 
   return (
     <Group spacing="xs">
       <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {visible
-          ? creditCard.securityCode
-          : Array(creditCard.securityCode?.length).fill("•").join("")}
+        {visible && securityCode ? securityCode : "•••"}
       </Code>
       <Tooltip
+        disabled={loading}
         label={
           visible ? "Cacher le code de sécurité" : "Voir le code de sécurité"
         }
         withArrow
       >
-        <ActionIcon onClick={setVisible.toggle}>
+        <ActionIcon
+          loading={loading}
+          onClick={setVisible.toggle}
+        >
           {visible ? <IconEyeOff size={18} /> : <IconEye size={18} />}
         </ActionIcon>
       </Tooltip>
-      <CopyButton value={String(creditCard?.securityCode)}>
-        {({ copied, copy }) => (
-          <Tooltip
-            label={
-              copied ? "Code de sécurité copié" : "Copier le code de sécurité"
-            }
-            withArrow
-          >
-            <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
-              {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
-            </ActionIcon>
-          </Tooltip>
-        )}
-      </CopyButton>
+      <CreditCardSecurityCodeCopyButton creditCard={creditCard} />
     </Group>
   );
 };

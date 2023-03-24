@@ -144,6 +144,7 @@ const BoardCard: FC<BoardCardProps> = ({ board, tags }) => {
                           event.currentTarget.blur();
                         }
                       }}
+                      suppressContentEditableWarning
                     >
                       {tag.name}
                     </div>
@@ -154,6 +155,7 @@ const BoardCard: FC<BoardCardProps> = ({ board, tags }) => {
             </Group>
           </Input.Wrapper>
           <MultiSelect
+            withinPortal
             label="Utilisateurs"
             description="Les utilisateurs peuvent visualiser, modifier et supprimer tous les élèments du board"
             data={users}

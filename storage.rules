@@ -1,0 +1,15 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /boards/{boardId} {
+    
+    	function getBoard() {
+      	return firestore.get(/databases/(default)/documents/boards/$(boardId));
+    	}
+    
+    	match /documents/{documentId}/{documentName} {
+      	allow read, write: if request.auth.token.email in getBoard().data.users;
+    	}
+    }
+  }
+}

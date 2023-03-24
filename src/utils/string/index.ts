@@ -17,5 +17,5 @@ export const getEmailLocale = (email: string) => {
 };
 
 export const cleanString = (string: string) => {
-  return string.trim().replace(/ +/g, " ");
+  return string.trim().replace(/\s+/g, " ");
 };

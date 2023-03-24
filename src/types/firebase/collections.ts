@@ -40,6 +40,7 @@ export interface CreditCardDocument {
   name?: string;
   cardholder?: string;
   number?: string;
+  lastDigits?: string;
   expirationMonth?: string;
   expirationYear?: string;
   securityCode?: string;

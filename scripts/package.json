@@ -1,0 +1,13 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "esr ./src"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "esbuild-runner": "^2.2.2",
+    "firebase-admin": "^11.5.0"
+  }
+}

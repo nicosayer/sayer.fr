@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { FirebaseOptions, initializeApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth } from "firebase/auth";
 import {
@@ -15,6 +15,7 @@ import {
   updateDoc as firestoreUpdateDoc,
   WithFieldValue,
 } from "firebase/firestore";
+import { getFunctions } from "firebase/functions";
 import { getStorage } from "firebase/storage";
 
 if (window.location.hostname === "localhost") {
@@ -22,7 +23,7 @@ if (window.location.hostname === "localhost") {
   window.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 }
 
-const firebaseConfig = {
+const firebaseConfig: FirebaseOptions = {
   apiKey: "AIzaSyDKUdxvqC_0Nb8KXitDLijpCLqhGTGiTcU",
   authDomain: "home-sayer-fr.firebaseapp.com",
   projectId: "home-sayer-fr",
@@ -35,12 +36,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = initializeFirestore(app, { ignoreUndefinedProperties: true });
 const storage = getStorage(app);
+const functions = getFunctions(app, "europe-west3");
 const appCheck = initializeAppCheck(app, {
   provider: new ReCaptchaV3Provider("6Ld27OsjAAAAAC6T__xbD0Szvn1yogbKXcNqV-vN"),
   isTokenAutoRefreshEnabled: true,
 });
 
-export { auth, db, storage, appCheck };
+export { auth, db, functions, storage, appCheck };
 
 export const firestoreConverter: FirestoreDataConverter<any> = {
   toFirestore(data) {

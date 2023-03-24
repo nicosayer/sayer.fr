@@ -1,17 +1,21 @@
 import FullPageLoadingProvider from "providers/FullPageLoading";
 import MantineProvider from "providers/Mantine";
+import OpenFirestoreProvider from "providers/OpenFirestore";
 import SecureLoginProvider from "providers/SecureLogin";
 import Routes from "routes";
 
 const App = () => {
   return (
-    <FullPageLoadingProvider>
-      <MantineProvider>
-        <SecureLoginProvider>
-          <Routes />
-        </SecureLoginProvider>
-      </MantineProvider>
-    </FullPageLoadingProvider>
+    <>
+      <OpenFirestoreProvider />
+      <FullPageLoadingProvider>
+        <MantineProvider>
+          <SecureLoginProvider>
+            <Routes />
+          </SecureLoginProvider>
+        </MantineProvider>
+      </FullPageLoadingProvider>
+    </>
   );
 };
 

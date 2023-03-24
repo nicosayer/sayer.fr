@@ -52,7 +52,7 @@ function CustomAction({
           )}
         </div>
         {tags.map((tag) => (
-          <Badge variant="dot" color={tag.color} size="sm">
+          <Badge key={tag.id} variant="dot" color={tag.color} size="sm">
             {tag.name}
           </Badge>
         ))}

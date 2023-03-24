@@ -1,57 +1,90 @@
-import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconCheck, IconCopy, IconEye, IconEyeOff } from "@tabler/icons";
-import { FC } from "react";
+import { ActionIcon, Code, Group, Tooltip } from "@mantine/core";
+import { useClipboard, useDisclosure } from "@mantine/hooks";
+import { IconCheck, IconCopy, IconEye, IconEyeOff, IconX } from "@tabler/icons";
+import { useDecrypt } from "hooks/useCrypto";
+import { FC, useEffect, useState } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
-import { ONE_SECOND } from "utils/time";
 
 interface CreditCardNumberProps {
   creditCard: CreditCardDocument;
 }
 
+const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
+  creditCard,
+}) => {
+  const { decrypt, loading, error } = useDecrypt();
+  const clipboard = useClipboard();
+
+  return (
+    <Tooltip
+      disabled={loading}
+      label={clipboard.copied ? (error ? 'Erreur' : "Numéro copié") : "Copier le numéro"}
+      withArrow
+    >
+      <ActionIcon
+        loading={loading}
+        color={
+          clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
+        }
+        onClick={async () => {
+          const number = await decrypt(creditCard.number)
+
+          clipboard.copy(number?.data ?? "");
+        }}
+      >
+        {clipboard.copied ? (
+          error ? (
+            <IconX size={18} />
+          ) : (
+            <IconCheck size={18} />
+          )
+        ) : (
+          <IconCopy size={18} />
+        )}
+      </ActionIcon>
+    </Tooltip>
+  );
+};
+
 const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
+  const { decrypt, loading, error } = useDecrypt();
+  const [number, setNumber] = useState<string>();
+
   const [visible, setVisible] = useDisclosure(false, {
     onOpen: () => {
-      setTimeout(() => {
-        if (visible) {
-          setVisible.close();
-        }
-      }, 10 * ONE_SECOND);
+      if (!number) {
+        decrypt(creditCard.number).then((number) => {
+          setNumber(number?.data);
+        })
+      }
     },
   });
+
+  useEffect(() => {
+    if (error) {
+      setVisible.close()
+    }
+  }, [error, setVisible])
 
   return (
     <Group spacing="xs">
       <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {visible ? (
-          creditCard.number?.match(/.{1,4}/g)?.join(" ")
+        {visible && number ? (
+          number?.match(/.{1,4}/g)?.join(" ")
         ) : (
-          <>
-            •••• •••• ••••{" "}
-            {creditCard.number?.substring(creditCard.number.length - 4)}
-          </>
+          <>•••• •••• •••• {creditCard.lastDigits}</>
         )}
       </Code>
       <Tooltip
         label={visible ? "Cacher le numéro" : "Voir le numéro"}
         withArrow
+        disabled={loading}
       >
-        <ActionIcon onClick={setVisible.toggle}>
+        <ActionIcon loading={loading} onClick={setVisible.toggle}>
           {visible ? <IconEyeOff size={18} /> : <IconEye size={18} />}
         </ActionIcon>
       </Tooltip>
-      <CopyButton value={String(creditCard?.number)}>
-        {({ copied, copy }) => (
-          <Tooltip
-            label={copied ? "Numéro copié" : "Copier le numéro"}
-            withArrow
-          >
-            <ActionIcon color={copied ? "teal" : undefined} onClick={copy}>
-              {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
-            </ActionIcon>
-          </Tooltip>
-        )}
-      </CopyButton>
+      <CreditCardNumberCopyButton creditCard={creditCard} />
     </Group>
   );
 };

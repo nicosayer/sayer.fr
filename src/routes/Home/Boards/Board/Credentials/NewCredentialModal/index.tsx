@@ -4,6 +4,7 @@ import { closeAllModals } from "@mantine/modals";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
 import { collection, doc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
+import { useEncrypt } from "hooks/useCrypto";
 import { FC } from "react";
 import { Collection, CredentialDocument } from "types/firebase/collections";
 import { addDoc, db } from "utils/firebase";
@@ -13,6 +14,8 @@ import { useBoard } from "../../Provider";
 const NewCredentialModal: FC = () => {
   const { board, tags } = useBoard();
   const [loading, start, stop] = useBooleanState();
+  const { encrypt } = useEncrypt();
+
   const form = useForm({
     initialValues: {
       name: "",
@@ -47,15 +50,18 @@ const NewCredentialModal: FC = () => {
 
   return (
     <form
-      onSubmit={form.onSubmit((values) => {
+      onSubmit={form.onSubmit(async (values) => {
         if (board?.id && board.ref) {
           start();
+
+          const password = await encrypt(values.password);
+
           addDoc<CredentialDocument>(
             collection(board.ref, Collection.credentials),
             {
               name: values.name,
               username: values.username,
-              password: values.password,
+              password: password?.data,
               url: values.url,
               tags: values.tags.map((tag) => {
                 return doc(db, tag);
