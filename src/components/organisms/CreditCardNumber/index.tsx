@@ -18,7 +18,13 @@ const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
   return (
     <Tooltip
       disabled={loading}
-      label={clipboard.copied ? (error ? 'Erreur' : "Numéro copié") : "Copier le numéro"}
+      label={
+        clipboard.copied
+          ? error
+            ? "Erreur"
+            : "Numéro copié"
+          : "Copier le numéro"
+      }
       withArrow
     >
       <ActionIcon
@@ -27,7 +33,7 @@ const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
           clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
         }
         onClick={async () => {
-          const number = await decrypt(creditCard.number)
+          const number = await decrypt(creditCard.number);
 
           clipboard.copy(number?.data ?? "");
         }}
@@ -55,16 +61,16 @@ const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
       if (!number) {
         decrypt(creditCard.number).then((number) => {
           setNumber(number?.data);
-        })
+        });
       }
     },
   });
 
   useEffect(() => {
     if (error) {
-      setVisible.close()
+      setVisible.close();
     }
-  }, [error, setVisible])
+  }, [error, setVisible]);
 
   return (
     <Group spacing="xs">

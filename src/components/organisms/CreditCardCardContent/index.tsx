@@ -134,10 +134,12 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
             const [number, securityCode] = await Promise.all([
               decrypt(creditCard.number),
               decrypt(creditCard.securityCode),
-            ])
+            ]);
 
             clipboard.copy(
-              number && securityCode ? `${creditCard.cardholder} ${number.data} ${creditCard.expirationMonth}/${creditCard.expirationYear} ${securityCode.data}` : ''
+              number && securityCode
+                ? `${creditCard.cardholder} ${number.data} ${creditCard.expirationMonth}/${creditCard.expirationYear} ${securityCode.data}`
+                : ""
             );
           }}
         >

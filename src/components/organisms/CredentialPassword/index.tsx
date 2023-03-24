@@ -13,16 +13,17 @@ const CredentialPassword: FC<CredentialPasswordProps> = ({ credential }) => {
   const { decrypt, loading, error } = useDecrypt();
   const clipboard = useClipboard();
 
-  console.log(error);
-
-
   return (
     <Group spacing="xs">
       <Code>••••••••••</Code>
       <Tooltip
         disabled={loading}
         label={
-          clipboard.copied ? (error ? 'Erreur' : "Mot de passe copié") : "Copier le mot de passe"
+          clipboard.copied
+            ? error
+              ? "Erreur"
+              : "Mot de passe copié"
+            : "Copier le mot de passe"
         }
         withArrow
       >
@@ -32,7 +33,7 @@ const CredentialPassword: FC<CredentialPasswordProps> = ({ credential }) => {
             clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
           }
           onClick={async () => {
-            const password = await decrypt(credential.password)
+            const password = await decrypt(credential.password);
 
             clipboard.copy(password?.data ?? "");
           }}

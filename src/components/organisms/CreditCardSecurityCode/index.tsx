@@ -17,10 +17,12 @@ const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
 
   return (
     <Tooltip
-      disabled={(loading)}
+      disabled={loading}
       label={
         clipboard.copied
-          ? (error ? 'Erreur' : "Code de sécurité copié")
+          ? error
+            ? "Erreur"
+            : "Code de sécurité copié"
           : "Copier le code de sécurité"
       }
       withArrow
@@ -31,7 +33,7 @@ const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
           clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
         }
         onClick={async () => {
-          const securityCode = await decrypt(creditCard.securityCode)
+          const securityCode = await decrypt(creditCard.securityCode);
 
           clipboard.copy(securityCode?.data ?? "");
         }}
@@ -68,9 +70,9 @@ const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
 
   useEffect(() => {
     if (error) {
-      setVisible.close()
+      setVisible.close();
     }
-  }, [error, setVisible])
+  }, [error, setVisible]);
 
   return (
     <Group spacing="xs">
@@ -84,10 +86,7 @@ const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
         }
         withArrow
       >
-        <ActionIcon
-          loading={loading}
-          onClick={setVisible.toggle}
-        >
+        <ActionIcon loading={loading} onClick={setVisible.toggle}>
           {visible ? <IconEyeOff size={18} /> : <IconEye size={18} />}
         </ActionIcon>
       </Tooltip>
