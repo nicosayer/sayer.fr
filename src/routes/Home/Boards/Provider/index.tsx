@@ -2,11 +2,12 @@ import { useDebouncedValue } from "@mantine/hooks";
 import {
   collection,
   DocumentReference,
+  orderBy,
   query,
   where,
 } from "firebase/firestore";
 import useBoardsCollectionsData from "hooks/useBoardsCollectionsData";
-import { Dictionary, groupBy, orderBy } from "lodash";
+import { Dictionary, groupBy, sortBy } from "lodash";
 import FullPageLoading from "providers/FullPageLoading/FullPage";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -47,7 +48,8 @@ const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
   const [boards, loadingBoards] = useCollectionData<BoardDocument>(
     query(
       collection(db, Collection.boards),
-      where("users", "array-contains", user?.email)
+      where("users", "array-contains", user?.email),
+      orderBy("name")
     ).withConverter(firestoreConverter)
   );
 
@@ -59,10 +61,11 @@ const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
   const [loading] = useDebouncedValue(loadingBoards || loadingTags, 200);
 
   const context = useMemo(() => {
-    const orderedTags = orderBy(tags, (tag) => sanitize(String(tag.name)));
+    const orderedTags = sortBy(tags, (tag) => sanitize(String(tag.name)));
+    const orderedBoards = sortBy(boards, (board) => sanitize(String(board.name)));
 
     return {
-      boards,
+      boards: orderedBoards,
       tags: groupBy(orderedTags, (tag) => tag.ref?.parent.parent?.id),
       getTags: (tags?: DocumentReference<TagDocument>[]) => {
         const tagIds = (tags ?? []).map((tagRef) => tagRef.id);
