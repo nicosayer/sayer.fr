@@ -1,5 +1,5 @@
 import { Menu } from "@mantine/core";
-import { IconSettings } from "@tabler/icons";
+import { IconSettings } from "@tabler/icons-react";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 

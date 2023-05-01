@@ -1,6 +1,6 @@
 import { Button, Menu, Stack } from "@mantine/core";
 import { closeAllModals, openModal } from "@mantine/modals";
-import { IconArrowRight, IconSwitchHorizontal } from "@tabler/icons";
+import { IconArrowRight, IconSwitchHorizontal } from "@tabler/icons-react";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";

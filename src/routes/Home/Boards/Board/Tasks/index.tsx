@@ -1,5 +1,5 @@
 import { Group, Stack, Text, TextInput } from "@mantine/core";
-import { IconSearch } from "@tabler/icons";
+import { IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
 import { useBoard } from "../Provider";

@@ -1,5 +1,5 @@
 import { ActionIcon, Card, Group, TextInput } from "@mantine/core";
-import { IconPlus } from "@tabler/icons";
+import { IconPlus } from "@tabler/icons-react";
 import { collection, Timestamp } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useMemo, useState } from "react";

@@ -1,12 +1,11 @@
-
-import { runInParallel } from '../../utils/async';
-import { getFirebase, spreadDocumentsData } from '../../utils/firebase';
+import { runInParallel } from "../../utils/async";
+import { getFirebase, spreadDocumentsData } from "../../utils/firebase";
 
 const template = async () => {
   const { db } = await getFirebase();
 
   const elements = await db
-    .collectionGroup('boards')
+    .collectionGroup("boards")
     .get()
     .then(spreadDocumentsData);
 

@@ -1,5 +1,5 @@
 import { Menu, useMantineColorScheme } from "@mantine/core";
-import { IconMoon, IconSun } from "@tabler/icons";
+import { IconMoon, IconSun } from "@tabler/icons-react";
 import { FC } from "react";
 
 const DarkModeMenuItem: FC = () => {

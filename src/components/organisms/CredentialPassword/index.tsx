@@ -1,6 +1,6 @@
 import { ActionIcon, Code, Group, Tooltip } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
-import { IconCheck, IconCopy, IconX } from "@tabler/icons";
+import { IconCheck, IconCopy, IconX } from "@tabler/icons-react";
 import { useDecrypt } from "hooks/useCrypto";
 import { FC } from "react";
 import { CredentialDocument } from "types/firebase/collections";

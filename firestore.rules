@@ -41,14 +41,6 @@ service cloud.firestore {
     		allow read, write: if isAuth() && isUser(getBoard(boardId));
       }
       
-      match /souvenirs/{souvenirId} {
-    		allow read, write: if isAuth() && isUser(getBoard(boardId));
-      }
-      
-      match /souvenirs/{souvenirId}/souvenirPictures/{souvenirPictureId} {
-    		allow read, write: if isAuth() && isUser(getBoard(boardId));
-      }
-      
        match /tags/{tagId} {
     		allow read, write: if isAuth() && isUser(getBoard(boardId));
       }

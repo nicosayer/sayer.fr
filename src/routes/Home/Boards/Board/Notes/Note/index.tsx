@@ -49,7 +49,7 @@ const Note: FC = () => {
         classNames={{
           body: "h-[calc(100%_-_52px)]",
           title: "w-full",
-          modal: darkMode ? "bg-[#141517]" : "bg-[#f8f9fa]",
+          content: darkMode ? "bg-[#141517]" : "bg-[#f8f9fa]",
         }}
         title={<NoteModalHeader note={note} />}
       >

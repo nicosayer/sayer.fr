@@ -1,7 +1,7 @@
-import chalk from 'chalk';
+import chalk from "chalk";
 
 (async () => {
-  console.debug('Starting script...\n');
+  console.debug("Starting script...\n");
 
   try {
     const template = process.argv[2];
@@ -12,9 +12,9 @@ import chalk from 'chalk';
     await fn();
 
     console.debug();
-    console.debug(chalk.bold.green('Script executed with success!'));
+    console.debug(chalk.bold.green("Script executed with success!"));
   } catch (error) {
-    console.debug(chalk.bold.red('Script failed with following error:'));
+    console.debug(chalk.bold.red("Script failed with following error:"));
     console.error(error);
   }
 })();

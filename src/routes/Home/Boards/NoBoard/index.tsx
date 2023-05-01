@@ -1,5 +1,5 @@
 import { Button, Stack } from "@mantine/core";
-import { IconPlus } from "@tabler/icons";
+import { IconPlus } from "@tabler/icons-react";
 import useBooleanState from "hooks/useBooleanState";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { newBoard } from "utils/boards";

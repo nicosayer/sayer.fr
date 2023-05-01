@@ -16,7 +16,7 @@ import {
   IconLink,
   IconSwitchHorizontal,
   IconTrash,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 import { deleteDoc } from "firebase/firestore";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";

@@ -38,7 +38,7 @@ const usePreviewDocument = (): [
               size: "xl",
               withCloseButton: false,
               padding: 0,
-              classNames: { modal: "overflow-hidden h-[80vh]" },
+              classNames: { content: "overflow-hidden h-[80vh]" },
             });
           })
           .finally(stop);

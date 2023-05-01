@@ -1,5 +1,5 @@
 import { Group, TextInput } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import { DatePicker, DatePickerInput } from "@mantine/dates";
 import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
 import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import dayjs from "dayjs";
@@ -46,9 +46,9 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ note }) => {
       />
       {is768Px && (
         <Group grow>
-          <DatePicker
+          <DatePickerInput
             locale="fr"
-            inputFormat="D MMMM YYYY"
+            valueFormat="D MMMM YYYY"
             value={dayjs(note.date).toDate()}
             onChange={(date) => {
               if (note.ref && date) {

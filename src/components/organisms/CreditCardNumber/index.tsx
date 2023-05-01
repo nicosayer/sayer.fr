@@ -1,6 +1,12 @@
 import { ActionIcon, Code, Group, Tooltip } from "@mantine/core";
 import { useClipboard, useDisclosure } from "@mantine/hooks";
-import { IconCheck, IconCopy, IconEye, IconEyeOff, IconX } from "@tabler/icons";
+import {
+  IconCheck,
+  IconCopy,
+  IconEye,
+  IconEyeOff,
+  IconX,
+} from "@tabler/icons-react";
 import { useDecrypt } from "hooks/useCrypto";
 import { FC, useEffect, useState } from "react";
 import { CreditCardDocument } from "types/firebase/collections";

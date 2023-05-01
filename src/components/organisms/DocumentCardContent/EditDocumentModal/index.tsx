@@ -72,7 +72,6 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
             label="Étiquette"
             placeholder="John Doe"
             tags={tags}
-            loading={loading}
             {...form.getInputProps("tags")}
           />
         ) : undefined}

@@ -10,7 +10,7 @@ import {
 import { UseFormReturnType } from "@mantine/form";
 import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import { FC } from "react";
-import InputMask from "react-input-mask";
+import { IMaskInput } from "react-imask";
 import { TagDocument } from "types/firebase/collections";
 
 export interface CreditCardFormInput {
@@ -83,16 +83,33 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         placeholder="John Doe"
         {...form.getInputProps("cardholder")}
       />
-      <InputBase
+      <Input.Wrapper id="number" withAsterisk label="Numéro de la carte">
+        <Input<any>
+          id="number"
+          component={IMaskInput}
+          mask="0000 0000 0000 0000"
+          placeholder="1234 1234 1234 1234"
+          {...form.getInputProps("number")}
+        />
+      </Input.Wrapper>
+      {/* <InputBase
         label="Numéro de la carte"
         withAsterisk
         component={InputMask}
         mask="9999 9999 9999 9999"
         maskChar={null}
         placeholder="1234 1234 1234 1234"
-        {...form.getInputProps("number")}
-      />
-      <InputBase
+      /> */}
+      <Input.Wrapper id="expirationDate" withAsterisk label="Date d'expiration">
+        <Input<any>
+          id="expirationDate"
+          component={IMaskInput}
+          mask="00/00"
+          placeholder="MM/AA"
+          {...form.getInputProps("expirationDate")}
+        />
+      </Input.Wrapper>
+      {/* <InputBase
         label="Date d'expiration"
         withAsterisk
         component={InputMask}
@@ -104,8 +121,17 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         maskChar={null}
         placeholder="MM/AA"
         {...form.getInputProps("expirationDate")}
-      />
-      <InputBase
+      /> */}
+      <Input.Wrapper id="securityCode" withAsterisk label="Code de sécurité">
+        <Input<any>
+          id="securityCode"
+          component={IMaskInput}
+          mask="0000"
+          placeholder="123"
+          {...form.getInputProps("securityCode")}
+        />
+      </Input.Wrapper>
+      {/* <InputBase
         label="Code de sécurité"
         withAsterisk
         component={InputMask}
@@ -113,13 +139,12 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
         maskChar={null}
         placeholder="123"
         {...form.getInputProps("securityCode")}
-      />
+      /> */}
       {tags?.length ? (
         <TagsMultiSelect
           label="Étiquette"
           placeholder="John Doe"
           tags={tags}
-          loading={loading}
           {...form.getInputProps("tags")}
         />
       ) : undefined}

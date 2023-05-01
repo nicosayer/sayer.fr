@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core";
-import { IconArrowRight } from "@tabler/icons";
+import { IconArrowRight } from "@tabler/icons-react";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
 

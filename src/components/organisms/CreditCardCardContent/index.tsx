@@ -19,7 +19,7 @@ import {
   IconLink,
   IconSwitchHorizontal,
   IconTrash,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 import CreditCardCardholder from "components/organisms/CreditCardCardholder";
 import CreditCardExpirationDate from "components/organisms/CreditCardExpirationDate";
 import CreditCardNumber from "components/organisms/CreditCardNumber";

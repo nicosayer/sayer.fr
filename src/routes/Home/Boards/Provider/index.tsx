@@ -62,7 +62,9 @@ const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
 
   const context = useMemo(() => {
     const orderedTags = sortBy(tags, (tag) => sanitize(String(tag.name)));
-    const orderedBoards = sortBy(boards, (board) => sanitize(String(board.name)));
+    const orderedBoards = sortBy(boards, (board) =>
+      sanitize(String(board.name))
+    );
 
     return {
       boards: orderedBoards,

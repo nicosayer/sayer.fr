@@ -1,5 +1,5 @@
 import { Card, Stack, Text } from "@mantine/core";
-import { IconLayoutList } from "@tabler/icons";
+import { IconLayoutList } from "@tabler/icons-react";
 import GroceryCardContent from "components/organisms/GroceryCardContent";
 import NoResult from "components/organisms/NoResult";
 import { groupBy, orderBy } from "lodash";

@@ -7,8 +7,6 @@ export enum Collection {
   documents = "documents",
   groceries = "groceries",
   notes = "notes",
-  souvenirs = "souvenirs",
-  souvenirPictures = "souvenirPictures",
   tags = "tags",
   tasks = "tasks",
 }
@@ -86,29 +84,6 @@ export interface NoteDocument {
   text?: string;
   date?: string;
   tags?: DocumentReference<TagDocument>[];
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
-}
-
-export interface SouvenirDocument {
-  id?: string;
-  ref?: DocumentReference<SouvenirDocument>;
-  description?: string;
-  date?: string;
-  tags?: DocumentReference<TagDocument>[];
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
-}
-
-export enum SouvenirPictureMime {
-  Png = "image/png",
-  Jpeg = "image/jpeg",
-}
-
-export interface SouvenirPictureDocument {
-  id?: string;
-  ref?: DocumentReference<SouvenirPictureDocument>;
-  mime?: SouvenirPictureMime;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }

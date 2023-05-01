@@ -1,5 +1,5 @@
 import { Button, Input } from "@mantine/core";
-import { IconLock, IconSettings } from "@tabler/icons";
+import { IconLock, IconSettings } from "@tabler/icons-react";
 import { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 

@@ -16,7 +16,7 @@ import {
   IconLink,
   IconSwitchHorizontal,
   IconTrash,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 import { deleteDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import useDownloadDocument from "hooks/useDownloadDocument";

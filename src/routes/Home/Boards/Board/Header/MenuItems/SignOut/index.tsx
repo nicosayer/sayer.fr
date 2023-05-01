@@ -1,5 +1,5 @@
 import { Menu } from "@mantine/core";
-import { IconPower } from "@tabler/icons";
+import { IconPower } from "@tabler/icons-react";
 import { FC } from "react";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";

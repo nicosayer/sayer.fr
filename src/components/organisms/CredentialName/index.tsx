@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Text, TextProps, Tooltip } from "@mantine/core";
-import { IconExternalLink } from "@tabler/icons";
+import { IconExternalLink } from "@tabler/icons-react";
 import { FC } from "react";
 import { CredentialDocument } from "types/firebase/collections";
 

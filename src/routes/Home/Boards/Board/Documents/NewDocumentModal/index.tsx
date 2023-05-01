@@ -2,7 +2,7 @@ import { Button, Group, Input, Stack, TextInput } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
-import { IconUpload } from "@tabler/icons";
+import { IconUpload } from "@tabler/icons-react";
 import classNames from "classnames";
 import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import { collection, doc } from "firebase/firestore";
@@ -10,6 +10,7 @@ import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useRef } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 import {
   Collection,
   DocumentDocument,
@@ -18,7 +19,6 @@ import {
 import { addDoc, db, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 import { cleanString } from "utils/string";
-import { useBoard } from "../../Provider";
 
 const NewDocumentModal: FC = () => {
   const { board, tags } = useBoard();
@@ -134,7 +134,6 @@ const NewDocumentModal: FC = () => {
             label="Étiquette"
             placeholder="John Doe"
             tags={tags}
-            loading={loading}
             {...form.getInputProps("tags")}
           />
         ) : undefined}

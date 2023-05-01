@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery, useOs } from "@mantine/hooks";
 import { useSpotlight } from "@mantine/spotlight";
-import { IconSearch, IconUser } from "@tabler/icons";
+import { IconSearch, IconUser } from "@tabler/icons-react";
 import { useAppShell } from "components/atoms/AppShell";
 import useColors from "hooks/useColors";
 import { FC } from "react";

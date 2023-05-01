@@ -6,7 +6,7 @@ import {
   IconEdit,
   IconSwitchHorizontal,
   IconTrash,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";

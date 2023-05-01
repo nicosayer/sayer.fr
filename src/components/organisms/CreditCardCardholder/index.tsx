@@ -1,5 +1,5 @@
 import { ActionIcon, Code, CopyButton, Group, Tooltip } from "@mantine/core";
-import { IconCheck, IconCopy } from "@tabler/icons";
+import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { FC } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
 

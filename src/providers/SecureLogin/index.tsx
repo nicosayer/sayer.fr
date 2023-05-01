@@ -35,6 +35,7 @@ interface SecureLoginProviderProps {
 const getDefaultSignOutTimestamp = () => +dayjs().add(5, "minutes");
 
 const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
+  
   const [user] = useAuthState(auth);
   const [signOut] = useSignOut(auth);
   const [idTokenResult, setIdTokenResult] = useState<IdTokenResult>();

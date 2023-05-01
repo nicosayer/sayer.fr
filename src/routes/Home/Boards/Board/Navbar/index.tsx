@@ -7,7 +7,7 @@ import {
   IconLockOpen,
   IconSettings,
   IconShoppingCart,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 import classNames from "classnames";
 import { useAppShell } from "components/atoms/AppShell";
 import useColors from "hooks/useColors";
@@ -48,12 +48,6 @@ const menu = [
     label: "Notes",
     to: "notes",
   },
-  // {
-  //   icon: <IconPhoto size={18} />,
-  //   color: "violet",
-  //   label: "Souvenirs",
-  //   to: "souvenirs",
-  // },
   {
     icon: <IconChecklist size={18} />,
     color: "violet",

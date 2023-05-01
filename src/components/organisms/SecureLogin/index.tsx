@@ -1,7 +1,7 @@
 import { ActionIcon, Group, Input, PasswordInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDidUpdate } from "@mantine/hooks";
-import { IconArrowRight, IconShieldLock } from "@tabler/icons";
+import { IconArrowRight, IconShieldLock } from "@tabler/icons-react";
 import { FC } from "react";
 import {
   useAuthState,

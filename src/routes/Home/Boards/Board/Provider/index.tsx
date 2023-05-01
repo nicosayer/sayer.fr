@@ -13,7 +13,6 @@ import {
   DocumentDocument,
   GroceryDocument,
   NoteDocument,
-  SouvenirDocument,
   TagDocument,
   TaskDocument,
 } from "types/firebase/collections";
@@ -30,14 +29,12 @@ export interface IBoardContext {
   documents?: DocumentDocument[];
   groceries?: GroceryDocument[];
   notes?: NoteDocument[];
-  souvenirs?: SouvenirDocument[];
   tasks?: TaskDocument[];
   loadingCredentials: boolean;
   loadingCreditCards: boolean;
   loadingDocuments: boolean;
   loadingGroceries: boolean;
   loadingNotes: boolean;
-  loadingSouvenirs: boolean;
   loadingTasks: boolean;
 }
 
@@ -51,14 +48,12 @@ const BoardContext = createContext<IBoardContext>({
   documents: undefined,
   groceries: undefined,
   notes: undefined,
-  souvenirs: undefined,
   tasks: undefined,
   loadingCredentials: false,
   loadingCreditCards: false,
   loadingDocuments: false,
   loadingGroceries: false,
   loadingNotes: false,
-  loadingSouvenirs: false,
   loadingTasks: false,
 });
 
@@ -120,12 +115,6 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     Collection.notes
   );
 
-  const [souvenirs, loadingSouvenirs] =
-    useBoardsCollectionsData<SouvenirDocument>(
-      currentBoards ?? [],
-      Collection.souvenirs
-    );
-
   const [tasks, loadingTasks] = useBoardsCollectionsData<TaskDocument>(
     currentBoards ?? [],
     Collection.tasks
@@ -168,14 +157,12 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       documents,
       groceries,
       notes,
-      souvenirs,
       tasks,
       loadingCredentials,
       loadingCreditCards,
       loadingDocuments,
       loadingGroceries,
       loadingNotes,
-      loadingSouvenirs,
       loadingTasks,
     };
   }, [
@@ -192,11 +179,9 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     loadingDocuments,
     loadingGroceries,
     loadingNotes,
-    loadingSouvenirs,
     loadingTasks,
     notes,
     setExtraBoardIds,
-    souvenirs,
     tasks,
   ]);
 

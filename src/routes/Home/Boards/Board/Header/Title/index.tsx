@@ -1,6 +1,6 @@
 import { Group, Menu, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { IconLayoutList } from "@tabler/icons";
+import { IconLayoutList } from "@tabler/icons-react";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";

@@ -1,5 +1,5 @@
 import { Text } from "@mantine/core";
-import { IconSearch } from "@tabler/icons";
+import { IconSearch } from "@tabler/icons-react";
 import { FC } from "react";
 
 const NoResult: FC = () => {
