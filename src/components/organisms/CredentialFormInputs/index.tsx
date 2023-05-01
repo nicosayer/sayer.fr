@@ -61,6 +61,7 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
           label="Étiquette"
           placeholder="John Doe"
           tags={tags}
+          disabled={loading}
           {...form.getInputProps("tags")}
         />
       ) : undefined}

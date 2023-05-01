@@ -3,7 +3,6 @@ import {
   ColorSwatch,
   Group,
   Input,
-  InputBase,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
@@ -92,14 +91,6 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
           {...form.getInputProps("number")}
         />
       </Input.Wrapper>
-      {/* <InputBase
-        label="Numéro de la carte"
-        withAsterisk
-        component={InputMask}
-        mask="9999 9999 9999 9999"
-        maskChar={null}
-        placeholder="1234 1234 1234 1234"
-      /> */}
       <Input.Wrapper id="expirationDate" withAsterisk label="Date d'expiration">
         <Input<any>
           id="expirationDate"
@@ -109,19 +100,6 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
           {...form.getInputProps("expirationDate")}
         />
       </Input.Wrapper>
-      {/* <InputBase
-        label="Date d'expiration"
-        withAsterisk
-        component={InputMask}
-        mask="19/99"
-        formatChars={{
-          "1": "[0-1]",
-          "9": "[0-9]",
-        }}
-        maskChar={null}
-        placeholder="MM/AA"
-        {...form.getInputProps("expirationDate")}
-      /> */}
       <Input.Wrapper id="securityCode" withAsterisk label="Code de sécurité">
         <Input<any>
           id="securityCode"
@@ -131,20 +109,12 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
           {...form.getInputProps("securityCode")}
         />
       </Input.Wrapper>
-      {/* <InputBase
-        label="Code de sécurité"
-        withAsterisk
-        component={InputMask}
-        mask="9999"
-        maskChar={null}
-        placeholder="123"
-        {...form.getInputProps("securityCode")}
-      /> */}
       {tags?.length ? (
         <TagsMultiSelect
           label="Étiquette"
           placeholder="John Doe"
           tags={tags}
+          disabled={loading}
           {...form.getInputProps("tags")}
         />
       ) : undefined}

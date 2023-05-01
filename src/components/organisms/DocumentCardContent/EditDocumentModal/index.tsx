@@ -70,6 +70,7 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
         {tags?.length ? (
           <TagsMultiSelect
             label="Étiquette"
+            disabled={loading}
             placeholder="John Doe"
             tags={tags}
             {...form.getInputProps("tags")}
