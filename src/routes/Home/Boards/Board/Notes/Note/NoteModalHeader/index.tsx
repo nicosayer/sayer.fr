@@ -1,5 +1,5 @@
 import { Group, TextInput } from "@mantine/core";
-import { DatePicker, DatePickerInput } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
 import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import dayjs from "dayjs";
