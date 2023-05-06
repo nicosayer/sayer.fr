@@ -1,6 +1,5 @@
 import {
   ActionIcon,
-  Badge,
   Button,
   CopyButton,
   Group,
@@ -18,9 +17,8 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { deleteDoc } from "firebase/firestore";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { useBoards } from "routes/Home/Boards/Provider";
 import { CredentialDocument } from "types/firebase/collections";
 import CredentialPassword from "../CredentialPassword";
 import CredentialUsername from "../CredentialUsername";
@@ -74,24 +72,10 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
   credential,
 }) => {
   const { boards } = useBoard();
-  const { getTags } = useBoards();
-
-  const tags = useMemo(() => {
-    return getTags(credential.tags);
-  }, [credential.tags, getTags]);
 
   return (
     <Stack align="center">
       <Text weight={500}>{credential.name}</Text>
-      {tags.length ? (
-        <Group>
-          {tags.map((tag) => (
-            <Badge key={tag.id} variant="dot" color={tag.color} size="sm">
-              {tag.name}
-            </Badge>
-          ))}
-        </Group>
-      ) : undefined}
       <Stack spacing="xs">
         <Group position="center" spacing="xs">
           <Text size="sm">Identifiant :</Text>

@@ -1,36 +1,21 @@
 import { useDebouncedValue } from "@mantine/hooks";
-import {
-  collection,
-  DocumentReference,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-import useBoardsCollectionsData from "hooks/useBoardsCollectionsData";
-import { Dictionary, groupBy, sortBy } from "lodash";
+import { collection, orderBy, query, where } from "firebase/firestore";
+import { sortBy } from "lodash";
 import FullPageLoading from "providers/FullPageLoading/FullPage";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import {
-  BoardDocument,
-  Collection,
-  TagDocument,
-} from "types/firebase/collections";
+import { BoardDocument, Collection } from "types/firebase/collections";
 import { auth, db, firestoreConverter } from "utils/firebase";
 import { sanitize } from "utils/string";
 
 interface IBoardsContext {
   boards?: BoardDocument[];
-  tags: Dictionary<TagDocument[]>;
-  getTags: (tagRefs?: DocumentReference<TagDocument>[]) => TagDocument[];
   loading: boolean;
 }
 
 const BoardsContext = createContext<IBoardsContext>({
   boards: undefined,
-  tags: {},
-  getTags: () => [],
   loading: false,
 });
 
@@ -53,32 +38,18 @@ const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
     ).withConverter(firestoreConverter)
   );
 
-  const [tags, loadingTags] = useBoardsCollectionsData<TagDocument>(
-    boards ?? [],
-    Collection.tags
-  );
-
-  const [loading] = useDebouncedValue(loadingBoards || loadingTags, 200);
+  const [loading] = useDebouncedValue(loadingBoards, 200);
 
   const context = useMemo(() => {
-    const orderedTags = sortBy(tags, (tag) => sanitize(String(tag.name)));
     const orderedBoards = sortBy(boards, (board) =>
       sanitize(String(board.name))
     );
 
     return {
       boards: orderedBoards,
-      tags: groupBy(orderedTags, (tag) => tag.ref?.parent.parent?.id),
-      getTags: (tags?: DocumentReference<TagDocument>[]) => {
-        const tagIds = (tags ?? []).map((tagRef) => tagRef.id);
-
-        return orderedTags.filter((tag) => {
-          return tagIds.includes(String(tag.id));
-        });
-      },
       loading,
     };
-  }, [boards, tags, loading]);
+  }, [boards, loading]);
 
   if (loading) {
     return <FullPageLoading />;

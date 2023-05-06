@@ -3,7 +3,6 @@ import NoResult from "components/organisms/NoResult";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { useBoards } from "routes/Home/Boards/Provider";
 import { sanitize, searchString } from "utils/string";
 import CredentialCard from "./CredentialCard";
 
@@ -13,21 +12,15 @@ export interface CredentialsListProps {
 
 const CredentialsList: FC<CredentialsListProps> = ({ search }) => {
   const { credentials } = useBoard();
-  const { getTags } = useBoards();
 
   const filteredCredentials = useMemo(() => {
     return sortBy(
       (credentials ?? []).filter((credential) => {
-        const tags = getTags(credential.tags);
-
-        return searchString(
-          `${credential.name}${tags.map((tag) => tag.name)}`,
-          search
-        );
+        return searchString(credential.name ?? "", search);
       }),
       (credential) => sanitize(String(credential.name))
     );
-  }, [credentials, search, getTags]);
+  }, [credentials, search]);
 
   if (!filteredCredentials.length) {
     return <NoResult />;

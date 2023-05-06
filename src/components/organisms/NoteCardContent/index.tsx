@@ -18,10 +18,9 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { deleteDoc } from "firebase/firestore";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { useBoards } from "routes/Home/Boards/Provider";
 import { NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import MoveNoteModal from "./MoveNoteModal";
@@ -63,12 +62,7 @@ const openDeleteModal = (note: NoteDocument) => {
 const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const { getTags } = useBoards();
   const { boards } = useBoard();
-
-  const tags = useMemo(() => {
-    return getTags(note.tags);
-  }, [note.tags, getTags]);
 
   return (
     <Stack align="center">
@@ -78,15 +72,6 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
           {formatDate(note.date, "D MMM YYYY")}
         </Badge>
       </Group>
-      {tags.length ? (
-        <Group>
-          {tags.map((tag) => (
-            <Badge key={tag.id} variant="dot" color={tag.color} size="sm">
-              {tag.name}
-            </Badge>
-          ))}
-        </Group>
-      ) : undefined}
 
       <Group className="w-full">
         <Button

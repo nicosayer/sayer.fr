@@ -7,10 +7,8 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import { FC } from "react";
 import { IMaskInput } from "react-imask";
-import { TagDocument } from "types/firebase/collections";
 
 export interface CreditCardFormInput {
   color: string;
@@ -19,7 +17,6 @@ export interface CreditCardFormInput {
   number: string;
   expirationDate: string;
   securityCode: string;
-  tags: string[];
 }
 
 export interface CreditCardFormOutput {
@@ -30,12 +27,10 @@ export interface CreditCardFormOutput {
   expirationMonth: string;
   expirationYear: string;
   securityCode: string;
-  tags: string[];
 }
 
 export interface CreditCardFormInputsProps {
   loading: boolean;
-  tags: TagDocument[];
   form: UseFormReturnType<
     CreditCardFormInput,
     (values: CreditCardFormInput) => CreditCardFormOutput
@@ -44,7 +39,6 @@ export interface CreditCardFormInputsProps {
 
 const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
   form,
-  tags,
   loading,
 }) => {
   const theme = useMantineTheme();
@@ -109,15 +103,6 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
           {...form.getInputProps("securityCode")}
         />
       </Input.Wrapper>
-      {tags?.length ? (
-        <TagsMultiSelect
-          label="Étiquette"
-          placeholder="John Doe"
-          tags={tags}
-          disabled={loading}
-          {...form.getInputProps("tags")}
-        />
-      ) : undefined}
     </>
   );
 };

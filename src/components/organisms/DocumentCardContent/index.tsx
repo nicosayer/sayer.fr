@@ -21,9 +21,8 @@ import { deleteDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import useDownloadDocument from "hooks/useDownloadDocument";
 import usePreviewDocument from "hooks/usePreviewDocument";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { useBoards } from "routes/Home/Boards/Provider";
 import { DocumentDocument, DocumentMime } from "types/firebase/collections";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
@@ -85,11 +84,6 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
   const [previewDocument, loadingPreview] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
   const { boards } = useBoard();
-  const { getTags } = useBoards();
-
-  const tags = useMemo(() => {
-    return getTags(document.tags);
-  }, [document.tags, getTags]);
 
   return (
     <Stack align="center">
@@ -99,15 +93,6 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
           {getExtension(document.mime as DocumentMime)}
         </Badge>
       </Group>
-      {tags.length ? (
-        <Group>
-          {tags.map((tag) => (
-            <Badge key={tag.id} variant="dot" color={tag.color} size="sm">
-              {tag.name}
-            </Badge>
-          ))}
-        </Group>
-      ) : undefined}
       <Group className="w-full">
         <Button
           variant="light"

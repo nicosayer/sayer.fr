@@ -1,5 +1,4 @@
 import {
-  Badge,
   Group,
   Text,
   UnstyledButton,
@@ -8,12 +7,10 @@ import {
 import { SpotlightActionProps, SpotlightProvider } from "@mantine/spotlight";
 import { IconSearch } from "@tabler/icons-react";
 import classNames from "classnames";
-import { PropsWithChildren, useMemo, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { TagDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { searchString } from "utils/string";
-import { useBoards } from "../../Provider";
 import { useBoard } from "../Provider";
 
 function CustomAction({
@@ -24,11 +21,6 @@ function CustomAction({
   ...others
 }: SpotlightActionProps) {
   const theme = useMantineColorScheme();
-  const { getTags } = useBoards();
-
-  const tags = useMemo(() => {
-    return getTags(action.tags);
-  }, [action.tags, getTags]);
 
   return (
     <UnstyledButton
@@ -51,11 +43,6 @@ function CustomAction({
             </Text>
           )}
         </div>
-        {tags.map((tag) => (
-          <Badge key={tag.id} variant="dot" color={tag.color} size="sm">
-            {tag.name}
-          </Badge>
-        ))}
       </Group>
     </UnstyledButton>
   );
@@ -67,7 +54,6 @@ const Spotlight = ({ children }: PropsWithChildren) => {
 
   const navigate = useNavigate();
   const { boardId } = useParams();
-  const { getTags } = useBoards();
 
   return (
     <SpotlightProvider
@@ -82,12 +68,9 @@ const Spotlight = ({ children }: PropsWithChildren) => {
       onQueryChange={setQuery}
       actions={[
         ...(credentials ?? []).map((credential) => {
-          const tags = getTags(credential.tags);
-
           return {
             title: credential.name ?? "",
             description: credential.username,
-            tags,
             group: "Mot de passe",
             onTrigger: () => {
               navigate(`/boards/${boardId}/credentials/${credential.id}`);
@@ -95,12 +78,9 @@ const Spotlight = ({ children }: PropsWithChildren) => {
           };
         }),
         ...(creditCards ?? []).map((creditCard) => {
-          const tags = getTags(creditCard.tags);
-
           return {
             title: creditCard.name ?? "",
             description: creditCard.cardholder,
-            tags,
             group: "Carte de crédit",
             onTrigger: () => {
               navigate(`/boards/${boardId}/credit-cards/${creditCard.id}`);
@@ -108,11 +88,8 @@ const Spotlight = ({ children }: PropsWithChildren) => {
           };
         }),
         ...(documents ?? []).map((document) => {
-          const tags = getTags(document.tags);
-
           return {
             title: document.name ?? "",
-            tags,
             group: "Document",
             description: document.mime?.split("/")[1].toUpperCase(),
             onTrigger: () => {
@@ -121,13 +98,10 @@ const Spotlight = ({ children }: PropsWithChildren) => {
           };
         }),
         ...(notes ?? []).map((note) => {
-          const tags = getTags(note.tags);
-
           return {
             title: note.name ?? "",
             description: formatDate(note.date, "D MMMM YYYY"),
             search: note.text,
-            tags,
             group: "Note",
             onTrigger: () => {
               navigate(`/boards/${boardId}/notes/${note.id}`);
@@ -138,9 +112,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
       filter={(query, actions) =>
         actions.filter((action) => {
           return searchString(
-            `${action.title}${action.description}${
-              action.search
-            }${action.tags.map((tag: TagDocument) => tag.name)}`,
+            `${action.title}${action.description}${action.search}`,
             query
           );
         })

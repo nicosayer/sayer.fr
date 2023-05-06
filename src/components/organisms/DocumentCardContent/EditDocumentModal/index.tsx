@@ -1,13 +1,10 @@
 import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
-import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
-import { doc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useMemo } from "react";
-import { useBoards } from "routes/Home/Boards/Provider";
+import { FC } from "react";
 import { DocumentDocument } from "types/firebase/collections";
-import { db, updateDoc } from "utils/firebase";
+import { updateDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
 
 export interface EditDocumentModalProps {
@@ -16,16 +13,10 @@ export interface EditDocumentModalProps {
 
 const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
   const [loading, start, stop] = useBooleanState();
-  const { tags: boardsTags } = useBoards();
-
-  const tags = useMemo(() => {
-    return boardsTags[String(document.ref?.parent.parent?.id)] ?? [];
-  }, [boardsTags, document.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {
       name: document.name ?? "",
-      tags: (document.tags ?? []).map((tag) => tag.path),
     },
 
     validate: {
@@ -37,7 +28,6 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
     transformValues: (values) => {
       return {
         name: cleanString(values.name),
-        tags: values.tags,
       };
     },
   });
@@ -49,9 +39,6 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
           start();
           updateDoc<DocumentDocument>(document.ref, {
             name: values.name,
-            tags: values.tags.map((tag) => {
-              return doc(db, tag);
-            }),
           })
             .then(() => closeAllModals())
             .finally(stop);
@@ -67,15 +54,6 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
           placeholder="Passeport"
           {...form.getInputProps("name")}
         />
-        {tags?.length ? (
-          <TagsMultiSelect
-            label="Étiquette"
-            disabled={loading}
-            placeholder="John Doe"
-            tags={tags}
-            {...form.getInputProps("tags")}
-          />
-        ) : undefined}
         <div className="flex ml-auto">
           <Group>
             <Button

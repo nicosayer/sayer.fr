@@ -7,7 +7,6 @@ export enum Collection {
   documents = "documents",
   groceries = "groceries",
   notes = "notes",
-  tags = "tags",
   tasks = "tasks",
 }
 
@@ -27,7 +26,6 @@ export interface CredentialDocument {
   url?: string;
   username?: string;
   password?: string;
-  tags?: DocumentReference<TagDocument>[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -43,7 +41,6 @@ export interface CreditCardDocument {
   expirationYear?: string;
   securityCode?: string;
   color?: string;
-  tags?: DocumentReference<TagDocument>[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -59,7 +56,6 @@ export interface DocumentDocument {
   ref?: DocumentReference<DocumentDocument>;
   name?: string;
   mime?: DocumentMime;
-  tags?: DocumentReference<TagDocument>[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -83,16 +79,6 @@ export interface NoteDocument {
   base64?: string;
   text?: string;
   date?: string;
-  tags?: DocumentReference<TagDocument>[];
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
-}
-
-export interface TagDocument {
-  id?: string;
-  ref?: DocumentReference<TaskDocument>;
-  name?: string;
-  color?: string;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }

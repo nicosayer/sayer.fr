@@ -13,14 +13,12 @@ import {
   DocumentDocument,
   GroceryDocument,
   NoteDocument,
-  TagDocument,
   TaskDocument,
 } from "types/firebase/collections";
 
 export interface IBoardContext {
   board?: BoardDocument;
   boards?: BoardDocument[];
-  tags: TagDocument[];
   setExtraBoardIds: (
     val: string[] | ((prevState: string[]) => string[])
   ) => void;
@@ -41,7 +39,6 @@ export interface IBoardContext {
 const BoardContext = createContext<IBoardContext>({
   board: undefined,
   boards: undefined,
-  tags: [],
   setExtraBoardIds: () => {},
   credentials: undefined,
   creditCards: undefined,
@@ -67,7 +64,7 @@ interface BoardProviderProps {
 }
 
 const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
-  const { boards, tags: boardsTags } = useBoards();
+  const { boards } = useBoards();
 
   const [extraBoardIds, setExtraBoardIds] = useLocalStorage<string[]>({
     key: "extra-board-ids",
@@ -150,7 +147,6 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     return {
       board,
       boards: currentBoards,
-      tags: boardsTags?.[boardId] ?? [],
       setExtraBoardIds,
       credentials,
       creditCards,
@@ -167,8 +163,6 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     };
   }, [
     board,
-    boardId,
-    boardsTags,
     credentials,
     creditCards,
     currentBoards,

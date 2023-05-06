@@ -3,13 +3,12 @@ import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
-import { deleteField, doc } from "firebase/firestore";
+import { deleteField } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { useDecrypt, useEncrypt } from "hooks/useCrypto";
-import { FC, useMemo } from "react";
-import { useBoards } from "routes/Home/Boards/Provider";
+import { FC } from "react";
 import { CredentialDocument } from "types/firebase/collections";
-import { db, updateDoc } from "utils/firebase";
+import { updateDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
 
 export interface EditCredentialModalProps {
@@ -20,12 +19,7 @@ const EditCredentialModalContent: FC<EditCredentialModalProps> = ({
   credential,
 }) => {
   const [loading, start, stop] = useBooleanState();
-  const { tags: boardsTags } = useBoards();
   const { encrypt } = useEncrypt();
-
-  const tags = useMemo(() => {
-    return boardsTags[String(credential.ref?.parent.parent?.id)] ?? [];
-  }, [boardsTags, credential.ref?.parent.parent?.id]);
 
   const form = useForm({
     initialValues: {
@@ -33,7 +27,6 @@ const EditCredentialModalContent: FC<EditCredentialModalProps> = ({
       url: credential.url ?? "",
       username: credential.username ?? "",
       password: credential.password ?? "",
-      tags: (credential.tags ?? []).map((tag) => tag.path),
     },
 
     validate: {
@@ -54,7 +47,6 @@ const EditCredentialModalContent: FC<EditCredentialModalProps> = ({
         username: values.username.trim(),
         password: values.password,
         url: values.url.trim() || deleteField(),
-        tags: values.tags,
       };
     },
   });
@@ -72,9 +64,6 @@ const EditCredentialModalContent: FC<EditCredentialModalProps> = ({
             username: values.username,
             password: password?.data,
             url: values.url,
-            tags: values.tags.map((tag) => {
-              return doc(db, tag);
-            }),
           })
             .then(() => closeAllModals())
             .finally(stop);
@@ -82,7 +71,7 @@ const EditCredentialModalContent: FC<EditCredentialModalProps> = ({
       })}
     >
       <Stack>
-        <CredentialFormInputs loading={loading} form={form} tags={tags} />
+        <CredentialFormInputs loading={loading} form={form} />
         <div className="flex ml-auto">
           <Group>
             <Button

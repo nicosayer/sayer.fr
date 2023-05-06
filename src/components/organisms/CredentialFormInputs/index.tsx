@@ -1,20 +1,16 @@
 import { PasswordInput, TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
 import { FC } from "react";
-import { TagDocument } from "types/firebase/collections";
 
 export interface CredentialForm {
   name: string;
   url: string;
   username: string;
   password: string;
-  tags: string[];
 }
 
 export interface CredentialFormInputsProps {
   loading: boolean;
-  tags: TagDocument[];
   form: UseFormReturnType<
     CredentialForm,
     (values: CredentialForm) => CredentialForm
@@ -23,7 +19,6 @@ export interface CredentialFormInputsProps {
 
 const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
   loading,
-  tags,
   form,
 }) => {
   return (
@@ -56,15 +51,6 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
         placeholder="https://acme.com"
         {...form.getInputProps("url")}
       />
-      {tags?.length ? (
-        <TagsMultiSelect
-          label="Étiquette"
-          placeholder="John Doe"
-          tags={tags}
-          disabled={loading}
-          {...form.getInputProps("tags")}
-        />
-      ) : undefined}
     </>
   );
 };

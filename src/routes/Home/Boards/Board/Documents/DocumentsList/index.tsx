@@ -3,7 +3,6 @@ import NoResult from "components/organisms/NoResult";
 import { sortBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { useBoards } from "routes/Home/Boards/Provider";
 import { sanitize, searchString } from "utils/string";
 import DocumentCard from "./DocumentCard";
 
@@ -13,20 +12,15 @@ export interface DocumentsListProps {
 
 const DocumentsList: FC<DocumentsListProps> = ({ search }) => {
   const { documents } = useBoard();
-  const { getTags } = useBoards();
 
   const filteredDocuments = useMemo(() => {
     return sortBy(
       (documents ?? []).filter((document) => {
-        const tags = getTags(document.tags);
-        return searchString(
-          `${document.name}${tags.map((tag) => tag.name)}`,
-          search
-        );
+        return searchString(document.name ?? "", search);
       }),
       (document) => sanitize(String(document.name))
     );
-  }, [documents, search, getTags]);
+  }, [documents, search]);
 
   if (!filteredDocuments.length) {
     return <NoResult />;

@@ -2,17 +2,17 @@ import { Button, Group, Stack, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
-import { collection, doc } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { useEncrypt } from "hooks/useCrypto";
 import { FC, useMemo } from "react";
 import { Collection, CreditCardDocument } from "types/firebase/collections";
-import { addDoc, db } from "utils/firebase";
+import { addDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
 import { useBoard } from "../../Provider";
 
 const NewCreditCardModal: FC = () => {
-  const { board, tags } = useBoard();
+  const { board } = useBoard();
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
   const { encrypt } = useEncrypt();
@@ -29,7 +29,6 @@ const NewCreditCardModal: FC = () => {
       number: "",
       expirationDate: "",
       securityCode: "",
-      tags: [] as string[],
     },
 
     validate: {
@@ -69,7 +68,6 @@ const NewCreditCardModal: FC = () => {
         expirationMonth: expirationMonth,
         expirationYear: expirationYear,
         securityCode: values.securityCode,
-        tags: values.tags,
       };
     },
   });
@@ -94,9 +92,6 @@ const NewCreditCardModal: FC = () => {
               expirationYear: values.expirationYear,
               cardholder: values.cardholder,
               securityCode: securityCode?.data,
-              tags: values.tags.map((tag) => {
-                return doc(db, tag);
-              }),
             }
           )
             .then(() => closeAllModals())
@@ -105,7 +100,7 @@ const NewCreditCardModal: FC = () => {
       })}
     >
       <Stack>
-        <CreditCardFormInputs loading={loading} form={form} tags={tags} />
+        <CreditCardFormInputs loading={loading} form={form} />
         <div className="flex ml-auto">
           <Group>
             <Button

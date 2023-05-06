@@ -1,6 +1,5 @@
 import {
   ActionIcon,
-  Badge,
   Button,
   ColorSwatch,
   CopyButton,
@@ -26,9 +25,8 @@ import CreditCardNumber from "components/organisms/CreditCardNumber";
 import CreditCardSecurityCode from "components/organisms/CreditCardSecurityCode";
 import { deleteDoc } from "firebase/firestore";
 import { useDecrypt } from "hooks/useCrypto";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { useBoards } from "routes/Home/Boards/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
 import EditCreditCardModal from "./EditCreditCardModal";
 import MoveCreditCardModal from "./MoveCreditCardModal";
@@ -83,11 +81,6 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
   const clipboard = useClipboard();
   const { boards } = useBoard();
   const theme = useMantineTheme();
-  const { getTags } = useBoards();
-
-  const tags = useMemo(() => {
-    return getTags(creditCard.tags);
-  }, [creditCard.tags, getTags]);
 
   return (
     <Stack align="center">
@@ -97,15 +90,6 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
         )}
         <Text weight={500}>{creditCard.name}</Text>
       </Group>
-      {tags.length ? (
-        <Group>
-          {tags.map((tag) => (
-            <Badge key={tag.id} variant="dot" color={tag.color} size="sm">
-              {tag.name}
-            </Badge>
-          ))}
-        </Group>
-      ) : undefined}
       <Stack spacing="xs">
         <Group position="center" spacing="xs">
           <Text size="sm">Titulaire :</Text>

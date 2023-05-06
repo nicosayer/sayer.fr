@@ -2,17 +2,17 @@ import { Button, Group, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
-import { collection, doc } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { useEncrypt } from "hooks/useCrypto";
 import { FC } from "react";
 import { Collection, CredentialDocument } from "types/firebase/collections";
-import { addDoc, db } from "utils/firebase";
+import { addDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
 import { useBoard } from "../../Provider";
 
 const NewCredentialModal: FC = () => {
-  const { board, tags } = useBoard();
+  const { board } = useBoard();
   const [loading, start, stop] = useBooleanState();
   const { encrypt } = useEncrypt();
 
@@ -22,7 +22,6 @@ const NewCredentialModal: FC = () => {
       url: "",
       username: "",
       password: "",
-      tags: [] as string[],
     },
 
     validate: {
@@ -43,7 +42,6 @@ const NewCredentialModal: FC = () => {
         username: values.username.trim(),
         password: values.password,
         url: values.url.trim() || undefined,
-        tags: values.tags,
       };
     },
   });
@@ -63,9 +61,6 @@ const NewCredentialModal: FC = () => {
               username: values.username,
               password: password?.data,
               url: values.url,
-              tags: values.tags.map((tag) => {
-                return doc(db, tag);
-              }),
             }
           )
             .then(() => closeAllModals())
@@ -74,7 +69,7 @@ const NewCredentialModal: FC = () => {
       })}
     >
       <Stack>
-        <CredentialFormInputs loading={loading} form={form} tags={tags} />
+        <CredentialFormInputs loading={loading} form={form} />
         <div className="flex ml-auto">
           <Group>
             <Button

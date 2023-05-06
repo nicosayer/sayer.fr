@@ -4,8 +4,7 @@ import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import { IconUpload } from "@tabler/icons-react";
 import classNames from "classnames";
-import TagsMultiSelect from "components/molecules/MultiSelect/Tags";
-import { collection, doc } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useRef } from "react";
@@ -16,12 +15,12 @@ import {
   DocumentDocument,
   DocumentMime,
 } from "types/firebase/collections";
-import { addDoc, db, storage } from "utils/firebase";
+import { addDoc, storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 import { cleanString } from "utils/string";
 
 const NewDocumentModal: FC = () => {
-  const { board, tags } = useBoard();
+  const { board } = useBoard();
   const [loading, start, stop] = useBooleanState();
   const [uploadFile] = useUploadFile();
   const formRef = useRef<HTMLFormElement>(null);
@@ -30,7 +29,6 @@ const NewDocumentModal: FC = () => {
     initialValues: {
       name: "",
       file: undefined as FileWithPath | undefined,
-      tags: [] as string[],
     },
 
     validate: {
@@ -47,7 +45,6 @@ const NewDocumentModal: FC = () => {
         name: cleanString(values.name),
         file: values.file,
         mime: values.file?.type as DocumentMime | undefined,
-        tags: values.tags,
       };
     },
   });
@@ -66,9 +63,6 @@ const NewDocumentModal: FC = () => {
             {
               name: values.name,
               mime: values.mime,
-              tags: values.tags.map((tag) => {
-                return doc(db, tag);
-              }),
             }
           )
             .then((document) => {
@@ -129,15 +123,6 @@ const NewDocumentModal: FC = () => {
             </Group>
           </Dropzone>
         </Input.Wrapper>
-        {tags?.length ? (
-          <TagsMultiSelect
-            label="Étiquette"
-            disabled={loading}
-            placeholder="John Doe"
-            tags={tags}
-            {...form.getInputProps("tags")}
-          />
-        ) : undefined}
         <div className="flex ml-auto">
           <Group>
             <Button
