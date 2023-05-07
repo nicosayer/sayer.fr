@@ -17,7 +17,10 @@ const Groceries: FC = () => {
   return (
     <Stack>
       <Group position="apart" className="sticky z-50">
-        <Text weight={500}>Courses</Text>
+        <Group spacing="xs">
+          <Text weight={500}>Courses</Text>
+          <Text c="dimmed">({groceries.filter(grocery => !grocery.closedAt).length})</Text>
+        </Group>
         <TextInput
           placeholder="Rechercher"
           variant="filled"

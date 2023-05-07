@@ -15,7 +15,7 @@ import { FC } from "react";
 import NavbarButton from "routes/Home/Boards/Board/Navbar/Button";
 import { IBoardContext } from "../Provider";
 
-const menu = [
+export const menu = [
   {
     icon: <IconLockOpen size={18} />,
     color: "red",

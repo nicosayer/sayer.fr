@@ -67,7 +67,10 @@ const Credentials: FC = () => {
       <Credential />
       <Stack>
         <Group position="apart" className="sticky z-50">
-          <Text weight={500}>Mots de passe</Text>
+          <Group spacing="xs">
+            <Text weight={500}>Mots de passe</Text>
+            <Text c="dimmed">({credentials.length})</Text>
+          </Group>
           <Group>
             <TextInput
               placeholder="Rechercher"

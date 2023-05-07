@@ -45,7 +45,10 @@ const Documents: FC = () => {
       <Document />
       <Stack>
         <Group position="apart">
-          <Text weight={500}>Documents</Text>
+          <Group spacing="xs">
+            <Text weight={500}>Documents</Text>
+            <Text c="dimmed">({documents.length})</Text>
+          </Group>
           <Group>
             <TextInput
               placeholder="Rechercher"

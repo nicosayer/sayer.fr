@@ -17,7 +17,10 @@ const Tasks: FC = () => {
   return (
     <Stack>
       <Group position="apart" className="sticky z-50">
-        <Text weight={500}>Tâches</Text>
+        <Group spacing="xs">
+          <Text weight={500}>Tâches</Text>
+          <Text c="dimmed">({tasks.filter(task => !task.closedAt).length})</Text>
+        </Group>
         <TextInput
           placeholder="Rechercher"
           variant="filled"
