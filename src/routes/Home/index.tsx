@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="boards" />,
+        element: <Navigate to="/boards" />,
       },
       {
         path: "boards",
