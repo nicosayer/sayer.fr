@@ -1,11 +1,17 @@
 import useDefaultBoardTab from "hooks/useDefaultBoardTab";
 import { FC } from "react";
 import { Navigate } from "react-router-dom";
+import { useBoard } from "../Provider";
 
 const BoardRedirect: FC = () => {
   const defaultBoardTab = useDefaultBoardTab();
+  const { board } = useBoard();
 
-  return <Navigate to={defaultBoardTab} />;
+  if (board) {
+    return <Navigate to={`/boards/${board.id}/${defaultBoardTab}`} />;
+  }
+
+  return null;
 };
 
 export default BoardRedirect;

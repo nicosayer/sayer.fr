@@ -19,7 +19,9 @@ const Groceries: FC = () => {
       <Group position="apart" className="sticky z-50">
         <Group spacing="xs">
           <Text weight={500}>Courses</Text>
-          <Text c="dimmed">({groceries.filter(grocery => !grocery.closedAt).length})</Text>
+          <Text c="dimmed">
+            ({groceries.filter((grocery) => !grocery.closedAt).length})
+          </Text>
         </Group>
         <TextInput
           placeholder="Rechercher"
