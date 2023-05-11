@@ -77,7 +77,12 @@ const openDeleteModal = (creditCard: CreditCardDocument) => {
 const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
   creditCard,
 }) => {
-  const { decrypt, loading } = useDecrypt();
+  const { value: number, loading: loadingNumber } = useDecrypt(
+    creditCard.number
+  );
+  const { value: securityCode, loading: loadingSecurityCode } = useDecrypt(
+    creditCard.securityCode
+  );
   const clipboard = useClipboard();
   const { boards } = useBoard();
   const theme = useMantineTheme();
@@ -110,19 +115,14 @@ const CreditCardCardContent: FC<CreditCardCardContentProps> = ({
       </Stack>
       <Group className="w-full">
         <Button
-          loading={loading}
+          loading={loadingNumber || loadingSecurityCode}
           variant="light"
           className="flex-1"
           color={clipboard.copied ? "teal" : undefined}
-          onClick={async () => {
-            const [number, securityCode] = await Promise.all([
-              decrypt(creditCard.number),
-              decrypt(creditCard.securityCode),
-            ]);
-
+          onClick={() => {
             clipboard.copy(
               number && securityCode
-                ? `${creditCard.cardholder} ${number.data} ${creditCard.expirationMonth}/${creditCard.expirationYear} ${securityCode.data}`
+                ? `${creditCard.cardholder} ${number} ${creditCard.expirationMonth}/${creditCard.expirationYear} ${securityCode}`
                 : ""
             );
           }}

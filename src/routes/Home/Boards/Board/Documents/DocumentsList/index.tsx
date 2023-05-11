@@ -1,6 +1,8 @@
 import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
+import Pagination from "components/organisms/Pagination";
 import { sortBy } from "lodash";
+import PaginationProvider from "providers/Pagination";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize, searchString } from "utils/string";
@@ -27,11 +29,18 @@ const DocumentsList: FC<DocumentsListProps> = ({ search }) => {
   }
 
   return (
-    <Stack>
-      {filteredDocuments.map((document) => {
-        return <DocumentCard key={document.id} document={document} />;
-      })}
-    </Stack>
+    <PaginationProvider totalItems={filteredDocuments.length}>
+      {({ page, pageSize }) => (
+        <Stack>
+          {filteredDocuments
+            .slice((page - 1) * pageSize, page * pageSize)
+            .map((document) => {
+              return <DocumentCard key={document.id} document={document} />;
+            })}
+          <Pagination />
+        </Stack>
+      )}
+    </PaginationProvider>
   );
 };
 

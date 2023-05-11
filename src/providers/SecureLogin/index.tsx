@@ -32,7 +32,7 @@ interface SecureLoginProviderProps {
   children: ReactNode;
 }
 
-const getDefaultSignOutTimestamp = () => +dayjs().add(5, "minutes");
+const getDefaultSignOutTimestamp = () => +dayjs().add(2, "hours");
 
 const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
   const [user] = useAuthState(auth);

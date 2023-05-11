@@ -6,6 +6,8 @@ export enum Collection {
   creditCards = "creditCards",
   documents = "documents",
   groceries = "groceries",
+  lists = "lists",
+  listItems = "listItems",
   notes = "notes",
   tasks = "tasks",
 }
@@ -68,6 +70,23 @@ export interface GroceryDocument {
   openedBy?: string;
   closedAt?: Timestamp;
   closedBy?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
+}
+
+export interface ListDocument {
+  id?: string;
+  ref?: DocumentReference<ListDocument>;
+  name?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
+}
+
+export interface ListItemDocument {
+  id?: string;
+  ref?: DocumentReference<ListItemDocument>;
+  name?: string;
+  checked?: boolean;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }

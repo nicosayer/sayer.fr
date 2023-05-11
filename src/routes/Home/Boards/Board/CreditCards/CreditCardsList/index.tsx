@@ -1,6 +1,8 @@
 import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
+import Pagination from "components/organisms/Pagination";
 import { sortBy } from "lodash";
+import PaginationProvider from "providers/Pagination";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize, searchString } from "utils/string";
@@ -27,11 +29,20 @@ const CreditCardsList: FC<CreditCardsListProps> = ({ search }) => {
   }
 
   return (
-    <Stack>
-      {filteredCreditCards.map((creditCard) => {
-        return <CreditCardCard key={creditCard.id} creditCard={creditCard} />;
-      })}
-    </Stack>
+    <PaginationProvider totalItems={filteredCreditCards.length}>
+      {({ page, pageSize }) => (
+        <Stack>
+          {filteredCreditCards
+            .slice((page - 1) * pageSize, page * pageSize)
+            .map((creditCard) => {
+              return (
+                <CreditCardCard key={creditCard.id} creditCard={creditCard} />
+              );
+            })}
+          <Pagination />
+        </Stack>
+      )}
+    </PaginationProvider>
   );
 };
 

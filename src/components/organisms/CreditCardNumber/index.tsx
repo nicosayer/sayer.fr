@@ -8,7 +8,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { useDecrypt } from "hooks/useCrypto";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
 
 interface CreditCardNumberProps {
@@ -18,7 +18,7 @@ interface CreditCardNumberProps {
 const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
   creditCard,
 }) => {
-  const { decrypt, loading, error } = useDecrypt();
+  const { value, loading, error } = useDecrypt(creditCard.number);
   const clipboard = useClipboard();
 
   return (
@@ -38,10 +38,8 @@ const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
         color={
           clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
         }
-        onClick={async () => {
-          const number = await decrypt(creditCard.number);
-
-          clipboard.copy(number?.data ?? "");
+        onClick={() => {
+          clipboard.copy(value ?? "");
         }}
       >
         {clipboard.copied ? (
@@ -59,18 +57,9 @@ const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
 };
 
 const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
-  const { decrypt, loading, error } = useDecrypt();
-  const [number, setNumber] = useState<string>();
+  const { value, loading, error } = useDecrypt(creditCard.number);
 
-  const [visible, setVisible] = useDisclosure(false, {
-    onOpen: () => {
-      if (!number) {
-        decrypt(creditCard.number).then((number) => {
-          setNumber(number?.data);
-        });
-      }
-    },
-  });
+  const [visible, setVisible] = useDisclosure(false);
 
   useEffect(() => {
     if (error) {
@@ -81,8 +70,8 @@ const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
   return (
     <Group spacing="xs">
       <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {visible && number ? (
-          number?.match(/.{1,4}/g)?.join(" ")
+        {visible && value ? (
+          value?.match(/.{1,4}/g)?.join(" ")
         ) : (
           <>•••• •••• •••• {creditCard.lastDigits}</>
         )}

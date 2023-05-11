@@ -10,7 +10,7 @@ interface CredentialPasswordProps {
 }
 
 const CredentialPassword: FC<CredentialPasswordProps> = ({ credential }) => {
-  const { decrypt, loading, error } = useDecrypt();
+  const { value, loading, error } = useDecrypt(credential.password);
   const clipboard = useClipboard();
 
   return (
@@ -32,10 +32,8 @@ const CredentialPassword: FC<CredentialPasswordProps> = ({ credential }) => {
           color={
             clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
           }
-          onClick={async () => {
-            const password = await decrypt(credential.password);
-
-            clipboard.copy(password?.data ?? "");
+          onClick={() => {
+            clipboard.copy(value ?? "");
           }}
         >
           {clipboard.copied ? (

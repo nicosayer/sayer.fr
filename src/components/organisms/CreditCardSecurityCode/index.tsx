@@ -8,7 +8,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { useDecrypt } from "hooks/useCrypto";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
 
 interface CreditCardSecurityCodeProps {
@@ -18,7 +18,7 @@ interface CreditCardSecurityCodeProps {
 const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
   creditCard,
 }) => {
-  const { decrypt, loading, error } = useDecrypt();
+  const { value, loading, error } = useDecrypt(creditCard.securityCode);
   const clipboard = useClipboard();
 
   return (
@@ -38,10 +38,8 @@ const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
         color={
           clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
         }
-        onClick={async () => {
-          const securityCode = await decrypt(creditCard.securityCode);
-
-          clipboard.copy(securityCode?.data ?? "");
+        onClick={() => {
+          clipboard.copy(value ?? "");
         }}
       >
         {clipboard.copied ? (
@@ -61,18 +59,8 @@ const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
 const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
   creditCard,
 }) => {
-  const { decrypt, loading, error } = useDecrypt();
-  const [securityCode, setSecurityCode] = useState<string>();
-
-  const [visible, setVisible] = useDisclosure(false, {
-    onOpen: () => {
-      if (!securityCode) {
-        decrypt(creditCard.securityCode).then((securityCode) => {
-          setSecurityCode(securityCode?.data);
-        });
-      }
-    },
-  });
+  const { value, loading, error } = useDecrypt(creditCard.securityCode);
+  const [visible, setVisible] = useDisclosure(false);
 
   useEffect(() => {
     if (error) {
@@ -83,7 +71,7 @@ const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
   return (
     <Group spacing="xs">
       <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {visible && securityCode ? securityCode : "•••"}
+        {visible && value ? value : "•••"}
       </Code>
       <Tooltip
         disabled={loading}

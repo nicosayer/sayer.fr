@@ -1,6 +1,8 @@
 import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
+import Pagination from "components/organisms/Pagination";
 import { sortBy } from "lodash";
+import PaginationProvider from "providers/Pagination";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize, searchString } from "utils/string";
@@ -27,11 +29,20 @@ const CredentialsList: FC<CredentialsListProps> = ({ search }) => {
   }
 
   return (
-    <Stack>
-      {filteredCredentials.map((credential) => {
-        return <CredentialCard key={credential.id} credential={credential} />;
-      })}
-    </Stack>
+    <PaginationProvider totalItems={filteredCredentials.length}>
+      {({ page, pageSize }) => (
+        <Stack>
+          {filteredCredentials
+            .slice((page - 1) * pageSize, page * pageSize)
+            .map((credential) => {
+              return (
+                <CredentialCard key={credential.id} credential={credential} />
+              );
+            })}
+          <Pagination />
+        </Stack>
+      )}
+    </PaginationProvider>
   );
 };
 
