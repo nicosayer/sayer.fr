@@ -1,7 +1,8 @@
 import { Button, Group, Stack, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useMemo, useState } from "react";
+import { FC } from "react";
 import { TaskDocument } from "types/firebase/collections";
 import { updateDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
@@ -12,52 +13,66 @@ export interface EditTaskModalProps {
 
 const EditTaskModal: FC<EditTaskModalProps> = ({ task }) => {
   const [loading, start, stop] = useBooleanState();
-  const [value, setValue] = useState(task.name ?? "");
 
-  const formattedValue = useMemo(() => {
-    return cleanString(value);
-  }, [value]);
+  const form = useForm({
+    initialValues: {
+      name: task.name ?? "",
+    },
+
+    validate: {
+      name: (name) => {
+        return name.length > 0 ? null : "Ce champ ne doit pas être vide";
+      },
+    },
+
+    transformValues: (values) => {
+      return {
+        name: cleanString(values.name),
+      };
+    },
+  });
 
   return (
-    <Stack>
-      <TextInput
-        label="Tâche"
-        placeholder="Trier sa boîte mail"
-        disabled={loading}
-        value={value}
-        onChange={(event) => {
-          setValue(event.target.value);
-        }}
-      />
-      <div className="flex ml-auto">
-        <Group>
-          <Button
-            variant="default"
-            disabled={loading}
-            onClick={() => {
-              closeAllModals();
-            }}
-          >
-            Annuler
-          </Button>
-          <Button
-            loading={loading}
-            onClick={() => {
-              if (task.ref && formattedValue) {
-                start();
-                updateDoc<TaskDocument>(task.ref, { name: formattedValue })
-                  .then(() => {
-                    closeAllModals();
-                  })
-                  .finally(stop);
-              }
-            }}
-          >
-            Modifier
-          </Button>
-        </Group>
-      </div>
-    </Stack>
+    <form
+      onSubmit={form.onSubmit((values) => {
+        if (task?.ref) {
+          start();
+          updateDoc<TaskDocument>(task.ref, {
+            name: values.name,
+          })
+            .then(() => closeAllModals())
+            .finally(stop);
+        }
+      })}
+    >
+      <Stack>
+        <TextInput
+          data-autofocus
+          autoFocus
+          disabled={loading}
+          withAsterisk
+          label="Course"
+          placeholder="Avocats"
+          {...form.getInputProps("name")}
+        />
+        <div className="flex ml-auto">
+          <Group>
+            <Button
+              variant="default"
+              disabled={loading}
+              onClick={() => {
+                closeAllModals();
+              }}
+            >
+              Annuler
+            </Button>
+            <Button type="submit" loading={loading}>
+              Modifier
+            </Button>
+          </Group>
+        </div>
+      </Stack>
+    </form>
   );
 };
 

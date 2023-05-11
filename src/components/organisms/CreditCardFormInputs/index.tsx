@@ -47,6 +47,7 @@ const CreditCardFormInputs: FC<CreditCardFormInputsProps> = ({
     <>
       <TextInput
         data-autofocus
+        autoFocus
         withAsterisk
         disabled={loading}
         label="Nom de la carte"

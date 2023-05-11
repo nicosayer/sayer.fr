@@ -50,6 +50,7 @@ const NewGroceryCard: FC = () => {
           <TextInput
             disabled={loading}
             data-autofocus
+            autoFocus
             withAsterisk
             className="w-full"
             variant="unstyled"

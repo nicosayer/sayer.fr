@@ -87,9 +87,10 @@ const NewDocumentModal: FC = () => {
       <Stack>
         <TextInput
           data-autofocus
+          autoFocus
           withAsterisk
           disabled={loading}
-          label="Type de document"
+          label="Nom du document"
           placeholder="Passeport"
           {...form.getInputProps("name")}
         />

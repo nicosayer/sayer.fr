@@ -25,6 +25,7 @@ const CredentialFormInputs: FC<CredentialFormInputsProps> = ({
     <>
       <TextInput
         data-autofocus
+        autoFocus
         withAsterisk
         disabled={loading}
         label="Nom du site web"

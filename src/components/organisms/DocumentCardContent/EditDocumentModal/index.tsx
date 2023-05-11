@@ -48,9 +48,10 @@ const EditDocumentModal: FC<EditDocumentModalProps> = ({ document }) => {
       <Stack>
         <TextInput
           data-autofocus
+          autoFocus
           disabled={loading}
           withAsterisk
-          label="Type de document"
+          label="Nom du document"
           placeholder="Passeport"
           {...form.getInputProps("name")}
         />
