@@ -25,7 +25,6 @@ export interface GroceryCardContentProps {
 const openMoveModal = (grocery: GroceryDocument) => {
   openModal({
     centered: true,
-    zIndex: 1000,
     title: "Déplacer la course",
     children: <MoveGroceryModal grocery={grocery} />,
   });
@@ -34,7 +33,6 @@ const openMoveModal = (grocery: GroceryDocument) => {
 const openEditModal = (grocery: GroceryDocument) => {
   openModal({
     centered: true,
-    zIndex: 1000,
     title: "Modifer la course",
     children: <EditGroceryModal grocery={grocery} />,
   });

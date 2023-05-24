@@ -1,7 +1,7 @@
 import {
   ActionIcon,
-  Badge,
   Button,
+  Checkbox,
   CopyButton,
   Group,
   Menu,
@@ -17,71 +17,112 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons-react";
-import { deleteDoc } from "firebase/firestore";
+import { collection, deleteDoc, updateDoc } from "firebase/firestore";
+import { sortBy } from "lodash";
 import { FC } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { NoteDocument } from "types/firebase/collections";
-import { formatDate } from "utils/dayjs";
-import MoveNoteModal from "./MoveNoteModal";
+import {
+  Collection,
+  ListDocument,
+  ListItemDocument,
+} from "types/firebase/collections";
+import { firestoreConverter } from "utils/firebase";
+import EditListModal from "./EditListModal";
+import MoveListModal from "./MoveListModal";
 
-export interface NoteCardContentProps {
-  note: NoteDocument;
+export interface ListCardsPropContent {
+  list: ListDocument;
 }
-
-const openMoveModal = (note: NoteDocument) => {
+const openEditModal = (list: ListDocument, listItems: ListItemDocument[]) => {
   openModal({
     centered: true,
-    title: "Déplacer la note",
-    children: <MoveNoteModal note={note} />,
+    title: "Modifier la liste",
+    children: <EditListModal list={list} listItems={listItems} />,
   });
 };
 
-const openDeleteModal = (note: NoteDocument) => {
+const openMoveModal = (list: ListDocument) => {
+  openModal({
+    centered: true,
+    title: "Déplacer la liste",
+    children: <MoveListModal list={list} />,
+  });
+};
+
+const openDeleteModal = (list: ListDocument) => {
   openConfirmModal({
-    title: "Supprimer la note",
+    title: "Supprimer la liste",
     centered: true,
     children: (
       <Text size="sm">
-        Voulez-vous vraiment supprimer cette note ? Cette action est définitive
+        Voulez-vous vraiment supprimer cette liste ? Cette action est définitive
         et irréversible.
       </Text>
     ),
     labels: { confirm: "Supprimer", cancel: "Annuler" },
     confirmProps: { color: "red" },
     onConfirm: () => {
-      if (note.ref) {
-        deleteDoc(note.ref);
+      if (list.ref) {
+        deleteDoc(list.ref);
       }
     },
   });
 };
 
-const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
-  const { boardId } = useParams();
-  const navigate = useNavigate();
+const ListCardContent: FC<ListCardsPropContent> = ({ list }) => {
   const { boards } = useBoard();
+  const [listItems] = useCollectionData<ListItemDocument>(
+    list.ref
+      ? collection(list.ref, Collection.listItems).withConverter(
+          firestoreConverter
+        )
+      : undefined
+  );
 
   return (
     <Stack align="center">
       <Group spacing="xs">
-        <Text weight={500}>{note.name}</Text>
-        <Badge radius="sm" color="gray">
-          {formatDate(note.date, "D MMM YYYY")}
-        </Badge>
+        <Text weight={500}>{list.name}</Text>
       </Group>
-
+      <Stack spacing="xs">
+        {sortBy(listItems, "order")?.map((listItem) => {
+          return (
+            <Checkbox
+              label={listItem.name}
+              checked={listItem.checked}
+              onClick={() => {
+                if (listItem.ref) {
+                  updateDoc<ListItemDocument>(listItem.ref, {
+                    checked: !listItem.checked,
+                  });
+                }
+              }}
+              classNames={{
+                label: "cursor-pointer",
+                input: "cursor-pointer",
+              }}
+            />
+          );
+        })}
+      </Stack>
       <Group className="w-full">
         <Button
           variant="light"
           className="flex-1"
           onClick={() => {
-            navigate(`/boards/${boardId}/notes/${note.id}`);
+            listItems?.forEach((listItem) => {
+              if (listItem.ref) {
+                updateDoc<ListItemDocument>(listItem.ref, {
+                  checked: false,
+                });
+              }
+            });
           }}
         >
-          Prévisualiser
+          Réinitialiser
         </Button>
-        <CopyButton value={`${window.location.host}/${note.ref?.path}`}>
+        <CopyButton value={`${window.location.host}/${list.ref?.path}`}>
           {({ copied, copy }) => (
             <Menu shadow="md" width={200} withinPortal>
               <Menu.Target>
@@ -106,7 +147,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
                 {(boards?.length ?? 0) > 1 ? (
                   <Menu.Item
                     onClick={() => {
-                      openMoveModal(note);
+                      openMoveModal(list);
                     }}
                     icon={<IconSwitchHorizontal size={18} />}
                   >
@@ -115,7 +156,9 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
                 ) : undefined}
                 <Menu.Item
                   onClick={() => {
-                    navigate(`/boards/${boardId}/notes/${note.id}`);
+                    if (listItems) {
+                      openEditModal(list, listItems);
+                    }
                   }}
                   icon={<IconEdit size={18} />}
                 >
@@ -124,7 +167,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
                 <Menu.Item
                   color="red"
                   onClick={() => {
-                    openDeleteModal(note);
+                    openDeleteModal(list);
                   }}
                   icon={<IconTrash size={18} />}
                 >
@@ -139,4 +182,4 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
   );
 };
 
-export default NoteCardContent;
+export default ListCardContent;

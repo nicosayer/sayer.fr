@@ -12,6 +12,7 @@ import {
   CreditCardDocument,
   DocumentDocument,
   GroceryDocument,
+  ListDocument,
   NoteDocument,
   TaskDocument,
 } from "types/firebase/collections";
@@ -26,12 +27,14 @@ export interface IBoardContext {
   creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
   groceries?: GroceryDocument[];
+  lists?: ListDocument[];
   notes?: NoteDocument[];
   tasks?: TaskDocument[];
   loadingCredentials: boolean;
   loadingCreditCards: boolean;
   loadingDocuments: boolean;
   loadingGroceries: boolean;
+  loadingLists: boolean;
   loadingNotes: boolean;
   loadingTasks: boolean;
 }
@@ -44,12 +47,14 @@ const BoardContext = createContext<IBoardContext>({
   creditCards: undefined,
   documents: undefined,
   groceries: undefined,
+  lists: undefined,
   notes: undefined,
   tasks: undefined,
   loadingCredentials: false,
   loadingCreditCards: false,
   loadingDocuments: false,
   loadingGroceries: false,
+  loadingLists: false,
   loadingNotes: false,
   loadingTasks: false,
 });
@@ -107,6 +112,11 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       Collection.groceries
     );
 
+  const [lists, loadingLists] = useBoardsCollectionsData<ListDocument>(
+    currentBoards ?? [],
+    Collection.lists
+  );
+
   const [notes, loadingNotes] = useBoardsCollectionsData<NoteDocument>(
     currentBoards ?? [],
     Collection.notes
@@ -152,12 +162,14 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       creditCards,
       documents,
       groceries,
+      lists,
       notes,
       tasks,
       loadingCredentials,
       loadingCreditCards,
       loadingDocuments,
       loadingGroceries,
+      loadingLists,
       loadingNotes,
       loadingTasks,
     };
@@ -168,10 +180,12 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     currentBoards,
     documents,
     groceries,
+    lists,
     loadingCredentials,
     loadingCreditCards,
     loadingDocuments,
     loadingGroceries,
+    loadingLists,
     loadingNotes,
     loadingTasks,
     notes,

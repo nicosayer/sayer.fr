@@ -37,7 +37,6 @@ export interface CreditCardCardContentProps {
 
 const openEditModal = (creditCard: CreditCardDocument) => {
   openModal({
-    zIndex: 1000,
     centered: true,
     title: "Modifier la carte de crédit",
     children: <EditCreditCardModal creditCard={creditCard} />,
@@ -47,7 +46,6 @@ const openEditModal = (creditCard: CreditCardDocument) => {
 const openMoveModal = (creditCard: CreditCardDocument) => {
   openModal({
     centered: true,
-    zIndex: 1000,
     title: "Déplacer la carte de crédit",
     children: <MoveCreditCardModal creditCard={creditCard} />,
   });
@@ -57,7 +55,6 @@ const openDeleteModal = (creditCard: CreditCardDocument) => {
   openConfirmModal({
     title: "Supprimer la carte de crédit",
     centered: true,
-    zIndex: 1000,
     children: (
       <Text size="sm">
         Voulez-vous vraiment supprimer cette carte de crédit ? Cette action est

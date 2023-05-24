@@ -25,7 +25,6 @@ export interface TaskCardContentProps {
 const openMoveModal = (task: TaskDocument) => {
   openModal({
     centered: true,
-    zIndex: 1000,
     title: "Déplacer la tâche",
     children: <MoveTaskModal task={task} />,
   });
@@ -34,7 +33,6 @@ const openMoveModal = (task: TaskDocument) => {
 const openEditModal = (task: TaskDocument) => {
   openModal({
     centered: true,
-    zIndex: 1000,
     title: "Modifier la tâche",
     children: <EditTaskModal task={task} />,
   });

@@ -36,7 +36,6 @@ export interface DocumentCardsPropContent {
 const openEditModal = (document: DocumentDocument) => {
   openModal({
     centered: true,
-    zIndex: 1000,
     title: "Modifier le document",
     children: <EditDocumentModal document={document} />,
   });
@@ -45,7 +44,6 @@ const openEditModal = (document: DocumentDocument) => {
 const openMoveModal = (document: DocumentDocument) => {
   openModal({
     centered: true,
-    zIndex: 1000,
     title: "Déplacer le document",
     children: <MoveDocumentModal document={document} />,
   });
@@ -55,7 +53,6 @@ const openDeleteModal = (document: DocumentDocument) => {
   openConfirmModal({
     title: "Supprimer le document",
     centered: true,
-    zIndex: 1000,
     children: (
       <Text size="sm">
         Voulez-vous vraiment supprimer ce document ? Cette action est définitive

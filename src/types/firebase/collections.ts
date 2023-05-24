@@ -87,6 +87,7 @@ export interface ListItemDocument {
   ref?: DocumentReference<ListItemDocument>;
   name?: string;
   checked?: boolean;
+  order?: number;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }

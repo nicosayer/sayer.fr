@@ -9,6 +9,7 @@ export interface BoardSelectProps extends Omit<SelectProps, "data"> {
 const BoardSelect: FC<BoardSelectProps> = ({ boards, ...rest }) => {
   return (
     <Select
+      withinPortal
       data={(boards ?? []).map((board) => {
         return { label: board.name, value: String(board.id) };
       })}

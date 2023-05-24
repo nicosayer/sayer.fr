@@ -34,7 +34,6 @@ const usePreviewDocument = (): [
                   className="w-full h-[80vh] border-0"
                 />
               ),
-              zIndex: 1000,
               size: "xl",
               withCloseButton: false,
               padding: 0,

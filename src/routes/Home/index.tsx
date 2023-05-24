@@ -12,6 +12,7 @@ import Credentials from "./Boards/Board/Credentials";
 import CreditCards from "./Boards/Board/CreditCards";
 import Documents from "./Boards/Board/Documents";
 import Groceries from "./Boards/Board/Groceries";
+import Lists from "./Boards/Board/Lists";
 import Notes from "./Boards/Board/Notes";
 import BoardRedirect from "./Boards/Board/Redirect";
 import Tasks from "./Boards/Board/Tasks";
@@ -52,6 +53,8 @@ const router = createBrowserRouter([
               { path: "documents/:documentId", element: <Documents /> },
               { path: "groceries", element: <Groceries /> },
               { path: "groceries/:groceryId", element: <Groceries /> },
+              { path: "lists", element: <Lists /> },
+              { path: "lists/:listId", element: <Lists /> },
               { path: "notes", element: <Notes /> },
               { path: "notes/:noteId", element: <Notes /> },
               { path: "tasks", element: <Tasks /> },

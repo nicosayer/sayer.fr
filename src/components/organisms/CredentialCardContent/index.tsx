@@ -32,7 +32,6 @@ export interface CredentialCardContentProps {
 const openEditModal = (credential: CredentialDocument) => {
   openModal({
     centered: true,
-    zIndex: 1000,
     title: "Modifier le mot de passe",
     children: <EditCredentialModal credential={credential} />,
   });
@@ -41,7 +40,6 @@ const openEditModal = (credential: CredentialDocument) => {
 const openMoveModal = (credential: CredentialDocument) => {
   openModal({
     centered: true,
-    zIndex: 1000,
     title: "Déplacer le mot de passe",
     children: <MoveCredentialModal credential={credential} />,
   });
@@ -51,7 +49,6 @@ const openDeleteModal = (credential: CredentialDocument) => {
   openConfirmModal({
     title: "Supprimer le mot de passe",
     centered: true,
-    zIndex: 1000,
     children: (
       <Text size="sm">
         Voulez-vous vraiment supprimer ce mot de passe ? Cette action est

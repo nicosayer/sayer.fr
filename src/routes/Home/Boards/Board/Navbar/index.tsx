@@ -4,6 +4,7 @@ import {
   IconCreditCard,
   IconEdit,
   IconId,
+  IconListCheck,
   IconLockOpen,
   IconSettings,
   IconShoppingCart,
@@ -43,14 +44,20 @@ export const menu = [
       groceries?.filter((grocery) => !grocery.closedAt).length ?? 0,
   },
   {
-    icon: <IconEdit size={18} />,
+    icon: <IconListCheck size={18} />,
     color: "blue",
+    label: "Listes",
+    to: "lists",
+  },
+  {
+    icon: <IconEdit size={18} />,
+    color: "violet",
     label: "Notes",
     to: "notes",
   },
   {
     icon: <IconChecklist size={18} />,
-    color: "violet",
+    color: "pink",
     label: "Tâches",
     to: "tasks",
     count: ({ tasks }: IBoardContext) =>
