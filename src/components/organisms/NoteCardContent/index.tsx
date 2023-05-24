@@ -79,7 +79,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
             navigate(`/boards/${boardId}/notes/${note.id}`);
           }}
         >
-          Prévisualiser
+          Modifier
         </Button>
         <CopyButton value={`${window.location.host}/${note.ref?.path}`}>
           {({ copied, copy }) => (
