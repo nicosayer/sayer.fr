@@ -26,7 +26,6 @@ const MoveDocumentModal: FC<MoveDocumentModalProps> = ({ document }) => {
     document.ref?.parent.parent?.id ?? null
   );
   const [uploadFile] = useUploadFile();
-  console.log(document.ref?.path);
 
   return (
     <Stack>
@@ -55,7 +54,6 @@ const MoveDocumentModal: FC<MoveDocumentModalProps> = ({ document }) => {
             loading={loading}
             onClick={() => {
               start();
-              console.log(1);
 
               addDoc<DocumentDocument>(
                 collection(db, `boards/${boardId}/${Collection.documents}`),
@@ -65,7 +63,6 @@ const MoveDocumentModal: FC<MoveDocumentModalProps> = ({ document }) => {
                 }
               )
                 .then(async (doc) => {
-                  console.log(2);
                   const blob = await getBlob(
                     ref(
                       storage,
@@ -75,7 +72,6 @@ const MoveDocumentModal: FC<MoveDocumentModalProps> = ({ document }) => {
                     )
                   );
 
-                  console.log(3);
 
                   return uploadFile(
                     ref(
@@ -101,7 +97,6 @@ const MoveDocumentModal: FC<MoveDocumentModalProps> = ({ document }) => {
                   );
                 })
                 .then(() => {
-                  console.log(4);
                   if (document.ref) {
                     return deleteDoc(document.ref);
                   }

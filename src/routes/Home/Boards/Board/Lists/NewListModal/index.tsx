@@ -85,7 +85,7 @@ const NewListModal: FC = () => {
               key={index}
               withAsterisk={index === 0}
               disabled={loading}
-              label={`Elément ${index + 1}`}
+              label={`Élément ${index + 1}`}
               placeholder={
                 [
                   "Maillot de bain",

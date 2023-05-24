@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Alert,
   Button,
   Checkbox,
   CopyButton,
@@ -75,8 +76,8 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list }) => {
   const [listItems] = useCollectionData<ListItemDocument>(
     list.ref
       ? collection(list.ref, Collection.listItems).withConverter(
-          firestoreConverter
-        )
+        firestoreConverter
+      )
       : undefined
   );
 
@@ -85,27 +86,29 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list }) => {
       <Group spacing="xs">
         <Text weight={500}>{list.name}</Text>
       </Group>
-      <Stack spacing="xs">
-        {sortBy(listItems, "order")?.map((listItem) => {
-          return (
-            <Checkbox
-              label={listItem.name}
-              checked={listItem.checked}
-              onClick={() => {
-                if (listItem.ref) {
-                  updateDoc<ListItemDocument>(listItem.ref, {
-                    checked: !listItem.checked,
-                  });
-                }
-              }}
-              classNames={{
-                label: "cursor-pointer",
-                input: "cursor-pointer",
-              }}
-            />
-          );
-        })}
-      </Stack>
+      <Alert color="gray">
+        <Stack spacing="xs" >
+          {sortBy(listItems, "order")?.map((listItem) => {
+            return (
+              <Checkbox
+                label={listItem.name}
+                checked={listItem.checked}
+                onClick={() => {
+                  if (listItem.ref) {
+                    updateDoc<ListItemDocument>(listItem.ref, {
+                      checked: !listItem.checked,
+                    });
+                  }
+                }}
+                classNames={{
+                  label: "cursor-pointer",
+                  input: "cursor-pointer",
+                }}
+              />
+            );
+          })}
+        </Stack>
+      </Alert>
       <Group className="w-full">
         <Button
           variant="light"
