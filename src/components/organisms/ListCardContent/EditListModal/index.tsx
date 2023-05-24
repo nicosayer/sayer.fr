@@ -47,7 +47,7 @@ const EditListModal: FC<EditListModalProps> = ({ list, listItems }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        if (list?.ref) {
+        if (list?.ref && values.itemNames.length > 0) {
           start();
           updateDoc<ListDocument>(list.ref, {
             name: values.name,

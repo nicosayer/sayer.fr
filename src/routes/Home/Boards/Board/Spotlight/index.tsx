@@ -49,7 +49,7 @@ function CustomAction({
 }
 
 const Spotlight = ({ children }: PropsWithChildren) => {
-  const { credentials, creditCards, documents, notes } = useBoard();
+  const { credentials, creditCards, documents, lists, notes } = useBoard();
   const [query, setQuery] = useState("");
 
   const navigate = useNavigate();
@@ -94,6 +94,15 @@ const Spotlight = ({ children }: PropsWithChildren) => {
             description: document.mime?.split("/")[1].toUpperCase(),
             onTrigger: () => {
               navigate(`/boards/${boardId}/documents/${document.id}`);
+            },
+          };
+        }),
+        ...(lists ?? []).map((list) => {
+          return {
+            title: list.name ?? "",
+            group: "List",
+            onTrigger: () => {
+              navigate(`/boards/${boardId}/lists/${list.id}`);
             },
           };
         }),
