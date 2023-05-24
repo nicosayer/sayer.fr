@@ -1,6 +1,7 @@
-import { Button, Group, Stack, TextInput } from "@mantine/core";
+import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
+import { IconCaretDown, IconCaretUp } from "@tabler/icons-react";
 import { addDoc, collection, deleteDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { sortBy } from "lodash";
@@ -109,6 +110,62 @@ const EditListModal: FC<EditListModalProps> = ({ list, listItems }) => {
                   "Chargeur",
                   "Appareil photo",
                 ][index % 10]
+              }
+              rightSection={
+                <div>
+                  {index !== 0 && index !== form.values.itemNames.length ? (
+                    <ActionIcon
+                      className={
+                        index < form.values.itemNames.length - 1
+                          ? "max-h-[16px] min-h-[16px]"
+                          : ""
+                      }
+                      onClick={() => {
+                        const from = index;
+                        const to = index - 1;
+                        const array = [...form.values.itemNames];
+                        form.setFieldValue(
+                          "itemNames",
+                          form.values.itemNames.map((item, index) => {
+                            if (index === from) {
+                              return array[to];
+                            }
+                            if (index === to) {
+                              return array[from];
+                            }
+                            return item;
+                          })
+                        );
+                      }}
+                    >
+                      <IconCaretUp size={18} />
+                    </ActionIcon>
+                  ) : null}
+                  {index < form.values.itemNames.length - 1 ? (
+                    <ActionIcon
+                      className={index !== 0 ? "max-h-[16px] min-h-[16px]" : ""}
+                      onClick={() => {
+                        const from = index;
+                        const to = index + 1;
+                        const array = [...form.values.itemNames];
+                        form.setFieldValue(
+                          "itemNames",
+                          form.values.itemNames.map((item, index) => {
+                            if (index === from) {
+                              return array[to];
+                            }
+                            if (index === to) {
+                              return array[from];
+                            }
+                            return item;
+                          })
+                        );
+                      }}
+                    >
+                      <IconCaretDown size={18} />
+                    </ActionIcon>
+                  ) : null}
+                </div>
               }
               {...form.getInputProps(`itemNames.${index}`)}
             />
