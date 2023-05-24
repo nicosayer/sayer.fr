@@ -76,8 +76,8 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list }) => {
   const [listItems] = useCollectionData<ListItemDocument>(
     list.ref
       ? collection(list.ref, Collection.listItems).withConverter(
-        firestoreConverter
-      )
+          firestoreConverter
+        )
       : undefined
   );
 
@@ -87,7 +87,7 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list }) => {
         <Text weight={500}>{list.name}</Text>
       </Group>
       <Alert color="gray">
-        <Stack spacing="xs" >
+        <Stack spacing="xs">
           {sortBy(listItems, "order")?.map((listItem) => {
             return (
               <Checkbox

@@ -5,7 +5,7 @@ import { collection, deleteDoc } from "firebase/firestore";
 import { deleteObject, getBlob, ref } from "firebase/storage";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
-import { useDownloadURL, useUploadFile } from "react-firebase-hooks/storage";
+import { useUploadFile } from "react-firebase-hooks/storage";
 import { useBoards } from "routes/Home/Boards/Provider";
 import {
   Collection,
@@ -71,7 +71,6 @@ const MoveDocumentModal: FC<MoveDocumentModalProps> = ({ document }) => {
                       )}`
                     )
                   );
-
 
                   return uploadFile(
                     ref(
