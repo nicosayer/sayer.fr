@@ -95,7 +95,7 @@ const EditListModal: FC<EditListModalProps> = ({ list, listItems }) => {
               key={index}
               withAsterisk={index === 0}
               disabled={loading}
-              label={`Elément ${index + 1}`}
+              label={`Élément ${index + 1}`}
               placeholder={
                 [
                   "Maillot de bain",
