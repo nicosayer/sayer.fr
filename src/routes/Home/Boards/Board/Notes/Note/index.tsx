@@ -1,4 +1,5 @@
 import { Modal } from "@mantine/core";
+import classNames from "classnames";
 import { deleteDoc } from "firebase/firestore";
 import useColors from "hooks/useColors";
 import { FC, useMemo } from "react";
@@ -47,8 +48,12 @@ const Note: FC = () => {
         trapFocus={false}
         fullScreen={true}
         classNames={{
-          body: "h-[calc(100%_-_52px)]",
-          title: "w-full",
+          body: "mt-4 h-[calc(100%_-_85px)]",
+          title: "w-full mr-4",
+          header: classNames(
+            "border-0 border-b border-solid",
+            darkMode ? "border-[#2C2E33]" : "border-[#e9ecef]"
+          ),
           content: darkMode ? "bg-[#141517]" : "bg-[#f8f9fa]",
         }}
         title={<NoteModalHeader note={note} />}
