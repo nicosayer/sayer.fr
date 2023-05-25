@@ -10,13 +10,13 @@ import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import Credential from "./Credential";
 import CredentialsList from "./CredentialsList";
-import NewCredentialModal from "./NewCredentialModal";
+import NewCredentialModalContent from "./NewCredentialModalContent";
 
 const openNewModal = () => {
   openModal({
     centered: true,
     title: "Nouveau mot de passe",
-    children: <NewCredentialModal />,
+    children: <NewCredentialModalContent />,
   });
 };
 

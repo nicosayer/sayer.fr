@@ -7,13 +7,13 @@ import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import List from "./List";
 import ListsList from "./ListsList";
-import NewListModal from "./NewListModal";
+import NewListModalContent from "./NewListModalContent";
 
 const openNewModal = () => {
   openModal({
     centered: true,
     title: "Nouvelle liste",
-    children: <NewListModal />,
+    children: <NewListModalContent />,
   });
 };
 

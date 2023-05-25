@@ -19,17 +19,17 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons-react";
-import CreditCardCardholder from "components/organisms/CreditCardCardholder";
-import CreditCardExpirationDate from "components/organisms/CreditCardExpirationDate";
-import CreditCardNumber from "components/organisms/CreditCardNumber";
-import CreditCardSecurityCode from "components/organisms/CreditCardSecurityCode";
 import { deleteDoc } from "firebase/firestore";
 import { useDecrypt } from "hooks/useCrypto";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
-import EditCreditCardModal from "./EditCreditCardModal";
-import MoveCreditCardModal from "./MoveCreditCardModal";
+import CreditCardCardholder from "./CreditCardCardholder";
+import CreditCardExpirationDate from "./CreditCardExpirationDate";
+import CreditCardNumber from "./CreditCardNumber";
+import CreditCardSecurityCode from "./CreditCardSecurityCode";
+import EditCreditCardModalContent from "./EditCreditCardModalContent";
+import MoveCreditCardModalContent from "./MoveCreditCardModalContent";
 
 export interface CreditCardCardContentProps {
   creditCard: CreditCardDocument;
@@ -39,7 +39,7 @@ const openEditModal = (creditCard: CreditCardDocument) => {
   openModal({
     centered: true,
     title: "Modifier la carte de crédit",
-    children: <EditCreditCardModal creditCard={creditCard} />,
+    children: <EditCreditCardModalContent creditCard={creditCard} />,
   });
 };
 
@@ -47,7 +47,7 @@ const openMoveModal = (creditCard: CreditCardDocument) => {
   openModal({
     centered: true,
     title: "Déplacer la carte de crédit",
-    children: <MoveCreditCardModal creditCard={creditCard} />,
+    children: <MoveCreditCardModalContent creditCard={creditCard} />,
   });
 };
 

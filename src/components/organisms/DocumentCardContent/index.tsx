@@ -26,8 +26,8 @@ import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, DocumentMime } from "types/firebase/collections";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
-import EditDocumentModal from "./EditDocumentModal";
-import MoveDocumentModal from "./MoveDocumenModal";
+import EditDocumentModalContent from "./EditDocumentModalContent";
+import MoveDocumentModalContent from "./MoveDocumenModalContent";
 
 export interface DocumentCardsPropContent {
   document: DocumentDocument;
@@ -37,7 +37,7 @@ const openEditModal = (document: DocumentDocument) => {
   openModal({
     centered: true,
     title: "Modifier le document",
-    children: <EditDocumentModal document={document} />,
+    children: <EditDocumentModalContent document={document} />,
   });
 };
 
@@ -45,7 +45,7 @@ const openMoveModal = (document: DocumentDocument) => {
   openModal({
     centered: true,
     title: "Déplacer le document",
-    children: <MoveDocumentModal document={document} />,
+    children: <MoveDocumentModalContent document={document} />,
   });
 };
 

@@ -20,10 +20,10 @@ import { deleteDoc } from "firebase/firestore";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CredentialDocument } from "types/firebase/collections";
-import CredentialPassword from "../CredentialPassword";
-import CredentialUsername from "../CredentialUsername";
-import EditCredentialModal from "./EditCredentialModal";
-import MoveCredentialModal from "./MoveCredentialModal";
+import CredentialPassword from "./CredentialPassword";
+import CredentialUsername from "./CredentialUsername";
+import EditCredentialModalContent from "./EditCredentialModalContent";
+import MoveCredentialModalContent from "./MoveCredentialModalContent";
 
 export interface CredentialCardContentProps {
   credential: CredentialDocument;
@@ -33,7 +33,7 @@ const openEditModal = (credential: CredentialDocument) => {
   openModal({
     centered: true,
     title: "Modifier le mot de passe",
-    children: <EditCredentialModal credential={credential} />,
+    children: <EditCredentialModalContent credential={credential} />,
   });
 };
 
@@ -41,7 +41,7 @@ const openMoveModal = (credential: CredentialDocument) => {
   openModal({
     centered: true,
     title: "Déplacer le mot de passe",
-    children: <MoveCredentialModal credential={credential} />,
+    children: <MoveCredentialModalContent credential={credential} />,
   });
 };
 

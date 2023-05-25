@@ -7,13 +7,13 @@ import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import Document from "./Document";
 import DocumentsList from "./DocumentsList";
-import NewDocumentModal from "./NewDocumentModal";
+import NewDocumentModalContent from "./NewDocumentModalContent";
 
 const openNewModal = () => {
   openModal({
     centered: true,
     title: "Nouveau document",
-    children: <NewDocumentModal />,
+    children: <NewDocumentModalContent />,
   });
 };
 

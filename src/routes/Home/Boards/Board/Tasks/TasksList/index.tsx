@@ -1,11 +1,11 @@
 import { Card, Stack, Text } from "@mantine/core";
 import { IconLayoutList } from "@tabler/icons-react";
 import NoResult from "components/organisms/NoResult";
-import TaskCardContent from "components/organisms/TaskCardContent";
 import { groupBy, orderBy } from "lodash";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { searchString } from "utils/string";
+import TaskCardContent from "./TaskCardContent";
 
 export interface TasksListProps {
   search: string;

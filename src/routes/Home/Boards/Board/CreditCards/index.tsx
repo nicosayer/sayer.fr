@@ -10,13 +10,13 @@ import { FC, useState } from "react";
 import { useBoard } from "../Provider";
 import CreditCard from "./CreditCard";
 import CreditCardsList from "./CreditCardsList";
-import NewCreditCardModal from "./NewCreditCardModal";
+import NewCreditCardModalContent from "./NewCreditCardModalContent";
 
 const openNewModal = () => {
   openModal({
     centered: true,
     title: "Nouvelle carte de crédit",
-    children: <NewCreditCardModal />,
+    children: <NewCreditCardModalContent />,
   });
 };
 

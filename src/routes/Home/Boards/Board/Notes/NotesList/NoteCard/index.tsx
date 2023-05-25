@@ -1,7 +1,7 @@
 import { Card } from "@mantine/core";
-import NoteCardContent from "components/organisms/NoteCardContent";
 import { FC } from "react";
 import { NoteDocument } from "types/firebase/collections";
+import NoteCardContent from "./NoteCardContent";
 
 export interface NoteCardProps {
   note: NoteDocument;
