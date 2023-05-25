@@ -18,7 +18,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import EditDocumentModalContent from "components/organisms/DocumentCardContent/EditDocumentModalContent";
-import MoveDocumentModalContent from "components/organisms/DocumentCardContent/MoveDocumenModalContent";
+import MoveDocumentModalContent from "components/organisms/DocumentCardContent/MoveDocumentModalContent";
 import { deleteDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import useDownloadDocument from "hooks/useDownloadDocument";
