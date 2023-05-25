@@ -7,7 +7,6 @@ import {
   Header as HeaderComponent,
   Menu,
   TextInput,
-  Title,
   useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery, useOs } from "@mantine/hooks";
@@ -24,6 +23,7 @@ import NewBoardMenuItem from "routes/Home/Boards/Board/Header/MenuItems/NewBoard
 import SettingsMenuItem from "routes/Home/Boards/Board/Header/MenuItems/Settings";
 import SignOutMenuItem from "routes/Home/Boards/Board/Header/MenuItems/SignOut";
 import SwitchBoardMenuItem from "routes/Home/Boards/Board/Header/MenuItems/SwitchBoard";
+import Title from "routes/Home/Boards/Board/Header/Title";
 import { auth } from "utils/firebase";
 
 const Header: FC = () => {
