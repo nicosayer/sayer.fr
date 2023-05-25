@@ -7,10 +7,10 @@ import CannotBeSecure from "components/organisms/CannotBeSecure";
 import SecureLogin from "components/organisms/SecureLogin";
 import { useSecureLogin } from "providers/SecureLogin";
 import { FC, useState } from "react";
-import { useBoard } from "../Provider";
-import Credential from "./Credential";
-import CredentialsList from "./CredentialsList";
-import NewCredentialModalContent from "./NewCredentialModalContent";
+import Credential from "routes/Home/Boards/Board/Credentials/Credential";
+import CredentialsList from "routes/Home/Boards/Board/Credentials/CredentialsList";
+import NewCredentialModalContent from "routes/Home/Boards/Board/Credentials/NewCredentialModalContent";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const openNewModal = () => {
   openModal({

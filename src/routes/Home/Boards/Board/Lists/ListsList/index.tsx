@@ -4,9 +4,9 @@ import Pagination from "components/organisms/Pagination";
 import { sortBy } from "lodash";
 import PaginationProvider from "providers/Pagination";
 import { FC, useMemo } from "react";
+import ListCard from "routes/Home/Boards/Board/Lists/ListsList/ListCard";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize, searchString } from "utils/string";
-import ListCard from "./ListCard";
 
 export interface ListsListProps {
   search: string;

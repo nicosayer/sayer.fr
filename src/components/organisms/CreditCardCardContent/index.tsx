@@ -19,17 +19,17 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons-react";
+import CreditCardCardholder from "components/organisms/CreditCardCardContent/CreditCardCardholder";
+import CreditCardExpirationDate from "components/organisms/CreditCardCardContent/CreditCardExpirationDate";
+import CreditCardNumber from "components/organisms/CreditCardCardContent/CreditCardNumber";
+import CreditCardSecurityCode from "components/organisms/CreditCardCardContent/CreditCardSecurityCode";
+import EditCreditCardModalContent from "components/organisms/CreditCardCardContent/EditCreditCardModalContent";
+import MoveCreditCardModalContent from "components/organisms/CreditCardCardContent/MoveCreditCardModalContent";
 import { deleteDoc } from "firebase/firestore";
 import { useDecrypt } from "hooks/useCrypto";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";
-import CreditCardCardholder from "./CreditCardCardholder";
-import CreditCardExpirationDate from "./CreditCardExpirationDate";
-import CreditCardNumber from "./CreditCardNumber";
-import CreditCardSecurityCode from "./CreditCardSecurityCode";
-import EditCreditCardModalContent from "./EditCreditCardModalContent";
-import MoveCreditCardModalContent from "./MoveCreditCardModalContent";
 
 export interface CreditCardCardContentProps {
   creditCard: CreditCardDocument;

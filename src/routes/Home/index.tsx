@@ -5,17 +5,17 @@ import {
 } from "react-router-dom";
 import Boards from "routes/Home/Boards";
 import Board from "routes/Home/Boards/Board";
+import Credentials from "routes/Home/Boards/Board/Credentials";
+import CreditCards from "routes/Home/Boards/Board/CreditCards";
+import Documents from "routes/Home/Boards/Board/Documents";
+import Groceries from "routes/Home/Boards/Board/Groceries";
+import Lists from "routes/Home/Boards/Board/Lists";
+import Notes from "routes/Home/Boards/Board/Notes";
+import BoardRedirect from "routes/Home/Boards/Board/Redirect";
 import Settings from "routes/Home/Boards/Board/Settings";
+import Tasks from "routes/Home/Boards/Board/Tasks";
 import BoardsProvider from "routes/Home/Boards/Provider";
 import Error from "routes/Home/Error";
-import Credentials from "./Boards/Board/Credentials";
-import CreditCards from "./Boards/Board/CreditCards";
-import Documents from "./Boards/Board/Documents";
-import Groceries from "./Boards/Board/Groceries";
-import Lists from "./Boards/Board/Lists";
-import Notes from "./Boards/Board/Notes";
-import BoardRedirect from "./Boards/Board/Redirect";
-import Tasks from "./Boards/Board/Tasks";
 
 const router = createBrowserRouter([
   {

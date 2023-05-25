@@ -11,7 +11,7 @@ import {
   ListDocument,
   ListItemDocument,
 } from "types/firebase/collections";
-import { mapAsync } from "utils/async";
+import { runInParallel } from "utils/async";
 import { updateDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
 
@@ -57,14 +57,14 @@ const EditListModalContent: FC<EditListModalContentProps> = ({
             name: values.name,
           })
             .then(() => {
-              return mapAsync(listItems, (listItem) => {
+              return runInParallel(listItems, (listItem) => {
                 if (listItem.ref) {
                   return deleteDoc(listItem.ref);
                 }
               });
             })
             .then(() => {
-              return mapAsync(values.itemNames, (itemName, index) => {
+              return runInParallel(values.itemNames, (itemName, index) => {
                 if (list.ref) {
                   return addDoc<ListItemDocument>(
                     collection(list.ref, Collection.listItems),

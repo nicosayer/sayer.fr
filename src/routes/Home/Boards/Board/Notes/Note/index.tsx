@@ -5,9 +5,9 @@ import useColors from "hooks/useColors";
 import { FC, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { useNavigate, useParams } from "react-router-dom";
-import { useBoard } from "../../Provider";
-import NoteModalContent from "./NoteModalContent";
-import NoteModalHeader from "./NoteModalHeader";
+import NoteModalContent from "routes/Home/Boards/Board/Notes/Note/NoteModalContent";
+import NoteModalHeader from "routes/Home/Boards/Board/Notes/Note/NoteModalHeader";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const Note: FC = () => {
   const { boards, notes } = useBoard();

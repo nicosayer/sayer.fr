@@ -4,10 +4,10 @@ import Pagination from "components/organisms/Pagination";
 import { orderBy } from "lodash";
 import PaginationProvider from "providers/Pagination";
 import { FC, useMemo } from "react";
+import NoteCard from "routes/Home/Boards/Board/Notes/NotesList/NoteCard";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { formatDate } from "utils/dayjs";
 import { searchString } from "utils/string";
-import NoteCard from "./NoteCard";
 
 export interface NotesListProps {
   search: string;

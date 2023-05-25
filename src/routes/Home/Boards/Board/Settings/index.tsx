@@ -1,10 +1,10 @@
 import { Stack, Tabs, Text } from "@mantine/core";
 import { FC } from "react";
 import { useParams } from "react-router-dom";
-import { useBoard } from "../Provider";
-import BoardCard from "./Cards/Board";
-import DeleteBoardCard from "./Cards/DeleteBoard";
-import UserCard from "./Cards/User";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
+import BoardCard from "routes/Home/Boards/Board/Settings/Cards/Board";
+import DeleteBoardCard from "routes/Home/Boards/Board/Settings/Cards/DeleteBoard";
+import UserCard from "routes/Home/Boards/Board/Settings/Cards/User";
 
 const Settings: FC = () => {
   const { boardId } = useParams();

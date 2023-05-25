@@ -4,10 +4,10 @@ import { collection, Timestamp } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { Collection, GroceryDocument } from "types/firebase/collections";
 import { addDoc, auth } from "utils/firebase";
 import { cleanString } from "utils/string";
-import { useBoard } from "../../Provider";
 
 const NewGroceryCard: FC = () => {
   const { board } = useBoard();

@@ -6,10 +6,10 @@ import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { useEncrypt } from "hooks/useCrypto";
 import { FC, useMemo } from "react";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { Collection, CreditCardDocument } from "types/firebase/collections";
 import { addDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
-import { useBoard } from "../../Provider";
 
 const NewCreditCardModalContent: FC = () => {
   const { board } = useBoard();

@@ -3,9 +3,9 @@ import { IconLayoutList } from "@tabler/icons-react";
 import NoResult from "components/organisms/NoResult";
 import { groupBy, orderBy } from "lodash";
 import { FC, useMemo } from "react";
+import GroceryCardContent from "routes/Home/Boards/Board/Groceries/GroceriesList/GroceryCardContent";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { searchString } from "utils/string";
-import GroceryCardContent from "./GroceryCardContent";
 
 export interface GroceriesListProps {
   search: string;

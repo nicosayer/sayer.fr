@@ -7,6 +7,7 @@ import {
   Header as HeaderComponent,
   Menu,
   TextInput,
+  Title,
   useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery, useOs } from "@mantine/hooks";
@@ -17,14 +18,13 @@ import useColors from "hooks/useColors";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Helmet } from "react-helmet";
+import ExtraBoardsBadge from "routes/Home/Boards/Board/Header/ExtraBoardsBadge";
+import DarkModeMenuItem from "routes/Home/Boards/Board/Header/MenuItems/DarkMode";
 import NewBoardMenuItem from "routes/Home/Boards/Board/Header/MenuItems/NewBoard";
+import SettingsMenuItem from "routes/Home/Boards/Board/Header/MenuItems/Settings";
+import SignOutMenuItem from "routes/Home/Boards/Board/Header/MenuItems/SignOut";
 import SwitchBoardMenuItem from "routes/Home/Boards/Board/Header/MenuItems/SwitchBoard";
 import { auth } from "utils/firebase";
-import ExtraBoardsBadge from "./ExtraBoardsBadge";
-import DarkModeMenuItem from "./MenuItems/DarkMode";
-import SettingsMenuItem from "./MenuItems/Settings";
-import SignOutMenuItem from "./MenuItems/SignOut";
-import Title from "./Title";
 
 const Header: FC = () => {
   const { isNavbarOpened, toggleNavbar } = useAppShell();

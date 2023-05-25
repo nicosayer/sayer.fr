@@ -10,7 +10,7 @@ import {
   ListDocument,
   ListItemDocument,
 } from "types/firebase/collections";
-import { mapAsync } from "utils/async";
+import { runInParallel } from "utils/async";
 import { addDoc, db } from "utils/firebase";
 
 export interface MoveListModalContentProps {
@@ -60,7 +60,7 @@ const MoveListModalContent: FC<MoveListModalContentProps> = ({ list }) => {
                     return getDocs<ListItemDocument>(
                       collection(list.ref, Collection.listItems)
                     ).then((listItems) => {
-                      return mapAsync(listItems.docs, (listItem) => {
+                      return runInParallel(listItems.docs, (listItem) => {
                         const data = listItem.data();
 
                         return addDoc<ListItemDocument>(
@@ -73,7 +73,9 @@ const MoveListModalContent: FC<MoveListModalContentProps> = ({ list }) => {
                             checked: data.checked,
                             order: data.order,
                           }
-                        );
+                        ).then(() => {
+                          return deleteDoc(listItem.ref);
+                        });
                       });
                     });
                   }

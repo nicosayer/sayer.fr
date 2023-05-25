@@ -1,10 +1,10 @@
 import { fromBase64 } from "@aws-sdk/util-base64";
 import { FC, useEffect, useState } from "react";
+import RichTextEditor from "routes/Home/Boards/Board/Notes/Note/NoteModalContent/RichTextEditor";
 import { NoteDocument } from "types/firebase/collections";
 import { IndexeddbPersistence } from "y-indexeddb";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
-import RichTextEditor from "./RichTextEditor";
 
 export interface NoteModalContentProps {
   note: NoteDocument;

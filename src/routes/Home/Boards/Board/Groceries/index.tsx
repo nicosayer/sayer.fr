@@ -2,9 +2,9 @@ import { Group, Stack, Text, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
-import { useBoard } from "../Provider";
-import GroceriesList from "./GroceriesList";
-import NewGroceryCard from "./NewGroceryCard";
+import GroceriesList from "routes/Home/Boards/Board/Groceries/GroceriesList";
+import NewGroceryCard from "routes/Home/Boards/Board/Groceries/NewGroceryCard";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const Groceries: FC = () => {
   const { loadingGroceries, groceries } = useBoard();

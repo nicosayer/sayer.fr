@@ -2,10 +2,10 @@ import { Button, Stack } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import useBooleanState from "hooks/useBooleanState";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { useBoards } from "routes/Home/Boards/Provider";
 import { newBoard } from "utils/boards";
 import { auth } from "utils/firebase";
 import { ONE_SECOND } from "utils/time";
-import { useBoards } from "../Provider";
 
 const NoBoard = () => {
   const { boards } = useBoards();

@@ -6,10 +6,10 @@ import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { useEncrypt } from "hooks/useCrypto";
 import { FC } from "react";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { Collection, CredentialDocument } from "types/firebase/collections";
 import { addDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
-import { useBoard } from "../../Provider";
 
 const NewCredentialModalContent: FC = () => {
   const { board } = useBoard();

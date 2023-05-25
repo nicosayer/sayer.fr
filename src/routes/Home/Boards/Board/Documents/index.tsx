@@ -4,10 +4,10 @@ import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
-import { useBoard } from "../Provider";
-import Document from "./Document";
-import DocumentsList from "./DocumentsList";
-import NewDocumentModalContent from "./NewDocumentModalContent";
+import Document from "routes/Home/Boards/Board/Documents/Document";
+import DocumentsList from "routes/Home/Boards/Board/Documents/DocumentsList";
+import NewDocumentModalContent from "routes/Home/Boards/Board/Documents/NewDocumentModalContent";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const openNewModal = () => {
   openModal({

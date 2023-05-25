@@ -18,13 +18,14 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons-react";
+import EditListModalContent from "components/organisms/ListCardContent/EditListModalContent";
+import MoveListModalContent from "components/organisms/ListCardContent/MoveListModalContent";
 import { deleteDoc, updateDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { ListDocument, ListItemDocument } from "types/firebase/collections";
-import EditListModalContent from "./EditListModalContent";
-import MoveListModalContent from "./MoveListModalContent";
+import { runInParallel } from "utils/async";
 
 export interface ListCardsPropContent {
   list: ListDocument;
@@ -46,7 +47,7 @@ const openMoveModal = (list: ListDocument) => {
   });
 };
 
-const openDeleteModal = (list: ListDocument) => {
+const openDeleteModal = (list: ListDocument, listItems: ListItemDocument[]) => {
   openConfirmModal({
     title: "Supprimer la liste",
     centered: true,
@@ -60,7 +61,13 @@ const openDeleteModal = (list: ListDocument) => {
     confirmProps: { color: "red" },
     onConfirm: () => {
       if (list.ref) {
-        deleteDoc(list.ref);
+        return deleteDoc(list.ref).then(() => {
+          runInParallel(listItems, (listItem) => {
+            if (listItem.ref) {
+              return deleteDoc(listItem.ref);
+            }
+          });
+        });
       }
     },
   });
@@ -159,7 +166,7 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list, listItems }) => {
                 <Menu.Item
                   color="red"
                   onClick={() => {
-                    openDeleteModal(list);
+                    openDeleteModal(list, listItems);
                   }}
                   icon={<IconTrash size={18} />}
                 >

@@ -14,7 +14,7 @@ import { useAppShell } from "components/atoms/AppShell";
 import useColors from "hooks/useColors";
 import { FC } from "react";
 import NavbarButton from "routes/Home/Boards/Board/Navbar/Button";
-import { IBoardContext } from "../Provider";
+import { IBoardContext } from "routes/Home/Boards/Board/Provider";
 
 export const menu = [
   {

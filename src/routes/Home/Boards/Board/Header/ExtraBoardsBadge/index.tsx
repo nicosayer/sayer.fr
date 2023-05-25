@@ -3,7 +3,7 @@ import { xor } from "lodash";
 import { FC, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { useBoards } from "../../../Provider";
+import { useBoards } from "routes/Home/Boards/Provider";
 
 const ExtraBoardsBadge: FC = () => {
   const { boards: currentBoards, setExtraBoardIds } = useBoard();

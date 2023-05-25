@@ -2,9 +2,9 @@ import { Group, Stack, Text, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
-import { useBoard } from "../Provider";
-import NewTaskCard from "./NewTaskCard";
-import TasksList from "./TasksList";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
+import NewTaskCard from "routes/Home/Boards/Board/Tasks/NewTaskCard";
+import TasksList from "routes/Home/Boards/Board/Tasks/TasksList";
 
 const Tasks: FC = () => {
   const { loadingTasks, tasks } = useBoard();

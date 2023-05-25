@@ -4,9 +4,9 @@ import Pagination from "components/organisms/Pagination";
 import { sortBy } from "lodash";
 import PaginationProvider from "providers/Pagination";
 import { FC, useMemo } from "react";
+import CredentialCard from "routes/Home/Boards/Board/Credentials/CredentialsList/CredentialCard";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize, searchString } from "utils/string";
-import CredentialCard from "./CredentialCard";
 
 export interface CredentialsListProps {
   search: string;

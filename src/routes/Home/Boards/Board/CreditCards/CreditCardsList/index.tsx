@@ -4,9 +4,9 @@ import Pagination from "components/organisms/Pagination";
 import { sortBy } from "lodash";
 import PaginationProvider from "providers/Pagination";
 import { FC, useMemo } from "react";
+import CreditCardCard from "routes/Home/Boards/Board/CreditCards/CreditCardsList/CreditCardCard";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { sanitize, searchString } from "utils/string";
-import CreditCardCard from "./CreditCardCard";
 
 export interface CreditCardsListProps {
   search: string;

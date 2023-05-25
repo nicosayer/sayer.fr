@@ -6,12 +6,12 @@ import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Note from "routes/Home/Boards/Board/Notes/Note";
+import NotesList from "routes/Home/Boards/Board/Notes/NotesList";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { Collection, NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { addDoc } from "utils/firebase";
-import { useBoard } from "../Provider";
-import Note from "./Note";
-import NotesList from "./NotesList";
 
 const Notes: FC = () => {
   const { board, loadingNotes, notes } = useBoard();

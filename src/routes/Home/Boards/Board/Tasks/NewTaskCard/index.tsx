@@ -4,9 +4,9 @@ import { collection, Timestamp } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { Collection, TaskDocument } from "types/firebase/collections";
 import { addDoc, auth } from "utils/firebase";
-import { useBoard } from "../../Provider";
 
 const NewTaskCard: FC = () => {
   const { board } = useBoard();

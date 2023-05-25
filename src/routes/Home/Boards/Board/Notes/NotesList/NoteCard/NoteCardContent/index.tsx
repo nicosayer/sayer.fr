@@ -20,10 +20,10 @@ import {
 import { deleteDoc } from "firebase/firestore";
 import { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import MoveNoteModalContent from "routes/Home/Boards/Board/Notes/NotesList/NoteCard/NoteCardContent/MoveNoteModalContent";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
-import MoveNoteModalContent from "./MoveNoteModalContent";
 
 export interface NoteCardContentProps {
   note: NoteDocument;

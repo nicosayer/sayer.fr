@@ -16,14 +16,14 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons-react";
+import CredentialPassword from "components/organisms/CredentialCardContent/CredentialPassword";
+import CredentialUsername from "components/organisms/CredentialCardContent/CredentialUsername";
+import EditCredentialModalContent from "components/organisms/CredentialCardContent/EditCredentialModalContent";
+import MoveCredentialModalContent from "components/organisms/CredentialCardContent/MoveCredentialModalContent";
 import { deleteDoc } from "firebase/firestore";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CredentialDocument } from "types/firebase/collections";
-import CredentialPassword from "./CredentialPassword";
-import CredentialUsername from "./CredentialUsername";
-import EditCredentialModalContent from "./EditCredentialModalContent";
-import MoveCredentialModalContent from "./MoveCredentialModalContent";
 
 export interface CredentialCardContentProps {
   credential: CredentialDocument;

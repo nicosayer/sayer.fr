@@ -7,10 +7,10 @@ import CannotBeSecure from "components/organisms/CannotBeSecure";
 import SecureLogin from "components/organisms/SecureLogin";
 import { useSecureLogin } from "providers/SecureLogin";
 import { FC, useState } from "react";
-import { useBoard } from "../Provider";
-import CreditCard from "./CreditCard";
-import CreditCardsList from "./CreditCardsList";
-import NewCreditCardModalContent from "./NewCreditCardModalContent";
+import CreditCard from "routes/Home/Boards/Board/CreditCards/CreditCard";
+import CreditCardsList from "routes/Home/Boards/Board/CreditCards/CreditCardsList";
+import NewCreditCardModalContent from "routes/Home/Boards/Board/CreditCards/NewCreditCardModalContent";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const openNewModal = () => {
   openModal({

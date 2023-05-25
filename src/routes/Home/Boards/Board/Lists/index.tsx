@@ -4,10 +4,10 @@ import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
-import { useBoard } from "../Provider";
-import List from "./List";
-import ListsList from "./ListsList";
-import NewListModalContent from "./NewListModalContent";
+import List from "routes/Home/Boards/Board/Lists/List";
+import ListsList from "routes/Home/Boards/Board/Lists/ListsList";
+import NewListModalContent from "routes/Home/Boards/Board/Lists/NewListModalContent";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const openNewModal = () => {
   openModal({
@@ -18,11 +18,11 @@ const openNewModal = () => {
 };
 
 const Lists: FC = () => {
-  const { loadingLists, loadingListItems, lists, listItems } = useBoard();
+  const { loadingLists, lists } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)", true);
 
-  if (!lists || !listItems || loadingLists || loadingListItems) {
+  if (!lists || loadingLists) {
     return <LoadingOverlay visible />;
   }
 

@@ -17,6 +17,8 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons-react";
+import EditDocumentModalContent from "components/organisms/DocumentCardContent/EditDocumentModalContent";
+import MoveDocumentModalContent from "components/organisms/DocumentCardContent/MoveDocumenModalContent";
 import { deleteDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import useDownloadDocument from "hooks/useDownloadDocument";
@@ -26,8 +28,6 @@ import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, DocumentMime } from "types/firebase/collections";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
-import EditDocumentModalContent from "./EditDocumentModalContent";
-import MoveDocumentModalContent from "./MoveDocumenModalContent";
 
 export interface DocumentCardsPropContent {
   document: DocumentDocument;

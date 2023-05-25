@@ -7,7 +7,7 @@ import { Outlet, useParams } from "react-router-dom";
 import Header from "routes/Home/Boards/Board/Header";
 import Navbar from "routes/Home/Boards/Board/Navbar";
 import BoardProvider from "routes/Home/Boards/Board/Provider";
-import Spotlight from "./Spotlight";
+import Spotlight from "routes/Home/Boards/Board/Spotlight";
 
 const Board = () => {
   const { boardId } = useParams();

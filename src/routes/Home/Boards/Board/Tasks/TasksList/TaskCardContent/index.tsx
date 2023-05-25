@@ -11,12 +11,12 @@ import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+import EditTaskModalContent from "routes/Home/Boards/Board/Tasks/TasksList/TaskCardContent/EditTaskModalContent";
+import MoveTaskModalContent from "routes/Home/Boards/Board/Tasks/TasksList/TaskCardContent/MoveTaskModalContent";
 import { TaskDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { auth, updateDoc } from "utils/firebase";
 import { getEmailLocale } from "utils/string";
-import EditTaskModalContent from "./EditTaskModalContent";
-import MoveTaskModalContent from "./MoveTaskModalContent";
 
 export interface TaskCardContentProps {
   task: TaskDocument;

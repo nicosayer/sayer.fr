@@ -9,9 +9,9 @@ import { IconSearch } from "@tabler/icons-react";
 import classNames from "classnames";
 import { PropsWithChildren, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { formatDate } from "utils/dayjs";
 import { searchString } from "utils/string";
-import { useBoard } from "../Provider";
 
 function CustomAction({
   action,

@@ -3,7 +3,7 @@ import { useAppShell } from "components/atoms/AppShell";
 import usePathname from "hooks/usePathname";
 import { FC, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { IBoardContext, useBoard } from "../../Provider";
+import { IBoardContext, useBoard } from "routes/Home/Boards/Board/Provider";
 
 interface NavbarButtonProps {
   icon: React.ReactNode;

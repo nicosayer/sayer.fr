@@ -2,7 +2,7 @@ import { Modal } from "@mantine/core";
 import DocumentCardContent from "components/organisms/DocumentCardContent";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useBoard } from "../../Provider";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const Document: FC = () => {
   const { documents } = useBoard();

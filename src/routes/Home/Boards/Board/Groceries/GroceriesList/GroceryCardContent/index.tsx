@@ -10,13 +10,13 @@ import {
 import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import EditGroceryModalContent from "routes/Home/Boards/Board/Groceries/GroceriesList/GroceryCardContent/EditGroceryModalContent";
+import MoveGroceryModalContent from "routes/Home/Boards/Board/Groceries/GroceriesList/GroceryCardContent/MoveGroceryModalContent";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { GroceryDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { auth, updateDoc } from "utils/firebase";
 import { getEmailLocale } from "utils/string";
-import EditGroceryModalContent from "./EditGroceryModalContent";
-import MoveGroceryModalContent from "./MoveGroceryModalContent";
 
 export interface GroceryCardContentProps {
   grocery: GroceryDocument;

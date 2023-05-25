@@ -4,7 +4,7 @@ import { IconLayoutList } from "@tabler/icons-react";
 import { FC, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { useBoards } from "../../../Provider";
+import { useBoards } from "routes/Home/Boards/Provider";
 
 const Title: FC = () => {
   const { board } = useBoard();

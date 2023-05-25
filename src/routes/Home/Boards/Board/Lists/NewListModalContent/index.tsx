@@ -10,7 +10,7 @@ import {
   ListDocument,
   ListItemDocument,
 } from "types/firebase/collections";
-import { mapAsync } from "utils/async";
+import { runInParallel } from "utils/async";
 import { addDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
 
@@ -50,18 +50,16 @@ const NewListModalContent: FC = () => {
             name: values.name,
           })
             .then((list) => {
-              if (board.ref) {
-                return mapAsync(values.itemNames, (itemName, index) => {
-                  return addDoc<ListItemDocument>(
-                    collection(list, Collection.listItems),
-                    {
-                      name: itemName,
-                      checked: false,
-                      order: index,
-                    }
-                  );
-                });
-              }
+              return runInParallel(values.itemNames, (itemName, index) => {
+                return addDoc<ListItemDocument>(
+                  collection(list, Collection.listItems),
+                  {
+                    name: itemName,
+                    checked: false,
+                    order: index,
+                  }
+                );
+              });
             })
             .then(() => closeAllModals())
             .finally(stop);
