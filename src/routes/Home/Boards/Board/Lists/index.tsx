@@ -18,11 +18,11 @@ const openNewModal = () => {
 };
 
 const Lists: FC = () => {
-  const { loadingLists, lists } = useBoard();
+  const { loadingLists, loadingListItems, lists, listItems } = useBoard();
   const [search, setSearch] = useState("");
   const is768Px = useMediaQuery("(min-width: 768px)", true);
 
-  if (!lists || loadingLists) {
+  if (!lists || !listItems || loadingLists || loadingListItems) {
     return <LoadingOverlay visible />;
   }
 

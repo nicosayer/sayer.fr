@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "../../Provider";
 
 const List: FC = () => {
-  const { lists } = useBoard();
+  const { lists, listItems } = useBoard();
   const { boardId, listId } = useParams();
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ const List: FC = () => {
     return lists?.find((list) => list.id === listId);
   }, [listId, lists]);
 
-  if (!list) {
+  if (!list || !listItems) {
     return null;
   }
 
@@ -26,7 +26,12 @@ const List: FC = () => {
       trapFocus={false}
       size="xl"
     >
-      <ListCardContent list={list} />
+      <ListCardContent
+        list={list}
+        listItems={listItems.filter((listItem) => {
+          return list.id && listItem.ref?.path.includes(list.id);
+        })}
+      />
     </Modal>
   );
 };

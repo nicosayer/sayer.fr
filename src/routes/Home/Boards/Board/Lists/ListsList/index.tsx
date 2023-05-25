@@ -13,16 +13,27 @@ export interface ListsListProps {
 }
 
 const ListsList: FC<ListsListProps> = ({ search }) => {
-  const { lists } = useBoard();
+  const { lists, listItems } = useBoard();
 
   const filteredLists = useMemo(() => {
     return sortBy(
       (lists ?? []).filter((list) => {
-        return searchString(list.name ?? "", search);
+        const filteredListItems = (listItems ?? []).filter((listItem) => {
+          return list.id && listItem.ref?.path.includes(list.id);
+        });
+
+        return (
+          searchString(list.name ?? "", search) ||
+          filteredListItems.some((listItem) => {
+            return searchString(listItem.name ?? "", search);
+          })
+        );
       }),
-      (list) => sanitize(String(list.name))
+      (list) => {
+        return sanitize(String(list.name));
+      }
     );
-  }, [lists, search]);
+  }, [lists, listItems, search]);
 
   if (!filteredLists.length) {
     return <NoResult />;
@@ -35,7 +46,15 @@ const ListsList: FC<ListsListProps> = ({ search }) => {
           {filteredLists
             .slice((page - 1) * pageSize, page * pageSize)
             .map((list) => {
-              return <ListCard key={list.id} list={list} />;
+              return (
+                <ListCard
+                  key={list.id}
+                  list={list}
+                  listItems={(listItems ?? []).filter((listItem) => {
+                    return list.id && listItem.ref?.path.includes(list.id);
+                  })}
+                />
+              );
             })}
           <Pagination />
         </Stack>

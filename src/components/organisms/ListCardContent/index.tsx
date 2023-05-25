@@ -18,22 +18,17 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons-react";
-import { collection, deleteDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, updateDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
 import { FC } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import {
-  Collection,
-  ListDocument,
-  ListItemDocument,
-} from "types/firebase/collections";
-import { firestoreConverter } from "utils/firebase";
+import { ListDocument, ListItemDocument } from "types/firebase/collections";
 import EditListModal from "./EditListModal";
 import MoveListModal from "./MoveListModal";
 
 export interface ListCardsPropContent {
   list: ListDocument;
+  listItems: ListItemDocument[];
 }
 const openEditModal = (list: ListDocument, listItems: ListItemDocument[]) => {
   openModal({
@@ -71,15 +66,8 @@ const openDeleteModal = (list: ListDocument) => {
   });
 };
 
-const ListCardContent: FC<ListCardsPropContent> = ({ list }) => {
+const ListCardContent: FC<ListCardsPropContent> = ({ list, listItems }) => {
   const { boards } = useBoard();
-  const [listItems] = useCollectionData<ListItemDocument>(
-    list.ref
-      ? collection(list.ref, Collection.listItems).withConverter(
-          firestoreConverter
-        )
-      : undefined
-  );
 
   return (
     <Stack align="center">

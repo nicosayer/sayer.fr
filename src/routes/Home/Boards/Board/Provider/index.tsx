@@ -13,6 +13,7 @@ import {
   DocumentDocument,
   GroceryDocument,
   ListDocument,
+  ListItemDocument,
   NoteDocument,
   TaskDocument,
 } from "types/firebase/collections";
@@ -28,6 +29,7 @@ export interface IBoardContext {
   documents?: DocumentDocument[];
   groceries?: GroceryDocument[];
   lists?: ListDocument[];
+  listItems?: ListItemDocument[];
   notes?: NoteDocument[];
   tasks?: TaskDocument[];
   loadingCredentials: boolean;
@@ -35,6 +37,7 @@ export interface IBoardContext {
   loadingDocuments: boolean;
   loadingGroceries: boolean;
   loadingLists: boolean;
+  loadingListItems: boolean;
   loadingNotes: boolean;
   loadingTasks: boolean;
 }
@@ -48,6 +51,7 @@ const BoardContext = createContext<IBoardContext>({
   documents: undefined,
   groceries: undefined,
   lists: undefined,
+  listItems: undefined,
   notes: undefined,
   tasks: undefined,
   loadingCredentials: false,
@@ -55,6 +59,7 @@ const BoardContext = createContext<IBoardContext>({
   loadingDocuments: false,
   loadingGroceries: false,
   loadingLists: false,
+  loadingListItems: false,
   loadingNotes: false,
   loadingTasks: false,
 });
@@ -117,6 +122,9 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     Collection.lists
   );
 
+  const [listItems, loadingListItems] =
+    useDocumentsCollectionsData<ListItemDocument>(lists, Collection.listItems);
+
   const [notes, loadingNotes] = useDocumentsCollectionsData<NoteDocument>(
     currentBoards ?? [],
     Collection.notes
@@ -163,6 +171,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       documents,
       groceries,
       lists,
+      listItems,
       notes,
       tasks,
       loadingCredentials,
@@ -170,6 +179,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       loadingDocuments,
       loadingGroceries,
       loadingLists,
+      loadingListItems,
       loadingNotes,
       loadingTasks,
     };
@@ -181,11 +191,13 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     documents,
     groceries,
     lists,
+    listItems,
     loadingCredentials,
     loadingCreditCards,
     loadingDocuments,
     loadingGroceries,
     loadingLists,
+    loadingListItems,
     loadingNotes,
     loadingTasks,
     notes,
