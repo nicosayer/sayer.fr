@@ -13,7 +13,7 @@ import Lists from "routes/Home/Boards/Board/Lists";
 import Notes from "routes/Home/Boards/Board/Notes";
 import BoardRedirect from "routes/Home/Boards/Board/Redirect";
 import Settings from "routes/Home/Boards/Board/Settings";
-import Tasks from "routes/Home/Boards/Board/Tasks";
+import Todos from "routes/Home/Boards/Board/Todos";
 import BoardsProvider from "routes/Home/Boards/Provider";
 import Error from "routes/Home/Error";
 
@@ -57,8 +57,8 @@ const router = createBrowserRouter([
               { path: "lists/:listId", element: <Lists /> },
               { path: "notes", element: <Notes /> },
               { path: "notes/:noteId", element: <Notes /> },
-              { path: "tasks", element: <Tasks /> },
-              { path: "tasks/:taskId", element: <Tasks /> },
+              { path: "todos", element: <Todos /> },
+              { path: "todos/:todoId", element: <Todos /> },
               { path: "settings", element: <Settings /> },
             ],
           },

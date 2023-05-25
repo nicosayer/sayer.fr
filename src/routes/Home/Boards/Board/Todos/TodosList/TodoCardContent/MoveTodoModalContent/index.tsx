@@ -5,17 +5,17 @@ import { collection, deleteDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useState } from "react";
 import { useBoards } from "routes/Home/Boards/Provider";
-import { Collection, TaskDocument } from "types/firebase/collections";
+import { Collection, TodoDocument } from "types/firebase/collections";
 import { addDoc, db } from "utils/firebase";
 
-export interface MoveTaskModalContentProps {
-  task: TaskDocument;
+export interface MoveTodoModalContentProps {
+  todo: TodoDocument;
 }
 
-const MoveTaskModalContent: FC<MoveTaskModalContentProps> = ({ task }) => {
+const MoveTodoModalContent: FC<MoveTodoModalContentProps> = ({ todo }) => {
   const [loading, start, stop] = useBooleanState();
   const { boards } = useBoards();
-  const [boardId, setBoardId] = useState(task.ref?.parent.parent?.id ?? null);
+  const [boardId, setBoardId] = useState(todo.ref?.parent.parent?.id ?? null);
 
   return (
     <Stack>
@@ -44,19 +44,19 @@ const MoveTaskModalContent: FC<MoveTaskModalContentProps> = ({ task }) => {
             loading={loading}
             onClick={() => {
               start();
-              addDoc<TaskDocument>(
-                collection(db, `boards/${boardId}/${Collection.tasks}`),
+              addDoc<TodoDocument>(
+                collection(db, `boards/${boardId}/${Collection.todos}`),
                 {
-                  name: task.name,
-                  openedAt: task.openedAt,
-                  openedBy: task.openedBy,
-                  closedAt: task.closedAt,
-                  closedBy: task.closedBy,
+                  name: todo.name,
+                  openedAt: todo.openedAt,
+                  openedBy: todo.openedBy,
+                  closedAt: todo.closedAt,
+                  closedBy: todo.closedBy,
                 }
               )
                 .then(() => {
-                  if (task.ref) {
-                    return deleteDoc(task.ref);
+                  if (todo.ref) {
+                    return deleteDoc(todo.ref);
                   }
                 })
                 .then(() => {
@@ -73,4 +73,4 @@ const MoveTaskModalContent: FC<MoveTaskModalContentProps> = ({ task }) => {
   );
 };
 
-export default MoveTaskModalContent;
+export default MoveTodoModalContent;

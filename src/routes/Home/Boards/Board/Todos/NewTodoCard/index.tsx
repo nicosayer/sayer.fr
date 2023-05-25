@@ -5,10 +5,10 @@ import useBooleanState from "hooks/useBooleanState";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { Collection, TaskDocument } from "types/firebase/collections";
+import { Collection, TodoDocument } from "types/firebase/collections";
 import { addDoc, auth } from "utils/firebase";
 
-const NewTaskCard: FC = () => {
+const NewTodoCard: FC = () => {
   const { board } = useBoard();
   const [user] = useAuthState(auth);
   const [loading, start, stop] = useBooleanState();
@@ -21,7 +21,7 @@ const NewTaskCard: FC = () => {
   const handleSubmit = useCallback(() => {
     if (board?.id && board.ref && user?.email && formattedValue) {
       start();
-      addDoc<TaskDocument>(collection(board.ref, Collection.tasks), {
+      addDoc<TodoDocument>(collection(board.ref, Collection.todos), {
         name: formattedValue,
         openedBy: user.email,
         openedAt: Timestamp.now(),
@@ -53,7 +53,7 @@ const NewTaskCard: FC = () => {
             withAsterisk
             className="w-full"
             variant="unstyled"
-            placeholder="Nouvelle tâche"
+            placeholder="Nouveau todo"
             value={value}
             onChange={(event) => {
               setValue(event.target.value);
@@ -70,4 +70,4 @@ const NewTaskCard: FC = () => {
   );
 };
 
-export default NewTaskCard;
+export default NewTodoCard;

@@ -15,7 +15,7 @@ import {
   ListDocument,
   ListItemDocument,
   NoteDocument,
-  TaskDocument,
+  TodoDocument,
 } from "types/firebase/collections";
 
 export interface IBoardContext {
@@ -31,7 +31,7 @@ export interface IBoardContext {
   lists?: ListDocument[];
   listItems?: ListItemDocument[];
   notes?: NoteDocument[];
-  tasks?: TaskDocument[];
+  todos?: TodoDocument[];
   loadingCredentials: boolean;
   loadingCreditCards: boolean;
   loadingDocuments: boolean;
@@ -39,7 +39,7 @@ export interface IBoardContext {
   loadingLists: boolean;
   loadingListItems: boolean;
   loadingNotes: boolean;
-  loadingTasks: boolean;
+  loadingTodos: boolean;
 }
 
 const BoardContext = createContext<IBoardContext>({
@@ -53,7 +53,7 @@ const BoardContext = createContext<IBoardContext>({
   lists: undefined,
   listItems: undefined,
   notes: undefined,
-  tasks: undefined,
+  todos: undefined,
   loadingCredentials: false,
   loadingCreditCards: false,
   loadingDocuments: false,
@@ -61,7 +61,7 @@ const BoardContext = createContext<IBoardContext>({
   loadingLists: false,
   loadingListItems: false,
   loadingNotes: false,
-  loadingTasks: false,
+  loadingTodos: false,
 });
 
 BoardContext.displayName = "Board";
@@ -130,9 +130,9 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     Collection.notes
   );
 
-  const [tasks, loadingTasks] = useDocumentsCollectionsData<TaskDocument>(
+  const [todos, loadingTodos] = useDocumentsCollectionsData<TodoDocument>(
     currentBoards ?? [],
-    Collection.tasks
+    Collection.todos
   );
 
   useDidUpdate(() => {
@@ -150,16 +150,16 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   }, [groceries]);
 
   useDidUpdate(() => {
-    tasks.forEach((task) => {
+    todos.forEach((todo) => {
       if (
-        task.closedAt &&
-        dayjs(task.closedAt.toDate()).isBefore(dayjs().subtract(7, "days")) &&
-        task.ref
+        todo.closedAt &&
+        dayjs(todo.closedAt.toDate()).isBefore(dayjs().subtract(7, "days")) &&
+        todo.ref
       ) {
-        deleteDoc(task.ref);
+        deleteDoc(todo.ref);
       }
     });
-  }, [tasks]);
+  }, [todos]);
 
   const context = useMemo(() => {
     return {
@@ -173,7 +173,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       lists,
       listItems,
       notes,
-      tasks,
+      todos,
       loadingCredentials,
       loadingCreditCards,
       loadingDocuments,
@@ -181,7 +181,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       loadingLists,
       loadingListItems,
       loadingNotes,
-      loadingTasks,
+      loadingTodos,
     };
   }, [
     board,
@@ -199,10 +199,10 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     loadingLists,
     loadingListItems,
     loadingNotes,
-    loadingTasks,
+    loadingTodos,
     notes,
     setExtraBoardIds,
-    tasks,
+    todos,
   ]);
 
   if (!currentBoards?.length) {

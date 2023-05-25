@@ -58,10 +58,10 @@ export const menu = [
   {
     icon: <IconChecklist size={18} />,
     color: "pink",
-    label: "Tâches",
-    to: "tasks",
-    count: ({ tasks }: IBoardContext) =>
-      tasks?.filter((task) => !task.closedAt).length ?? 0,
+    label: "Todos",
+    to: "todos",
+    count: ({ todos }: IBoardContext) =>
+      todos?.filter((todo) => !todo.closedAt).length ?? 0,
   },
 ];
 

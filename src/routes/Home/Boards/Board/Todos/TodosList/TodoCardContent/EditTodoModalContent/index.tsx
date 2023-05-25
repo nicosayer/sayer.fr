@@ -3,20 +3,20 @@ import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import useBooleanState from "hooks/useBooleanState";
 import { FC } from "react";
-import { TaskDocument } from "types/firebase/collections";
+import { TodoDocument } from "types/firebase/collections";
 import { updateDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
 
-export interface EditTaskModalContentProps {
-  task: TaskDocument;
+export interface EditTodoModalContentProps {
+  todo: TodoDocument;
 }
 
-const EditTaskModalContent: FC<EditTaskModalContentProps> = ({ task }) => {
+const EditTodoModalContent: FC<EditTodoModalContentProps> = ({ todo }) => {
   const [loading, start, stop] = useBooleanState();
 
   const form = useForm({
     initialValues: {
-      name: task.name ?? "",
+      name: todo.name ?? "",
     },
 
     validate: {
@@ -35,9 +35,9 @@ const EditTaskModalContent: FC<EditTaskModalContentProps> = ({ task }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        if (task?.ref) {
+        if (todo?.ref) {
           start();
-          updateDoc<TaskDocument>(task.ref, {
+          updateDoc<TodoDocument>(todo.ref, {
             name: values.name,
           })
             .then(() => closeAllModals())
@@ -76,4 +76,4 @@ const EditTaskModalContent: FC<EditTaskModalContentProps> = ({ task }) => {
   );
 };
 
-export default EditTaskModalContent;
+export default EditTodoModalContent;

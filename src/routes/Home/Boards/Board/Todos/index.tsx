@@ -3,14 +3,14 @@ import { IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { FC, useState } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import NewTaskCard from "routes/Home/Boards/Board/Tasks/NewTaskCard";
-import TasksList from "routes/Home/Boards/Board/Tasks/TasksList";
+import NewTodoCard from "routes/Home/Boards/Board/Todos/NewTodoCard";
+import TodosList from "routes/Home/Boards/Board/Todos/TodosList";
 
-const Tasks: FC = () => {
-  const { loadingTasks, tasks } = useBoard();
+const Todos: FC = () => {
+  const { loadingTodos, todos } = useBoard();
   const [search, setSearch] = useState("");
 
-  if (!tasks || loadingTasks) {
+  if (!todos || loadingTodos) {
     return <LoadingOverlay visible />;
   }
 
@@ -18,9 +18,9 @@ const Tasks: FC = () => {
     <Stack>
       <Group position="apart" className="sticky z-50">
         <Group spacing="xs">
-          <Text weight={500}>Tâches</Text>
+          <Text weight={500}>Todos</Text>
           <Text c="dimmed">
-            ({tasks.filter((task) => !task.closedAt).length})
+            ({todos.filter((todo) => !todo.closedAt).length})
           </Text>
         </Group>
         <TextInput
@@ -33,10 +33,10 @@ const Tasks: FC = () => {
           }}
         />
       </Group>
-      <NewTaskCard />
-      <TasksList search={search} />
+      <NewTodoCard />
+      <TodosList search={search} />
     </Stack>
   );
 };
 
-export default Tasks;
+export default Todos;

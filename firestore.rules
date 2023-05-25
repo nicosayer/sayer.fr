@@ -49,7 +49,7 @@ service cloud.firestore {
         allow read, write: if isAuth() && isUser(getBoard(boardId));
       }
 
-      match /tasks/{taskId} {
+      match /todos/{todoId} {
         allow read, write: if isAuth() && isUser(getBoard(boardId));
       }
     }

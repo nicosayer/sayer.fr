@@ -9,7 +9,7 @@ export enum Collection {
   lists = "lists",
   listItems = "listItems",
   notes = "notes",
-  tasks = "tasks",
+  todos = "todos",
 }
 
 export interface BoardDocument {
@@ -103,9 +103,9 @@ export interface NoteDocument {
   updatedAt?: Timestamp;
 }
 
-export interface TaskDocument {
+export interface TodoDocument {
   id?: string;
-  ref?: DocumentReference<TaskDocument>;
+  ref?: DocumentReference<TodoDocument>;
   name?: string;
   openedAt?: Timestamp;
   openedBy?: string;
