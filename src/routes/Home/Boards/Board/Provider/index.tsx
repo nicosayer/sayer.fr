@@ -1,7 +1,7 @@
 import { useDidUpdate, useLocalStorage } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { deleteDoc } from "firebase/firestore";
-import useBoardsCollectionsData from "hooks/useBoardsCollectionsData";
+import useDocumentsCollectionsData from "hooks/useDocumentsCollectionsData";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
@@ -89,40 +89,40 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
   }, [boardId, boards, extraBoardIds]);
 
   const [credentials, loadingCredentials] =
-    useBoardsCollectionsData<CredentialDocument>(
+    useDocumentsCollectionsData<CredentialDocument>(
       currentBoards ?? [],
       Collection.credentials
     );
 
   const [documents, loadingDocuments] =
-    useBoardsCollectionsData<DocumentDocument>(
+    useDocumentsCollectionsData<DocumentDocument>(
       currentBoards ?? [],
       Collection.documents
     );
 
   const [creditCards, loadingCreditCards] =
-    useBoardsCollectionsData<CreditCardDocument>(
+    useDocumentsCollectionsData<CreditCardDocument>(
       currentBoards ?? [],
       Collection.creditCards
     );
 
   const [groceries, loadingGroceries] =
-    useBoardsCollectionsData<GroceryDocument>(
+    useDocumentsCollectionsData<GroceryDocument>(
       currentBoards ?? [],
       Collection.groceries
     );
 
-  const [lists, loadingLists] = useBoardsCollectionsData<ListDocument>(
+  const [lists, loadingLists] = useDocumentsCollectionsData<ListDocument>(
     currentBoards ?? [],
     Collection.lists
   );
 
-  const [notes, loadingNotes] = useBoardsCollectionsData<NoteDocument>(
+  const [notes, loadingNotes] = useDocumentsCollectionsData<NoteDocument>(
     currentBoards ?? [],
     Collection.notes
   );
 
-  const [tasks, loadingTasks] = useBoardsCollectionsData<TaskDocument>(
+  const [tasks, loadingTasks] = useDocumentsCollectionsData<TaskDocument>(
     currentBoards ?? [],
     Collection.tasks
   );

@@ -91,12 +91,13 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list }) => {
           {sortBy(listItems, "order")?.map((listItem) => {
             return (
               <Checkbox
+                key={listItem.id}
                 label={listItem.name}
                 checked={listItem.checked}
-                onClick={() => {
+                onChange={(event) => {
                   if (listItem.ref) {
                     updateDoc<ListItemDocument>(listItem.ref, {
-                      checked: !listItem.checked,
+                      checked: event.currentTarget.checked,
                     });
                   }
                 }}
