@@ -52,7 +52,10 @@ const useDocumentsCollectionsData = <T>(
   return useMemo(() => {
     return [
       flatMap(data),
-      data === undefined || Object.keys(data).length !== documents.length,
+      Boolean(
+        documents.length &&
+          (data === undefined || Object.keys(data).length !== documents.length)
+      ),
     ] as const;
   }, [documents.length, data]);
 };
