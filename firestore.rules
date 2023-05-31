@@ -21,6 +21,10 @@ service cloud.firestore {
       allow create: if isAuth();
       allow read, write: if isAuth() && isUser(resource);
 
+      match /chores/{choreId} {
+        allow read, write: if isAuth() && isUser(getBoard(boardId));
+      }
+
       match /credentials/{credentialId} {
         allow read, write: if isAuth() && isProvider("password") && isUser(getBoard(boardId));
       }

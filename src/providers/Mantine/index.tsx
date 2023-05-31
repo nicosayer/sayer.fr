@@ -1,3 +1,4 @@
+import "dayjs/locale/fr";
 import { PropsWithChildren } from "react";
 
 import {
@@ -7,6 +8,7 @@ import {
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { Notifications } from "@mantine/notifications";
+import { DatesProvider } from "@mantine/dates";
 
 const MantineProvider = ({ children }: PropsWithChildren) => {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -56,8 +58,11 @@ const MantineProvider = ({ children }: PropsWithChildren) => {
         withGlobalStyles
         withNormalizeCSS
       >
-        <Notifications />
-        {children}
+        <DatesProvider settings={{ locale: "fr" }}>
+          <Notifications />
+
+          {children}
+        </DatesProvider>
       </MantineProviderComponent>
     </ColorSchemeProvider>
   );

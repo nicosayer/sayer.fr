@@ -7,6 +7,7 @@ import { Navigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
 import {
   BoardDocument,
+  ChoreDocument,
   Collection,
   CredentialDocument,
   CreditCardDocument,
@@ -24,6 +25,7 @@ export interface IBoardContext {
   setExtraBoardIds: (
     val: string[] | ((prevState: string[]) => string[])
   ) => void;
+  chores?: ChoreDocument[];
   credentials?: CredentialDocument[];
   creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
@@ -32,6 +34,7 @@ export interface IBoardContext {
   listItems?: ListItemDocument[];
   notes?: NoteDocument[];
   todos?: TodoDocument[];
+  loadingChores: boolean;
   loadingCredentials: boolean;
   loadingCreditCards: boolean;
   loadingDocuments: boolean;
@@ -46,6 +49,7 @@ const BoardContext = createContext<IBoardContext>({
   board: undefined,
   boards: undefined,
   setExtraBoardIds: () => {},
+  chores: undefined,
   credentials: undefined,
   creditCards: undefined,
   documents: undefined,
@@ -54,6 +58,7 @@ const BoardContext = createContext<IBoardContext>({
   listItems: undefined,
   notes: undefined,
   todos: undefined,
+  loadingChores: false,
   loadingCredentials: false,
   loadingCreditCards: false,
   loadingDocuments: false,
@@ -92,6 +97,11 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
         board.id === boardId || (board?.id && extraBoardIds.includes(board?.id))
     );
   }, [boardId, boards, extraBoardIds]);
+
+  const [chores, loadingChores] = useDocumentsCollectionsData<ChoreDocument>(
+    currentBoards ?? [],
+    Collection.chores
+  );
 
   const [credentials, loadingCredentials] =
     useDocumentsCollectionsData<CredentialDocument>(
@@ -166,6 +176,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       board,
       boards: currentBoards,
       setExtraBoardIds,
+      chores,
       credentials,
       creditCards,
       documents,
@@ -174,6 +185,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       listItems,
       notes,
       todos,
+      loadingChores,
       loadingCredentials,
       loadingCreditCards,
       loadingDocuments,
@@ -185,6 +197,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     };
   }, [
     board,
+    chores,
     credentials,
     creditCards,
     currentBoards,
@@ -192,6 +205,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     groceries,
     lists,
     listItems,
+    loadingChores,
     loadingCredentials,
     loadingCreditCards,
     loadingDocuments,
