@@ -14,7 +14,6 @@ export interface ChoresListProps {
     previousDate: string;
     nextDate: string;
     nextDoneDate: string;
-    lastDoneDate: string;
   })[];
 }
 
