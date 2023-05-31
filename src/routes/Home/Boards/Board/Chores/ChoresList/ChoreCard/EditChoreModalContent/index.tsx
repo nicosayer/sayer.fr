@@ -12,7 +12,7 @@ import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import dayjs from "dayjs";
 import useBooleanState from "hooks/useBooleanState";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { ChoreDocument, ChoreUnit } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { updateDoc } from "utils/firebase";
@@ -64,6 +64,19 @@ const EditChoreModalContent: FC<EditChoreModalContentProps> = ({ chore }) => {
     },
   });
 
+  const frequencyDescription = useMemo(() => {
+    const frequency = form.values.frequency === 1 ? "" : form.values.frequency;
+
+    switch (form.values.unit) {
+      case ChoreUnit.Day:
+        return `La tâche se répétera tous les ${frequency} jours`;
+      case ChoreUnit.Week:
+        return `La tâche se répétera toutes les ${frequency} semaines`;
+      case ChoreUnit.Month:
+        return `La tâche se répétera tous les ${frequency} mois`;
+    }
+  }, [form.values.frequency, form.values.unit]);
+
   return (
     <form
       onSubmit={form.onSubmit((values) => {
@@ -97,7 +110,11 @@ const EditChoreModalContent: FC<EditChoreModalContentProps> = ({ chore }) => {
           label="Date de début"
           {...form.getInputProps("date")}
         />
-        <Input.Wrapper label="Fréquence" withAsterisk>
+        <Input.Wrapper
+          label="Fréquence"
+          description={frequencyDescription}
+          withAsterisk
+        >
           <Group noWrap>
             <Group spacing="xs" noWrap>
               <NumberInput
