@@ -8,6 +8,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
+import useGetUserName from "hooks/useGetUserName";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -16,7 +17,6 @@ import MoveTodoModalContent from "routes/Home/Boards/Board/Todos/TodosList/TodoC
 import { TodoDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { auth, updateDoc } from "utils/firebase";
-import { getEmailLocale } from "utils/string";
 
 export interface TodoCardContentProps {
   todo: TodoDocument;
@@ -42,6 +42,7 @@ const TodoCardContent: FC<TodoCardContentProps> = ({ todo }) => {
   const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [user] = useAuthState(auth);
   const { boards } = useBoard();
+  const getUserName = useGetUserName();
 
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
@@ -73,12 +74,14 @@ const TodoCardContent: FC<TodoCardContentProps> = ({ todo }) => {
         {is768Px && (
           <Text c="dimmed" fz="sm">
             {todo.closedAt
-              ? `fermé par ${getEmailLocale(
-                  todo.closedBy ?? ""
-                )} le ${formatDate(todo.closedAt.toDate(), "D MMM")}`
-              : `ajouté par ${getEmailLocale(
-                  todo.openedBy ?? ""
-                )} le ${formatDate(todo.openedAt?.toDate(), "D MMM")}`}
+              ? `fermé par ${getUserName(todo.closedBy ?? "")} le ${formatDate(
+                  todo.closedAt.toDate(),
+                  "D MMM"
+                )}`
+              : `ajouté par ${getUserName(todo.openedBy ?? "")} le ${formatDate(
+                  todo.openedAt?.toDate(),
+                  "D MMM"
+                )}`}
           </Text>
         )}
         <Menu shadow="md" width={200} withinPortal>

@@ -11,6 +11,7 @@ export enum Collection {
   listItems = "listItems",
   notes = "notes",
   todos = "todos",
+  users = "users",
 }
 
 export interface BoardDocument {
@@ -130,4 +131,10 @@ export interface TodoDocument {
   closedBy?: string;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
+}
+
+export interface UserDocument {
+  id?: string;
+  ref?: DocumentReference<UserDocument>;
+  name?: string;
 }

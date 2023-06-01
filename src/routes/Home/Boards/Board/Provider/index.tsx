@@ -1,7 +1,9 @@
 import { useDidUpdate, useLocalStorage } from "@mantine/hooks";
 import dayjs from "dayjs";
-import { deleteDoc } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import useDocumentsCollectionsData from "hooks/useDocumentsCollectionsData";
+import useDocumentsData from "hooks/useDocumentsData";
+import { flatMap, uniq } from "lodash";
 import { createContext, FC, ReactNode, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
 import { useBoards } from "routes/Home/Boards/Provider";
@@ -17,7 +19,9 @@ import {
   ListItemDocument,
   NoteDocument,
   TodoDocument,
+  UserDocument,
 } from "types/firebase/collections";
+import { db } from "utils/firebase";
 
 export interface IBoardContext {
   board?: BoardDocument;
@@ -34,6 +38,7 @@ export interface IBoardContext {
   listItems?: ListItemDocument[];
   notes?: NoteDocument[];
   todos?: TodoDocument[];
+  users?: Record<string, UserDocument>;
   loadingChores: boolean;
   loadingCredentials: boolean;
   loadingCreditCards: boolean;
@@ -43,6 +48,7 @@ export interface IBoardContext {
   loadingListItems: boolean;
   loadingNotes: boolean;
   loadingTodos: boolean;
+  loadingUsers: boolean;
 }
 
 const BoardContext = createContext<IBoardContext>({
@@ -58,6 +64,7 @@ const BoardContext = createContext<IBoardContext>({
   listItems: undefined,
   notes: undefined,
   todos: undefined,
+  users: undefined,
   loadingChores: false,
   loadingCredentials: false,
   loadingCreditCards: false,
@@ -67,6 +74,7 @@ const BoardContext = createContext<IBoardContext>({
   loadingListItems: false,
   loadingNotes: false,
   loadingTodos: false,
+  loadingUsers: false,
 });
 
 BoardContext.displayName = "Board";
@@ -145,6 +153,14 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     Collection.todos
   );
 
+  const userReferences = useMemo(() => {
+    return uniq(flatMap(currentBoards, (board) => board.users)).map((email) =>
+      doc(db, Collection.users, String(email))
+    );
+  }, [currentBoards]);
+
+  const [users, loadingUsers] = useDocumentsData<UserDocument>(userReferences);
+
   useDidUpdate(() => {
     groceries.forEach((grocery) => {
       if (
@@ -185,6 +201,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       listItems,
       notes,
       todos,
+      users,
       loadingChores,
       loadingCredentials,
       loadingCreditCards,
@@ -194,9 +211,11 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       loadingListItems,
       loadingNotes,
       loadingTodos,
+      loadingUsers,
     };
   }, [
     board,
+    setExtraBoardIds,
     chores,
     credentials,
     creditCards,
@@ -205,6 +224,9 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     groceries,
     lists,
     listItems,
+    notes,
+    todos,
+    users,
     loadingChores,
     loadingCredentials,
     loadingCreditCards,
@@ -214,9 +236,7 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     loadingListItems,
     loadingNotes,
     loadingTodos,
-    notes,
-    setExtraBoardIds,
-    todos,
+    loadingUsers,
   ]);
 
   if (!currentBoards?.length) {

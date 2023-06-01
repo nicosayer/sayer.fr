@@ -8,6 +8,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
+import useGetUserName from "hooks/useGetUserName";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EditGroceryModalContent from "routes/Home/Boards/Board/Groceries/GroceriesList/GroceryCardContent/EditGroceryModalContent";
@@ -16,7 +17,6 @@ import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { GroceryDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
 import { auth, updateDoc } from "utils/firebase";
-import { getEmailLocale } from "utils/string";
 
 export interface GroceryCardContentProps {
   grocery: GroceryDocument;
@@ -42,6 +42,7 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
   const is768Px = useMediaQuery("(min-width: 768px)", true);
   const [user] = useAuthState(auth);
   const { boards } = useBoard();
+  const getUserName = useGetUserName();
 
   return (
     <Group position="apart" noWrap className="whitespace-nowrap">
@@ -73,10 +74,10 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
         {is768Px && (
           <Text c="dimmed" fz="sm">
             {grocery.closedAt
-              ? `fermé par ${getEmailLocale(
+              ? `fermé par ${getUserName(
                   grocery.closedBy ?? ""
                 )} le ${formatDate(grocery.closedAt.toDate(), "D MMM")}`
-              : `ajouté par ${getEmailLocale(
+              : `ajouté par ${getUserName(
                   grocery.openedBy ?? ""
                 )} le ${formatDate(grocery.openedAt?.toDate(), "D MMM")}`}
           </Text>

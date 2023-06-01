@@ -6,12 +6,15 @@ import {
   useAuthState,
   useSendPasswordResetEmail,
 } from "react-firebase-hooks/auth";
+import { useBoard } from "routes/Home/Boards/Board/Provider";
+import NameInput from "routes/Home/Boards/Board/Settings/Cards/User/NameInput";
 import { auth } from "utils/firebase";
 
 const UserCard: FC = () => {
   const [user] = useAuthState(auth);
   const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
   const [disabled, setDisabled] = useState(false);
+  const { users } = useBoard();
 
   if (!user?.email) {
     return null;
@@ -20,7 +23,8 @@ const UserCard: FC = () => {
   return (
     <Card withBorder>
       <Stack>
-        <TextInput label="Email" value={user?.email} readOnly />
+        <NameInput defaultValue={users?.[user.email].name ?? ""} />
+        <TextInput label="Email" value={user.email} readOnly />
         <Input.Wrapper label="Mot de passe">
           <div>
             <Button
