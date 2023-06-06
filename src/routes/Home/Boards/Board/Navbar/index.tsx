@@ -1,10 +1,8 @@
 import { Navbar as MantineNavbar, Stack } from "@mantine/core";
 import {
   IconChecklist,
-  IconCreditCard,
   IconEdit,
   IconId,
-  IconIroning1,
   IconListCheck,
   IconLockOpen,
   IconSettings,
@@ -17,46 +15,56 @@ import { FC } from "react";
 import NavbarButton from "routes/Home/Boards/Board/Navbar/Button";
 import { IBoardContext } from "routes/Home/Boards/Board/Provider";
 
+const COLORS = [
+  "red",
+  "pink",
+  "grape",
+  "violet",
+  "indigo",
+  "blue",
+  "cyan",
+  "teal",
+  "green",
+  "lime",
+  "yellow",
+  "orange",
+];
+
 export const menu = [
   {
     icon: <IconLockOpen size={18} />,
-    color: "red",
     label: "Mots de passe",
     to: "credentials",
   },
-  {
-    icon: <IconCreditCard size={18} />,
-    color: "grape",
-    label: "Cartes de crédit",
-    to: "credit-cards",
-  },
+  // {
+  //   icon: <IconCreditCard size={18} />,
+  //   color: "grape",
+  //   label: "Cartes de crédit",
+  //   to: "credit-cards",
+  // },
   {
     icon: <IconId size={18} />,
-    color: "indigo",
     label: "Documents",
     to: "documents",
   },
   {
     icon: <IconEdit size={18} />,
-    color: "blue",
     label: "Notes",
     to: "notes",
   },
   {
     icon: <IconListCheck size={18} />,
-    color: "teal",
     label: "Listes",
     to: "lists",
   },
-  {
-    icon: <IconIroning1 size={18} />,
-    color: "lime",
-    label: "Tâches",
-    to: "chores",
-  },
+  // {
+  //   icon: <IconIroning1 size={18} />,
+  //   color: "lime",
+  //   label: "Tâches",
+  //   to: "chores",
+  // },
   {
     icon: <IconShoppingCart size={18} />,
-    color: "yellow",
     label: "Courses",
     to: "groceries",
     count: ({ groceries }: IBoardContext) =>
@@ -64,7 +72,6 @@ export const menu = [
   },
   {
     icon: <IconChecklist size={18} />,
-    color: "orange",
     label: "Todos",
     to: "todos",
     count: ({ todos }: IBoardContext) =>
@@ -85,8 +92,12 @@ const Navbar: FC = () => {
     >
       <MantineNavbar.Section>
         <Stack>
-          {menu.map((element) => (
-            <NavbarButton {...element} key={element.label} />
+          {menu.map((element, index) => (
+            <NavbarButton
+              {...element}
+              key={element.label}
+              color={COLORS[index]}
+            />
           ))}
         </Stack>
       </MantineNavbar.Section>
