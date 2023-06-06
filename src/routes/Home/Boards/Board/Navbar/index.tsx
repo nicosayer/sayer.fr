@@ -96,7 +96,7 @@ const Navbar: FC = () => {
             <NavbarButton
               {...element}
               key={element.label}
-              color={COLORS[index]}
+              color={COLORS[index * 2]}
             />
           ))}
         </Stack>
