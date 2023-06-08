@@ -1,4 +1,3 @@
-import "dayjs/locale/fr";
 import { PropsWithChildren } from "react";
 
 import {
