@@ -14,7 +14,7 @@ import {
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
 
-interface ISecureLoginContext {
+export interface ISecureLoginContext {
   isSecure: boolean;
   canBeSecure: boolean;
 }

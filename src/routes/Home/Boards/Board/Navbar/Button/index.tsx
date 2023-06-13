@@ -1,6 +1,8 @@
 import { Badge, Group, Text, ThemeIcon, UnstyledButton } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useAppShell } from "components/atoms/AppShell";
 import usePathname from "hooks/usePathname";
+import { ISecureLoginContext, useSecureLogin } from "providers/SecureLogin";
 import { FC, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { IBoardContext, useBoard } from "routes/Home/Boards/Board/Provider";
@@ -10,7 +12,10 @@ interface NavbarButtonProps {
   color: string;
   label: string;
   to: string;
-  count?: (board: IBoardContext) => number;
+  getBadgeContent?: (
+    board: IBoardContext,
+    secureLogin: ISecureLoginContext
+  ) => number | string;
 }
 
 const NavbarButton: FC<NavbarButtonProps> = ({
@@ -18,16 +23,19 @@ const NavbarButton: FC<NavbarButtonProps> = ({
   color,
   label,
   to,
-  count,
+  getBadgeContent,
 }) => {
+  const board = useBoard();
+  const secureLogin = useSecureLogin();
+
   const navigate = useNavigate();
   const { pathnames } = usePathname();
   const { closeNavbar } = useAppShell();
-  const board = useBoard();
+  const is1200Px = useMediaQuery("(min-width: 1200px)", true);
 
-  const badgeCount = useMemo(() => {
-    return count?.(board);
-  }, [count, board]);
+  const badgeContent = useMemo(() => {
+    return getBadgeContent?.(board, secureLogin);
+  }, [getBadgeContent, board, secureLogin]);
 
   const isActive = useMemo(() => {
     return pathnames[2] === to;
@@ -65,9 +73,9 @@ const NavbarButton: FC<NavbarButtonProps> = ({
           {icon}
         </ThemeIcon>
         <Text size="sm">{label}</Text>
-        {badgeCount ? (
+        {is1200Px ? (
           <Badge color={color} className="ml-auto">
-            {badgeCount > 9 ? "+" : badgeCount}
+            {badgeContent}
           </Badge>
         ) : undefined}
       </Group>
