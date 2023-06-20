@@ -1,5 +1,5 @@
 import { Badge, Group, Text, ThemeIcon, UnstyledButton } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { useViewportSize } from "@mantine/hooks";
 import { useAppShell } from "components/atoms/AppShell";
 import usePathname from "hooks/usePathname";
 import { ISecureLoginContext, useSecureLogin } from "providers/SecureLogin";
@@ -31,7 +31,7 @@ const NavbarButton: FC<NavbarButtonProps> = ({
   const navigate = useNavigate();
   const { pathnames } = usePathname();
   const { closeNavbar } = useAppShell();
-  const is1200Px = useMediaQuery("(min-width: 1200px)", true);
+  const { width } = useViewportSize();
 
   const badgeContent = useMemo(() => {
     return getBadgeContent?.(board, secureLogin);
@@ -63,8 +63,8 @@ const NavbarButton: FC<NavbarButtonProps> = ({
           backgroundColor: isActive
             ? ""
             : theme.colorScheme === "dark"
-            ? theme.colors.dark[6]
-            : theme.colors.gray[0],
+              ? theme.colors.dark[6]
+              : theme.colors.gray[0],
         },
       })}
     >
@@ -73,7 +73,7 @@ const NavbarButton: FC<NavbarButtonProps> = ({
           {icon}
         </ThemeIcon>
         <Text size="sm">{label}</Text>
-        {is1200Px ? (
+        {badgeContent !== undefined && (width < 768 || width >= 1200) ? (
           <Badge color={color} className="ml-auto">
             {badgeContent}
           </Badge>
