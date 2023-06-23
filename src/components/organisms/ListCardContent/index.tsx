@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Alert,
+  Badge,
   Button,
   Checkbox,
   CopyButton,
@@ -20,12 +21,19 @@ import {
 } from "@tabler/icons-react";
 import EditListModalContent from "components/organisms/ListCardContent/EditListModalContent";
 import MoveListModalContent from "components/organisms/ListCardContent/MoveListModalContent";
-import { deleteDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc } from "firebase/firestore";
 import { sortBy } from "lodash";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { ListDocument, ListItemDocument } from "types/firebase/collections";
+import {
+  ListDocument,
+  ListItemDocument,
+  ListItemStatus,
+} from "types/firebase/collections";
 import { runInParallel } from "utils/async";
+import { formatDate } from "utils/dayjs";
+import { updateDoc } from "utils/firebase";
+import { getChecked, getColor, getIntermediate } from "utils/lists";
 
 export interface ListCardsPropContent {
   list: ListDocument;
@@ -76,10 +84,24 @@ const openDeleteModal = (list: ListDocument, listItems: ListItemDocument[]) => {
 const ListCardContent: FC<ListCardsPropContent> = ({ list, listItems }) => {
   const { boards } = useBoard();
 
+  const lastUpdatedAt = useMemo(() => {
+    return (
+      listItems.reduce((acc, listItem) => {
+        if (listItem.updatedAt) {
+          return Math.max(acc, listItem.updatedAt.seconds * 1000);
+        }
+        return acc;
+      }, 0) || undefined
+    );
+  }, [listItems]);
+
   return (
     <Stack align="center">
       <Group spacing="xs">
         <Text weight={500}>{list.name}</Text>
+        <Badge radius="sm" color="gray">
+          {formatDate(lastUpdatedAt, "D MMM YYYY")}
+        </Badge>
       </Group>
       <Alert color="gray">
         <Stack spacing="xs">
@@ -88,12 +110,31 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list, listItems }) => {
               <Checkbox
                 key={listItem.id}
                 label={listItem.name}
-                checked={listItem.checked}
+                checked={getChecked(listItem)}
+                color={getColor(listItem)}
+                indeterminate={getIntermediate(listItem)}
                 onChange={(event) => {
                   if (listItem.ref) {
-                    updateDoc<ListItemDocument>(listItem.ref, {
-                      checked: event.currentTarget.checked,
-                    });
+                    switch (listItem.status) {
+                      case ListItemStatus.Checked: {
+                        updateDoc<ListItemDocument>(listItem.ref, {
+                          status: ListItemStatus.Indeterminate,
+                        });
+                        break;
+                      }
+                      case ListItemStatus.Indeterminate: {
+                        updateDoc<ListItemDocument>(listItem.ref, {
+                          status: ListItemStatus.Empty,
+                        });
+                        break;
+                      }
+                      default: {
+                        updateDoc<ListItemDocument>(listItem.ref, {
+                          status: ListItemStatus.Checked,
+                        });
+                        break;
+                      }
+                    }
                   }
                 }}
                 classNames={{
@@ -113,7 +154,7 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list, listItems }) => {
             listItems?.forEach((listItem) => {
               if (listItem.ref) {
                 updateDoc<ListItemDocument>(listItem.ref, {
-                  checked: false,
+                  status: ListItemStatus.Empty,
                 });
               }
             });

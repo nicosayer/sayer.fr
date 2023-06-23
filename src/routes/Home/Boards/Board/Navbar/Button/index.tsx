@@ -63,8 +63,8 @@ const NavbarButton: FC<NavbarButtonProps> = ({
           backgroundColor: isActive
             ? ""
             : theme.colorScheme === "dark"
-              ? theme.colors.dark[6]
-              : theme.colors.gray[0],
+            ? theme.colors.dark[6]
+            : theme.colors.gray[0],
         },
       })}
     >

@@ -100,11 +100,17 @@ export interface ListDocument {
   updatedAt?: Timestamp;
 }
 
+export enum ListItemStatus {
+  Empty = "EMPTY",
+  Indeterminate = "INDETERMINATE",
+  Checked = "CHECKED",
+}
+
 export interface ListItemDocument {
   id?: string;
   ref?: DocumentReference<ListItemDocument>;
   name?: string;
-  checked?: boolean;
+  status?: ListItemStatus;
   order?: number;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;

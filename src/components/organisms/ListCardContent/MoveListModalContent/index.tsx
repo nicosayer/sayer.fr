@@ -70,7 +70,7 @@ const MoveListModalContent: FC<MoveListModalContentProps> = ({ list }) => {
                           ),
                           {
                             name: data.name,
-                            checked: data.checked,
+                            status: data.status,
                             order: data.order,
                           }
                         ).then(() => {

@@ -9,6 +9,7 @@ import {
   Collection,
   ListDocument,
   ListItemDocument,
+  ListItemStatus,
 } from "types/firebase/collections";
 import { runInParallel } from "utils/async";
 import { addDoc } from "utils/firebase";
@@ -55,7 +56,7 @@ const NewListModalContent: FC = () => {
                   collection(list, Collection.listItems),
                   {
                     name: itemName,
-                    checked: false,
+                    status: ListItemStatus.Empty,
                     order: index,
                   }
                 );

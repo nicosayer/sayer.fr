@@ -10,6 +10,7 @@ import {
   Collection,
   ListDocument,
   ListItemDocument,
+  ListItemStatus,
 } from "types/firebase/collections";
 import { runInParallel } from "utils/async";
 import { updateDoc } from "utils/firebase";
@@ -70,7 +71,7 @@ const EditListModalContent: FC<EditListModalContentProps> = ({
                     collection(list.ref, Collection.listItems),
                     {
                       name: itemName,
-                      checked: false,
+                      status: ListItemStatus.Empty,
                       order: index,
                     }
                   );

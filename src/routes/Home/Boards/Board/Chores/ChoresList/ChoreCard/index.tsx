@@ -16,7 +16,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { deleteDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useMemo } from "react";
 import EditChoreModalContent from "routes/Home/Boards/Board/Chores/ChoresList/ChoreCard/EditChoreModalContent";
@@ -24,6 +24,7 @@ import MoveChoreModalContent from "routes/Home/Boards/Board/Chores/ChoresList/Ch
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { ChoreDocument, ChoreUnit } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
+import { updateDoc } from "utils/firebase";
 
 export interface ChoreCardsPropContent {
   chore: ChoreDocument & {
