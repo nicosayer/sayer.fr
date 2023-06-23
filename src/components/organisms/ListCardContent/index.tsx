@@ -109,6 +109,7 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list, listItems }) => {
             return (
               <Checkbox
                 key={listItem.id}
+                size="md"
                 label={listItem.name}
                 checked={getChecked(listItem)}
                 color={getColor(listItem)}
