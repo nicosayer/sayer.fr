@@ -1,12 +1,12 @@
 import { Stack } from "@mantine/core";
 import NoResult from "components/organisms/NoResult";
 import Pagination from "components/organisms/Pagination";
-import { sortBy } from "lodash";
+import { orderBy } from "lodash";
 import PaginationProvider from "providers/Pagination";
 import { FC, useMemo } from "react";
 import ListCard from "routes/Home/Boards/Board/Lists/ListsList/ListCard";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
-import { sanitize, searchString } from "utils/string";
+import { searchString } from "utils/string";
 
 export interface ListsListProps {
   search: string;
@@ -16,7 +16,7 @@ const ListsList: FC<ListsListProps> = ({ search }) => {
   const { lists, listItems } = useBoard();
 
   const filteredLists = useMemo(() => {
-    return sortBy(
+    return orderBy(
       (lists ?? []).filter((list) => {
         const filteredListItems = (listItems ?? []).filter((listItem) => {
           return list.id && listItem.ref?.path.includes(list.id);
@@ -29,9 +29,21 @@ const ListsList: FC<ListsListProps> = ({ search }) => {
           })
         );
       }),
-      (list) => {
-        return sanitize(String(list.name));
-      }
+      list => {
+        const filteredListItems = (listItems ?? []).filter((listItem) => {
+          return list.id && listItem.ref?.path.includes(list.id);
+        });
+
+        const lastUpdatedAt = filteredListItems.reduce((acc, listItem) => {
+          if (listItem.updatedAt) {
+            return Math.max(acc, listItem.updatedAt.seconds * 1000);
+          }
+          return acc;
+        }, 0)
+
+        return lastUpdatedAt
+      },
+      "desc"
     );
   }, [lists, listItems, search]);
 
