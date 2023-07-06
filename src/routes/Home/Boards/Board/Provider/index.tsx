@@ -54,7 +54,7 @@ export interface IBoardContext {
 const BoardContext = createContext<IBoardContext>({
   board: undefined,
   boards: undefined,
-  setExtraBoardIds: () => {},
+  setExtraBoardIds: () => { },
   chores: undefined,
   credentials: undefined,
   creditCards: undefined,
@@ -174,6 +174,19 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       }
     });
   }, [groceries]);
+
+  useDidUpdate(() => {
+    notes.forEach((note) => {
+      if (
+        !note.text?.trim() &&
+        note.updatedAt &&
+        dayjs(note.updatedAt.toDate()).isBefore(dayjs().subtract(7, "days")) &&
+        note.ref
+      ) {
+        deleteDoc(note.ref);
+      }
+    });
+  }, [notes]);
 
   useDidUpdate(() => {
     todos.forEach((todo) => {
