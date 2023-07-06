@@ -32,7 +32,7 @@ interface SecureLoginProviderProps {
   children: ReactNode;
 }
 
-const getDefaultSignOutTimestamp = () => +dayjs().add(2, "hours");
+const getDefaultSignOutTimestamp = () => +dayjs().add(6, "hours");
 
 const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
   const [user] = useAuthState(auth);
@@ -41,7 +41,7 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
   const [, setSignOutTimestamp] = useLocalStorage({
     key: "automatic-sign-out-timestamp",
     defaultValue: getDefaultSignOutTimestamp(),
-    getInitialValueInEffect: false,
+    getInitialValueInEffect: true,
   });
   const isSecure = useMemo(() => {
     return idTokenResult?.signInProvider === "password";
@@ -49,6 +49,10 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
 
   const handleEvent = useCallback(() => {
     setSignOutTimestamp((signOutTimestamp) => {
+      if (!idTokenResult) {
+        return signOutTimestamp
+      }
+
       if (isSecure && +dayjs() >= signOutTimestamp) {
         signOut();
 
@@ -57,7 +61,7 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
 
       return getDefaultSignOutTimestamp();
     });
-  }, [isSecure, setSignOutTimestamp, signOut]);
+  }, [isSecure, setSignOutTimestamp, signOut, idTokenResult]);
 
   useEffect(() => {
     const unsubscribe = auth.onIdTokenChanged((user) => {
