@@ -5,10 +5,9 @@ import {
   IconCopy,
   IconEye,
   IconEyeOff,
-  IconX,
 } from "@tabler/icons-react";
-import { useDecrypt } from "hooks/useCrypto";
-import { FC, useEffect } from "react";
+import { useDecrypt } from "providers/Crypto/hooks";
+import { FC } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
 
 interface CreditCardNumberProps {
@@ -18,7 +17,7 @@ interface CreditCardNumberProps {
 const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
   creditCard,
 }) => {
-  const { value, loading, error } = useDecrypt(creditCard.number);
+  const { value, loading } = useDecrypt(creditCard.number);
   const clipboard = useClipboard();
 
   return (
@@ -26,9 +25,7 @@ const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
       disabled={loading}
       label={
         clipboard.copied
-          ? error
-            ? "Erreur"
-            : "Numéro copié"
+          ? "Numéro copié"
           : "Copier le numéro"
       }
       withArrow
@@ -36,16 +33,14 @@ const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
       <ActionIcon
         loading={loading}
         color={
-          clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
+          clipboard.copied && !loading ? ("teal") : undefined
         }
         onClick={() => {
           clipboard.copy(value ?? "");
         }}
       >
         {clipboard.copied ? (
-          error ? (
-            <IconX size={18} />
-          ) : (
+          (
             <IconCheck size={18} />
           )
         ) : (
@@ -57,15 +52,9 @@ const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
 };
 
 const CreditCardNumber: FC<CreditCardNumberProps> = ({ creditCard }) => {
-  const { value, loading, error } = useDecrypt(creditCard.number);
+  const { value, loading } = useDecrypt(creditCard.number);
 
   const [visible, setVisible] = useDisclosure(false);
-
-  useEffect(() => {
-    if (error) {
-      setVisible.close();
-    }
-  }, [error, setVisible]);
 
   return (
     <Group spacing="xs">

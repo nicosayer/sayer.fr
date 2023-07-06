@@ -52,7 +52,7 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
       if (isSecure && +dayjs() >= signOutTimestamp) {
         signOut();
 
-        return 1
+        return 1;
       }
 
       return getDefaultSignOutTimestamp();

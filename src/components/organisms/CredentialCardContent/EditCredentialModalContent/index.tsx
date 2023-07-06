@@ -5,7 +5,8 @@ import LoadingOverlay from "components/atoms/LoadingOverlay";
 import CredentialFormInputs from "components/organisms/CredentialFormInputs";
 import { deleteField } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { useDecrypt, useEncrypt } from "hooks/useCrypto";
+import { useCrypto } from "providers/Crypto";
+import { useDecrypt } from "providers/Crypto/hooks";
 import { FC } from "react";
 import { CredentialDocument } from "types/firebase/collections";
 import { updateDoc } from "utils/firebase";
@@ -19,7 +20,7 @@ const EditCredentialModalSubContent: FC<EditCredentialModalContentProps> = ({
   credential,
 }) => {
   const [loading, start, stop] = useBooleanState();
-  const { encrypt } = useEncrypt();
+  const { encrypt } = useCrypto();
 
   const form = useForm({
     initialValues: {
@@ -62,7 +63,7 @@ const EditCredentialModalSubContent: FC<EditCredentialModalContentProps> = ({
           updateDoc<CredentialDocument>(credential.ref, {
             name: values.name,
             username: values.username,
-            password: password?.data,
+            password: password,
             url: values.url,
           })
             .then(() => closeAllModals())

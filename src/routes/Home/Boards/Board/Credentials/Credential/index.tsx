@@ -1,8 +1,9 @@
 import { Modal } from "@mantine/core";
-import CredentialCardContent from "components/organisms/CredentialCardContent";
-import { FC, useMemo } from "react";
+import { FC, lazy, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
+
+const CredentialCardContent = lazy(() => import('components/organisms/CredentialCardContent'));
 
 const Credential: FC = () => {
   const { credentials } = useBoard();

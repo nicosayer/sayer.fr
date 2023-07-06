@@ -5,10 +5,9 @@ import {
   IconCopy,
   IconEye,
   IconEyeOff,
-  IconX,
 } from "@tabler/icons-react";
-import { useDecrypt } from "hooks/useCrypto";
-import { FC, useEffect } from "react";
+import { useDecrypt } from "providers/Crypto/hooks";
+import { FC } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
 
 interface CreditCardSecurityCodeProps {
@@ -18,7 +17,7 @@ interface CreditCardSecurityCodeProps {
 const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
   creditCard,
 }) => {
-  const { value, loading, error } = useDecrypt(creditCard.securityCode);
+  const { value, loading } = useDecrypt(creditCard.securityCode);
   const clipboard = useClipboard();
 
   return (
@@ -26,9 +25,7 @@ const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
       disabled={loading}
       label={
         clipboard.copied
-          ? error
-            ? "Erreur"
-            : "Code de sécurité copié"
+          ? "Code de sécurité copié"
           : "Copier le code de sécurité"
       }
       withArrow
@@ -36,16 +33,14 @@ const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
       <ActionIcon
         loading={loading}
         color={
-          clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
+          clipboard.copied && !loading ? ("teal") : undefined
         }
         onClick={() => {
           clipboard.copy(value ?? "");
         }}
       >
         {clipboard.copied ? (
-          error ? (
-            <IconX size={18} />
-          ) : (
+          (
             <IconCheck size={18} />
           )
         ) : (
@@ -59,14 +54,8 @@ const CreditCardSecurityCodeCopyButton: FC<CreditCardSecurityCodeProps> = ({
 const CreditCardSecurityCode: FC<CreditCardSecurityCodeProps> = ({
   creditCard,
 }) => {
-  const { value, loading, error } = useDecrypt(creditCard.securityCode);
+  const { value, loading } = useDecrypt(creditCard.securityCode);
   const [visible, setVisible] = useDisclosure(false);
-
-  useEffect(() => {
-    if (error) {
-      setVisible.close();
-    }
-  }, [error, setVisible]);
 
   return (
     <Group spacing="xs">

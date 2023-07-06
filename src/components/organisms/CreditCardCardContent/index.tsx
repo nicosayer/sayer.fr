@@ -26,7 +26,7 @@ import CreditCardSecurityCode from "components/organisms/CreditCardCardContent/C
 import EditCreditCardModalContent from "components/organisms/CreditCardCardContent/EditCreditCardModalContent";
 import MoveCreditCardModalContent from "components/organisms/CreditCardCardContent/MoveCreditCardModalContent";
 import { deleteDoc } from "firebase/firestore";
-import { useDecrypt } from "hooks/useCrypto";
+import { useDecrypt } from "providers/Crypto/hooks";
 import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { CreditCardDocument } from "types/firebase/collections";

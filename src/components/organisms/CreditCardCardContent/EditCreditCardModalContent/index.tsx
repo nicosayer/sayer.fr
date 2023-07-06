@@ -9,7 +9,7 @@ import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
 import useBooleanState from "hooks/useBooleanState";
-import { useDecrypt } from "hooks/useCrypto";
+import { useDecrypt } from "providers/Crypto/hooks";
 import { FC } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
 import { updateDoc } from "utils/firebase";

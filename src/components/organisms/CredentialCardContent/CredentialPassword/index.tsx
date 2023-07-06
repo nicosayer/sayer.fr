@@ -1,7 +1,7 @@
 import { ActionIcon, Code, Group, Tooltip } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
-import { IconCheck, IconCopy, IconX } from "@tabler/icons-react";
-import { useDecrypt } from "hooks/useCrypto";
+import { IconCheck, IconCopy } from "@tabler/icons-react";
+import { useDecrypt } from "providers/Crypto/hooks";
 import { FC } from "react";
 import { CredentialDocument } from "types/firebase/collections";
 
@@ -10,7 +10,7 @@ interface CredentialPasswordProps {
 }
 
 const CredentialPassword: FC<CredentialPasswordProps> = ({ credential }) => {
-  const { value, loading, error } = useDecrypt(credential.password);
+  const { value, loading } = useDecrypt(credential.password);
   const clipboard = useClipboard();
 
   return (
@@ -20,9 +20,7 @@ const CredentialPassword: FC<CredentialPasswordProps> = ({ credential }) => {
         disabled={loading}
         label={
           clipboard.copied
-            ? error
-              ? "Erreur"
-              : "Mot de passe copié"
+            ? "Mot de passe copié"
             : "Copier le mot de passe"
         }
         withArrow
@@ -30,16 +28,14 @@ const CredentialPassword: FC<CredentialPasswordProps> = ({ credential }) => {
         <ActionIcon
           loading={loading}
           color={
-            clipboard.copied && !loading ? (error ? "red" : "teal") : undefined
+            clipboard.copied && !loading ? ("teal") : undefined
           }
           onClick={() => {
             clipboard.copy(value ?? "");
           }}
         >
           {clipboard.copied ? (
-            error ? (
-              <IconX size={18} />
-            ) : (
+            (
               <IconCheck size={18} />
             )
           ) : (

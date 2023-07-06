@@ -29,7 +29,7 @@ const ListsList: FC<ListsListProps> = ({ search }) => {
           })
         );
       }),
-      list => {
+      (list) => {
         const filteredListItems = (listItems ?? []).filter((listItem) => {
           return list.id && listItem.ref?.path.includes(list.id);
         });
@@ -39,9 +39,9 @@ const ListsList: FC<ListsListProps> = ({ search }) => {
             return Math.max(acc, listItem.updatedAt.seconds * 1000);
           }
           return acc;
-        }, 0)
+        }, 0);
 
-        return lastUpdatedAt
+        return lastUpdatedAt;
       },
       "desc"
     );

@@ -4,7 +4,7 @@ import { closeAllModals } from "@mantine/modals";
 import CreditCardFormInputs from "components/organisms/CreditCardFormInputs";
 import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
-import { useEncrypt } from "hooks/useCrypto";
+import { useCrypto } from "providers/Crypto";
 import { FC, useMemo } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { Collection, CreditCardDocument } from "types/firebase/collections";
@@ -15,7 +15,7 @@ const NewCreditCardModalContent: FC = () => {
   const { board } = useBoard();
   const [loading, start, stop] = useBooleanState();
   const theme = useMantineTheme();
-  const { encrypt } = useEncrypt();
+  const { encrypt } = useCrypto();
 
   const colors = useMemo(() => {
     return Object.keys(theme.colors);
@@ -86,12 +86,12 @@ const NewCreditCardModalContent: FC = () => {
             {
               color: values.color,
               name: values.name,
-              number: number?.data,
+              number: number,
               lastDigits: values.number.slice(-4),
               expirationMonth: values.expirationMonth,
               expirationYear: values.expirationYear,
               cardholder: values.cardholder,
-              securityCode: securityCode?.data,
+              securityCode: securityCode,
             }
           )
             .then(() => closeAllModals())
