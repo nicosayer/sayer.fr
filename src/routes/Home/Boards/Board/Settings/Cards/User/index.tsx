@@ -37,7 +37,7 @@ const UserCard: FC = () => {
                   centered: true,
                   children: (
                     <Text size="sm">
-                      Voulez-vous recevoir un email afin de pouvoir
+                      Souhaitez-vous recevoir un email afin de pouvoir
                       réinitialiser votre mot de passe ?
                     </Text>
                   ),
