@@ -1,20 +1,18 @@
-import { Button, Card, Input, Stack, Text, TextInput } from "@mantine/core";
-import { openConfirmModal } from "@mantine/modals";
+import { Button, Card, Input, Stack, TextInput } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons-react";
+import useResetPasswordModal from "hooks/useResetPasswordModal";
 import { FC, useState } from "react";
-import {
-  useAuthState,
-  useSendPasswordResetEmail,
-} from "react-firebase-hooks/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import NameInput from "routes/Home/Boards/Board/Settings/Cards/User/NameInput";
 import { auth } from "utils/firebase";
 
 const UserCard: FC = () => {
   const [user] = useAuthState(auth);
-  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
-  const [disabled, setDisabled] = useState(false);
   const { users } = useBoard();
+  const [resetPasswordModal, sending] = useResetPasswordModal();
+  const [passwordResetEmailSent, setPasswordResetEmailSent] = useState(false);
 
   if (!user?.email) {
     return null;
@@ -30,35 +28,17 @@ const UserCard: FC = () => {
             <Button
               variant="default"
               loading={sending}
-              disabled={disabled}
+              leftIcon={passwordResetEmailSent && <IconCheck size={18} />}
+              disabled={passwordResetEmailSent}
               onClick={() => {
-                openConfirmModal({
-                  title: "Réinitialiser le mot de passe",
-                  centered: true,
-                  children: (
-                    <Text size="sm">
-                      Souhaitez-vous recevoir un email afin de pouvoir
-                      réinitialiser votre mot de passe ?
-                    </Text>
-                  ),
-                  labels: { confirm: "Envoyer", cancel: "Annuler" },
-                  onConfirm: () => {
-                    if (user?.email) {
-                      sendPasswordResetEmail(user.email, {
-                        url: window.location.origin,
-                      }).then(() => {
-                        setDisabled(true);
-                        showNotification({
-                          color: "green",
-                          message: "Email envoyé",
-                        });
-                      });
-                    }
-                  },
+                resetPasswordModal(() => {
+                  setPasswordResetEmailSent(true);
                 });
               }}
             >
-              Réinitialiser le mot de passe
+              {passwordResetEmailSent
+                ? "Email envoyé"
+                : "Réinitialiser le mot de passe"}
             </Button>
           </div>
         </Input.Wrapper>
