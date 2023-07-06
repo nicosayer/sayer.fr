@@ -3,7 +3,9 @@ import { FC, lazy, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 
-const CredentialCardContent = lazy(() => import('components/organisms/CredentialCardContent'));
+const CredentialCardContent = lazy(
+  () => import("components/organisms/CredentialCardContent")
+);
 
 const Credential: FC = () => {
   const { credentials } = useBoard();

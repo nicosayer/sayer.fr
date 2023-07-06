@@ -1,11 +1,6 @@
 import { ActionIcon, Code, Group, Tooltip } from "@mantine/core";
 import { useClipboard, useDisclosure } from "@mantine/hooks";
-import {
-  IconCheck,
-  IconCopy,
-  IconEye,
-  IconEyeOff,
-} from "@tabler/icons-react";
+import { IconCheck, IconCopy, IconEye, IconEyeOff } from "@tabler/icons-react";
 import { useDecrypt } from "providers/Crypto/hooks";
 import { FC } from "react";
 import { CreditCardDocument } from "types/firebase/collections";
@@ -23,29 +18,17 @@ const CreditCardNumberCopyButton: FC<CreditCardNumberProps> = ({
   return (
     <Tooltip
       disabled={loading}
-      label={
-        clipboard.copied
-          ? "Numéro copié"
-          : "Copier le numéro"
-      }
+      label={clipboard.copied ? "Numéro copié" : "Copier le numéro"}
       withArrow
     >
       <ActionIcon
         loading={loading}
-        color={
-          clipboard.copied && !loading ? ("teal") : undefined
-        }
+        color={clipboard.copied && !loading ? "teal" : undefined}
         onClick={() => {
           clipboard.copy(value ?? "");
         }}
       >
-        {clipboard.copied ? (
-          (
-            <IconCheck size={18} />
-          )
-        ) : (
-          <IconCopy size={18} />
-        )}
+        {clipboard.copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
       </ActionIcon>
     </Tooltip>
   );

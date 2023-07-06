@@ -19,28 +19,18 @@ const CredentialPassword: FC<CredentialPasswordProps> = ({ credential }) => {
       <Tooltip
         disabled={loading}
         label={
-          clipboard.copied
-            ? "Mot de passe copié"
-            : "Copier le mot de passe"
+          clipboard.copied ? "Mot de passe copié" : "Copier le mot de passe"
         }
         withArrow
       >
         <ActionIcon
           loading={loading}
-          color={
-            clipboard.copied && !loading ? ("teal") : undefined
-          }
+          color={clipboard.copied && !loading ? "teal" : undefined}
           onClick={() => {
             clipboard.copy(value ?? "");
           }}
         >
-          {clipboard.copied ? (
-            (
-              <IconCheck size={18} />
-            )
-          ) : (
-            <IconCopy size={18} />
-          )}
+          {clipboard.copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
         </ActionIcon>
       </Tooltip>
     </Group>

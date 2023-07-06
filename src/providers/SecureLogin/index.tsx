@@ -50,7 +50,7 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
   const handleEvent = useCallback(() => {
     setSignOutTimestamp((signOutTimestamp) => {
       if (!idTokenResult) {
-        return signOutTimestamp
+        return signOutTimestamp;
       }
 
       if (isSecure && +dayjs() >= signOutTimestamp) {

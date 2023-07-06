@@ -41,14 +41,8 @@ const initialState = {};
 const CryptoProvider: FC<CryptoProviderProps> = ({ children }) => {
   const [data, dispatch] = useReducer(reducer, initialState);
 
-  const [encrypt] = useHttpsCallable<
-    string,
-    string
-  >(functions, "encrypt");
-  const [decrypt] = useHttpsCallable<
-    string,
-    string
-  >(functions, "decrypt");
+  const [encrypt] = useHttpsCallable<string, string>(functions, "encrypt");
+  const [decrypt] = useHttpsCallable<string, string>(functions, "decrypt");
 
   const context = useMemo(() => {
     return {
@@ -80,11 +74,7 @@ const CryptoProvider: FC<CryptoProviderProps> = ({ children }) => {
         }
       },
     };
-  }, [
-    data,
-    decrypt,
-    encrypt,
-  ]);
+  }, [data, decrypt, encrypt]);
 
   return (
     <CryptoContext.Provider value={context}>{children}</CryptoContext.Provider>

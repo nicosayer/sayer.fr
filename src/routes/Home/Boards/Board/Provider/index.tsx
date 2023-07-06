@@ -54,7 +54,7 @@ export interface IBoardContext {
 const BoardContext = createContext<IBoardContext>({
   board: undefined,
   boards: undefined,
-  setExtraBoardIds: () => { },
+  setExtraBoardIds: () => {},
   chores: undefined,
   credentials: undefined,
   creditCards: undefined,

@@ -1,10 +1,20 @@
-import { ActionIcon, Group, Input, PasswordInput } from "@mantine/core";
+import {
+  ActionIcon,
+  Anchor,
+  Group,
+  Input,
+  PasswordInput,
+  Text,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDidUpdate } from "@mantine/hooks";
+import { openConfirmModal } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import { IconArrowRight, IconShieldLock } from "@tabler/icons-react";
-import { FC } from "react";
+import { FC, useState } from "react";
 import {
   useAuthState,
+  useSendPasswordResetEmail,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
@@ -13,6 +23,8 @@ const SecureLogin: FC = () => {
   const [user] = useAuthState(auth);
   const [signInWithEmailAndPassword, , loading, error] =
     useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail] = useSendPasswordResetEmail(auth);
+  const [passwordResetEmailSent, setPasswordResetEmailSent] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -42,7 +54,50 @@ const SecureLogin: FC = () => {
           }
         })}
       >
-        <Input.Wrapper label="Entrer votre mot de passe">
+        <Input.Wrapper
+          label="Entrer votre mot de passe"
+          description={
+            passwordResetEmailSent ? (
+              "Email envoyé"
+            ) : (
+              <Anchor
+                component="button"
+                type="button"
+                color="gray"
+                variant="default"
+                onClick={() => {
+                  openConfirmModal({
+                    title: "Réinitialiser le mot de passe",
+                    centered: true,
+                    children: (
+                      <Text size="sm">
+                        Souhaitez-vous recevoir un email afin de pouvoir
+                        réinitialiser votre mot de passe ?
+                      </Text>
+                    ),
+                    labels: { confirm: "Envoyer", cancel: "Annuler" },
+                    onConfirm: () => {
+                      if (user?.email) {
+                        return sendPasswordResetEmail(user.email, {
+                          url: window.location.origin,
+                        }).then(() => {
+                          setPasswordResetEmailSent(true);
+                          showNotification({
+                            color: "green",
+                            message: "Email envoyé",
+                          });
+                        });
+                      }
+                    },
+                  });
+                }}
+              >
+                Mot de passe oublié ?
+              </Anchor>
+            )
+          }
+          inputWrapperOrder={["label", "input", "description", "error"]}
+        >
           <Group spacing="xs">
             <PasswordInput
               className="flex-1"
