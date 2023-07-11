@@ -5,6 +5,7 @@ import {
   CopyButton,
   Group,
   Menu,
+  Paper,
   Stack,
   Text,
 } from "@mantine/core";
@@ -101,16 +102,14 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
           {getExtension(document.mime as DocumentMime)}
         </Badge>
       </Group>
-      <div className="w-[96px] h-[128px] relative">
+      <Paper shadow="xs" p="xs" withBorder>
         <LoadingOverlay visible={loading} />
         <iframe
           title="Thumbnail"
           src={downloadUrl}
-          width="100%"
-          height="100%"
           style={{ border: "none" }}
         />
-      </div>
+      </Paper>
       <Group className="w-full">
         <Button
           variant="light"
