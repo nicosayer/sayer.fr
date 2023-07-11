@@ -70,7 +70,11 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
           {formatDate(note.date, "D MMM YYYY")}
         </Badge>
       </Group>
-
+      <div className="overflow-hidden max-h-32">
+        <Text size="sm" color="dimmed">
+          {note.text}
+        </Text>
+      </div>
       <Group className="w-full">
         <Button
           variant="light"

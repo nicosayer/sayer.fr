@@ -17,6 +17,7 @@ import {
   IconSwitchHorizontal,
   IconTrash,
 } from "@tabler/icons-react";
+import LoadingOverlay from "components/atoms/LoadingOverlay";
 import EditDocumentModalContent from "components/organisms/DocumentCardContent/EditDocumentModalContent";
 import MoveDocumentModalContent from "components/organisms/DocumentCardContent/MoveDocumentModalContent";
 import { deleteDoc } from "firebase/firestore";
@@ -24,6 +25,7 @@ import { deleteObject, ref } from "firebase/storage";
 import useDownloadDocument from "hooks/useDownloadDocument";
 import usePreviewDocument from "hooks/usePreviewDocument";
 import { FC } from "react";
+import { useDownloadURL } from "react-firebase-hooks/storage";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { DocumentDocument, DocumentMime } from "types/firebase/collections";
 import { storage } from "utils/firebase";
@@ -80,6 +82,15 @@ const openDeleteModal = (document: DocumentDocument) => {
 const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
   const [previewDocument, loadingPreview] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
+  const [downloadUrl, loading] = useDownloadURL(
+    ref(
+      storage,
+      `${document?.ref?.path}/document.${getExtension(
+        document.mime as DocumentMime
+      )}`
+    )
+  );
+
   const { boards } = useBoard();
 
   return (
@@ -90,6 +101,16 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
           {getExtension(document.mime as DocumentMime)}
         </Badge>
       </Group>
+      <div className="w-[96px] h-[128px] relative">
+        <LoadingOverlay visible={loading} />
+        <iframe
+          title="Thumbnail"
+          src={downloadUrl}
+          width="100%"
+          height="100%"
+          style={{ border: "none" }}
+        />
+      </div>
       <Group className="w-full">
         <Button
           variant="light"
