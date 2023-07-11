@@ -81,8 +81,10 @@ const openDeleteModal = (document: DocumentDocument) => {
 };
 
 const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
-  const [previewDocument, loadingPreview] = usePreviewDocument();
+  const [previewButtonDocument, loadingPreviewButton] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
+  const [previewThumbnailDocument, loadingPreviewThumbnail] =
+    usePreviewDocument();
   const [downloadUrl, loading] = useDownloadURL(
     ref(
       storage,
@@ -102,12 +104,20 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
           {getExtension(document.mime as DocumentMime)}
         </Badge>
       </Group>
-      <Paper shadow="xs" p="xs" withBorder>
-        <LoadingOverlay visible={loading} />
+      <Paper
+        shadow="xs"
+        p="xs"
+        withBorder
+        onClick={() => {
+          previewThumbnailDocument(document);
+        }}
+        className="cursor-pointer"
+      >
+        <LoadingOverlay visible={loading || loadingPreviewThumbnail} />
         <iframe
           title="Thumbnail"
           src={downloadUrl}
-          style={{ border: "none" }}
+          style={{ border: "none", pointerEvents: "none" }}
         />
       </Paper>
       <Group className="w-full">
@@ -115,9 +125,9 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
           variant="light"
           className="flex-1"
           onClick={() => {
-            previewDocument(document);
+            previewButtonDocument(document);
           }}
-          loading={loadingPreview}
+          loading={loadingPreviewButton}
         >
           Prévisualiser
         </Button>
