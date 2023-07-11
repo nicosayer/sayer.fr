@@ -1,10 +1,12 @@
 import {
   ActionIcon,
+  Alert,
   Badge,
   Button,
   CopyButton,
   Group,
   Menu,
+  Paper,
   Stack,
   Text,
 } from "@mantine/core";
@@ -70,11 +72,13 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
           {formatDate(note.date, "D MMM YYYY")}
         </Badge>
       </Group>
-      <div className="overflow-hidden max-h-32">
-        <Text size="sm" color="dimmed">
-          {note.text}
-        </Text>
-      </div>
+      <Alert color="gray" maw={512}>
+        <div className="overflow-hidden max-h-32">
+          <Text size="sm" color="dimmed">
+            {note.text}
+          </Text>
+        </div>
+      </Alert>
       <Group className="w-full">
         <Button
           variant="light"
