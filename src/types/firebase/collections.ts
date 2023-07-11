@@ -111,7 +111,6 @@ export interface ListItemDocument {
   ref?: DocumentReference<ListItemDocument>;
   name?: string;
   status?: ListItemStatus;
-  order?: number;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }

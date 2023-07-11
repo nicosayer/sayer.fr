@@ -71,7 +71,6 @@ const MoveListModalContent: FC<MoveListModalContentProps> = ({ list }) => {
                           {
                             name: data.name,
                             status: data.status,
-                            order: data.order,
                           }
                         ).then(() => {
                           return deleteDoc(listItem.ref);

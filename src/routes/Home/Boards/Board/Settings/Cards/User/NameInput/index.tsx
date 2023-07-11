@@ -1,12 +1,12 @@
 import { Button, Input, TextInput } from "@mantine/core";
 import { usePrevious } from "@mantine/hooks";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import { Collection } from "types/firebase/collections";
-import { auth, db } from "utils/firebase";
+import { auth, db, updateDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
 
 export interface NameInputProps {

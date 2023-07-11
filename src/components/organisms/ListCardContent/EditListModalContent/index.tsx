@@ -1,8 +1,7 @@
-import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
+import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
-import { IconCaretDown, IconCaretUp } from "@tabler/icons-react";
-import { addDoc, collection, deleteDoc } from "firebase/firestore";
+import {  collection, deleteDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { sortBy } from "lodash";
 import { FC } from "react";
@@ -13,8 +12,8 @@ import {
   ListItemStatus,
 } from "types/firebase/collections";
 import { runInParallel } from "utils/async";
-import { updateDoc } from "utils/firebase";
-import { cleanString } from "utils/string";
+import { addDoc, updateDoc } from "utils/firebase";
+import { cleanString, sanitize } from "utils/string";
 
 export interface EditListModalContentProps {
   list: ListDocument;
@@ -30,9 +29,9 @@ const EditListModalContent: FC<EditListModalContentProps> = ({
   const form = useForm({
     initialValues: {
       name: list.name ?? "",
-      itemNames: sortBy(listItems, "order").map(
-        (listItem) => listItem.name ?? ""
-      ),
+      itemNames: sortBy(listItems, (listItem) =>
+        sanitize(listItem.name ?? "")
+      ).map((listItem) => listItem.name ?? ""),
     },
 
     validate: {
@@ -65,14 +64,13 @@ const EditListModalContent: FC<EditListModalContentProps> = ({
               });
             })
             .then(() => {
-              return runInParallel(values.itemNames, (itemName, index) => {
+              return runInParallel(values.itemNames, (itemName) => {
                 if (list.ref) {
                   return addDoc<ListItemDocument>(
                     collection(list.ref, Collection.listItems),
                     {
                       name: itemName,
                       status: ListItemStatus.Empty,
-                      order: index,
                     }
                   );
                 }
@@ -100,7 +98,7 @@ const EditListModalContent: FC<EditListModalContentProps> = ({
               key={index}
               withAsterisk={index === 0}
               disabled={loading}
-              label={`Élément ${index + 1}`}
+              label={index === 0 ? 'Éléments' : ""}
               placeholder={
                 [
                   "Maillot de bain",
@@ -114,62 +112,6 @@ const EditListModalContent: FC<EditListModalContentProps> = ({
                   "Chargeur",
                   "Appareil photo",
                 ][index % 10]
-              }
-              rightSection={
-                <div>
-                  {index !== 0 && index !== form.values.itemNames.length ? (
-                    <ActionIcon
-                      className={
-                        index < form.values.itemNames.length - 1
-                          ? "max-h-[16px] min-h-[16px]"
-                          : ""
-                      }
-                      onClick={() => {
-                        const from = index;
-                        const to = index - 1;
-                        const array = [...form.values.itemNames];
-                        form.setFieldValue(
-                          "itemNames",
-                          form.values.itemNames.map((item, index) => {
-                            if (index === from) {
-                              return array[to];
-                            }
-                            if (index === to) {
-                              return array[from];
-                            }
-                            return item;
-                          })
-                        );
-                      }}
-                    >
-                      <IconCaretUp size={18} />
-                    </ActionIcon>
-                  ) : null}
-                  {index < form.values.itemNames.length - 1 ? (
-                    <ActionIcon
-                      className={index !== 0 ? "max-h-[16px] min-h-[16px]" : ""}
-                      onClick={() => {
-                        const from = index;
-                        const to = index + 1;
-                        const array = [...form.values.itemNames];
-                        form.setFieldValue(
-                          "itemNames",
-                          form.values.itemNames.map((item, index) => {
-                            if (index === from) {
-                              return array[to];
-                            }
-                            if (index === to) {
-                              return array[from];
-                            }
-                            return item;
-                          })
-                        );
-                      }}
-                    >
-                      <IconCaretDown size={18} />
-                    </ActionIcon>
-                  ) : null}
-                </div>
               }
               {...form.getInputProps(`itemNames.${index}`)}
             />

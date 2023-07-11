@@ -57,7 +57,6 @@ const NewListModalContent: FC = () => {
                   {
                     name: itemName,
                     status: ListItemStatus.Empty,
-                    order: index,
                   }
                 );
               });

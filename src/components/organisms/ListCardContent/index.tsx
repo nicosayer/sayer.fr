@@ -34,6 +34,7 @@ import { runInParallel } from "utils/async";
 import { formatDate } from "utils/dayjs";
 import { updateDoc } from "utils/firebase";
 import { getChecked, getColor, getIntermediate } from "utils/lists";
+import { sanitize } from "utils/string";
 
 export interface ListCardsPropContent {
   list: ListDocument;
@@ -105,46 +106,48 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list, listItems }) => {
       </Group>
       <Alert color="gray">
         <Stack spacing="xs">
-          {sortBy(listItems, "order")?.map((listItem) => {
-            return (
-              <Checkbox
-                key={listItem.id}
-                size="md"
-                label={listItem.name}
-                checked={getChecked(listItem)}
-                color={getColor(listItem)}
-                indeterminate={getIntermediate(listItem)}
-                onChange={(event) => {
-                  if (listItem.ref) {
-                    switch (listItem.status) {
-                      case ListItemStatus.Checked: {
-                        updateDoc<ListItemDocument>(listItem.ref, {
-                          status: ListItemStatus.Indeterminate,
-                        });
-                        break;
-                      }
-                      case ListItemStatus.Indeterminate: {
-                        updateDoc<ListItemDocument>(listItem.ref, {
-                          status: ListItemStatus.Empty,
-                        });
-                        break;
-                      }
-                      default: {
-                        updateDoc<ListItemDocument>(listItem.ref, {
-                          status: ListItemStatus.Checked,
-                        });
-                        break;
+          {sortBy(listItems, (listItem) => sanitize(listItem.name ?? ""))?.map(
+            (listItem) => {
+              return (
+                <Checkbox
+                  key={listItem.id}
+                  size="md"
+                  label={listItem.name}
+                  checked={getChecked(listItem)}
+                  color={getColor(listItem)}
+                  indeterminate={getIntermediate(listItem)}
+                  onChange={(event) => {
+                    if (listItem.ref) {
+                      switch (listItem.status) {
+                        case ListItemStatus.Checked: {
+                          updateDoc<ListItemDocument>(listItem.ref, {
+                            status: ListItemStatus.Indeterminate,
+                          });
+                          break;
+                        }
+                        case ListItemStatus.Indeterminate: {
+                          updateDoc<ListItemDocument>(listItem.ref, {
+                            status: ListItemStatus.Empty,
+                          });
+                          break;
+                        }
+                        default: {
+                          updateDoc<ListItemDocument>(listItem.ref, {
+                            status: ListItemStatus.Checked,
+                          });
+                          break;
+                        }
                       }
                     }
-                  }
-                }}
-                classNames={{
-                  label: "cursor-pointer",
-                  input: "cursor-pointer",
-                }}
-              />
-            );
-          })}
+                  }}
+                  classNames={{
+                    label: "cursor-pointer",
+                    input: "cursor-pointer",
+                  }}
+                />
+              );
+            }
+          )}
         </Stack>
       </Alert>
       <Group className="w-full">
