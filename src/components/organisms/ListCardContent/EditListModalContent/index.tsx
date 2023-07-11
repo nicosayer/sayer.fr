@@ -1,7 +1,7 @@
 import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { closeAllModals } from "@mantine/modals";
-import {  collection, deleteDoc } from "firebase/firestore";
+import { collection, deleteDoc } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import { sortBy } from "lodash";
 import { FC } from "react";
@@ -98,7 +98,7 @@ const EditListModalContent: FC<EditListModalContentProps> = ({
               key={index}
               withAsterisk={index === 0}
               disabled={loading}
-              label={index === 0 ? 'Éléments' : ""}
+              label={index === 0 ? "Éléments" : ""}
               placeholder={
                 [
                   "Maillot de bain",
