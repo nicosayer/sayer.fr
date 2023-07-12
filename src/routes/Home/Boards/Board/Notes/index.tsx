@@ -1,9 +1,9 @@
 import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
+import useWindowSize from "hooks/useWindowSize";
 import { FC, useCallback, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Note from "routes/Home/Boards/Board/Notes/Note";
@@ -19,7 +19,7 @@ const Notes: FC = () => {
   const [search, setSearch] = useState("");
   const [loadingNew, start, stop] = useBooleanState();
   const navigate = useNavigate();
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const { largerThan } = useWindowSize()
 
   const createNoteAndOpen = useCallback(() => {
     if (board?.ref) {
@@ -51,7 +51,7 @@ const Notes: FC = () => {
             leftIcon={<IconPlus size={18} />}
             onClick={createNoteAndOpen}
           >
-            {is768Px ? "Ajouter votre première note" : "Nouvelle note"}
+            {largerThan('sm') ? "Ajouter votre première note" : "Nouvelle note"}
           </Button>
         </div>
       </>

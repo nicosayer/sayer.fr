@@ -1,5 +1,4 @@
 import { ActionIcon, Checkbox, Group, Menu, Text } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import {
   IconDotsVertical,
@@ -9,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
 import useGetUserName from "hooks/useGetUserName";
+import useWindowSize from "hooks/useWindowSize";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EditGroceryModalContent from "routes/Home/Boards/Board/Groceries/GroceriesList/GroceryCardContent/EditGroceryModalContent";
@@ -39,7 +39,7 @@ const openEditModal = (grocery: GroceryDocument) => {
 };
 
 const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const { largerThan } = useWindowSize()
   const [user] = useAuthState(auth);
   const { boards } = useBoard();
   const getUserName = useGetUserName();
@@ -71,15 +71,15 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
         }}
       />
       <Group noWrap className="whitespace-nowrap">
-        {is768Px && (
+        {largerThan('sm') && (
           <Text c="dimmed" fz="sm">
             {grocery.closedAt
               ? `fermé par ${getUserName(
-                  grocery.closedBy ?? ""
-                )} le ${formatDate(grocery.closedAt.toDate(), "D MMM")}`
+                grocery.closedBy ?? ""
+              )} le ${formatDate(grocery.closedAt.toDate(), "D MMM")}`
               : `ajouté par ${getUserName(
-                  grocery.openedBy ?? ""
-                )} le ${formatDate(grocery.openedAt?.toDate(), "D MMM")}`}
+                grocery.openedBy ?? ""
+              )} le ${formatDate(grocery.openedAt?.toDate(), "D MMM")}`}
           </Text>
         )}
         <Menu shadow="md" width={200} withinPortal>

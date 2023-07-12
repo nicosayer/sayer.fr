@@ -1,7 +1,8 @@
 import { Group, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
+import { useDebouncedValue } from "@mantine/hooks";
 import dayjs from "dayjs";
+import useWindowSize from "hooks/useWindowSize";
 import { FC, useEffect, useState } from "react";
 import { NoteDocument } from "types/firebase/collections";
 import { formatDate } from "utils/dayjs";
@@ -13,7 +14,7 @@ export interface NoteModalHeaderProps {
 }
 
 const NoteModalHeader: FC<NoteModalHeaderProps> = ({ note }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const { largerThan } = useWindowSize()
   const [name, setName] = useState(note?.name);
   const [debouncedName] = useDebouncedValue(note?.name, 10 * ONE_SECOND);
 
@@ -36,7 +37,7 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ note }) => {
           }
         }}
       />
-      {is768Px && (
+      {largerThan('sm') && (
         <Group grow>
           <DatePickerInput
             locale="fr"

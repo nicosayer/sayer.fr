@@ -6,7 +6,6 @@ import {
   CopyButton,
   Group,
   Menu,
-  Paper,
   Stack,
   Text,
 } from "@mantine/core";
@@ -63,6 +62,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
   const { boardId } = useParams();
   const navigate = useNavigate();
   const { boards } = useBoard();
+
 
   return (
     <Stack align="center">

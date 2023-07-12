@@ -1,8 +1,8 @@
 import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
+import useWindowSize from "hooks/useWindowSize";
 import { FC, useState } from "react";
 import Document from "routes/Home/Boards/Board/Documents/Document";
 import DocumentsList from "routes/Home/Boards/Board/Documents/DocumentsList";
@@ -20,7 +20,7 @@ const openNewModal = () => {
 const Documents: FC = () => {
   const { loadingDocuments, documents } = useBoard();
   const [search, setSearch] = useState("");
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const { largerThan } = useWindowSize()
 
   if (!documents || loadingDocuments) {
     return <LoadingOverlay visible />;
@@ -34,7 +34,7 @@ const Documents: FC = () => {
           leftIcon={<IconPlus size={18} />}
           onClick={openNewModal}
         >
-          {is768Px ? "Ajouter votre premier document" : "Nouveau document"}
+          {largerThan('sm') ? "Ajouter votre premier document" : "Nouveau document"}
         </Button>
       </div>
     );

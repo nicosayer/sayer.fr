@@ -9,11 +9,12 @@ import {
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
-import { useMediaQuery, useOs } from "@mantine/hooks";
+import { useOs } from "@mantine/hooks";
 import { useSpotlight } from "@mantine/spotlight";
 import { IconSearch, IconUser } from "@tabler/icons-react";
 import { useAppShell } from "components/atoms/AppShell";
 import useColors from "hooks/useColors";
+import useWindowSize from "hooks/useWindowSize";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Helmet } from "react-helmet";
@@ -31,7 +32,7 @@ const Header: FC = () => {
   const theme = useMantineTheme();
   const [user] = useAuthState(auth);
   const spotlight = useSpotlight();
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const { largerThan } = useWindowSize()
   const os = useOs();
   const { customColors } = useColors();
 
@@ -47,7 +48,7 @@ const Header: FC = () => {
       <HeaderComponent height={{ base: 50, md: 70 }} p="md">
         <div className="flex items-center justify-between h-full">
           <Group>
-            {is768Px ? null : (
+            {largerThan('sm') ? null : (
               <Burger
                 opened={isNavbarOpened}
                 onClick={toggleNavbar}
@@ -59,7 +60,7 @@ const Header: FC = () => {
             <ExtraBoardsBadge />
           </Group>
           <Group>
-            {is768Px ? (
+            {largerThan('sm') ? (
               <TextInput
                 readOnly
                 placeholder="Rechercher"
@@ -87,7 +88,7 @@ const Header: FC = () => {
             <Menu shadow="md" width={200} withinPortal>
               <Menu.Target>
                 <div>
-                  {is768Px ? (
+                  {largerThan('sm') ? (
                     <Button variant="light" leftIcon={<IconUser size={18} />}>
                       {user?.email}
                     </Button>

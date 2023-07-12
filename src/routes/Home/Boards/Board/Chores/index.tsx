@@ -8,11 +8,11 @@ import {
   TextInput,
 } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
-import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import dayjs from "dayjs";
+import useWindowSize from "hooks/useWindowSize";
 import { FC, useMemo, useState } from "react";
 import ChoresList from "routes/Home/Boards/Board/Chores/ChoresList";
 import NewChoreModalContent from "routes/Home/Boards/Board/Chores/NewChoreModalContent";
@@ -31,7 +31,7 @@ const openNewModal = () => {
 const Chores: FC = () => {
   const { loadingChores, chores } = useBoard();
   const [search, setSearch] = useState("");
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const { largerThan } = useWindowSize()
 
   const choresWithDates = useMemo(() => {
     return (chores ?? []).map((chore) => {
@@ -82,7 +82,7 @@ const Chores: FC = () => {
           leftIcon={<IconPlus size={18} />}
           onClick={openNewModal}
         >
-          {is768Px ? "Ajouter votre première tâche" : "Nouvelle tâche"}
+          {largerThan('sm') ? "Ajouter votre première tâche" : "Nouvelle tâche"}
         </Button>
       </div>
     );

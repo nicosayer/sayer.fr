@@ -1,10 +1,10 @@
 import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import CannotBeSecure from "components/organisms/CannotBeSecure";
 import SecureLogin from "components/organisms/SecureLogin";
+import useWindowSize from "hooks/useWindowSize";
 import { useSecureLogin } from "providers/SecureLogin";
 import { FC, useState } from "react";
 import CreditCard from "routes/Home/Boards/Board/CreditCards/CreditCard";
@@ -24,7 +24,7 @@ const CreditCards: FC = () => {
   const { isSecure, canBeSecure } = useSecureLogin();
   const { loadingCreditCards, creditCards } = useBoard();
   const [search, setSearch] = useState("");
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const { largerThan } = useWindowSize()
 
   if (!canBeSecure) {
     return (
@@ -55,7 +55,7 @@ const CreditCards: FC = () => {
           leftIcon={<IconPlus size={18} />}
           onClick={openNewModal}
         >
-          {is768Px
+          {largerThan('sm')
             ? "Ajouter votre première carte de crédit"
             : "Nouvelle carte de crédit"}
         </Button>

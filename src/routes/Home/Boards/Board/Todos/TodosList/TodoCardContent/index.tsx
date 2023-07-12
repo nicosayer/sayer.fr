@@ -1,5 +1,4 @@
 import { ActionIcon, Checkbox, Group, Menu, Text } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import {
   IconDotsVertical,
@@ -9,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { deleteDoc, deleteField, Timestamp } from "firebase/firestore";
 import useGetUserName from "hooks/useGetUserName";
+import useWindowSize from "hooks/useWindowSize";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -39,7 +39,7 @@ const openEditModal = (todo: TodoDocument) => {
 };
 
 const TodoCardContent: FC<TodoCardContentProps> = ({ todo }) => {
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const { largerThan } = useWindowSize()
   const [user] = useAuthState(auth);
   const { boards } = useBoard();
   const getUserName = useGetUserName();
@@ -71,17 +71,17 @@ const TodoCardContent: FC<TodoCardContentProps> = ({ todo }) => {
         }}
       />
       <Group noWrap className="whitespace-nowrap">
-        {is768Px && (
+        {largerThan('sm') && (
           <Text c="dimmed" fz="sm">
             {todo.closedAt
               ? `fermé par ${getUserName(todo.closedBy ?? "")} le ${formatDate(
-                  todo.closedAt.toDate(),
-                  "D MMM"
-                )}`
+                todo.closedAt.toDate(),
+                "D MMM"
+              )}`
               : `ajouté par ${getUserName(todo.openedBy ?? "")} le ${formatDate(
-                  todo.openedAt?.toDate(),
-                  "D MMM"
-                )}`}
+                todo.openedAt?.toDate(),
+                "D MMM"
+              )}`}
           </Text>
         )}
         <Menu shadow="md" width={200} withinPortal>

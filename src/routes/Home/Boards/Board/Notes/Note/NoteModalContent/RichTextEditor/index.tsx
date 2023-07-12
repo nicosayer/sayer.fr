@@ -1,6 +1,5 @@
 import { toBase64 } from "@aws-sdk/util-base64";
 import { DEFAULT_THEME } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { RichTextEditor as MantineRichTextEditor } from "@mantine/tiptap";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
@@ -11,6 +10,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import useWindowSize from "hooks/useWindowSize";
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { NoteDocument } from "types/firebase/collections";
@@ -27,7 +27,7 @@ export interface RichTextEditorProps {
 
 const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
   const [user] = useAuthState(auth);
-  const is768Px = useMediaQuery("(min-width: 768px)", true);
+  const { largerThan } = useWindowSize()
 
   const editor = useEditor({
     extensions: [
@@ -92,7 +92,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
         },
       }}
     >
-      {is768Px && (
+      {largerThan('sm') && (
         <MantineRichTextEditor.Toolbar sticky>
           <MantineRichTextEditor.ColorPicker
             colors={[
