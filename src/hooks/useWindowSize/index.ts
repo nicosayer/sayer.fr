@@ -17,11 +17,11 @@ const useWindowSize = () => {
 
   return {
     width,
-    largerThan: (bp: MantineSize) => {
-      return width > Number(breakpoints[bp].slice(0, 2)) * px("1rem");
+    largerThan: (breakpoint: MantineSize) => {
+      return width > Number(breakpoints[breakpoint].slice(0, 2)) * px("1rem");
     },
-    smallerThan: (bp: MantineSize) => {
-      return width < Number(breakpoints[bp].slice(0, 2)) * px("1rem");
+    smallerThan: (breakpoint: MantineSize) => {
+      return width < Number(breakpoints[breakpoint].slice(0, 2)) * px("1rem");
     },
   };
 };
