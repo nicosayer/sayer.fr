@@ -1,5 +1,4 @@
 import { Button, Card, Input, Stack, TextInput } from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 import useResetPasswordModal from "hooks/useResetPasswordModal";
 import { FC, useState } from "react";
