@@ -14,7 +14,7 @@ export interface NoteModalHeaderProps {
 }
 
 const NoteModalHeader: FC<NoteModalHeaderProps> = ({ note }) => {
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
   const [name, setName] = useState(note?.name);
   const [debouncedName] = useDebouncedValue(note?.name, 10 * ONE_SECOND);
 
@@ -37,7 +37,7 @@ const NoteModalHeader: FC<NoteModalHeaderProps> = ({ note }) => {
           }
         }}
       />
-      {largerThan('sm') && (
+      {largerThan("md") && (
         <Group grow>
           <DatePickerInput
             locale="fr"

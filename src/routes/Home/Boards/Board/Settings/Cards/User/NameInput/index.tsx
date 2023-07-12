@@ -39,6 +39,7 @@ const NameInput: FC<NameInputProps> = ({ defaultValue }) => {
           disabled={loading}
         />
         <Button
+          disabled={!value || value === defaultValue}
           loading={loading}
           onClick={() => {
             if (user?.email && value) {

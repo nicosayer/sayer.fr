@@ -10,7 +10,7 @@ const Title: FC = () => {
   const { board } = useBoard();
   const { boards } = useBoards();
   const { boardId } = useParams();
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
   const navigate = useNavigate();
 
   const otherBoards = useMemo(() => {
@@ -20,7 +20,7 @@ const Title: FC = () => {
   const title = useMemo(() => {
     return (
       <Group spacing="xs">
-        {largerThan('sm') ? <IconLayoutList size={18} /> : null}
+        {largerThan("md") ? <IconLayoutList size={18} /> : null}
         <Text
           weight={500}
           className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"

@@ -27,7 +27,7 @@ export interface RichTextEditorProps {
 
 const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
   const [user] = useAuthState(auth);
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
 
   const editor = useEditor({
     extensions: [
@@ -92,7 +92,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
         },
       }}
     >
-      {largerThan('sm') && (
+      {largerThan("md") && (
         <MantineRichTextEditor.Toolbar sticky>
           <MantineRichTextEditor.ColorPicker
             colors={[

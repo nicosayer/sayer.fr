@@ -39,7 +39,7 @@ const openEditModal = (grocery: GroceryDocument) => {
 };
 
 const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
   const [user] = useAuthState(auth);
   const { boards } = useBoard();
   const getUserName = useGetUserName();
@@ -71,15 +71,15 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
         }}
       />
       <Group noWrap className="whitespace-nowrap">
-        {largerThan('sm') && (
+        {largerThan("md") && (
           <Text c="dimmed" fz="sm">
             {grocery.closedAt
               ? `fermé par ${getUserName(
-                grocery.closedBy ?? ""
-              )} le ${formatDate(grocery.closedAt.toDate(), "D MMM")}`
+                  grocery.closedBy ?? ""
+                )} le ${formatDate(grocery.closedAt.toDate(), "D MMM")}`
               : `ajouté par ${getUserName(
-                grocery.openedBy ?? ""
-              )} le ${formatDate(grocery.openedAt?.toDate(), "D MMM")}`}
+                  grocery.openedBy ?? ""
+                )} le ${formatDate(grocery.openedAt?.toDate(), "D MMM")}`}
           </Text>
         )}
         <Menu shadow="md" width={200} withinPortal>

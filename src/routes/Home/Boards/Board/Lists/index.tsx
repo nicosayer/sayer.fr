@@ -20,7 +20,7 @@ const openNewModal = () => {
 const Lists: FC = () => {
   const { loadingLists, lists } = useBoard();
   const [search, setSearch] = useState("");
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
 
   if (!lists || loadingLists) {
     return <LoadingOverlay visible />;
@@ -34,7 +34,7 @@ const Lists: FC = () => {
           leftIcon={<IconPlus size={18} />}
           onClick={openNewModal}
         >
-          {largerThan('sm') ? "Ajouter votre première liste" : "Nouvelle liste"}
+          {largerThan("md") ? "Ajouter votre première liste" : "Nouvelle liste"}
         </Button>
       </div>
     );

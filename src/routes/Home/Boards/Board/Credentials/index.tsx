@@ -24,7 +24,7 @@ const Credentials: FC = () => {
   const { isSecure, canBeSecure } = useSecureLogin();
   const { loadingCredentials, credentials } = useBoard();
   const [search, setSearch] = useState("");
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
 
   if (!canBeSecure) {
     return (
@@ -54,7 +54,7 @@ const Credentials: FC = () => {
           leftIcon={<IconPlus size={18} />}
           onClick={openNewModal}
         >
-          {largerThan('sm')
+          {largerThan("md")
             ? "Ajouter votre premier mot de passe"
             : "Nouveau mot de passe"}
         </Button>

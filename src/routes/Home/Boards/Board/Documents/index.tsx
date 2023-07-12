@@ -20,7 +20,7 @@ const openNewModal = () => {
 const Documents: FC = () => {
   const { loadingDocuments, documents } = useBoard();
   const [search, setSearch] = useState("");
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
 
   if (!documents || loadingDocuments) {
     return <LoadingOverlay visible />;
@@ -34,7 +34,9 @@ const Documents: FC = () => {
           leftIcon={<IconPlus size={18} />}
           onClick={openNewModal}
         >
-          {largerThan('sm') ? "Ajouter votre premier document" : "Nouveau document"}
+          {largerThan("md")
+            ? "Ajouter votre premier document"
+            : "Nouveau document"}
         </Button>
       </div>
     );

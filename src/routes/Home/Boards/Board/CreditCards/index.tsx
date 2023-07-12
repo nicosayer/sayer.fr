@@ -24,7 +24,7 @@ const CreditCards: FC = () => {
   const { isSecure, canBeSecure } = useSecureLogin();
   const { loadingCreditCards, creditCards } = useBoard();
   const [search, setSearch] = useState("");
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
 
   if (!canBeSecure) {
     return (
@@ -55,7 +55,7 @@ const CreditCards: FC = () => {
           leftIcon={<IconPlus size={18} />}
           onClick={openNewModal}
         >
-          {largerThan('sm')
+          {largerThan("md")
             ? "Ajouter votre première carte de crédit"
             : "Nouvelle carte de crédit"}
         </Button>

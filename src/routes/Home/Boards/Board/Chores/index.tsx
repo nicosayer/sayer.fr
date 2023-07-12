@@ -31,7 +31,7 @@ const openNewModal = () => {
 const Chores: FC = () => {
   const { loadingChores, chores } = useBoard();
   const [search, setSearch] = useState("");
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
 
   const choresWithDates = useMemo(() => {
     return (chores ?? []).map((chore) => {
@@ -82,7 +82,7 @@ const Chores: FC = () => {
           leftIcon={<IconPlus size={18} />}
           onClick={openNewModal}
         >
-          {largerThan('sm') ? "Ajouter votre première tâche" : "Nouvelle tâche"}
+          {largerThan("md") ? "Ajouter votre première tâche" : "Nouvelle tâche"}
         </Button>
       </div>
     );

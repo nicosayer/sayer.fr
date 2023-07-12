@@ -9,6 +9,7 @@ const useWindowSize = () => {
     const handleResize = () => {
       setWidth(window.innerWidth);
     };
+
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -18,10 +19,10 @@ const useWindowSize = () => {
   return {
     width,
     largerThan: (breakpoint: MantineSize) => {
-      return width > Number(breakpoints[breakpoint].slice(0, 2)) * px("1rem");
+      return width >= Number(breakpoints[breakpoint].slice(0, 2)) * px("1rem");
     },
     smallerThan: (breakpoint: MantineSize) => {
-      return width < Number(breakpoints[breakpoint].slice(0, 2)) * px("1rem");
+      return width <= Number(breakpoints[breakpoint].slice(0, 2)) * px("1rem");
     },
   };
 };

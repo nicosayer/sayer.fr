@@ -63,7 +63,6 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
   const navigate = useNavigate();
   const { boards } = useBoard();
 
-
   return (
     <Stack align="center">
       <Group spacing="xs">

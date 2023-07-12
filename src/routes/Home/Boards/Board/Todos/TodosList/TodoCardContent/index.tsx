@@ -39,7 +39,7 @@ const openEditModal = (todo: TodoDocument) => {
 };
 
 const TodoCardContent: FC<TodoCardContentProps> = ({ todo }) => {
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
   const [user] = useAuthState(auth);
   const { boards } = useBoard();
   const getUserName = useGetUserName();
@@ -71,17 +71,17 @@ const TodoCardContent: FC<TodoCardContentProps> = ({ todo }) => {
         }}
       />
       <Group noWrap className="whitespace-nowrap">
-        {largerThan('sm') && (
+        {largerThan("md") && (
           <Text c="dimmed" fz="sm">
             {todo.closedAt
               ? `fermé par ${getUserName(todo.closedBy ?? "")} le ${formatDate(
-                todo.closedAt.toDate(),
-                "D MMM"
-              )}`
+                  todo.closedAt.toDate(),
+                  "D MMM"
+                )}`
               : `ajouté par ${getUserName(todo.openedBy ?? "")} le ${formatDate(
-                todo.openedAt?.toDate(),
-                "D MMM"
-              )}`}
+                  todo.openedAt?.toDate(),
+                  "D MMM"
+                )}`}
           </Text>
         )}
         <Menu shadow="md" width={200} withinPortal>

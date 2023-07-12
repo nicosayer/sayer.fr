@@ -19,7 +19,7 @@ const Notes: FC = () => {
   const [search, setSearch] = useState("");
   const [loadingNew, start, stop] = useBooleanState();
   const navigate = useNavigate();
-  const { largerThan } = useWindowSize()
+  const { largerThan } = useWindowSize();
 
   const createNoteAndOpen = useCallback(() => {
     if (board?.ref) {
@@ -51,7 +51,7 @@ const Notes: FC = () => {
             leftIcon={<IconPlus size={18} />}
             onClick={createNoteAndOpen}
           >
-            {largerThan('sm') ? "Ajouter votre première note" : "Nouvelle note"}
+            {largerThan("md") ? "Ajouter votre première note" : "Nouvelle note"}
           </Button>
         </div>
       </>

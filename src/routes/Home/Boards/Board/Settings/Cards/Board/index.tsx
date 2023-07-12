@@ -1,7 +1,7 @@
 import { Button, Card, MultiSelect, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import useBooleanState from "hooks/useBooleanState";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { BoardDocument } from "types/firebase/collections";
 import { updateDoc } from "utils/firebase";
 import { cleanString } from "utils/string";
@@ -15,11 +15,15 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
   const [loading, start, stop] = useBooleanState({ stopDelay: ONE_SECOND });
   const [users, setUsers] = useState(board?.users ?? []);
 
-  const form = useForm({
-    initialValues: {
+  const initialValues = useMemo(() => {
+    return {
       name: board?.name ?? "",
       users: board?.users ?? [],
-    },
+    };
+  }, [board?.name, board?.users]);
+
+  const form = useForm({
+    initialValues,
 
     validate: {
       name: (name) => {
@@ -88,7 +92,13 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
               className="hidden"
               aria-hidden="true"
             />
-            <Button loading={loading} type="submit">
+            <Button
+              loading={loading}
+              type="submit"
+              disabled={
+                JSON.stringify(initialValues) === JSON.stringify(form.values)
+              }
+            >
               Sauvegarder
             </Button>
           </div>
