@@ -2,6 +2,7 @@ import CryptoJS from "crypto-js";
 import * as functions from "firebase-functions";
 
 export const encrypt = functions
+  .runWith({ enforceAppCheck: true })
   .region("europe-west3")
   .https.onCall((string) => {
     if (!process.env.CRYPTO_KEY) {
@@ -21,6 +22,7 @@ export const encrypt = functions
   });
 
 export const decrypt = functions
+  .runWith({ enforceAppCheck: true })
   .region("europe-west3")
   .https.onCall((string: string) => {
     if (!process.env.CRYPTO_KEY) {
