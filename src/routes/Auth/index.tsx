@@ -4,7 +4,7 @@ import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
 
 const Auth = () => {
-  const [signInWithGoogle, , loadingSignInWithGoogle] =
+  const [signInWithGoogle, , loading, error] =
     useSignInWithGoogle(auth);
 
   return (
@@ -14,7 +14,7 @@ const Auth = () => {
         color="teal"
         rightIcon={<IconArrowRight size={18} />}
         onClick={() => signInWithGoogle()}
-        loading={loadingSignInWithGoogle}
+        loading={loading && !error}
       >
         Se connecter avec Google
       </Button>
