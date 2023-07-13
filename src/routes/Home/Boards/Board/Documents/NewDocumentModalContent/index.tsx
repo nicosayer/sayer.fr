@@ -103,7 +103,7 @@ const NewDocumentModalContent: FC = () => {
             }}
             accept={[DocumentMime.Jpeg, DocumentMime.Png, DocumentMime.Pdf]}
             classNames={{
-              root: classNames("px-[12px] border-[1px]", {
+              root: classNames("px-3 border", {
                 "border-red-400": form.errors.file,
               }),
             }}

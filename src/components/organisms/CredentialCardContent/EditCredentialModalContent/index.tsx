@@ -102,7 +102,7 @@ const EditCredentialModalContent: FC<EditCredentialModalContentProps> = ({
   if (loading) {
     return (
       <Stack>
-        <div className="relative h-[100px]">
+        <div className="relative h-24">
           <LoadingOverlay visible />
         </div>
         <div className="flex ml-auto">

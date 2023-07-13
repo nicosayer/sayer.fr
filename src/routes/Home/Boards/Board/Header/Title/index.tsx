@@ -23,7 +23,7 @@ const Title: FC = () => {
         {largerThan("md") ? <IconLayoutList size={18} /> : null}
         <Text
           weight={500}
-          className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
+          className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap"
         >
           {board?.name}
         </Text>

@@ -106,7 +106,7 @@ const Navbar: FC = () => {
       </MantineNavbar.Section>
       <MantineNavbar.Section
         className={classNames(
-          "pt-4 mt-4 border-0 border-solid border-t-[1px]",
+          "pt-4 mt-4 border-0 border-solid border-t",
           darkMode ? "border-[#2C2E33]" : "border-[#e9ecef]"
         )}
       >

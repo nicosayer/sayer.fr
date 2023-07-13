@@ -36,7 +36,7 @@ const SecureLogin: FC = () => {
   }, [error, form]);
 
   return (
-    <div className="mx-auto max-w-[256px] text-center">
+    <div className="max-w-xs mx-auto text-center">
       <IconShieldLock size={36} className="text-gray-500" />
       <form
         onSubmit={form.onSubmit((values) => {

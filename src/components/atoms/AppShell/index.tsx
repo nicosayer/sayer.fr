@@ -58,7 +58,7 @@ const AppShell: FC<AppShellProps> = ({ header, navbar, children }) => {
         navbar={navbar}
         header={header}
       >
-        <div className="max-w-[900px] m-auto h-full">{children}</div>
+        <div className="h-full max-w-4xl m-auto">{children}</div>
       </MantineAppShell>
     </AppShellContext.Provider>
   );

@@ -10,7 +10,7 @@ interface CredentialUsernameProps {
 const CredentialUsername: FC<CredentialUsernameProps> = ({ credential }) => {
   return (
     <Group spacing="xs">
-      <Code className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+      <Code className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap">
         {credential?.username}
       </Code>
       <CopyButton value={String(credential?.username)}>
