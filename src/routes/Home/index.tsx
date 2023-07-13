@@ -7,7 +7,6 @@ import Boards from "routes/Home/Boards";
 import Board from "routes/Home/Boards/Board";
 import Chores from "routes/Home/Boards/Board/Chores";
 import Credentials from "routes/Home/Boards/Board/Credentials";
-import CreditCards from "routes/Home/Boards/Board/CreditCards";
 import Documents from "routes/Home/Boards/Board/Documents";
 import Groceries from "routes/Home/Boards/Board/Groceries";
 import Lists from "routes/Home/Boards/Board/Lists";
@@ -52,8 +51,6 @@ const router = createBrowserRouter([
                 path: "credentials/:credentialId",
                 element: <Credentials />,
               },
-              { path: "credit-cards", element: <CreditCards /> },
-              { path: "credit-cards/:creditCardId", element: <CreditCards /> },
               { path: "documents", element: <Documents /> },
               { path: "documents/:documentId", element: <Documents /> },
               { path: "groceries", element: <Groceries /> },

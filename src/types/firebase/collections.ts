@@ -4,7 +4,6 @@ export enum Collection {
   boards = "boards",
   chores = "chores",
   credentials = "credentials",
-  creditCards = "creditCards",
   documents = "documents",
   groceries = "groceries",
   lists = "lists",
@@ -46,21 +45,6 @@ export interface CredentialDocument {
   url?: string;
   username?: string;
   password?: string;
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
-}
-
-export interface CreditCardDocument {
-  id?: string;
-  ref?: DocumentReference<CreditCardDocument>;
-  name?: string;
-  cardholder?: string;
-  number?: string;
-  lastDigits?: string;
-  expirationMonth?: string;
-  expirationYear?: string;
-  securityCode?: string;
-  color?: string;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }

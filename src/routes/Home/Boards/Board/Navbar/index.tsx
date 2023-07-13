@@ -41,13 +41,6 @@ export const menu = [
       secureLogin: ISecureLoginContext
     ) => (secureLogin.isSecure ? credentials?.length ?? 0 : "?"),
   },
-  // {
-  //   icon: <IconCreditCard size={18} />,
-  //   color: "grape",
-  //   label: "Cartes de crédit",
-  //   to: "credit-cards",
-  //   getBadgeContent: ({ creditCards }: IBoardContext) => creditCards?.length ?? 0,
-  // },
   {
     icon: <IconId size={18} />,
     label: "Documents",

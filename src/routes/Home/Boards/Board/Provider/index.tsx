@@ -12,7 +12,6 @@ import {
   ChoreDocument,
   Collection,
   CredentialDocument,
-  CreditCardDocument,
   DocumentDocument,
   GroceryDocument,
   ListDocument,
@@ -31,7 +30,6 @@ export interface IBoardContext {
   ) => void;
   chores?: ChoreDocument[];
   credentials?: CredentialDocument[];
-  creditCards?: CreditCardDocument[];
   documents?: DocumentDocument[];
   groceries?: GroceryDocument[];
   lists?: ListDocument[];
@@ -41,7 +39,6 @@ export interface IBoardContext {
   users?: Record<string, UserDocument>;
   loadingChores: boolean;
   loadingCredentials: boolean;
-  loadingCreditCards: boolean;
   loadingDocuments: boolean;
   loadingGroceries: boolean;
   loadingLists: boolean;
@@ -57,7 +54,6 @@ const BoardContext = createContext<IBoardContext>({
   setExtraBoardIds: () => {},
   chores: undefined,
   credentials: undefined,
-  creditCards: undefined,
   documents: undefined,
   groceries: undefined,
   lists: undefined,
@@ -67,7 +63,6 @@ const BoardContext = createContext<IBoardContext>({
   users: undefined,
   loadingChores: false,
   loadingCredentials: false,
-  loadingCreditCards: false,
   loadingDocuments: false,
   loadingGroceries: false,
   loadingLists: false,
@@ -121,12 +116,6 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     useDocumentsCollectionsData<DocumentDocument>(
       currentBoards ?? [],
       Collection.documents
-    );
-
-  const [creditCards, loadingCreditCards] =
-    useDocumentsCollectionsData<CreditCardDocument>(
-      currentBoards ?? [],
-      Collection.creditCards
     );
 
   const [groceries, loadingGroceries] =
@@ -207,7 +196,6 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       setExtraBoardIds,
       chores,
       credentials,
-      creditCards,
       documents,
       groceries,
       lists,
@@ -217,7 +205,6 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
       users,
       loadingChores,
       loadingCredentials,
-      loadingCreditCards,
       loadingDocuments,
       loadingGroceries,
       loadingLists,
@@ -231,7 +218,6 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     setExtraBoardIds,
     chores,
     credentials,
-    creditCards,
     currentBoards,
     documents,
     groceries,
@@ -242,7 +228,6 @@ const BoardProvider: FC<BoardProviderProps> = ({ children, boardId }) => {
     users,
     loadingChores,
     loadingCredentials,
-    loadingCreditCards,
     loadingDocuments,
     loadingGroceries,
     loadingLists,

@@ -49,7 +49,7 @@ function CustomAction({
 }
 
 const Spotlight = ({ children }: PropsWithChildren) => {
-  const { credentials, creditCards, documents, lists, notes } = useBoard();
+  const { credentials, documents, lists, notes } = useBoard();
   const [query, setQuery] = useState("");
 
   const navigate = useNavigate();
@@ -74,16 +74,6 @@ const Spotlight = ({ children }: PropsWithChildren) => {
             group: "Mot de passe",
             onTrigger: () => {
               navigate(`/boards/${boardId}/credentials/${credential.id}`);
-            },
-          };
-        }),
-        ...(creditCards ?? []).map((creditCard) => {
-          return {
-            title: creditCard.name ?? "",
-            description: creditCard.cardholder,
-            group: "Carte de crédit",
-            onTrigger: () => {
-              navigate(`/boards/${boardId}/credit-cards/${creditCard.id}`);
             },
           };
         }),
