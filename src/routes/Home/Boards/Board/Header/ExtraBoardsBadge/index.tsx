@@ -44,9 +44,7 @@ const ExtraBoardsBadge: FC = () => {
                   )
                 )}
                 readOnly
-                classNames={{
-                  input: "cursor-pointer",
-                }}
+                className="pointer-events-none"
               />
             }
             onClick={() => {

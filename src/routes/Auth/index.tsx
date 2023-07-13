@@ -4,8 +4,7 @@ import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "utils/firebase";
 
 const Auth = () => {
-  const [signInWithGoogle, , loading, error] =
-    useSignInWithGoogle(auth);
+  const [signInWithGoogle, , loading, error] = useSignInWithGoogle(auth);
 
   return (
     <div className="flex items-center justify-center h-full">
