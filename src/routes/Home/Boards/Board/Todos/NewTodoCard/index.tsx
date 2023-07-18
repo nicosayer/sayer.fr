@@ -47,7 +47,6 @@ const NewTodoCard: FC = () => {
             <IconPlus size={18} />
           </ActionIcon>
           <TextInput
-            disabled={loading}
             data-autofocus
             autoFocus
             withAsterisk
@@ -56,7 +55,9 @@ const NewTodoCard: FC = () => {
             placeholder="Nouveau todo"
             value={value}
             onChange={(event) => {
-              setValue(event.target.value);
+              if (!loading) {
+                setValue(event.target.value);
+              }
             }}
             onKeyDown={(event) => {
               if (event.key === "Enter") {

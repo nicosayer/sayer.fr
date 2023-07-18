@@ -48,7 +48,6 @@ const NewGroceryCard: FC = () => {
             <IconPlus size={18} />
           </ActionIcon>
           <TextInput
-            disabled={loading}
             data-autofocus
             autoFocus
             withAsterisk
@@ -57,7 +56,9 @@ const NewGroceryCard: FC = () => {
             placeholder="Nouvelle course"
             value={value}
             onChange={(event) => {
-              setValue(event.target.value);
+              if (!loading) {
+                setValue(event.target.value);
+              }
             }}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
