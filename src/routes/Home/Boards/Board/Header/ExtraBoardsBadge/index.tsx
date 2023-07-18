@@ -30,14 +30,12 @@ const ExtraBoardsBadge: FC = () => {
         <Badge>+{(currentBoards?.length ?? 1) - 1}</Badge>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>Afficher le contenu des boards</Menu.Label>
-        {boards?.map((board) => (
+        <Menu.Label>Afficher également le contenu des boards</Menu.Label>
+        {boards?.filter(board => board.id !== boardId)?.map((board) => (
           <Menu.Item
             key={board.id}
-            disabled={board.id === boardId}
             icon={
               <Checkbox
-                disabled={board.id === boardId}
                 checked={Boolean(
                   currentBoards?.find(
                     (currentBoard) => currentBoard.id === board.id

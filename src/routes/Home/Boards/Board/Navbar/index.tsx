@@ -31,53 +31,52 @@ const COLORS = [
   "orange",
 ];
 
-export const menu = [
+export const menu: {
+  icon: JSX.Element;
+  label: string;
+  to: string;
+  getBadgeContent: (
+    board: IBoardContext,
+    secureLogin: ISecureLoginContext
+  ) => string | number;
+}[] = [
   {
     icon: <IconLockOpen size={18} />,
     label: "Mots de passe",
     to: "credentials",
-    getBadgeContent: (
-      { credentials }: IBoardContext,
-      secureLogin: ISecureLoginContext
-    ) => (secureLogin.isSecure ? credentials?.length ?? 0 : "?"),
+    getBadgeContent: ({ credentials }, secureLogin) =>
+      secureLogin.isSecure ? credentials?.length ?? 0 : "?",
   },
   {
     icon: <IconId size={18} />,
     label: "Documents",
     to: "documents",
-    getBadgeContent: ({ documents }: IBoardContext) => documents?.length ?? 0,
+    getBadgeContent: ({ documents }) => documents?.length ?? 0,
   },
   {
     icon: <IconEdit size={18} />,
     label: "Notes",
     to: "notes",
-    getBadgeContent: ({ notes }: IBoardContext) => notes?.length ?? 0,
+    getBadgeContent: ({ notes }) => notes?.length ?? 0,
   },
   {
     icon: <IconListCheck size={18} />,
     label: "Listes",
     to: "lists",
-    getBadgeContent: ({ lists }: IBoardContext) => lists?.length ?? 0,
+    getBadgeContent: ({ lists }) => lists?.length ?? 0,
   },
-  // {
-  //   icon: <IconIroning1 size={18} />,
-  //   color: "lime",
-  //   label: "Tâches",
-  //   to: "chores",
-  //   getBadgeContent: ({ todos }: IBoardContext) => todos?.length ?? 0,
-  // },
   {
     icon: <IconShoppingCart size={18} />,
     label: "Courses",
     to: "groceries",
-    getBadgeContent: ({ groceries }: IBoardContext) =>
+    getBadgeContent: ({ groceries }) =>
       groceries?.filter((grocery) => !grocery.closedAt).length ?? 0,
   },
   {
     icon: <IconChecklist size={18} />,
     label: "Todos",
     to: "todos",
-    getBadgeContent: ({ todos }: IBoardContext) =>
+    getBadgeContent: ({ todos }) =>
       todos?.filter((todo) => !todo.closedAt).length ?? 0,
   },
 ];

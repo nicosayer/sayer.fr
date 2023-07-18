@@ -24,13 +24,10 @@ function CustomAction({
 
   return (
     <UnstyledButton
-      className={classNames(
-        "relative block w-full py-2.5 px-3 rounded",
-        {
-          "bg-dark-400": hovered && theme.colorScheme === "dark",
-          "bg-gray-100": hovered && theme.colorScheme !== "dark",
-        }
-      )}
+      className={classNames("relative block w-full py-2.5 px-3 rounded", {
+        "bg-dark-400": hovered && theme.colorScheme === "dark",
+        "bg-gray-100": hovered && theme.colorScheme !== "dark",
+      })}
       onClick={onTrigger}
       {...others}
     >
