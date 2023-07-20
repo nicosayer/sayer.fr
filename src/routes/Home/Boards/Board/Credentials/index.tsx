@@ -2,7 +2,6 @@ import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
-import CannotBeSecure from "components/organisms/CannotBeSecure";
 import SecureLogin from "components/organisms/SecureLogin";
 import useWindowSize from "hooks/useWindowSize";
 import { useSecureLogin } from "providers/SecureLogin";
@@ -21,18 +20,10 @@ const openNewModal = () => {
 };
 
 const Credentials: FC = () => {
-  const { isSecure, canBeSecure } = useSecureLogin();
+  const { isSecure } = useSecureLogin();
   const { loadingCredentials, credentials } = useBoard();
   const [search, setSearch] = useState("");
   const { largerThan } = useWindowSize();
-
-  if (!canBeSecure) {
-    return (
-      <div className="py-10">
-        <CannotBeSecure />
-      </div>
-    );
-  }
 
   if (!isSecure) {
     return (

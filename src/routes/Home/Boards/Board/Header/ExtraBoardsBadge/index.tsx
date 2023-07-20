@@ -31,29 +31,31 @@ const ExtraBoardsBadge: FC = () => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>Afficher également le contenu des boards</Menu.Label>
-        {boards?.filter(board => board.id !== boardId)?.map((board) => (
-          <Menu.Item
-            key={board.id}
-            icon={
-              <Checkbox
-                checked={Boolean(
-                  currentBoards?.find(
-                    (currentBoard) => currentBoard.id === board.id
-                  )
-                )}
-                readOnly
-                className="pointer-events-none"
-              />
-            }
-            onClick={() => {
-              if (board.id) {
-                setExtraBoardIds((old) => xor(old, [board.id]) as string[]);
+        {boards
+          ?.filter((board) => board.id !== boardId)
+          ?.map((board) => (
+            <Menu.Item
+              key={board.id}
+              icon={
+                <Checkbox
+                  checked={Boolean(
+                    currentBoards?.find(
+                      (currentBoard) => currentBoard.id === board.id
+                    )
+                  )}
+                  readOnly
+                  className="pointer-events-none"
+                />
               }
-            }}
-          >
-            {board.name}
-          </Menu.Item>
-        ))}
+              onClick={() => {
+                if (board.id) {
+                  setExtraBoardIds((old) => xor(old, [board.id]) as string[]);
+                }
+              }}
+            >
+              {board.name}
+            </Menu.Item>
+          ))}
       </Menu.Dropdown>
     </Menu>
   );

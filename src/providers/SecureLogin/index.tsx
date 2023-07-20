@@ -16,12 +16,10 @@ import { auth } from "utils/firebase";
 
 export interface ISecureLoginContext {
   isSecure: boolean;
-  canBeSecure: boolean;
 }
 
 const SecureLoginContext = createContext<ISecureLoginContext>({
   isSecure: false,
-  canBeSecure: false,
 });
 
 SecureLoginContext.displayName = "SecureLogin";
@@ -95,12 +93,8 @@ const SecureLoginProvider: FC<SecureLoginProviderProps> = ({ children }) => {
   const context = useMemo(() => {
     return {
       isSecure,
-      canBeSecure:
-        user?.providerData.some(
-          (provider) => provider.providerId === "password"
-        ) ?? false,
     };
-  }, [isSecure, user?.providerData]);
+  }, [isSecure]);
 
   return (
     <SecureLoginContext.Provider value={context}>
