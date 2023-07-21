@@ -2,7 +2,6 @@ import { DocumentReference, Timestamp } from "firebase/firestore";
 
 export enum Collection {
   boards = "boards",
-  chores = "chores",
   credentials = "credentials",
   documents = "documents",
   groceries = "groceries",
@@ -20,22 +19,6 @@ export interface BoardDocument {
   users?: string[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
-}
-
-export enum ChoreUnit {
-  Day = "DAY",
-  Week = "WEEK",
-  Month = "MONTH",
-}
-
-export interface ChoreDocument {
-  id?: string;
-  ref?: DocumentReference<CredentialDocument>;
-  name?: string;
-  startDate?: string;
-  lastDoneDate?: string;
-  frequency?: number;
-  unit?: ChoreUnit;
 }
 
 export interface CredentialDocument {

@@ -195,7 +195,7 @@ const ListCardContent: FC<ListCardsPropContent> = ({ list, listItems }) => {
                     }}
                     icon={<IconSwitchHorizontal size={18} />}
                   >
-                    Déplacer
+                    Déplacer de board
                   </Menu.Item>
                 ) : undefined}
                 <Menu.Item

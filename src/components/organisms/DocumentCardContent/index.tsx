@@ -170,7 +170,7 @@ const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
                     }}
                     icon={<IconSwitchHorizontal size={18} />}
                   >
-                    Déplacer
+                    Déplacer de board
                   </Menu.Item>
                 ) : undefined}
                 <Menu.Item

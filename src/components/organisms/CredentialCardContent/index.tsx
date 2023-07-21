@@ -129,7 +129,7 @@ const CredentialCardContent: FC<CredentialCardContentProps> = ({
                     }}
                     icon={<IconSwitchHorizontal size={18} />}
                   >
-                    Déplacer
+                    Déplacer de board
                   </Menu.Item>
                 ) : undefined}
                 <Menu.Item

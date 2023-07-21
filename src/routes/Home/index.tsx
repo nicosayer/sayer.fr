@@ -5,7 +5,6 @@ import {
 } from "react-router-dom";
 import Boards from "routes/Home/Boards";
 import Board from "routes/Home/Boards/Board";
-import Chores from "routes/Home/Boards/Board/Chores";
 import Credentials from "routes/Home/Boards/Board/Credentials";
 import Documents from "routes/Home/Boards/Board/Documents";
 import Groceries from "routes/Home/Boards/Board/Groceries";
@@ -39,10 +38,6 @@ const router = createBrowserRouter([
             element: <Board />,
             children: [
               { index: true, element: <BoardRedirect /> },
-              {
-                path: "chores",
-                element: <Chores />,
-              },
               {
                 path: "credentials",
                 element: <Credentials />,

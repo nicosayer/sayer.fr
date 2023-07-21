@@ -99,7 +99,7 @@ const TodoCardContent: FC<TodoCardContentProps> = ({ todo }) => {
                 }}
                 icon={<IconSwitchHorizontal size={18} />}
               >
-                Déplacer
+                Déplacer de board
               </Menu.Item>
             ) : undefined}
             <Menu.Item
