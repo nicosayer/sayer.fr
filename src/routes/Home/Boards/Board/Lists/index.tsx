@@ -4,6 +4,7 @@ import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import useWindowSize from "hooks/useWindowSize";
 import { FC, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import List from "routes/Home/Boards/Board/Lists/List";
 import ListsList from "routes/Home/Boards/Board/Lists/ListsList";
 import NewListModalContent from "routes/Home/Boards/Board/Lists/NewListModalContent";
@@ -19,7 +20,8 @@ const openNewModal = () => {
 
 const Lists: FC = () => {
   const { loadingLists, lists } = useBoard();
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("s") ?? "");
   const { largerThan } = useWindowSize();
 
   if (!lists || loadingLists) {
@@ -57,6 +59,7 @@ const Lists: FC = () => {
               value={search}
               onChange={(event) => {
                 setSearch(event.target.value);
+                setSearchParams({ s: event.target.value });
               }}
             />
             <Button

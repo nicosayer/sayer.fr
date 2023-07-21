@@ -1,11 +1,19 @@
-import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  CloseButton,
+  Group,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
 import useWindowSize from "hooks/useWindowSize";
-import { FC, useCallback, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { FC, useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Note from "routes/Home/Boards/Board/Notes/Note";
 import NotesList from "routes/Home/Boards/Board/Notes/NotesList";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -16,10 +24,16 @@ import { addDoc } from "utils/firebase";
 const Notes: FC = () => {
   const { board, loadingNotes, notes } = useBoard();
   const { boardId } = useParams();
-  const [search, setSearch] = useState("");
   const [loadingNew, start, stop] = useBooleanState();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("s") ?? "");
+  const [debouncedSearch] = useDebouncedValue(search, 200);
   const { largerThan } = useWindowSize();
+
+  useEffect(() => {
+    setSearchParams(debouncedSearch ? { s: debouncedSearch } : undefined);
+  }, [debouncedSearch, setSearchParams]);
 
   const createNoteAndOpen = useCallback(() => {
     if (board?.ref) {
@@ -76,6 +90,15 @@ const Notes: FC = () => {
               onChange={(event) => {
                 setSearch(event.target.value);
               }}
+              rightSection={
+                search && (
+                  <CloseButton
+                    onClick={() => {
+                      setSearch("");
+                    }}
+                  />
+                )
+              }
             />
             <Button
               loading={loadingNew}
@@ -87,7 +110,7 @@ const Notes: FC = () => {
             </Button>
           </Group>
         </Group>
-        <NotesList search={search} />
+        <NotesList search={debouncedSearch} />
       </Stack>
     </>
   );

@@ -1,11 +1,20 @@
-import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  CloseButton,
+  Group,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import SecureLogin from "components/organisms/SecureLogin";
 import useWindowSize from "hooks/useWindowSize";
 import { useSecureLogin } from "providers/SecureLogin";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Credential from "routes/Home/Boards/Board/Credentials/Credential";
 import CredentialsList from "routes/Home/Boards/Board/Credentials/CredentialsList";
 import NewCredentialModalContent from "routes/Home/Boards/Board/Credentials/NewCredentialModalContent";
@@ -22,8 +31,14 @@ const openNewModal = () => {
 const Credentials: FC = () => {
   const { isSecure } = useSecureLogin();
   const { loadingCredentials, credentials } = useBoard();
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("s") ?? "");
+  const [debouncedSearch] = useDebouncedValue(search, 200);
   const { largerThan } = useWindowSize();
+
+  useEffect(() => {
+    setSearchParams(debouncedSearch ? { s: debouncedSearch } : undefined);
+  }, [debouncedSearch, setSearchParams]);
 
   if (!isSecure) {
     return (
@@ -71,6 +86,15 @@ const Credentials: FC = () => {
               onChange={(event) => {
                 setSearch(event.target.value);
               }}
+              rightSection={
+                search && (
+                  <CloseButton
+                    onClick={() => {
+                      setSearch("");
+                    }}
+                  />
+                )
+              }
             />
             <Button
               variant="default"
@@ -81,7 +105,7 @@ const Credentials: FC = () => {
             </Button>
           </Group>
         </Group>
-        <CredentialsList search={search} />
+        <CredentialsList search={debouncedSearch} />
       </Stack>
     </>
   );

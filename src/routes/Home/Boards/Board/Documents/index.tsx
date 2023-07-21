@@ -1,9 +1,18 @@
-import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  CloseButton,
+  Group,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
 import { openModal } from "@mantine/modals";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import useWindowSize from "hooks/useWindowSize";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Document from "routes/Home/Boards/Board/Documents/Document";
 import DocumentsList from "routes/Home/Boards/Board/Documents/DocumentsList";
 import NewDocumentModalContent from "routes/Home/Boards/Board/Documents/NewDocumentModalContent";
@@ -19,8 +28,14 @@ const openNewModal = () => {
 
 const Documents: FC = () => {
   const { loadingDocuments, documents } = useBoard();
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("s") ?? "");
+  const [debouncedSearch] = useDebouncedValue(search, 200);
   const { largerThan } = useWindowSize();
+
+  useEffect(() => {
+    setSearchParams(debouncedSearch ? { s: debouncedSearch } : undefined);
+  }, [debouncedSearch, setSearchParams]);
 
   if (!documents || loadingDocuments) {
     return <LoadingOverlay visible />;
@@ -60,6 +75,15 @@ const Documents: FC = () => {
               onChange={(event) => {
                 setSearch(event.target.value);
               }}
+              rightSection={
+                search && (
+                  <CloseButton
+                    onClick={() => {
+                      setSearch("");
+                    }}
+                  />
+                )
+              }
             />
             <Button
               variant="default"
@@ -70,7 +94,7 @@ const Documents: FC = () => {
             </Button>
           </Group>
         </Group>
-        <DocumentsList search={search} />
+        <DocumentsList search={debouncedSearch} />
       </Stack>
     </>
   );

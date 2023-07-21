@@ -1,14 +1,22 @@
-import { Group, Stack, Text, TextInput } from "@mantine/core";
+import { CloseButton, Group, Stack, Text, TextInput } from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import NewTodoCard from "routes/Home/Boards/Board/Todos/NewTodoCard";
 import TodosList from "routes/Home/Boards/Board/Todos/TodosList";
 
 const Todos: FC = () => {
   const { loadingTodos, todos } = useBoard();
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("s") ?? "");
+  const [debouncedSearch] = useDebouncedValue(search, 200);
+
+  useEffect(() => {
+    setSearchParams(debouncedSearch ? { s: debouncedSearch } : undefined);
+  }, [debouncedSearch, setSearchParams]);
 
   if (!todos || loadingTodos) {
     return <LoadingOverlay visible />;
@@ -31,10 +39,19 @@ const Todos: FC = () => {
           onChange={(event) => {
             setSearch(event.target.value);
           }}
+          rightSection={
+            search && (
+              <CloseButton
+                onClick={() => {
+                  setSearch("");
+                }}
+              />
+            )
+          }
         />
       </Group>
       <NewTodoCard />
-      <TodosList search={search} />
+      <TodosList search={debouncedSearch} />
     </Stack>
   );
 };

@@ -1,14 +1,22 @@
-import { Group, Stack, Text, TextInput } from "@mantine/core";
+import { CloseButton, Group, Stack, Text, TextInput } from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import GroceriesList from "routes/Home/Boards/Board/Groceries/GroceriesList";
 import NewGroceryCard from "routes/Home/Boards/Board/Groceries/NewGroceryCard";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const Groceries: FC = () => {
   const { loadingGroceries, groceries } = useBoard();
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("s") ?? "");
+  const [debouncedSearch] = useDebouncedValue(search, 200);
+
+  useEffect(() => {
+    setSearchParams(debouncedSearch ? { s: debouncedSearch } : undefined);
+  }, [debouncedSearch, setSearchParams]);
 
   if (!groceries || loadingGroceries) {
     return <LoadingOverlay visible />;
@@ -31,10 +39,19 @@ const Groceries: FC = () => {
           onChange={(event) => {
             setSearch(event.target.value);
           }}
+          rightSection={
+            search && (
+              <CloseButton
+                onClick={() => {
+                  setSearch("");
+                }}
+              />
+            )
+          }
         />
       </Group>
       <NewGroceryCard />
-      <GroceriesList search={search} />
+      <GroceriesList search={debouncedSearch} />
     </Stack>
   );
 };
