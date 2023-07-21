@@ -1,19 +1,13 @@
-import {
-  Button,
-  CloseButton,
-  Group,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
-import { useDebouncedValue } from "@mantine/hooks";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { Button, Group, Stack, Text } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
+import SearchTextInput from "components/molecules/TextInput/Search";
 import { collection } from "firebase/firestore";
 import useBooleanState from "hooks/useBooleanState";
+import useSearch from "hooks/useSearch";
 import useWindowSize from "hooks/useWindowSize";
-import { FC, useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { FC, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Note from "routes/Home/Boards/Board/Notes/Note";
 import NotesList from "routes/Home/Boards/Board/Notes/NotesList";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
@@ -26,14 +20,8 @@ const Notes: FC = () => {
   const { boardId } = useParams();
   const [loadingNew, start, stop] = useBooleanState();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState(searchParams.get("s") ?? "");
-  const [debouncedSearch] = useDebouncedValue(search, 200);
   const { largerThan } = useWindowSize();
-
-  useEffect(() => {
-    setSearchParams(debouncedSearch ? { s: debouncedSearch } : undefined);
-  }, [debouncedSearch, setSearchParams]);
+  const { search, setSearch, debouncedSearch } = useSearch();
 
   const createNoteAndOpen = useCallback(() => {
     if (board?.ref) {
@@ -82,24 +70,7 @@ const Notes: FC = () => {
             <Text c="dimmed">({notes.length})</Text>
           </Group>
           <Group>
-            <TextInput
-              placeholder="Rechercher"
-              variant="filled"
-              icon={<IconSearch size={18} />}
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-              }}
-              rightSection={
-                search && (
-                  <CloseButton
-                    onClick={() => {
-                      setSearch("");
-                    }}
-                  />
-                )
-              }
-            />
+            <SearchTextInput search={search} setSearch={setSearch} />
             <Button
               loading={loadingNew}
               variant="default"

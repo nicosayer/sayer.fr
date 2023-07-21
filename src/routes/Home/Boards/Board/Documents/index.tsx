@@ -1,18 +1,11 @@
-import {
-  Button,
-  CloseButton,
-  Group,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
-import { useDebouncedValue } from "@mantine/hooks";
+import { Button, Group, Stack, Text } from "@mantine/core";
 import { openModal } from "@mantine/modals";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
+import SearchTextInput from "components/molecules/TextInput/Search";
+import useSearch from "hooks/useSearch";
 import useWindowSize from "hooks/useWindowSize";
-import { FC, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { FC } from "react";
 import Document from "routes/Home/Boards/Board/Documents/Document";
 import DocumentsList from "routes/Home/Boards/Board/Documents/DocumentsList";
 import NewDocumentModalContent from "routes/Home/Boards/Board/Documents/NewDocumentModalContent";
@@ -28,14 +21,8 @@ const openNewModal = () => {
 
 const Documents: FC = () => {
   const { loadingDocuments, documents } = useBoard();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState(searchParams.get("s") ?? "");
-  const [debouncedSearch] = useDebouncedValue(search, 200);
+  const { search, setSearch, debouncedSearch } = useSearch();
   const { largerThan } = useWindowSize();
-
-  useEffect(() => {
-    setSearchParams(debouncedSearch ? { s: debouncedSearch } : undefined);
-  }, [debouncedSearch, setSearchParams]);
 
   if (!documents || loadingDocuments) {
     return <LoadingOverlay visible />;
@@ -67,24 +54,7 @@ const Documents: FC = () => {
             <Text c="dimmed">({documents.length})</Text>
           </Group>
           <Group>
-            <TextInput
-              placeholder="Rechercher"
-              variant="filled"
-              icon={<IconSearch size={18} />}
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-              }}
-              rightSection={
-                search && (
-                  <CloseButton
-                    onClick={() => {
-                      setSearch("");
-                    }}
-                  />
-                )
-              }
-            />
+            <SearchTextInput search={search} setSearch={setSearch} />
             <Button
               variant="default"
               leftIcon={<IconPlus size={18} />}

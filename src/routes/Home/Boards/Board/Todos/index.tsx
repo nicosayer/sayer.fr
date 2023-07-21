@@ -1,22 +1,15 @@
-import { CloseButton, Group, Stack, Text, TextInput } from "@mantine/core";
-import { useDebouncedValue } from "@mantine/hooks";
-import { IconSearch } from "@tabler/icons-react";
+import { Group, Stack, Text } from "@mantine/core";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
-import { FC, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import SearchTextInput from "components/molecules/TextInput/Search";
+import useSearch from "hooks/useSearch";
+import { FC } from "react";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 import NewTodoCard from "routes/Home/Boards/Board/Todos/NewTodoCard";
 import TodosList from "routes/Home/Boards/Board/Todos/TodosList";
 
 const Todos: FC = () => {
   const { loadingTodos, todos } = useBoard();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState(searchParams.get("s") ?? "");
-  const [debouncedSearch] = useDebouncedValue(search, 200);
-
-  useEffect(() => {
-    setSearchParams(debouncedSearch ? { s: debouncedSearch } : undefined);
-  }, [debouncedSearch, setSearchParams]);
+  const { search, setSearch, debouncedSearch } = useSearch();
 
   if (!todos || loadingTodos) {
     return <LoadingOverlay visible />;
@@ -31,24 +24,7 @@ const Todos: FC = () => {
             ({todos.filter((todo) => !todo.closedAt).length})
           </Text>
         </Group>
-        <TextInput
-          placeholder="Rechercher"
-          variant="filled"
-          icon={<IconSearch size={18} />}
-          value={search}
-          onChange={(event) => {
-            setSearch(event.target.value);
-          }}
-          rightSection={
-            search && (
-              <CloseButton
-                onClick={() => {
-                  setSearch("");
-                }}
-              />
-            )
-          }
-        />
+        <SearchTextInput search={search} setSearch={setSearch} />
       </Group>
       <NewTodoCard />
       <TodosList search={debouncedSearch} />

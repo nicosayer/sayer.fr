@@ -1,22 +1,15 @@
-import { CloseButton, Group, Stack, Text, TextInput } from "@mantine/core";
-import { useDebouncedValue } from "@mantine/hooks";
-import { IconSearch } from "@tabler/icons-react";
+import { Group, Stack, Text } from "@mantine/core";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
-import { FC, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import SearchTextInput from "components/molecules/TextInput/Search";
+import useSearch from "hooks/useSearch";
+import { FC } from "react";
 import GroceriesList from "routes/Home/Boards/Board/Groceries/GroceriesList";
 import NewGroceryCard from "routes/Home/Boards/Board/Groceries/NewGroceryCard";
 import { useBoard } from "routes/Home/Boards/Board/Provider";
 
 const Groceries: FC = () => {
   const { loadingGroceries, groceries } = useBoard();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState(searchParams.get("s") ?? "");
-  const [debouncedSearch] = useDebouncedValue(search, 200);
-
-  useEffect(() => {
-    setSearchParams(debouncedSearch ? { s: debouncedSearch } : undefined);
-  }, [debouncedSearch, setSearchParams]);
+  const { search, setSearch, debouncedSearch } = useSearch();
 
   if (!groceries || loadingGroceries) {
     return <LoadingOverlay visible />;
@@ -31,24 +24,7 @@ const Groceries: FC = () => {
             ({groceries.filter((grocery) => !grocery.closedAt).length})
           </Text>
         </Group>
-        <TextInput
-          placeholder="Rechercher"
-          variant="filled"
-          icon={<IconSearch size={18} />}
-          value={search}
-          onChange={(event) => {
-            setSearch(event.target.value);
-          }}
-          rightSection={
-            search && (
-              <CloseButton
-                onClick={() => {
-                  setSearch("");
-                }}
-              />
-            )
-          }
-        />
+        <SearchTextInput search={search} setSearch={setSearch} />
       </Group>
       <NewGroceryCard />
       <GroceriesList search={debouncedSearch} />

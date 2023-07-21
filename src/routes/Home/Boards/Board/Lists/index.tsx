@@ -1,10 +1,11 @@
-import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
+import { Button, Group, Stack, Text } from "@mantine/core";
 import { openModal } from "@mantine/modals";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
+import SearchTextInput from "components/molecules/TextInput/Search";
+import useSearch from "hooks/useSearch";
 import useWindowSize from "hooks/useWindowSize";
-import { FC, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { FC } from "react";
 import List from "routes/Home/Boards/Board/Lists/List";
 import ListsList from "routes/Home/Boards/Board/Lists/ListsList";
 import NewListModalContent from "routes/Home/Boards/Board/Lists/NewListModalContent";
@@ -20,8 +21,7 @@ const openNewModal = () => {
 
 const Lists: FC = () => {
   const { loadingLists, lists } = useBoard();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState(searchParams.get("s") ?? "");
+  const { search, setSearch, debouncedSearch } = useSearch();
   const { largerThan } = useWindowSize();
 
   if (!lists || loadingLists) {
@@ -52,16 +52,7 @@ const Lists: FC = () => {
             <Text c="dimmed">({lists.length})</Text>
           </Group>
           <Group>
-            <TextInput
-              placeholder="Rechercher"
-              variant="filled"
-              icon={<IconSearch size={18} />}
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setSearchParams({ s: event.target.value });
-              }}
-            />
+            <SearchTextInput search={search} setSearch={setSearch} />
             <Button
               variant="default"
               leftIcon={<IconPlus size={18} />}
@@ -71,7 +62,7 @@ const Lists: FC = () => {
             </Button>
           </Group>
         </Group>
-        <ListsList search={search} />
+        <ListsList search={debouncedSearch} />
       </Stack>
     </>
   );
