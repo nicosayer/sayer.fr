@@ -36,7 +36,6 @@ const DeleteBoardCard: FC<DeleteBoardCardProps> = ({ board }) => {
         label="Supprimer le board"
         description="La suppression du board est définitive et irréversible"
       >
-        <Text>hello</Text>
         <Button
           color="red"
           className="mt-1"
