@@ -14,8 +14,8 @@ const openDeleteModal = (board: BoardDocument) => {
     centered: true,
     children: (
       <Text size="sm">
-        Voulez-vous vraiment supprimer le board <b>{board.name}</b> ? Cette action est définitive et
-        irréversible.
+        Voulez-vous vraiment supprimer le board <b>{board.name}</b> ? Cette
+        action est définitive et irréversible.
       </Text>
     ),
     labels: { confirm: "Supprimer", cancel: "Annuler" },

@@ -1,5 +1,15 @@
-import { Button, Card, Input, Stack, Text, TextInput } from "@mantine/core";
-import { IconCheck } from "@tabler/icons-react";
+import {
+  Button,
+  Card,
+  Group,
+  Input,
+  SegmentedControl,
+  Stack,
+  Text,
+  TextInput,
+  useMantineColorScheme,
+} from "@mantine/core";
+import { IconCheck, IconMoon, IconSun } from "@tabler/icons-react";
 import useResetPasswordModal from "hooks/useResetPasswordModal";
 import { FC, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -12,6 +22,7 @@ const UserCard: FC = () => {
   const { users } = useBoard();
   const [resetPasswordModal, sending] = useResetPasswordModal();
   const [passwordResetEmailSent, setPasswordResetEmailSent] = useState(false);
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   if (!user?.email) {
     return null;
@@ -43,6 +54,35 @@ const UserCard: FC = () => {
                   ? "Email envoyé"
                   : "Réinitialiser le mot de passe"}
               </Button>
+            </div>
+          </Input.Wrapper>
+          <Input.Wrapper label="Mode de couleur">
+            <div>
+              <SegmentedControl
+                className="w-64"
+                value={colorScheme}
+                onChange={(value: "light" | "dark") => toggleColorScheme(value)}
+                data={[
+                  {
+                    value: "light",
+                    label: (
+                      <Group position="center" spacing="xs" noWrap>
+                        <IconSun size={18} />
+                        Clair
+                      </Group>
+                    ),
+                  },
+                  {
+                    value: "dark",
+                    label: (
+                      <Group position="center" spacing="xs" noWrap>
+                        <IconMoon size={18} />
+                        Sombre
+                      </Group>
+                    ),
+                  },
+                ]}
+              />
             </div>
           </Input.Wrapper>
         </Stack>
