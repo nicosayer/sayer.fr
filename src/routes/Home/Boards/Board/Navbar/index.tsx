@@ -91,6 +91,7 @@ const Navbar: FC = () => {
       hiddenBreakpoint="sm"
       hidden={!isNavbarOpened}
       width={{ sm: 200, lg: 300 }}
+      className="overflow-y-auto"
     >
       <MantineNavbar.Section>
         <Stack>
