@@ -1,4 +1,4 @@
-import { Button, Card, Input, Stack, TextInput } from "@mantine/core";
+import { Button, Card, Input, Stack, Text, TextInput } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import useResetPasswordModal from "hooks/useResetPasswordModal";
 import { FC, useState } from "react";
@@ -19,29 +19,34 @@ const UserCard: FC = () => {
 
   return (
     <Card withBorder>
-      <Stack>
-        <NameInput defaultValue={users?.[user.email].name ?? ""} />
-        <TextInput label="Email" value={user.email} readOnly />
-        <Input.Wrapper label="Mot de passe">
-          <div>
-            <Button
-              variant="default"
-              loading={sending}
-              leftIcon={passwordResetEmailSent && <IconCheck size={18} />}
-              disabled={passwordResetEmailSent}
-              onClick={() => {
-                resetPasswordModal(() => {
-                  setPasswordResetEmailSent(true);
-                });
-              }}
-            >
-              {passwordResetEmailSent
-                ? "Email envoyé"
-                : "Réinitialiser le mot de passe"}
-            </Button>
-          </div>
-        </Input.Wrapper>
-      </Stack>
+      <Card.Section withBorder inheritPadding py="xs">
+        <Text weight={500}>Paramètres utilisateur</Text>
+      </Card.Section>
+      <Card.Section inheritPadding py="md">
+        <Stack>
+          <NameInput defaultValue={users?.[user.email].name ?? ""} />
+          <TextInput label="Email" value={user.email} readOnly />
+          <Input.Wrapper label="Mot de passe">
+            <div>
+              <Button
+                variant="default"
+                loading={sending}
+                leftIcon={passwordResetEmailSent && <IconCheck size={18} />}
+                disabled={passwordResetEmailSent}
+                onClick={() => {
+                  resetPasswordModal(() => {
+                    setPasswordResetEmailSent(true);
+                  });
+                }}
+              >
+                {passwordResetEmailSent
+                  ? "Email envoyé"
+                  : "Réinitialiser le mot de passe"}
+              </Button>
+            </div>
+          </Input.Wrapper>
+        </Stack>
+      </Card.Section>
     </Card>
   );
 };

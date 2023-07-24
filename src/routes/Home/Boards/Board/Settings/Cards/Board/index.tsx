@@ -1,4 +1,4 @@
-import { Button, Card, MultiSelect, Stack, TextInput } from "@mantine/core";
+import { Button, Card, MultiSelect, Stack, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import useBooleanState from "hooks/useBooleanState";
 import { FC, useMemo, useState } from "react";
@@ -48,62 +48,67 @@ const BoardCard: FC<BoardCardProps> = ({ board }) => {
 
   return (
     <Card withBorder>
-      <form
-        onSubmit={form.onSubmit((values) => {
-          if (board?.ref) {
-            start();
-            updateDoc<BoardDocument>(board.ref, {
-              name: values.name,
-              users: values.users,
-            }).finally(stop);
-          }
-        })}
-      >
-        <Stack>
-          <TextInput
-            label="Nom du board"
-            placeholder="Board de John"
-            disabled={loading}
-            {...form.getInputProps("name")}
-          />
-          <MultiSelect
-            withinPortal
-            label="Utilisateurs"
-            description="Les utilisateurs peuvent visualiser, modifier et supprimer tous les élèments du board"
-            data={users}
-            placeholder="john.doe@acme.com"
-            searchable
-            creatable
-            getCreateLabel={(query) => `+ Ajouter ${query}`}
-            onCreate={(query) => {
-              const user = query.trim().toLowerCase();
-              setUsers((old) => [...old, user]);
-              return user;
-            }}
-            shouldCreate={(query) => {
-              return /^.+@.+\..+$/.test(query);
-            }}
-            {...form.getInputProps("users")}
-          />
-          <div>
-            <button
-              type="submit"
-              disabled
-              className="hidden"
-              aria-hidden="true"
+      <Card.Section withBorder inheritPadding py="xs">
+        <Text weight={500}>Paramètres du board</Text>
+      </Card.Section>
+      <Card.Section inheritPadding py="md">
+        <form
+          onSubmit={form.onSubmit((values) => {
+            if (board?.ref) {
+              start();
+              updateDoc<BoardDocument>(board.ref, {
+                name: values.name,
+                users: values.users,
+              }).finally(stop);
+            }
+          })}
+        >
+          <Stack>
+            <TextInput
+              label="Nom du board"
+              placeholder="Board de John"
+              disabled={loading}
+              {...form.getInputProps("name")}
             />
-            <Button
-              loading={loading}
-              type="submit"
-              disabled={
-                JSON.stringify(initialValues) === JSON.stringify(form.values)
-              }
-            >
-              Sauvegarder
-            </Button>
-          </div>
-        </Stack>
-      </form>
+            <MultiSelect
+              withinPortal
+              label="Utilisateurs"
+              description="Les utilisateurs peuvent visualiser, modifier et supprimer tous les élèments du board"
+              data={users}
+              placeholder="john.doe@acme.com"
+              searchable
+              creatable
+              getCreateLabel={(query) => `+ Ajouter ${query}`}
+              onCreate={(query) => {
+                const user = query.trim().toLowerCase();
+                setUsers((old) => [...old, user]);
+                return user;
+              }}
+              shouldCreate={(query) => {
+                return /^.+@.+\..+$/.test(query);
+              }}
+              {...form.getInputProps("users")}
+            />
+            <div>
+              <button
+                type="submit"
+                disabled
+                className="hidden"
+                aria-hidden="true"
+              />
+              <Button
+                loading={loading}
+                type="submit"
+                disabled={
+                  JSON.stringify(initialValues) === JSON.stringify(form.values)
+                }
+              >
+                Sauvegarder
+              </Button>
+            </div>
+          </Stack>
+        </form>
+      </Card.Section>
     </Card>
   );
 };

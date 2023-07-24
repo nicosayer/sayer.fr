@@ -14,7 +14,7 @@ const openDeleteModal = (board: BoardDocument) => {
     centered: true,
     children: (
       <Text size="sm">
-        Voulez-vous vraiment supprimer ce board ? Cette action est définitive et
+        Voulez-vous vraiment supprimer le board <b>{board.name}</b> ? Cette action est définitive et
         irréversible.
       </Text>
     ),
@@ -36,6 +36,7 @@ const DeleteBoardCard: FC<DeleteBoardCardProps> = ({ board }) => {
         label="Supprimer le board"
         description="La suppression du board est définitive et irréversible"
       >
+        <Text>hello</Text>
         <Button
           color="red"
           className="mt-1"
