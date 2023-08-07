@@ -50,6 +50,7 @@ const MoveNoteModalContent: FC<MoveNoteModalContentProps> = ({ note }) => {
                   name: note.name,
                   base64: note.base64,
                   text: note.text,
+                  html: note.html,
                   date: note.date,
                 }
               )

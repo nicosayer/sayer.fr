@@ -88,6 +88,7 @@ export interface NoteDocument {
   name?: string;
   base64?: string;
   text?: string;
+  html?: string;
   date?: string;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;

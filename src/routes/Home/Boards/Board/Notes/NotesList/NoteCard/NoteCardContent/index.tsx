@@ -81,7 +81,7 @@ const NoteCardContent: FC<NoteCardContentProps> = ({ note }) => {
       >
         <div className="overflow-hidden max-h-32">
           <Text size="sm" color="dimmed">
-            {note.text}
+            {note.html && <div dangerouslySetInnerHTML={{ __html: note.html }} />}
           </Text>
         </div>
       </Alert>

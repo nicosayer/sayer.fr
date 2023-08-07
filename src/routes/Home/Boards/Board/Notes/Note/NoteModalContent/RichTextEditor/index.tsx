@@ -75,6 +75,7 @@ const RichTextEditor: FC<RichTextEditorProps> = ({ yDoc, provider, note }) => {
         updateDoc<NoteDocument>(note.ref, {
           base64: toBase64(Y.encodeStateAsUpdate(yDoc)),
           text: editor.getText().replace(/\s+/g, " "),
+          html: editor.getHTML()
         });
       }
     },
