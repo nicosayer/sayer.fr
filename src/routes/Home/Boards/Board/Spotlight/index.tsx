@@ -63,7 +63,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
       searchPlaceholder="Rechercher"
       query={query}
       onQueryChange={setQuery}
-      actions={[
+      actions={query ? [
         ...(credentials ?? []).map((credential) => {
           return {
             title: credential.name ?? "",
@@ -104,7 +104,7 @@ const Spotlight = ({ children }: PropsWithChildren) => {
             },
           };
         }),
-      ]}
+      ] : []}
       filter={(query, actions) =>
         actions.filter((action) => {
           return searchString(
