@@ -29,7 +29,7 @@ const Groceries: FC = () => {
           <SearchTextInput search={search} setSearch={setSearch} />
         </Group>
         <Text color="dimmed" fz="sm">
-          Les courses concernent les achats quotidiens qui peuvent être achetés au supermarché.
+          Les courses concernent uniquement les achats quotidiens qui peuvent être achetés au supermarché.
         </Text>
       </Stack>
       <NewGroceryCard />
