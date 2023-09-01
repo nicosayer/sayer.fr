@@ -1,4 +1,5 @@
-import { Group, Stack, Text } from "@mantine/core";
+import { Alert, Group, Stack, Text } from "@mantine/core";
+import { IconInfoCircle } from "@tabler/icons-react";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import SearchTextInput from "components/molecules/TextInput/Search";
 import useSearch from "hooks/useSearch";
@@ -17,15 +18,20 @@ const Groceries: FC = () => {
 
   return (
     <Stack>
-      <Group position="apart" className="sticky z-50">
-        <Group spacing="xs">
-          <Text weight={500}>Courses</Text>
-          <Text c="dimmed">
-            ({groceries.filter((grocery) => !grocery.closedAt).length})
-          </Text>
+      <Stack spacing="xs">
+        <Group position="apart" className="sticky z-50">
+          <Group spacing="xs">
+            <Text weight={500}>Courses</Text>
+            <Text c="dimmed">
+              ({groceries.filter((grocery) => !grocery.closedAt).length})
+            </Text>
+          </Group>
+          <SearchTextInput search={search} setSearch={setSearch} />
         </Group>
-        <SearchTextInput search={search} setSearch={setSearch} />
-      </Group>
+        <Text color="dimmed" fz="sm">
+          Les courses concernent les achats quotidiens qui peuvent être achetés au supermarché.
+        </Text>
+      </Stack>
       <NewGroceryCard />
       <GroceriesList search={debouncedSearch} />
     </Stack>
