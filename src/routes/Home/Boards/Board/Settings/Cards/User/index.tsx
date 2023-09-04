@@ -56,7 +56,7 @@ const UserCard: FC = () => {
               </Button>
             </div>
           </Input.Wrapper>
-          <Input.Wrapper label="Couleurs de l'application">
+          <Input.Wrapper label="Thème de l'application">
             <div>
               <SegmentedControl
                 className="w-64"
