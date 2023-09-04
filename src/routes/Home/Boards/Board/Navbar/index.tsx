@@ -3,7 +3,7 @@ import {
   IconChecklist,
   IconEdit,
   IconId,
-  IconKey,
+  IconPassword,
   IconListCheck,
   IconLock,
   IconSettings,
@@ -42,7 +42,7 @@ export const menu: {
   ) => ReactNode;
 }[] = [
     {
-      icon: <IconKey size={18} />,
+      icon: <IconPassword size={18} />,
       label: "Mots de passe",
       to: "credentials",
       getBadgeContent: ({ credentials }, secureLogin) =>
