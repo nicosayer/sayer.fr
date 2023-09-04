@@ -38,7 +38,7 @@ const GroceriesList: FC<GroceriesListProps> = ({ search }) => {
 
   if (
     (filteredGroceries.false ?? []).length +
-      (filteredGroceries.true ?? []).length ===
+    (filteredGroceries.true ?? []).length ===
     0
   ) {
     return <NoResult />;

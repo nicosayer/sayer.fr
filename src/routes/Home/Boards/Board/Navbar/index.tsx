@@ -3,8 +3,9 @@ import {
   IconChecklist,
   IconEdit,
   IconId,
+  IconKey,
   IconListCheck,
-  IconLockOpen,
+  IconLock,
   IconSettings,
   IconShoppingCart,
 } from "@tabler/icons-react";
@@ -12,7 +13,7 @@ import classNames from "classnames";
 import { useAppShell } from "components/atoms/AppShell";
 import useColors from "hooks/useColors";
 import { ISecureLoginContext } from "providers/SecureLogin";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import NavbarButton from "routes/Home/Boards/Board/Navbar/Button";
 import { IBoardContext } from "routes/Home/Boards/Board/Provider";
 
@@ -38,48 +39,48 @@ export const menu: {
   getBadgeContent: (
     board: IBoardContext,
     secureLogin: ISecureLoginContext
-  ) => string | number;
+  ) => ReactNode;
 }[] = [
-  {
-    icon: <IconLockOpen size={18} />,
-    label: "Mots de passe",
-    to: "credentials",
-    getBadgeContent: ({ credentials }, secureLogin) =>
-      secureLogin.isSecure ? credentials?.length ?? 0 : "?",
-  },
-  {
-    icon: <IconId size={18} />,
-    label: "Documents",
-    to: "documents",
-    getBadgeContent: ({ documents }) => documents?.length ?? 0,
-  },
-  {
-    icon: <IconEdit size={18} />,
-    label: "Notes",
-    to: "notes",
-    getBadgeContent: ({ notes }) => notes?.length ?? 0,
-  },
-  {
-    icon: <IconListCheck size={18} />,
-    label: "Listes",
-    to: "lists",
-    getBadgeContent: ({ lists }) => lists?.length ?? 0,
-  },
-  {
-    icon: <IconShoppingCart size={18} />,
-    label: "Courses",
-    to: "groceries",
-    getBadgeContent: ({ groceries }) =>
-      groceries?.filter((grocery) => !grocery.closedAt).length ?? 0,
-  },
-  {
-    icon: <IconChecklist size={18} />,
-    label: "Todos",
-    to: "todos",
-    getBadgeContent: ({ todos }) =>
-      todos?.filter((todo) => !todo.closedAt).length ?? 0,
-  },
-];
+    {
+      icon: <IconKey size={18} />,
+      label: "Mots de passe",
+      to: "credentials",
+      getBadgeContent: ({ credentials }, secureLogin) =>
+        secureLogin.isSecure ? credentials?.length ?? 0 : <IconLock size={10} className="flex" />,
+    },
+    {
+      icon: <IconId size={18} />,
+      label: "Documents",
+      to: "documents",
+      getBadgeContent: ({ documents }) => documents?.length ?? 0,
+    },
+    {
+      icon: <IconEdit size={18} />,
+      label: "Notes",
+      to: "notes",
+      getBadgeContent: ({ notes }) => notes?.length ?? 0,
+    },
+    {
+      icon: <IconListCheck size={18} />,
+      label: "Listes",
+      to: "lists",
+      getBadgeContent: ({ lists }) => lists?.length ?? 0,
+    },
+    {
+      icon: <IconShoppingCart size={18} />,
+      label: "Courses",
+      to: "groceries",
+      getBadgeContent: ({ groceries }) =>
+        groceries?.filter((grocery) => !grocery.closedAt).length ?? 0,
+    },
+    {
+      icon: <IconChecklist size={18} />,
+      label: "Todos",
+      to: "todos",
+      getBadgeContent: ({ todos }) =>
+        todos?.filter((todo) => !todo.closedAt).length ?? 0,
+    },
+  ];
 
 const Navbar: FC = () => {
   const { isNavbarOpened } = useAppShell();

@@ -3,7 +3,7 @@ import { useViewportSize } from "@mantine/hooks";
 import { useAppShell } from "components/atoms/AppShell";
 import usePathname from "hooks/usePathname";
 import { ISecureLoginContext, useSecureLogin } from "providers/SecureLogin";
-import { FC, useMemo } from "react";
+import { FC, ReactNode, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { IBoardContext, useBoard } from "routes/Home/Boards/Board/Provider";
 
@@ -15,7 +15,7 @@ interface NavbarButtonProps {
   getBadgeContent?: (
     board: IBoardContext,
     secureLogin: ISecureLoginContext
-  ) => number | string;
+  ) => ReactNode;
 }
 
 const NavbarButton: FC<NavbarButtonProps> = ({
