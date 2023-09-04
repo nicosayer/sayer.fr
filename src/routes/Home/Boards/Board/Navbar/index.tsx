@@ -42,11 +42,11 @@ export const menu: {
   ) => ReactNode;
 }[] = [
     {
-      icon: <IconPassword size={18} />,
+      icon: <IconLock size={18} />,
       label: "Mots de passe",
       to: "credentials",
       getBadgeContent: ({ credentials }, secureLogin) =>
-        secureLogin.isSecure ? credentials?.length ?? 0 : <IconLock size={10} className="flex" />,
+        secureLogin.isSecure ? (credentials?.length ?? 0) : <IconPassword size={12} className="flex" stroke={1.5} />,
     },
     {
       icon: <IconId size={18} />,
