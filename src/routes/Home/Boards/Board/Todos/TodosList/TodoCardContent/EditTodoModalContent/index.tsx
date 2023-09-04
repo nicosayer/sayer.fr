@@ -51,8 +51,8 @@ const EditTodoModalContent: FC<EditTodoModalContentProps> = ({ todo }) => {
           autoFocus
           disabled={loading}
           withAsterisk
-          label="Course"
-          placeholder="Avocats"
+          label="Todo"
+          placeholder="Ranger la chambre"
           {...form.getInputProps("name")}
         />
         <div className="flex ml-auto">
