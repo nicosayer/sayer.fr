@@ -52,6 +52,7 @@ const MoveGroceryModalContent: FC<MoveGroceryModalContentProps> = ({
                 collection(db, `boards/${boardId}/${Collection.groceries}`),
                 {
                   name: grocery.name,
+                  description: grocery.description,
                   openedAt: grocery.openedAt,
                   openedBy: grocery.openedBy,
                   closedAt: grocery.closedAt,

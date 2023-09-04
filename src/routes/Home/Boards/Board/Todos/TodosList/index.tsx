@@ -18,7 +18,7 @@ const TodosList: FC<TodosListProps> = ({ search }) => {
     return groupBy(
       orderBy(
         (todos ?? []).filter((todo) => {
-          return searchString(`${todo.name}`, search);
+          return searchString(`${todo.name}${todo.description}`, search);
         }),
         (todo) => todo.updatedAt?.seconds,
         "desc"

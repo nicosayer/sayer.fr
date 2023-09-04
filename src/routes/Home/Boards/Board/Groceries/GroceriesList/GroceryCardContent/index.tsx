@@ -54,6 +54,7 @@ const GroceryCardContent: FC<GroceryCardContentProps> = ({ grocery }) => {
           label: "cursor-pointer",
         }}
         label={grocery.name}
+        description={grocery.description}
         onChange={() => {
           if (grocery.ref) {
             if (grocery.closedAt) {

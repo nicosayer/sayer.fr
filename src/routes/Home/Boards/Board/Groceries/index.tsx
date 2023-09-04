@@ -1,5 +1,4 @@
-import { Alert, Group, Stack, Text } from "@mantine/core";
-import { IconInfoCircle } from "@tabler/icons-react";
+import { Group, Stack, Text } from "@mantine/core";
 import LoadingOverlay from "components/atoms/LoadingOverlay";
 import SearchTextInput from "components/molecules/TextInput/Search";
 import useSearch from "hooks/useSearch";

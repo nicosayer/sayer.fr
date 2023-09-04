@@ -48,6 +48,7 @@ const MoveTodoModalContent: FC<MoveTodoModalContentProps> = ({ todo }) => {
                 collection(db, `boards/${boardId}/${Collection.todos}`),
                 {
                   name: todo.name,
+                  description: todo.description,
                   openedAt: todo.openedAt,
                   openedBy: todo.openedBy,
                   closedAt: todo.closedAt,

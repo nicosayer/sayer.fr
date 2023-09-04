@@ -51,6 +51,7 @@ export interface GroceryDocument {
   id?: string;
   ref?: DocumentReference<GroceryDocument>;
   name?: string;
+  description?: string;
   openedAt?: Timestamp;
   openedBy?: string;
   closedAt?: Timestamp;
@@ -98,6 +99,7 @@ export interface TodoDocument {
   id?: string;
   ref?: DocumentReference<TodoDocument>;
   name?: string;
+  description?: string;
   openedAt?: Timestamp;
   openedBy?: string;
   closedAt?: Timestamp;

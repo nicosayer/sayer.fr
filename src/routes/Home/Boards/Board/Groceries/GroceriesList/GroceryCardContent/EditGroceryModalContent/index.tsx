@@ -19,6 +19,7 @@ const EditGroceryModalContent: FC<EditGroceryModalContentProps> = ({
   const form = useForm({
     initialValues: {
       name: grocery.name ?? "",
+      description: grocery.description ?? "",
     },
 
     validate: {
@@ -30,6 +31,7 @@ const EditGroceryModalContent: FC<EditGroceryModalContentProps> = ({
     transformValues: (values) => {
       return {
         name: cleanString(values.name),
+        description: cleanString(values.description),
       };
     },
   });
@@ -41,6 +43,7 @@ const EditGroceryModalContent: FC<EditGroceryModalContentProps> = ({
           start();
           updateDoc<GroceryDocument>(grocery.ref, {
             name: values.name,
+            description: values.description,
           })
             .then(() => closeAllModals())
             .finally(stop);
@@ -56,6 +59,14 @@ const EditGroceryModalContent: FC<EditGroceryModalContentProps> = ({
           label="Course"
           placeholder="Avocats"
           {...form.getInputProps("name")}
+        />
+         <TextInput
+          data-autofocus
+          autoFocus
+          disabled={loading}
+          label="Description"
+          placeholder="Bien mûrs"
+          {...form.getInputProps("description")}
         />
         <div className="flex ml-auto">
           <Group>

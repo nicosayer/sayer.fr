@@ -54,6 +54,7 @@ const TodoCardContent: FC<TodoCardContentProps> = ({ todo }) => {
           label: "cursor-pointer",
         }}
         label={todo.name}
+        description={todo.description}
         onChange={() => {
           if (todo.ref) {
             if (todo.closedAt) {
@@ -75,13 +76,13 @@ const TodoCardContent: FC<TodoCardContentProps> = ({ todo }) => {
           <Text c="dimmed" fz="sm">
             {todo.closedAt
               ? `fermé par ${getUserName(todo.closedBy ?? "")} le ${formatDate(
-                  todo.closedAt.toDate(),
-                  "D MMM"
-                )}`
+                todo.closedAt.toDate(),
+                "D MMM"
+              )}`
               : `ajouté par ${getUserName(todo.openedBy ?? "")} le ${formatDate(
-                  todo.openedAt?.toDate(),
-                  "D MMM"
-                )}`}
+                todo.openedAt?.toDate(),
+                "D MMM"
+              )}`}
           </Text>
         )}
         <Menu shadow="md" width={200} withinPortal>

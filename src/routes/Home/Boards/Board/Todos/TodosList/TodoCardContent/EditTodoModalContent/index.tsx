@@ -17,6 +17,7 @@ const EditTodoModalContent: FC<EditTodoModalContentProps> = ({ todo }) => {
   const form = useForm({
     initialValues: {
       name: todo.name ?? "",
+      description: todo.description ?? "",
     },
 
     validate: {
@@ -28,6 +29,7 @@ const EditTodoModalContent: FC<EditTodoModalContentProps> = ({ todo }) => {
     transformValues: (values) => {
       return {
         name: cleanString(values.name),
+        description: cleanString(values.description),
       };
     },
   });
@@ -39,6 +41,7 @@ const EditTodoModalContent: FC<EditTodoModalContentProps> = ({ todo }) => {
           start();
           updateDoc<TodoDocument>(todo.ref, {
             name: values.name,
+            description: values.description,
           })
             .then(() => closeAllModals())
             .finally(stop);
@@ -54,6 +57,14 @@ const EditTodoModalContent: FC<EditTodoModalContentProps> = ({ todo }) => {
           label="Todo"
           placeholder="Ranger la chambre"
           {...form.getInputProps("name")}
+        />
+        <TextInput
+          data-autofocus
+          autoFocus
+          disabled={loading}
+          label="Description"
+          placeholder="Faire le lit"
+          {...form.getInputProps("description")}
         />
         <div className="flex ml-auto">
           <Group>
