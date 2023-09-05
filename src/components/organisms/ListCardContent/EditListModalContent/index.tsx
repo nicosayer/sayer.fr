@@ -53,6 +53,17 @@ const EditListModalContent: FC<EditListModalContentProps> = ({
       onSubmit={form.onSubmit((values) => {
         if (list?.ref && values.itemNames.length > 0) {
           start();
+
+          const newListItems = values.itemNames.map((itemName) => {
+            return {
+              name: itemName,
+              status: listItems.find(
+                (listItem) => listItem.name === itemName
+              )?.status ?? ListItemStatus.Empty,
+
+            }
+          })
+
           updateDoc<ListDocument>(list.ref, {
             name: values.name,
           })
@@ -64,13 +75,13 @@ const EditListModalContent: FC<EditListModalContentProps> = ({
               });
             })
             .then(() => {
-              return runInParallel(values.itemNames, (itemName) => {
+              return runInParallel(newListItems, (listItem) => {
                 if (list.ref) {
                   return addDoc<ListItemDocument>(
                     collection(list.ref, Collection.listItems),
                     {
-                      name: itemName,
-                      status: ListItemStatus.Empty,
+                      name: listItem.name,
+                      status: listItem.status,
                     }
                   );
                 }
