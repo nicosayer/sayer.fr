@@ -25,6 +25,9 @@ const Document: FC = () => {
       withCloseButton={false}
       trapFocus={false}
       size="xl"
+      overlayProps={{
+        blur: 3,
+      }}
     >
       <DocumentCardContent document={document} />
     </Modal>

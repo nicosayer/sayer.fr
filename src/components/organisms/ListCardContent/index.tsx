@@ -36,7 +36,7 @@ import { updateDoc } from "utils/firebase";
 import { getChecked, getColor, getIntermediate } from "utils/lists";
 import { sanitize } from "utils/string";
 
-export interface ListCardsPropContent {
+export interface ListCardContentProps {
   list: ListDocument;
   listItems: ListItemDocument[];
 }
@@ -82,7 +82,7 @@ const openDeleteModal = (list: ListDocument, listItems: ListItemDocument[]) => {
   });
 };
 
-const ListCardContent: FC<ListCardsPropContent> = ({ list, listItems }) => {
+const ListCardContent: FC<ListCardContentProps> = ({ list, listItems }) => {
   const { boards } = useBoard();
 
   const lastUpdatedAt = useMemo(() => {

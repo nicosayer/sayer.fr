@@ -25,6 +25,9 @@ const List: FC = () => {
       withCloseButton={false}
       trapFocus={false}
       size="xl"
+      overlayProps={{
+        blur: 3,
+      }}
     >
       <ListCardContent
         list={list}

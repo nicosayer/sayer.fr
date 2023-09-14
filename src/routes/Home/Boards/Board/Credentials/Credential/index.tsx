@@ -28,6 +28,9 @@ const Credential: FC = () => {
       centered
       trapFocus={false}
       size="xl"
+      overlayProps={{
+        blur: 3,
+      }}
     >
       <CredentialCardContent credential={credential} />
     </Modal>

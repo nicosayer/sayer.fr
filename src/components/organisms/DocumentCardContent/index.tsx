@@ -32,7 +32,7 @@ import { DocumentDocument, DocumentMime } from "types/firebase/collections";
 import { storage } from "utils/firebase";
 import { getExtension } from "utils/storage";
 
-export interface DocumentCardsPropContent {
+export interface DocumentCardContentProps {
   document: DocumentDocument;
 }
 
@@ -80,7 +80,7 @@ const openDeleteModal = (document: DocumentDocument) => {
   });
 };
 
-const DocumentCardContent: FC<DocumentCardsPropContent> = ({ document }) => {
+const DocumentCardContent: FC<DocumentCardContentProps> = ({ document }) => {
   const [previewButtonDocument, loadingPreviewButton] = usePreviewDocument();
   const [downloadDocument, loadingDownload] = useDownloadDocument();
   const [previewThumbnailDocument, loadingPreviewThumbnail] =

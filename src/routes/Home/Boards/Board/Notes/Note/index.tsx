@@ -46,7 +46,7 @@ const Note: FC = () => {
           }
         }}
         trapFocus={false}
-        fullScreen={true}
+        fullScreen
         classNames={{
           body: "mt-4 h-[calc(100%_-_85px)]",
           title: "w-full mr-4",
